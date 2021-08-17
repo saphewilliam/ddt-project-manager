@@ -23,4 +23,3 @@ jobs:
       #     yarn nexus:generate
       - name: Lint
         run: yarn lint
-      
