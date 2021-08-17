@@ -8,6 +8,10 @@ generator client {
   previewFeatures = ["referentialActions"]
 }
 
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
 // General
 
 model User {

@@ -7,6 +7,6 @@ module.exports = {
     domains: ['source.unsplash.com', 'images.unsplash.com'],
   },
   eslint: {
-    dirs: ['components', 'graphql', 'hooks', 'lib', 'pages'],
+    dirs: ['src'],
   },
 };
