@@ -1,0 +1,32 @@
+name: Develop CD
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  develop_cd:
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Add DotEnv Variables
+        run: printf 'DATABASE_URL=${{ secrets.DATABASE_URL_DEVELOP }}' > .env
+      - name: Install dependencies
+        run: yarn
+      # - name: Generate GraphQL Types
+      #   run: |
+      #     yarn prisma:generate
+      #     yarn nexus:generate
+      - name: Lint
+        run: yarn lint
+      # - name: Update Database
+      #   run: |
+      #     yarn db:empty
+      #     yarn mig:deploy
+      #     yarn db:seed
