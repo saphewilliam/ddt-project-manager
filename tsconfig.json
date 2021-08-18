@@ -30,7 +30,7 @@
     "removeComments": true,
     "noResolve": false,
     "baseUrl": ".",
-    "rootDir": "./src",
+    "rootDir": ".",
     "paths": {
       "@components/*": ["src/components/*"],
       "@icons/*": ["src/components/icons/*"],

@@ -1,14 +1,11 @@
 import NexusPrismaScalars from 'nexus-prisma/scalars';
-import { makeSchema } from 'nexus';
-import { queryType } from 'nexus';
+import { makeSchema, fieldAuthorizePlugin, queryComplexityPlugin } from 'nexus';
 import * as types from './types';
-
-const Query = queryType({
-  definition(t) {
-    t.string('hello', { resolve: () => 'hello world!' });
-  },
-});
+import path from 'path';
 
 export const schema = makeSchema({
-  types: [Query, types, NexusPrismaScalars],
+  types: [types, NexusPrismaScalars],
+  plugins: [fieldAuthorizePlugin(), queryComplexityPlugin()],
+  prettierConfig: path.join(__dirname, '../../.prettierrc'),
+  nonNullDefaults: { input: true, output: false },
 });

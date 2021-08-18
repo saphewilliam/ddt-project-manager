@@ -12,7 +12,7 @@ generator nexusPrisma {
   provider = "nexus-prisma"
 }
 
-// General
+// Authentication
 
 model User {
   id        String   @id @default(uuid())
@@ -25,8 +25,24 @@ model User {
   password    String?
   avatar      String?
   email       String  @unique
+  isAdmin     Boolean @default(false)
 
-  teams Member[]
+  sessions Session[]
+  teams    Member[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime?
+
+  token       String  @unique
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 // Teams
@@ -47,7 +63,7 @@ model Member {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId String
-  team   Team   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 model Team {
@@ -58,5 +74,6 @@ model Team {
   name    String
   acronym String?
 
-  members Member[]
+  members  Member[]
+  sessions Session[]
 }
