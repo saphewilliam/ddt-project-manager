@@ -157,6 +157,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     expiresAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string; // ID!
+    member: NexusGenRootTypes['Member'] | null; // Member
     team: NexusGenRootTypes['Team'] | null; // Team
     teamId: string | null; // String
     token: string; // String!
@@ -212,6 +213,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     expiresAt: 'DateTime'
     id: 'ID'
+    member: 'Member'
     team: 'Team'
     teamId: 'String'
     token: 'String'

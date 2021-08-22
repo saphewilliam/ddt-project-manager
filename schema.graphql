@@ -42,7 +42,7 @@ type Mutation {
   """Invalidate an active session"""
   logout(token: String!): Session!
 
-  """Set the "team" field of an active session"""
+  """Set the `team` field of an active session"""
   setSessionTeam(teamId: String!, token: String!): Session!
 }
 
@@ -64,6 +64,7 @@ type Session {
   createdAt: DateTime!
   expiresAt: DateTime
   id: ID!
+  member: Member
   team: Team
   teamId: String
   token: String!

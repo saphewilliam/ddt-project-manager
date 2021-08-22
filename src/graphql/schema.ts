@@ -15,7 +15,7 @@ export const schema = makeSchema({
   ],
   nonNullDefaults: {
     input: true,
-    output: false,
+    output: true,
   },
   outputs: {
     typegen: path.join(__dirname, '/__generated__/nexus.d.ts'),

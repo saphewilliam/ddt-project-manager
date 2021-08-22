@@ -4,12 +4,29 @@ import { ApiContext } from '@lib/apiContext';
 import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
 import { booleanArg, extendType, stringArg } from 'nexus';
 
-export const SessionModel = nexusModel(Session);
+export const SessionModel = nexusModel(Session, {
+  // hideFields: ['token'],
+  extend(t) {
+    t.nullable.field('member', {
+      type: 'Member',
+      resolve: (root, __, ctx: ApiContext) => {
+        if (root.teamId === null) return null;
+        else
+          return ctx.prisma.member.findFirst({
+            where: {
+              teamId: root.teamId,
+              userId: root.userId,
+            },
+          });
+      },
+    });
+  },
+});
 
 export const SessionQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.field('session', {
+    t.nullable.field('session', {
       type: 'Session',
       description: 'Get session by its token',
       args: {
@@ -24,7 +41,7 @@ export const SessionQuery = extendType({
 export const SessionMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nonNull.field('login', {
+    t.field('login', {
       type: 'Session',
       description: 'Generate a new session for a user with an active account',
       args: {
@@ -35,7 +52,7 @@ export const SessionMutation = extendType({
       resolve: (_, args, ctx: ApiContext) =>
         loginUser(args.email, args.password, args.isPermanent, ctx.prisma),
     });
-    t.nonNull.field('setSessionTeam', {
+    t.field('setSessionTeam', {
       type: 'Session',
       description: 'Set the `team` field of an active session',
       args: {
@@ -44,7 +61,7 @@ export const SessionMutation = extendType({
       },
       resolve: (_, args, ctx: ApiContext) => setSessionTeam(args.token, args.teamId, ctx.prisma),
     });
-    t.nonNull.field('logout', {
+    t.field('logout', {
       type: 'Session',
       description: 'Invalidate an active session',
       args: {

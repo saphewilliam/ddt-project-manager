@@ -9,7 +9,7 @@ export const TeamModel = nexusModel(Team);
 export const TeamQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.nonNull.list.nonNull.field('teams', {
+    t.list.field('teams', {
       type: 'Team',
       description: 'Fetch the teams that the user is a member of',
       authorize: async (_, __, ctx: ApiContext) => isValidSesssion(ctx.session),

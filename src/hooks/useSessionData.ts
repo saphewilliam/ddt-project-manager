@@ -27,8 +27,8 @@ export default function useSessionData(): getSessionQuery['session'] {
           (data.session.expiresAt === null || data.session.expiresAt > new Date().toISOString())
         ) {
           setSession(data.session);
-          if (router.pathname === '/login' && data.session.teamId !== null) router.push('/');
-          if (router.pathname !== '/login' && data.session.teamId === null) router.push('/login');
+          if (router.pathname === '/login' && data.session.team !== null) router.push('/');
+          if (router.pathname !== '/login' && data.session.team === null) router.push('/login');
         } else {
           removeCookie('auth');
           if (router.pathname !== '/login') router.push('/login');

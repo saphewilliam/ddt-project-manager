@@ -1,5 +1,10 @@
 import toast from 'react-hot-toast';
 
+export function displayError(message: string): void {
+  toast.error(message);
+  console.error(message);
+}
+
 export async function promiseWithCatch<T>(
   promise: Promise<T>,
   messagePrefix?: string,
@@ -7,9 +12,7 @@ export async function promiseWithCatch<T>(
   return promise
     .then((data) => data)
     .catch((error: Error) => {
-      const message = `${messagePrefix}: ${error.message.substring(0, error.message.indexOf(':'))}`;
-      toast.error(message);
-      console.error(message);
+      displayError(`${messagePrefix}: ${error.message.substring(0, error.message.indexOf(':'))}`);
       return null;
     });
 }

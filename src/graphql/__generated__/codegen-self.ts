@@ -48,7 +48,7 @@ export type Member = {
 export type Mutation = {
   /** Generate a new session for a user with an active account */
   login: Session;
-  /** Set the "team" field of an active session */
+  /** Set the `team` field of an active session */
   setSessionTeam: Session;
   /** Invalidate an active session */
   logout: Session;
@@ -100,6 +100,7 @@ export type Session = {
   user: User;
   teamId?: Maybe<Scalars['String']>;
   team?: Maybe<Team>;
+  member?: Maybe<Member>;
 };
 
 export type Team = {
@@ -148,7 +149,7 @@ export type getSessionQueryVariables = Exact<{
 }>;
 
 
-export type getSessionQuery = { session?: Maybe<{ id: string, expiresAt?: Maybe<any>, teamId?: Maybe<string> }> };
+export type getSessionQuery = { session?: Maybe<{ id: string, expiresAt?: Maybe<any>, team?: Maybe<{ id: string, name: string, acronym?: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string }, member?: Maybe<{ id: string, role: Role }> }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -176,7 +177,21 @@ export const getSessionDocument = gql`
   session(token: $token) {
     id
     expiresAt
-    teamId
+    team {
+      id
+      name
+      acronym
+    }
+    user {
+      id
+      displayName
+      firstName
+      lastName
+    }
+    member {
+      id
+      role
+    }
   }
 }
     `;

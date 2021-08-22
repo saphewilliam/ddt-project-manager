@@ -4,7 +4,7 @@ import cx from 'clsx';
 import { getSdk, getTeamsQuery } from '@graphql/__generated__/codegen-self';
 import { environment } from '@lib/environment';
 import { GraphQLClient } from 'graphql-request';
-import { promiseWithCatch } from '@lib/util';
+import { displayError, promiseWithCatch } from '@lib/util';
 import { useCookies } from 'react-cookie';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -28,32 +28,53 @@ export default function LoginPage(): ReactElement {
   const [showTeams, setShowTeams] = useState(false);
   const [teams, setTeams] = useState<getTeamsQuery | null>(null);
   const [team, setTeam] = useState('');
-  const [cookie, setCookie] = useCookies(['auth']);
+  const [cookie, setCookie, removeCookie] = useCookies(['auth']);
 
   const router = useRouter();
   const session = useContext(SessionContext);
-  const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
 
-  const getTeams = useCallback(async () => {
+  const setSessionTeam = useCallback(async (teamId: string) => {
+    const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
+    const data = await promiseWithCatch(
+      sdk.setSessionTeam({ token: cookie.auth, teamId }),
+      'Could not select team',
+    );
+    if (!data) return;
+
+    router.push('/');
+  }, []);
+
+  const getSessionTeams = useCallback(async () => {
+    const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
     const data = await promiseWithCatch(
       sdk.getTeams({}, { Authorization: `Bearer ${cookie.auth}` }),
       'Could not fetch teams',
     );
-    setTeams(data);
-  }, [sdk, cookie.auth]);
+    if (!data) return;
+
+    if (data.teams.length === 0) {
+      displayError(`${session?.user.displayName} is not a member of any teams`);
+      removeCookie('auth');
+    } else if (data.teams.length === 1) {
+      const teamId = data.teams[0]?.id;
+      if (!teamId) return;
+      setSessionTeam(teamId);
+    } else setTeams(data);
+  }, [cookie.auth]);
 
   useEffect(() => {
     if (session !== null && !showTeams) setShowTeams(true);
   }, [session]);
 
   useEffect(() => {
-    if (showTeams && teams === null) getTeams();
+    if (showTeams && teams === null) getSessionTeams();
   }, [showTeams]);
 
   async function handleLoginSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    const data = await promiseWithCatch(sdk.login(formValues), 'Faild to log in');
+    const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
+    const data = await promiseWithCatch(sdk.login(formValues), 'Failed to log in');
     if (!data) return;
 
     setCookie('auth', data.login.token, { path: '/' });
@@ -62,14 +83,7 @@ export default function LoginPage(): ReactElement {
 
   async function handleTeamSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
-
-    const data = await promiseWithCatch(
-      sdk.setSessionTeam({ token: cookie.auth, teamId: team }),
-      'Could not select team',
-    );
-    if (!data) return;
-
-    router.push('/');
+    setSessionTeam(team);
   }
 
   return (

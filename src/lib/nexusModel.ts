@@ -1,5 +1,5 @@
 import { objectType } from 'nexus';
-import { NexusObjectTypeConfig, NexusObjectTypeDef } from 'nexus/dist/core';
+import { NexusObjectTypeConfig, NexusObjectTypeDef, ObjectDefinitionBlock } from 'nexus/dist/core';
 
 interface Model {
   $name: string;
@@ -8,7 +8,10 @@ interface Model {
 
 export function nexusModel<T extends string>(
   model: Model,
-  hideFields?: string[],
+  options?: {
+    hideFields?: string[];
+    extend?: (t: ObjectDefinitionBlock<T>) => void;
+  },
 ): NexusObjectTypeDef<T> {
   return objectType({
     name: model.$name,
@@ -19,9 +22,11 @@ export function nexusModel<T extends string>(
       const fields = Object.values(model)
         .filter((field) => field !== undefined)
         .filter((field) => JSON.stringify(Object.keys(field)) === JSON.stringify(nexusNames))
-        .filter((field) => !hideFields?.find((hidden) => hidden === field.name));
+        .filter((field) => !options?.hideFields?.find((hidden) => hidden === field.name));
 
       fields.forEach((field) => t.field(field));
+
+      if (options?.extend) options.extend(t);
     },
   } as NexusObjectTypeConfig<T>);
 }
