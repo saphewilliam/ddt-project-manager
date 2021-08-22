@@ -12,6 +12,7 @@ query getSession($token: String!) {
       displayName
       firstName
       lastName
+      avatar
     }
     member {
       id

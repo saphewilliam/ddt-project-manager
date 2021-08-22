@@ -37,7 +37,7 @@ type Member {
 
 type Mutation {
   """Generate a new session for a user with an active account"""
-  login(email: String!, isPermanent: Boolean!, password: String!): Session!
+  login(email: String!, isPermanent: Boolean!, password: String!): String!
 
   """Invalidate an active session"""
   logout(token: String!): Session!
@@ -67,7 +67,6 @@ type Session {
   member: Member
   team: Team
   teamId: String
-  token: String!
   updatedAt: DateTime!
   user: User!
   userId: String!

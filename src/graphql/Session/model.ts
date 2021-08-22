@@ -5,7 +5,7 @@ import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
 import { booleanArg, extendType, stringArg } from 'nexus';
 
 export const SessionModel = nexusModel(Session, {
-  // hideFields: ['token'],
+  hideFields: ['token'],
   extend(t) {
     t.nullable.field('member', {
       type: 'Member',
@@ -13,10 +13,7 @@ export const SessionModel = nexusModel(Session, {
         if (root.teamId === null) return null;
         else
           return ctx.prisma.member.findFirst({
-            where: {
-              teamId: root.teamId,
-              userId: root.userId,
-            },
+            where: { teamId: root.teamId, userId: root.userId },
           });
       },
     });
@@ -42,7 +39,7 @@ export const SessionMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.field('login', {
-      type: 'Session',
+      type: 'String',
       description: 'Generate a new session for a user with an active account',
       args: {
         email: stringArg(),

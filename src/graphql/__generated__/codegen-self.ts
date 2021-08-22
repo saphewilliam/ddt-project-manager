@@ -47,7 +47,7 @@ export type Member = {
 
 export type Mutation = {
   /** Generate a new session for a user with an active account */
-  login: Session;
+  login: Scalars['String'];
   /** Set the `team` field of an active session */
   setSessionTeam: Session;
   /** Invalidate an active session */
@@ -95,7 +95,6 @@ export type Session = {
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   expiresAt?: Maybe<Scalars['DateTime']>;
-  token: Scalars['String'];
   userId: Scalars['String'];
   user: User;
   teamId?: Maybe<Scalars['String']>;
@@ -134,7 +133,7 @@ export type loginMutationVariables = Exact<{
 }>;
 
 
-export type loginMutation = { login: { id: string, token: string } };
+export type loginMutation = { login: string };
 
 export type setSessionTeamMutationVariables = Exact<{
   token: Scalars['String'];
@@ -149,7 +148,7 @@ export type getSessionQueryVariables = Exact<{
 }>;
 
 
-export type getSessionQuery = { session?: Maybe<{ id: string, expiresAt?: Maybe<any>, team?: Maybe<{ id: string, name: string, acronym?: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string }, member?: Maybe<{ id: string, role: Role }> }> };
+export type getSessionQuery = { session?: Maybe<{ id: string, expiresAt?: Maybe<any>, team?: Maybe<{ id: string, name: string, acronym?: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar?: Maybe<string> }, member?: Maybe<{ id: string, role: Role }> }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -159,10 +158,7 @@ export type getTeamsQuery = { teams: Array<{ id: string, name: string, acronym?:
 
 export const loginDocument = gql`
     mutation login($email: String!, $password: String!, $isPermanent: Boolean!) {
-  login(email: $email, password: $password, isPermanent: $isPermanent) {
-    id
-    token
-  }
+  login(email: $email, password: $password, isPermanent: $isPermanent)
 }
     `;
 export const setSessionTeamDocument = gql`
@@ -187,6 +183,7 @@ export const getSessionDocument = gql`
       displayName
       firstName
       lastName
+      avatar
     }
     member {
       id

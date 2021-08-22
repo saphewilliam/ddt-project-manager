@@ -77,7 +77,7 @@ export default function LoginPage(): ReactElement {
     const data = await promiseWithCatch(sdk.login(formValues), 'Failed to log in');
     if (!data) return;
 
-    setCookie('auth', data.login.token, { path: '/' });
+    setCookie('auth', data.login, { path: '/' });
     setShowTeams(true);
   }
 

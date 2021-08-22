@@ -99,7 +99,6 @@ export interface NexusGenObjects {
     expiresAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id: string; // ID!
     teamId?: string | null; // String
-    token: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     userId: string; // String!
   }
@@ -145,7 +144,7 @@ export interface NexusGenFieldTypes {
     userId: string; // String!
   }
   Mutation: { // field return type
-    login: NexusGenRootTypes['Session']; // Session!
+    login: string; // String!
     logout: NexusGenRootTypes['Session']; // Session!
     setSessionTeam: NexusGenRootTypes['Session']; // Session!
   }
@@ -160,7 +159,6 @@ export interface NexusGenFieldTypes {
     member: NexusGenRootTypes['Member'] | null; // Member
     team: NexusGenRootTypes['Team'] | null; // Team
     teamId: string | null; // String
-    token: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     user: NexusGenRootTypes['User']; // User!
     userId: string; // String!
@@ -201,7 +199,7 @@ export interface NexusGenFieldTypeNames {
     userId: 'String'
   }
   Mutation: { // field return type name
-    login: 'Session'
+    login: 'String'
     logout: 'Session'
     setSessionTeam: 'Session'
   }
@@ -216,7 +214,6 @@ export interface NexusGenFieldTypeNames {
     member: 'Member'
     team: 'Team'
     teamId: 'String'
-    token: 'String'
     updatedAt: 'DateTime'
     user: 'User'
     userId: 'String'

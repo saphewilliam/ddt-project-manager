@@ -33,7 +33,7 @@ export async function loginUser(
   password: string,
   isPermanent: boolean,
   prisma: PrismaClient,
-): Promise<Session> {
+): Promise<string> {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw Error('Invalid username or password');
   if (!user.password)
@@ -49,13 +49,15 @@ export async function loginUser(
   d.setDate(d.getDate() + numDays);
   const expiresAt = isPermanent ? null : d;
 
-  return await prisma.session.create({
+  const session = await prisma.session.create({
     data: {
       expiresAt,
       token: await generateUniqueRandomId(prisma),
       user: { connect: { id: user.id } },
     },
   });
+
+  return session.token;
 }
 
 export async function setSessionTeam(
