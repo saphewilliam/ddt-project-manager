@@ -76,7 +76,7 @@ export type Query = {
   /** Fetch the teams that the user is a member of */
   teams: Array<Team>;
   /** Get session by its token */
-  session?: Maybe<Session>;
+  session: Maybe<Session>;
 };
 
 
@@ -94,12 +94,12 @@ export type Session = {
   id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
-  expiresAt?: Maybe<Scalars['DateTime']>;
+  expiresAt: Maybe<Scalars['DateTime']>;
   userId: Scalars['String'];
   user: User;
-  teamId?: Maybe<Scalars['String']>;
-  team?: Maybe<Team>;
-  member?: Maybe<Member>;
+  teamId: Maybe<Scalars['String']>;
+  team: Maybe<Team>;
+  member: Maybe<Member>;
 };
 
 export type Team = {
@@ -107,7 +107,7 @@ export type Team = {
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
-  acronym?: Maybe<Scalars['String']>;
+  acronym: Maybe<Scalars['String']>;
   members: Array<Member>;
   sessions: Array<Session>;
 };
@@ -119,7 +119,7 @@ export type User = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   displayName: Scalars['String'];
-  avatar?: Maybe<Scalars['String']>;
+  avatar: Maybe<Scalars['String']>;
   email: Scalars['String'];
   isAdmin: Scalars['Boolean'];
   sessions: Array<Session>;
@@ -148,12 +148,12 @@ export type getSessionQueryVariables = Exact<{
 }>;
 
 
-export type getSessionQuery = { session?: Maybe<{ id: string, expiresAt?: Maybe<any>, team?: Maybe<{ id: string, name: string, acronym?: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar?: Maybe<string> }, member?: Maybe<{ id: string, role: Role }> }> };
+export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string, acronym: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string> }, member: Maybe<{ id: string, role: Role }> }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getTeamsQuery = { teams: Array<{ id: string, name: string, acronym?: Maybe<string> }> };
+export type getTeamsQuery = { teams: Array<{ id: string, name: string, acronym: Maybe<string> }> };
 
 
 export const loginDocument = gql`

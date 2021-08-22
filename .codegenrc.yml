@@ -11,3 +11,4 @@ generates:
     config:
       namingConvention: keep
       skipTypename: true
+      avoidOptionals: true

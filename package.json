@@ -13,7 +13,7 @@
     "lint": "next lint --fix && tsc",
     "generate:prisma": "prisma generate",
     "generate:nexus": "yarn ts-node --files src/graphql/schema",
-    "generate:graphql": "graphql-codegen -r dotenv/config",
+    "generate:graphql": "graphql-codegen -r dotenv/config -c .graphqlrc.yml",
     "generate": "yarn generate:prisma && yarn generate:nexus && yarn generate:graphql",
     "seed": "prisma db seed --preview-feature",
     "ts-node": "ts-node -r tsconfig-paths/register -O \"{\\\"module\\\":\\\"commonjs\\\"}\""
