@@ -1,0 +1,7 @@
+query getSession($token: String!) {
+  session(token: $token) {
+    id
+    expiresAt
+    teamId
+  }
+}

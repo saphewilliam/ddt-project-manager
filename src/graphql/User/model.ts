@@ -1,5 +1,4 @@
-import { nexusModel } from '@lib/nexusHelpers';
+import { nexusModel } from '@lib/nexusModel';
 import { User } from 'nexus-prisma';
 
 export const UserModel = nexusModel(User, ['password']);
-export * from './query';

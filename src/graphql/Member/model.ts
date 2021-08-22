@@ -1,4 +1,4 @@
-import { nexusModel } from '@lib/nexusHelpers';
+import { nexusModel } from '@lib/nexusModel';
 import { enumType } from 'nexus';
 import { Member, Role } from 'nexus-prisma';
 

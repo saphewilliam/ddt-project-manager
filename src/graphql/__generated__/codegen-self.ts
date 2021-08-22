@@ -45,8 +45,43 @@ export type Member = {
   team: Team;
 };
 
+export type Mutation = {
+  /** Generate a new session for a user with an active account */
+  login: Session;
+  /** Set the "team" field of an active session */
+  setSessionTeam: Session;
+  /** Invalidate an active session */
+  logout: Session;
+};
+
+
+export type MutationloginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  isPermanent: Scalars['Boolean'];
+};
+
+
+export type MutationsetSessionTeamArgs = {
+  token: Scalars['String'];
+  teamId: Scalars['String'];
+};
+
+
+export type MutationlogoutArgs = {
+  token: Scalars['String'];
+};
+
 export type Query = {
-  ok: Scalars['Boolean'];
+  /** Fetch the teams that the user is a member of */
+  teams: Array<Team>;
+  /** Get session by its token */
+  session?: Maybe<Session>;
+};
+
+
+export type QuerysessionArgs = {
+  token: Scalars['String'];
 };
 
 export enum Role {
@@ -55,6 +90,18 @@ export enum Role {
   GUEST = 'GUEST'
 }
 
+export type Session = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  expiresAt?: Maybe<Scalars['DateTime']>;
+  token: Scalars['String'];
+  userId: Scalars['String'];
+  user: User;
+  teamId?: Maybe<Scalars['String']>;
+  team?: Maybe<Team>;
+};
+
 export type Team = {
   id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -62,6 +109,7 @@ export type Team = {
   name: Scalars['String'];
   acronym?: Maybe<Scalars['String']>;
   members: Array<Member>;
+  sessions: Array<Session>;
 };
 
 export type User = {
@@ -71,21 +119,74 @@ export type User = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   displayName: Scalars['String'];
-  password?: Maybe<Scalars['String']>;
   avatar?: Maybe<Scalars['String']>;
   email: Scalars['String'];
+  isAdmin: Scalars['Boolean'];
+  sessions: Array<Session>;
   teams: Array<Member>;
 };
 
-export type getOkQueryVariables = Exact<{ [key: string]: never; }>;
+export type loginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+  isPermanent: Scalars['Boolean'];
+}>;
 
 
-export type getOkQuery = { ok: boolean };
+export type loginMutation = { login: { id: string, token: string } };
+
+export type setSessionTeamMutationVariables = Exact<{
+  token: Scalars['String'];
+  teamId: Scalars['String'];
+}>;
 
 
-export const getOkDocument = gql`
-    query getOk {
-  ok
+export type setSessionTeamMutation = { setSessionTeam: { id: string } };
+
+export type getSessionQueryVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type getSessionQuery = { session?: Maybe<{ id: string, expiresAt?: Maybe<any>, teamId?: Maybe<string> }> };
+
+export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getTeamsQuery = { teams: Array<{ id: string, name: string, acronym?: Maybe<string> }> };
+
+
+export const loginDocument = gql`
+    mutation login($email: String!, $password: String!, $isPermanent: Boolean!) {
+  login(email: $email, password: $password, isPermanent: $isPermanent) {
+    id
+    token
+  }
+}
+    `;
+export const setSessionTeamDocument = gql`
+    mutation setSessionTeam($token: String!, $teamId: String!) {
+  setSessionTeam(token: $token, teamId: $teamId) {
+    id
+  }
+}
+    `;
+export const getSessionDocument = gql`
+    query getSession($token: String!) {
+  session(token: $token) {
+    id
+    expiresAt
+    teamId
+  }
+}
+    `;
+export const getTeamsDocument = gql`
+    query getTeams {
+  teams {
+    id
+    name
+    acronym
+  }
 }
     `;
 
@@ -96,8 +197,17 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getOk(variables?: getOkQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getOkQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getOkQuery>(getOkDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getOk');
+    login(variables: loginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<loginMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<loginMutation>(loginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
+    },
+    setSessionTeam(variables: setSessionTeamMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<setSessionTeamMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<setSessionTeamMutation>(setSessionTeamDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'setSessionTeam');
+    },
+    getSession(variables: getSessionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getSessionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getSessionQuery>(getSessionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSession');
+    },
+    getTeams(variables?: getTeamsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getTeamsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getTeamsQuery>(getTeamsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTeams');
     }
   };
 }
@@ -106,8 +216,11 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
   const sdk = getSdk(client, withWrapper);
   return {
     ...sdk,
-    useGetOk(key: SWRKeyInterface, variables?: getOkQueryVariables, config?: SWRConfigInterface<getOkQuery, ClientError>) {
-      return useSWR<getOkQuery, ClientError>(key, () => sdk.getOk(variables), config);
+    useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
+      return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);
+    },
+    useGetTeams(key: SWRKeyInterface, variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
+      return useSWR<getTeamsQuery, ClientError>(key, () => sdk.getTeams(variables), config);
     }
   };
 }

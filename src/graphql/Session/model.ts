@@ -1,25 +1,25 @@
-import { nexusModel } from '@lib/nexusHelpers';
+import { nexusModel } from '@lib/nexusModel';
 import { Session } from 'nexus-prisma';
 import { ApiContext } from '@lib/apiContext';
-import { loginUser, logoutUser } from '@lib/authHelpers';
+import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
 import { booleanArg, extendType, stringArg } from 'nexus';
 
 export const SessionModel = nexusModel(Session);
 
-// export const SessionQuery = extendType({
-//   type: 'Query',
-//   definition(t) {
-//     t.field('session', {
-//       type: 'Session',
-//       description: 'Get session by its token',
-//       args: {
-//         token: stringArg(),
-//       },
-//       resolve: (_, args, ctx: ApiContext) =>
-//         ctx.prisma.session.findUnique({ where: { token: args.token } }),
-//     });
-//   },
-// });
+export const SessionQuery = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('session', {
+      type: 'Session',
+      description: 'Get session by its token',
+      args: {
+        token: stringArg(),
+      },
+      resolve: (_, args, ctx: ApiContext) =>
+        ctx.prisma.session.findUnique({ where: { token: args.token } }),
+    });
+  },
+});
 
 export const SessionMutation = extendType({
   type: 'Mutation',
@@ -31,10 +31,18 @@ export const SessionMutation = extendType({
         email: stringArg(),
         password: stringArg(),
         isPermanent: booleanArg(),
-        teamId: stringArg(),
       },
       resolve: (_, args, ctx: ApiContext) =>
-        loginUser(args.email, args.password, args.isPermanent, args.teamId, ctx.prisma),
+        loginUser(args.email, args.password, args.isPermanent, ctx.prisma),
+    });
+    t.nonNull.field('setSessionTeam', {
+      type: 'Session',
+      description: 'Set the `team` field of an active session',
+      args: {
+        token: stringArg(),
+        teamId: stringArg(),
+      },
+      resolve: (_, args, ctx: ApiContext) => setSessionTeam(args.token, args.teamId, ctx.prisma),
     });
     t.nonNull.field('logout', {
       type: 'Session',
