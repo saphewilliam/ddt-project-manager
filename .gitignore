@@ -1,6 +1,7 @@
 # Compiled output
 .next/
 node_modules/
+public/wasm/
 
 # Sensitive data
 .env
