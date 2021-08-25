@@ -33,42 +33,43 @@ export default function LoginPage(): ReactElement {
   const router = useRouter();
   const session = useContext(SessionContext);
 
-  const setSessionTeam = useCallback(async (teamId: string) => {
-    const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
-    const data = await promiseWithCatch(
-      sdk.setSessionTeam({ token: cookie.auth, teamId }),
-      'Could not select team',
-    );
-    if (!data) return;
+  const setSessionTeam = useCallback(
+    async (teamId: string, token?: string) => {
+      const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
+      const data = await promiseWithCatch(
+        sdk.setSessionTeam({ token: token ?? cookie.auth, teamId }),
+        'Could not select team',
+      );
+      if (!data) return;
 
-    router.push('/');
-  }, []);
+      router.push('/');
+    },
+    [cookie.auth],
+  );
 
-  const getSessionTeams = useCallback(async () => {
-    const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
-    const data = await promiseWithCatch(
-      sdk.getTeams({}, { Authorization: `Bearer ${cookie.auth}` }),
-      'Could not fetch teams',
-    );
-    if (!data) return;
+  const getSessionTeams = useCallback(
+    async (token?: string) => {
+      const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
+      const data = await promiseWithCatch(
+        sdk.getTeams({}, { Authorization: `Bearer ${token ?? cookie.auth}` }),
+        'Could not fetch teams',
+      );
+      if (!data) return;
 
-    if (data.teams.length === 0) {
-      displayError(`${session?.user.displayName} is not a member of any teams`);
-      removeCookie('auth');
-    } else if (data.teams.length === 1) {
-      const teamId = data.teams[0]?.id;
-      if (!teamId) return;
-      setSessionTeam(teamId);
-    } else setTeams(data);
-  }, [cookie.auth]);
-
-  useEffect(() => {
-    if (session !== null && !showTeams) setShowTeams(true);
-  }, [session]);
-
-  useEffect(() => {
-    if (showTeams && teams === null) getSessionTeams();
-  }, [showTeams]);
+      if (data.teams.length === 0) {
+        displayError(`${session?.user.displayName} is not a member of any teams`);
+        removeCookie('auth');
+      } else if (data.teams.length === 1) {
+        const teamId = data.teams[0]?.id;
+        if (!teamId) return;
+        setSessionTeam(teamId, token);
+      } else {
+        setTeams(data);
+        setShowTeams(true);
+      }
+    },
+    [cookie.auth, session],
+  );
 
   async function handleLoginSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
@@ -78,13 +79,18 @@ export default function LoginPage(): ReactElement {
     if (!data) return;
 
     setCookie('auth', data.login, { path: '/' });
-    setShowTeams(true);
+    getSessionTeams(data.login);
   }
 
   async function handleTeamSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     setSessionTeam(team);
   }
+
+  // Detect teamless tokens on page load
+  useEffect(() => {
+    if (session !== null && !showTeams) getSessionTeams();
+  }, [session]);
 
   return (
     <div className={cx('w-screen', 'h-screen', 'flex')}>

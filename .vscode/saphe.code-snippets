@@ -15,6 +15,21 @@
       ""
     ]
   },
+  "Saphe Prisma Seeding Function Boilerplate": {
+    "scope": "typescript",
+    "prefix": "saphe-seed",
+    "description": "Boilerplate Typescript Prisma seeding function",
+    "body": [
+      "import { PrismaClient } from '@prisma/client';",
+      "",
+      "export default async function seed${1:ModelName}s(prisma: PrismaClient): Promise<void> {",
+      "  await prisma.${2:model}.createMany({",
+      "    data: [],",
+      "  });",
+      "}",
+      ""
+    ]
+  },
   "Saphe React TS Icon Component": {
     "scope": "typescriptreact",
     "prefix": "saphe-icon",

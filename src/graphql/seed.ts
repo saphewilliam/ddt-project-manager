@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import seedTeams from './Team/seed';
 import seedUsers from './User/seed';
 import seedMembers from './Member/seed';
+import seedSessions from './Session/seed';
 
 export async function flush(prisma: PrismaClient): Promise<void> {
   console.log('Flushing db...');
@@ -18,4 +19,6 @@ export async function seed(prisma: PrismaClient): Promise<void> {
   await seedUsers(prisma);
   console.log('Seeding Members...');
   await seedMembers(prisma);
+  console.log('Seeding Sessions...');
+  await seedSessions(prisma);
 }

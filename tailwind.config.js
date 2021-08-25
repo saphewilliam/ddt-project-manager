@@ -13,6 +13,7 @@ module.exports = {
       dark: {
         fg: '#FFF8FF',
         muted: '#613F6A',
+        highlight: '#54325c',
         DEFAULT: '#381841',
       },
       light: '#F8F8F8',

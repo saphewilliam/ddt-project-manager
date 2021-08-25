@@ -7,4 +7,4 @@ projects:
         default:
           url: http://localhost:3000/api/graphql
           headers:
-            Authorization: Bearer 55e4a16092305837519057bf49f56037e340d2936b4d23c4ea2b7865dc7580c6
+            Authorization: Bearer 99584a51d94805e65b3f51ff36e614d5f8acb9e07e65911c9e98ffd1c2d2a948

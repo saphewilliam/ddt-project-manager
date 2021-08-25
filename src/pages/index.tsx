@@ -1,6 +1,11 @@
 import React, { ReactElement } from 'react';
-import Test from '@components/Test';
+import Layout from '@components/Layout';
+import cx from 'clsx';
 
 export default function HomePage(): ReactElement {
-  return <Test />;
+  return (
+    <Layout>
+      <h1 className={cx('font-bold', 'text-4xl')}>Hello world</h1>
+    </Layout>
+  );
 }
