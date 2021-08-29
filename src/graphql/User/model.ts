@@ -1,4 +1,4 @@
-import { nexusModel } from '@lib/nexusModel';
+import { nexusModel } from '@lib/nexusHelpers';
 import { User } from 'nexus-prisma';
 
-export const UserModel = nexusModel(User, { hideFields: ['password'] });
+export const userModel = nexusModel(User, { hideFields: ['password'] });

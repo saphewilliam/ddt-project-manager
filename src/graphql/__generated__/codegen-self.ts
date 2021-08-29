@@ -29,9 +29,56 @@ export type Scalars = {
   Json: any;
 };
 
+export type Attribute = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  attributeLists: Array<AttributeList>;
+  attributesOnProjects: Array<AttributesOnProject>;
+  teamId: Scalars['String'];
+  team: Team;
+};
+
+export type AttributeList = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  attributeId: Scalars['String'];
+  attribute: Attribute;
+  userId: Scalars['String'];
+  user: User;
+};
+
+export type AttributesOnProject = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  attributeId: Scalars['String'];
+  attribute: Attribute;
+  userId: Scalars['String'];
+  user: User;
+  projectId: Scalars['String'];
+  project: Project;
+};
 
 
 
+
+
+export type Event = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  date: Scalars['DateTime'];
+  slug: Scalars['String'];
+  subthemes: Array<Subtheme>;
+  teamId: Scalars['String'];
+  team: Team;
+};
 
 
 export type Member = {
@@ -72,11 +119,60 @@ export type MutationlogoutArgs = {
   token: Scalars['String'];
 };
 
+export type Project = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  number: Scalars['Int'];
+  subNumber: Scalars['Int'];
+  description: Scalars['String'];
+  type: ProjectType;
+  status: ProjectStatus;
+  attributes: Array<AttributesOnProject>;
+  stones: Array<StonesOnProject>;
+  subthemeId: Scalars['String'];
+  subtheme: Subtheme;
+  supervisorId: Maybe<Scalars['String']>;
+  supervisor: Maybe<User>;
+};
+
+export enum ProjectStatus {
+  CANCELLED = 'CANCELLED',
+  STARTING = 'STARTING',
+  PLANNING = 'PLANNING',
+  PLANNED = 'PLANNED',
+  BUILDING = 'BUILDING',
+  BUILT = 'BUILT'
+}
+
+export enum ProjectType {
+  FIELD_L1 = 'FIELD_L1',
+  FIELD_L2 = 'FIELD_L2',
+  FIELD_M50 = 'FIELD_M50',
+  FIELD_FLAT = 'FIELD_FLAT',
+  FIELD_CROSS_L2 = 'FIELD_CROSS_L2',
+  FIELD_CIRCLE = 'FIELD_CIRCLE',
+  WALL_X = 'WALL_X',
+  WALL_S = 'WALL_S',
+  WALL_T = 'WALL_T',
+  WALL_SPEED = 'WALL_SPEED',
+  WALL_CUBE = 'WALL_CUBE',
+  WALL_OCTO = 'WALL_OCTO',
+  FALLWALL = 'FALLWALL',
+  SPIRAL = 'SPIRAL',
+  STRUCTURE = 'STRUCTURE',
+  HANDSET = 'HANDSET',
+  DECOR = 'DECOR',
+  OTHER = 'OTHER'
+}
+
 export type Query = {
-  /** Fetch the teams that the user is a member of */
-  teams: Array<Team>;
   /** Get session by its token */
   session: Maybe<Session>;
+  /** Fetch the teams that the user is a member of */
+  teams: Array<Team>;
 };
 
 
@@ -102,6 +198,68 @@ export type Session = {
   member: Maybe<Member>;
 };
 
+export type Stone = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  code: Scalars['String'];
+  order: Scalars['Int'];
+  color: Scalars['String'];
+  description: Scalars['String'];
+  stoneLists: Array<StoneList>;
+  stonesOnProject: Array<StonesOnProject>;
+  stoneTypeId: Scalars['String'];
+  stoneType: StoneType;
+};
+
+export type StoneList = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  stoneId: Scalars['String'];
+  stone: Stone;
+  userId: Scalars['String'];
+  user: User;
+};
+
+export type StoneType = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  stones: Array<Stone>;
+  teamId: Scalars['String'];
+  team: Team;
+};
+
+export type StonesOnProject = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  stoneId: Scalars['String'];
+  stone: Stone;
+  userId: Scalars['String'];
+  user: User;
+  projectId: Scalars['String'];
+  project: Project;
+};
+
+export type Subtheme = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  color: Scalars['String'];
+  order: Scalars['Int'];
+  projects: Array<Project>;
+  eventId: Scalars['String'];
+  event: Event;
+};
+
 export type Team = {
   id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -110,6 +268,9 @@ export type Team = {
   acronym: Maybe<Scalars['String']>;
   members: Array<Member>;
   sessions: Array<Session>;
+  events: Array<Event>;
+  stoneTypes: Array<StoneType>;
+  attributes: Array<Attribute>;
 };
 
 export type User = {
@@ -123,7 +284,14 @@ export type User = {
   email: Scalars['String'];
   isAdmin: Scalars['Boolean'];
   sessions: Array<Session>;
+  stoneLists: Array<StoneList>;
+  stonesOnProjects: Array<StonesOnProject>;
+  attributeLists: Array<AttributeList>;
+  attributesOnProjects: Array<AttributesOnProject>;
+  /** The teams this user is a member of */
   teams: Array<Member>;
+  /** The projects that this user supervises */
+  projects: Array<Project>;
 };
 
 export type loginMutationVariables = Exact<{

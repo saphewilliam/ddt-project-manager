@@ -54,6 +54,18 @@
       ""
     ]
   },
+  "Saphe Nexus model": {
+    "scope": "typescript",
+    "prefix": "saphe-nexus-model",
+    "description": "Boilerplate Typescript Nexus Model",
+    "body": [
+      "import { nexusModel } from '@lib/nexusHelpers';",
+      "import { ${2:Model} } from 'nexus-prisma';",
+      "",
+      "export const ${1:modelName}Model = nexusModel(${2:Model});",
+      ""
+    ]
+  },
   "Saphe NextJS TS Static Props and Paths": {
     "scope": "typescriptreact",
     "prefix": "saphe-static-props-paths",

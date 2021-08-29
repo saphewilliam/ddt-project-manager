@@ -1,10 +1,10 @@
-import { nexusModel } from '@lib/nexusModel';
+import { nexusModel } from '@lib/nexusHelpers';
 import { Session } from 'nexus-prisma';
 import { ApiContext } from '@lib/apiContext';
 import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
 import { booleanArg, extendType, stringArg } from 'nexus';
 
-export const SessionModel = nexusModel(Session, {
+export const sessionModel = nexusModel(Session, {
   hideFields: ['token'],
   extend(t) {
     t.nullable.field('member', {
@@ -20,7 +20,7 @@ export const SessionModel = nexusModel(Session, {
   },
 });
 
-export const SessionQuery = extendType({
+export const sessionQuery = extendType({
   type: 'Query',
   definition(t) {
     t.nullable.field('session', {
@@ -35,7 +35,7 @@ export const SessionQuery = extendType({
   },
 });
 
-export const SessionMutation = extendType({
+export const sessionMutation = extendType({
   type: 'Mutation',
   definition(t) {
     t.field('login', {

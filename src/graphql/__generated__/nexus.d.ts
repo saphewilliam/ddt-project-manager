@@ -67,6 +67,8 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  ProjectStatus: "BUILDING" | "BUILT" | "CANCELLED" | "PLANNED" | "PLANNING" | "STARTING"
+  ProjectType: "DECOR" | "FALLWALL" | "FIELD_CIRCLE" | "FIELD_CROSS_L2" | "FIELD_FLAT" | "FIELD_L1" | "FIELD_L2" | "FIELD_M50" | "HANDSET" | "OTHER" | "SPIRAL" | "STRUCTURE" | "WALL_CUBE" | "WALL_OCTO" | "WALL_S" | "WALL_SPEED" | "WALL_T" | "WALL_X"
   Role: "BUILDER" | "CAPTAIN" | "GUEST"
 }
 
@@ -84,6 +86,39 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Attribute: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    name: string; // String!
+    teamId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  AttributeList: { // root type
+    amount: number; // Int!
+    attributeId: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
+  }
+  AttributesOnProject: { // root type
+    amount: number; // Int!
+    attributeId: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    projectId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
+  }
+  Event: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    name: string; // String!
+    slug: string; // String!
+    teamId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Member: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
@@ -93,6 +128,20 @@ export interface NexusGenObjects {
     userId: string; // String!
   }
   Mutation: {};
+  Project: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    number: number; // Int!
+    slug: string; // String!
+    status: NexusGenEnums['ProjectStatus']; // ProjectStatus!
+    subNumber: number; // Int!
+    subthemeId: string; // String!
+    supervisorId?: string | null; // String
+    type: NexusGenEnums['ProjectType']; // ProjectType!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Query: {};
   Session: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -101,6 +150,51 @@ export interface NexusGenObjects {
     teamId?: string | null; // String
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     userId: string; // String!
+  }
+  Stone: { // root type
+    code: string; // String!
+    color: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    order: number; // Int!
+    stoneTypeId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  StoneList: { // root type
+    amount: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    stoneId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
+  }
+  StoneType: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    teamId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  StonesOnProject: { // root type
+    amount: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    projectId: string; // String!
+    stoneId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
+  }
+  Subtheme: { // root type
+    color: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    eventId: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    order: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Team: { // root type
     acronym?: string | null; // String
@@ -133,6 +227,49 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Attribute: { // field return type
+    attributeLists: NexusGenRootTypes['AttributeList'][]; // [AttributeList!]!
+    attributesOnProjects: NexusGenRootTypes['AttributesOnProject'][]; // [AttributesOnProject!]!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    name: string; // String!
+    team: NexusGenRootTypes['Team']; // Team!
+    teamId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  AttributeList: { // field return type
+    amount: number; // Int!
+    attribute: NexusGenRootTypes['Attribute']; // Attribute!
+    attributeId: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+    userId: string; // String!
+  }
+  AttributesOnProject: { // field return type
+    amount: number; // Int!
+    attribute: NexusGenRootTypes['Attribute']; // Attribute!
+    attributeId: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    project: NexusGenRootTypes['Project']; // Project!
+    projectId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+    userId: string; // String!
+  }
+  Event: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    date: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    name: string; // String!
+    slug: string; // String!
+    subthemes: NexusGenRootTypes['Subtheme'][]; // [Subtheme!]!
+    team: NexusGenRootTypes['Team']; // Team!
+    teamId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Member: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
@@ -147,6 +284,24 @@ export interface NexusGenFieldTypes {
     login: string; // String!
     logout: NexusGenRootTypes['Session']; // Session!
     setSessionTeam: NexusGenRootTypes['Session']; // Session!
+  }
+  Project: { // field return type
+    attributes: NexusGenRootTypes['AttributesOnProject'][]; // [AttributesOnProject!]!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    number: number; // Int!
+    slug: string; // String!
+    status: NexusGenEnums['ProjectStatus']; // ProjectStatus!
+    stones: NexusGenRootTypes['StonesOnProject'][]; // [StonesOnProject!]!
+    subNumber: number; // Int!
+    subtheme: NexusGenRootTypes['Subtheme']; // Subtheme!
+    subthemeId: string; // String!
+    supervisor: NexusGenRootTypes['User'] | null; // User
+    supervisorId: string | null; // String
+    type: NexusGenEnums['ProjectType']; // ProjectType!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
     session: NexusGenRootTypes['Session'] | null; // Session
@@ -163,16 +318,78 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
     userId: string; // String!
   }
+  Stone: { // field return type
+    code: string; // String!
+    color: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    order: number; // Int!
+    stoneLists: NexusGenRootTypes['StoneList'][]; // [StoneList!]!
+    stoneType: NexusGenRootTypes['StoneType']; // StoneType!
+    stoneTypeId: string; // String!
+    stonesOnProject: NexusGenRootTypes['StonesOnProject'][]; // [StonesOnProject!]!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  StoneList: { // field return type
+    amount: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    stone: NexusGenRootTypes['Stone']; // Stone!
+    stoneId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+    userId: string; // String!
+  }
+  StoneType: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    stones: NexusGenRootTypes['Stone'][]; // [Stone!]!
+    team: NexusGenRootTypes['Team']; // Team!
+    teamId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  StonesOnProject: { // field return type
+    amount: number; // Int!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    project: NexusGenRootTypes['Project']; // Project!
+    projectId: string; // String!
+    stone: NexusGenRootTypes['Stone']; // Stone!
+    stoneId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+    userId: string; // String!
+  }
+  Subtheme: { // field return type
+    color: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    event: NexusGenRootTypes['Event']; // Event!
+    eventId: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    order: number; // Int!
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Team: { // field return type
     acronym: string | null; // String
+    attributes: NexusGenRootTypes['Attribute'][]; // [Attribute!]!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
+    events: NexusGenRootTypes['Event'][]; // [Event!]!
     id: string; // ID!
     members: NexusGenRootTypes['Member'][]; // [Member!]!
     name: string; // String!
     sessions: NexusGenRootTypes['Session'][]; // [Session!]!
+    stoneTypes: NexusGenRootTypes['StoneType'][]; // [StoneType!]!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   User: { // field return type
+    attributeLists: NexusGenRootTypes['AttributeList'][]; // [AttributeList!]!
+    attributesOnProjects: NexusGenRootTypes['AttributesOnProject'][]; // [AttributesOnProject!]!
     avatar: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     displayName: string; // String!
@@ -181,13 +398,59 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     isAdmin: boolean; // Boolean!
     lastName: string; // String!
+    projects: NexusGenRootTypes['Project'][]; // [Project!]!
     sessions: NexusGenRootTypes['Session'][]; // [Session!]!
+    stoneLists: NexusGenRootTypes['StoneList'][]; // [StoneList!]!
+    stonesOnProjects: NexusGenRootTypes['StonesOnProject'][]; // [StonesOnProject!]!
     teams: NexusGenRootTypes['Member'][]; // [Member!]!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Attribute: { // field return type name
+    attributeLists: 'AttributeList'
+    attributesOnProjects: 'AttributesOnProject'
+    createdAt: 'DateTime'
+    id: 'ID'
+    name: 'String'
+    team: 'Team'
+    teamId: 'String'
+    updatedAt: 'DateTime'
+  }
+  AttributeList: { // field return type name
+    amount: 'Int'
+    attribute: 'Attribute'
+    attributeId: 'String'
+    createdAt: 'DateTime'
+    id: 'ID'
+    updatedAt: 'DateTime'
+    user: 'User'
+    userId: 'String'
+  }
+  AttributesOnProject: { // field return type name
+    amount: 'Int'
+    attribute: 'Attribute'
+    attributeId: 'String'
+    createdAt: 'DateTime'
+    id: 'ID'
+    project: 'Project'
+    projectId: 'String'
+    updatedAt: 'DateTime'
+    user: 'User'
+    userId: 'String'
+  }
+  Event: { // field return type name
+    createdAt: 'DateTime'
+    date: 'DateTime'
+    id: 'ID'
+    name: 'String'
+    slug: 'String'
+    subthemes: 'Subtheme'
+    team: 'Team'
+    teamId: 'String'
+    updatedAt: 'DateTime'
+  }
   Member: { // field return type name
     createdAt: 'DateTime'
     id: 'ID'
@@ -202,6 +465,24 @@ export interface NexusGenFieldTypeNames {
     login: 'String'
     logout: 'Session'
     setSessionTeam: 'Session'
+  }
+  Project: { // field return type name
+    attributes: 'AttributesOnProject'
+    createdAt: 'DateTime'
+    description: 'String'
+    id: 'ID'
+    name: 'String'
+    number: 'Int'
+    slug: 'String'
+    status: 'ProjectStatus'
+    stones: 'StonesOnProject'
+    subNumber: 'Int'
+    subtheme: 'Subtheme'
+    subthemeId: 'String'
+    supervisor: 'User'
+    supervisorId: 'String'
+    type: 'ProjectType'
+    updatedAt: 'DateTime'
   }
   Query: { // field return type name
     session: 'Session'
@@ -218,16 +499,78 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
     userId: 'String'
   }
+  Stone: { // field return type name
+    code: 'String'
+    color: 'String'
+    createdAt: 'DateTime'
+    description: 'String'
+    id: 'ID'
+    name: 'String'
+    order: 'Int'
+    stoneLists: 'StoneList'
+    stoneType: 'StoneType'
+    stoneTypeId: 'String'
+    stonesOnProject: 'StonesOnProject'
+    updatedAt: 'DateTime'
+  }
+  StoneList: { // field return type name
+    amount: 'Int'
+    createdAt: 'DateTime'
+    id: 'ID'
+    stone: 'Stone'
+    stoneId: 'String'
+    updatedAt: 'DateTime'
+    user: 'User'
+    userId: 'String'
+  }
+  StoneType: { // field return type name
+    createdAt: 'DateTime'
+    description: 'String'
+    id: 'ID'
+    name: 'String'
+    stones: 'Stone'
+    team: 'Team'
+    teamId: 'String'
+    updatedAt: 'DateTime'
+  }
+  StonesOnProject: { // field return type name
+    amount: 'Int'
+    createdAt: 'DateTime'
+    id: 'ID'
+    project: 'Project'
+    projectId: 'String'
+    stone: 'Stone'
+    stoneId: 'String'
+    updatedAt: 'DateTime'
+    user: 'User'
+    userId: 'String'
+  }
+  Subtheme: { // field return type name
+    color: 'String'
+    createdAt: 'DateTime'
+    event: 'Event'
+    eventId: 'String'
+    id: 'ID'
+    name: 'String'
+    order: 'Int'
+    projects: 'Project'
+    updatedAt: 'DateTime'
+  }
   Team: { // field return type name
     acronym: 'String'
+    attributes: 'Attribute'
     createdAt: 'DateTime'
+    events: 'Event'
     id: 'ID'
     members: 'Member'
     name: 'String'
     sessions: 'Session'
+    stoneTypes: 'StoneType'
     updatedAt: 'DateTime'
   }
   User: { // field return type name
+    attributeLists: 'AttributeList'
+    attributesOnProjects: 'AttributesOnProject'
     avatar: 'String'
     createdAt: 'DateTime'
     displayName: 'String'
@@ -236,7 +579,10 @@ export interface NexusGenFieldTypeNames {
     id: 'ID'
     isAdmin: 'Boolean'
     lastName: 'String'
+    projects: 'Project'
     sessions: 'Session'
+    stoneLists: 'StoneList'
+    stonesOnProjects: 'StonesOnProject'
     teams: 'Member'
     updatedAt: 'DateTime'
   }

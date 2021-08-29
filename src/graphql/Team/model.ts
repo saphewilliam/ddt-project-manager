@@ -1,12 +1,12 @@
-import { nexusModel } from '@lib/nexusModel';
+import { nexusModel } from '@lib/nexusHelpers';
 import { Team } from 'nexus-prisma';
 import { extendType } from 'nexus';
 import { ApiContext } from '@lib/apiContext';
 import { isValidSesssion } from '@lib/authHelpers';
 
-export const TeamModel = nexusModel(Team);
+export const teamModel = nexusModel(Team);
 
-export const TeamQuery = extendType({
+export const teamQuery = extendType({
   type: 'Query',
   definition(t) {
     t.list.field('teams', {

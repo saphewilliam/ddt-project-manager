@@ -27,6 +27,7 @@ export default function NavItem(props: Props): ReactElement {
             'items-center',
             'px-4',
             'py-2',
+            'my-1',
             'rounded-lg',
             props.active && 'bg-dark-highlight',
             'hover:bg-dark-highlight',
@@ -44,7 +45,7 @@ export default function NavItem(props: Props): ReactElement {
               className={cx('text-dark-muted', 'group-hover:text-dark', 'duration-75')}
             />
           )}
-          <span className={cx('ml-4', 'font-semibold', 'text-lg')}>{props.label}</span>
+          <span className={cx('ml-4', 'text-lg')}>{props.label}</span>
         </a>
       </Link>
     </li>

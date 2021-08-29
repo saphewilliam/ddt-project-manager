@@ -15,34 +15,39 @@ generator nexusPrisma {
 // Authentication
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   firstName   String
   lastName    String
   displayName String
   password    String?
   avatar      String?
-  email       String  @unique
-  isAdmin     Boolean @default(false)
+  email       String   @unique
+  isAdmin     Boolean  @default(false)
 
-  sessions Session[]
-  teams    Member[]
+  sessions             Session[]
+  stoneLists           StoneList[]
+  stonesOnProjects     StonesOnProject[]
+  attributeLists       AttributeList[]
+  attributesOnProjects AttributesOnProject[]
+  /// The teams this user is a member of
+  teams                Member[]
+  /// The projects that this user supervises
+  projects             Project[]
 }
 
 model Session {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   expiresAt DateTime?
-
-  token       String  @unique
+  token     String    @unique
 
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId String?
-  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
 }
 
 // Teams
@@ -70,10 +75,190 @@ model Team {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  name      String
+  acronym   String?
 
-  name    String
-  acronym String?
+  members    Member[]
+  sessions   Session[]
+  events     Event[]
+  stoneTypes StoneType[]
+  attributes Attribute[]
+}
 
-  members  Member[]
-  sessions Session[]
+// Events
+
+model Event {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  date      DateTime
+  slug      String   @unique
+
+  subthemes Subtheme[]
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model Subtheme {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  color     String
+  order     Int
+
+  projects Project[]
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+enum ProjectStatus {
+  CANCELLED
+  STARTING
+  PLANNING
+  PLANNED
+  BUILDING
+  BUILT
+}
+
+enum ProjectType {
+  FIELD_L1
+  FIELD_L2
+  FIELD_M50
+  FIELD_FLAT
+  FIELD_CROSS_L2
+  FIELD_CIRCLE
+  WALL_X
+  WALL_S
+  WALL_T
+  WALL_SPEED
+  WALL_CUBE
+  WALL_OCTO
+  FALLWALL
+  SPIRAL
+  STRUCTURE
+  HANDSET
+  DECOR
+  OTHER
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  slug        String   @unique
+  number      Int
+  subNumber   Int
+  description String
+
+  type       ProjectType
+  status     ProjectStatus
+  attributes AttributesOnProject[]
+  stones     StonesOnProject[]
+
+  subthemeId   String
+  subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+  supervisorId String?
+  supervisor   User?    @relation(fields: [subthemeId], references: [id], onDelete: SetNull)
+}
+
+// Lists
+
+model StoneType {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String
+
+  stones Stone[]
+  teamId String
+  team   Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model Stone {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  code        String
+  order       Int
+  color       String
+  description String
+
+  stoneLists      StoneList[]
+  stonesOnProject StonesOnProject[]
+
+  stoneTypeId String
+  stoneType   StoneType @relation(fields: [stoneTypeId], references: [id], onDelete: Cascade)
+}
+
+model StoneList {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  stoneId String
+  stone   Stone  @relation(fields: [stoneId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model StonesOnProject {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  stoneId   String
+  stone     Stone   @relation(fields: [stoneId], references: [id], onDelete: Restrict)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Attribute {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+
+  attributeLists       AttributeList[]
+  attributesOnProjects AttributesOnProject[]
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model AttributeList {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AttributesOnProject {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
