@@ -36,6 +36,76 @@ export default function Navigation(): ReactElement {
         icon: ListOutline,
         activeIcon: ListSolid,
         active: router.pathname.startsWith('/lists'),
+        subItems: [
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+          {
+            label: 'hello world',
+            href: '/lists/hello-world',
+          },
+        ],
       },
       {
         href: '/events',

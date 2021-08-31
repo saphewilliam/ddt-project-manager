@@ -1,6 +1,8 @@
 import React, { ComponentProps, ReactElement } from 'react';
 import cx from 'clsx';
 import Link from 'next/link';
+import { useState } from 'react';
+import { ChevronRightIcon } from '@heroicons/react/solid';
 
 export interface Props {
   label: string;
@@ -8,14 +10,14 @@ export interface Props {
   active: boolean;
   icon: (props: ComponentProps<'svg'>) => ReactElement;
   activeIcon: (props: ComponentProps<'svg'>) => ReactElement;
-  // collapsed: boolean;
-  // items: { label: string }[] | null;
+  subItems?: { label: string; href: string }[];
+  // navCollapsed: boolean;
 }
 
 export default function NavItem(props: Props): ReactElement {
-  const iconProps: ComponentProps<'svg'> = {
-    width: 30,
-  };
+  const [collapsed, setCollapsed] = useState(true);
+
+  const canExpand = props.subItems && props.subItems.length > 0;
 
   return (
     <li>
@@ -38,16 +40,28 @@ export default function NavItem(props: Props): ReactElement {
           )}
         >
           {props.active ? (
-            <props.activeIcon {...iconProps} className={cx('text-dark')} />
+            <props.activeIcon width={30} className={cx('text-dark')} />
           ) : (
             <props.icon
-              {...iconProps}
+              width={30}
               className={cx('text-dark-muted', 'group-hover:text-dark', 'duration-75')}
             />
           )}
           <span className={cx('ml-4', 'text-lg')}>{props.label}</span>
+          {canExpand && (
+            <span>
+              <ChevronRightIcon width={18} className={cx('text-white')} />
+            </span>
+          )}
         </a>
       </Link>
+      {canExpand && (
+        <ul>
+          {props.subItems?.map((subItem, index) => (
+            <li key={index}>{subItem.label}</li>
+          ))}
+        </ul>
+      )}
     </li>
   );
 }
