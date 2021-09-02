@@ -9,15 +9,15 @@ import { promiseWithCatch } from '@lib/util';
 export default function useSessionData(): getSessionQuery['session'] {
   const router = useRouter();
   const [session, setSession] = useState<getSessionQuery['session']>(null);
-  const [cookie, , removeCookie] = useCookies(['auth']);
+  const [cookie, , removeCookie] = useCookies(['ddtauth']);
 
   useEffect(() => {
-    if (!cookie.auth && router.pathname !== '/login') router.push('/login');
-    if (cookie.auth) {
+    if (!cookie.ddtauth && router.pathname !== '/login') router.push('/login');
+    if (cookie.ddtauth) {
       const getSession = async () => {
         const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
         const data = await promiseWithCatch(
-          sdk.getSession({ token: cookie.auth }),
+          sdk.getSession({ token: cookie.ddtauth }),
           'Could not fetch session',
         );
         if (!data) return;
@@ -30,14 +30,14 @@ export default function useSessionData(): getSessionQuery['session'] {
           if (router.pathname === '/login' && data.session.team !== null) router.push('/');
           if (router.pathname !== '/login' && data.session.team === null) router.push('/login');
         } else {
-          removeCookie('auth');
+          removeCookie('ddtauth');
           if (router.pathname !== '/login') router.push('/login');
         }
       };
 
       getSession();
     }
-  }, [cookie.auth]);
+  }, [cookie.ddtauth]);
 
   return session;
 }

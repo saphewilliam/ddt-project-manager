@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { SessionContext } from '@lib/reactContext';
+import Button from '@components/Button';
 
 interface FormValues {
   email: string;
@@ -28,7 +29,7 @@ export default function LoginPage(): ReactElement {
   const [showTeams, setShowTeams] = useState(false);
   const [teams, setTeams] = useState<getTeamsQuery | null>(null);
   const [team, setTeam] = useState('');
-  const [cookie, setCookie, removeCookie] = useCookies(['auth']);
+  const [cookie, setCookie, removeCookie] = useCookies(['ddtauth']);
 
   const router = useRouter();
   const session = useContext(SessionContext);
@@ -37,28 +38,28 @@ export default function LoginPage(): ReactElement {
     async (teamId: string, token?: string) => {
       const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
       const data = await promiseWithCatch(
-        sdk.setSessionTeam({ token: token ?? cookie.auth, teamId }),
+        sdk.setSessionTeam({ token: token ?? cookie.ddtauth, teamId }),
         'Could not select team',
       );
       if (!data) return;
 
       router.push('/');
     },
-    [cookie.auth],
+    [cookie.ddtauth],
   );
 
   const getSessionTeams = useCallback(
     async (token?: string) => {
       const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
       const data = await promiseWithCatch(
-        sdk.getTeams({}, { Authorization: `Bearer ${token ?? cookie.auth}` }),
+        sdk.getTeams({}, { Authorization: `Bearer ${token ?? cookie.ddtauth}` }),
         'Could not fetch teams',
       );
       if (!data) return;
 
       if (data.teams.length === 0) {
         displayError(`${session?.user.displayName} is not a member of any teams`);
-        removeCookie('auth');
+        removeCookie('ddtauth');
       } else if (data.teams.length === 1) {
         const teamId = data.teams[0]?.id;
         if (!teamId) return;
@@ -68,7 +69,7 @@ export default function LoginPage(): ReactElement {
         setShowTeams(true);
       }
     },
-    [cookie.auth, session],
+    [cookie.ddtauth, session],
   );
 
   async function handleLoginSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
@@ -78,7 +79,7 @@ export default function LoginPage(): ReactElement {
     const data = await promiseWithCatch(sdk.login(formValues), 'Failed to log in');
     if (!data) return;
 
-    setCookie('auth', data.login, { path: '/' });
+    setCookie('ddtauth', data.login, { path: '/' });
     getSessionTeams(data.login);
   }
 
@@ -131,19 +132,7 @@ export default function LoginPage(): ReactElement {
                   ))}
                 </select>
               </div>
-              <button
-                className={cx(
-                  'mt-2',
-                  'bg-primary',
-                  'text-white',
-                  'w-full',
-                  'py-3',
-                  'rounded-lg',
-                  'font-bold',
-                )}
-              >
-                Select team
-              </button>
+              <Button label="Select team" />
             </form>
           ) : (
             <form onSubmit={handleLoginSubmit}>
@@ -188,19 +177,7 @@ export default function LoginPage(): ReactElement {
                 <a>Forgot password?</a>
               </Link> */}
               </div>
-              <button
-                className={cx(
-                  'mt-2',
-                  'bg-primary',
-                  'text-white',
-                  'w-full',
-                  'py-3',
-                  'rounded-lg',
-                  'font-bold',
-                )}
-              >
-                Sign in
-              </button>
+              <Button label="Sign in" />
             </form>
           )}
         </div>

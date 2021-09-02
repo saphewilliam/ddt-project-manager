@@ -7,16 +7,15 @@ module.exports = {
       primary: {
         DEFAULT: '#FF855D',
       },
-      secondary: {
-        DEFAULT: '#9E79AA',
-      },
+      // secondary: {
+      //   DEFAULT: '#9E79AA',
+      // },
       dark: {
-        fg: '#FFF8FF',
-        muted: '#613F6A',
-        highlight: '#54325c',
-        DEFAULT: '#381841',
+        highlight: '#384152',
+        selected: '#2e344a',
+        DEFAULT: '#161B2E',
       },
-      light: '#F8F8F8',
+      light: '#DBDBDB',
       white: '#FFFFFF',
       black: '#000000',
       muted: '#989A9E',
@@ -25,5 +24,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('tailwind-scrollbar')],
 };
