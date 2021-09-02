@@ -2,6 +2,5 @@ query getTeams {
   teams {
     id
     name
-    acronym
   }
 }

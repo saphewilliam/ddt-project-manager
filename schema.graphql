@@ -4,10 +4,11 @@
 
 type Attribute {
   attributeLists: [AttributeList!]!
-  attributesOnProjects: [AttributesOnProject!]!
   createdAt: DateTime!
   id: ID!
   name: String!
+  projects: [AttributesOnProject!]!
+  subthemes: [AttributesOnSubtheme!]!
   team: Team!
   teamId: String!
   updatedAt: DateTime!
@@ -32,6 +33,19 @@ type AttributesOnProject {
   id: ID!
   project: Project!
   projectId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type AttributesOnSubtheme {
+  amount: Int!
+  attribute: Attribute!
+  attributeId: String!
+  createdAt: DateTime!
+  id: ID!
+  subtheme: Subtheme!
+  subthemeId: String!
   updatedAt: DateTime!
   user: User!
   userId: String!
@@ -101,13 +115,14 @@ type Project {
   name: String!
   number: Int!
   slug: String!
+  stats: [StatsOnProject!]!
   status: ProjectStatus!
   stones: [StonesOnProject!]!
   subNumber: Int!
   subtheme: Subtheme!
   subthemeId: String!
-  supervisor: User
-  supervisorId: String
+  supervisor: User!
+  supervisorId: String!
   type: ProjectType!
   updatedAt: DateTime!
 }
@@ -168,6 +183,27 @@ type Session {
   userId: String!
 }
 
+type Stat {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  projects: [StatsOnProject!]!
+  team: Team!
+  teamId: String!
+  updatedAt: DateTime!
+}
+
+type StatsOnProject {
+  amount: Int!
+  createdAt: DateTime!
+  id: ID!
+  project: Project!
+  projectId: String!
+  stat: Stat!
+  statId: String!
+  updatedAt: DateTime!
+}
+
 type Stone {
   code: String!
   color: String!
@@ -176,10 +212,11 @@ type Stone {
   id: ID!
   name: String!
   order: Int!
+  projects: [StonesOnProject!]!
   stoneLists: [StoneList!]!
   stoneType: StoneType!
   stoneTypeId: String!
-  stonesOnProject: [StonesOnProject!]!
+  subthemes: [StonesOnSubtheme!]!
   updatedAt: DateTime!
 }
 
@@ -218,7 +255,21 @@ type StonesOnProject {
   userId: String!
 }
 
+type StonesOnSubtheme {
+  amount: Int!
+  createdAt: DateTime!
+  id: ID!
+  stone: Stone!
+  stoneId: String!
+  subtheme: Subtheme!
+  subthemeId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
 type Subtheme {
+  attributes: [AttributesOnSubtheme!]!
   color: String!
   createdAt: DateTime!
   event: Event!
@@ -227,11 +278,11 @@ type Subtheme {
   name: String!
   order: Int!
   projects: [Project!]!
+  stones: [StonesOnSubtheme!]!
   updatedAt: DateTime!
 }
 
 type Team {
-  acronym: String
   attributes: [Attribute!]!
   createdAt: DateTime!
   events: [Event!]!
@@ -239,6 +290,7 @@ type Team {
   members: [Member!]!
   name: String!
   sessions: [Session!]!
+  stats: [Stat!]!
   stoneTypes: [StoneType!]!
   updatedAt: DateTime!
 }
@@ -246,6 +298,7 @@ type Team {
 type User {
   attributeLists: [AttributeList!]!
   attributesOnProjects: [AttributesOnProject!]!
+  attributesOnSubthemes: [AttributesOnSubtheme!]!
   avatar: String
   createdAt: DateTime!
   displayName: String!
@@ -260,6 +313,7 @@ type User {
   sessions: [Session!]!
   stoneLists: [StoneList!]!
   stonesOnProjects: [StonesOnProject!]!
+  stonesOnSubthemes: [StonesOnSubtheme!]!
 
   """The teams this user is a member of"""
   teams: [Member!]!

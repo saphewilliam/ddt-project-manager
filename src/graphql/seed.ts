@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 
 import { PrismaClient } from '@prisma/client';
-import seedTeams from './Team/seed';
-import seedUsers from './User/seed';
+import seedEvents from './Event/seed';
 import seedMembers from './Member/seed';
 import seedSessions from './Session/seed';
-import seedEvents from './Event/seed';
 import seedSubthemes from './Subtheme/seed';
+import seedTeams from './Team/seed';
+import seedUsers from './User/seed';
 
 export async function flush(prisma: PrismaClient): Promise<void> {
   console.log('Flushing db...');

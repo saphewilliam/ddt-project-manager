@@ -1,10 +1,3 @@
-import React, { ComponentProps, ReactElement, ReactNode, useMemo } from 'react';
-import cx from 'clsx';
-import DesktopNav from './DesktopNav';
-import MobileNav from './MobileNav';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import useDeviceWidth from '@hooks/useDeviceWidth';
 import {
   HomeIcon as HomeOutline,
   ClipboardListIcon as ListOutline,
@@ -21,9 +14,15 @@ import {
   LibraryIcon as AdminSolid,
   UserIcon as ProfileSolid,
 } from '@heroicons/react/solid';
-import { useContext } from 'react';
-import { SessionContext } from '@lib/reactContext';
+import cx from 'clsx';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import React, { ComponentProps, ReactElement, ReactNode, useMemo, useContext } from 'react';
 import { Role } from '@graphql/__generated__/codegen-self';
+import useDeviceWidth from '@hooks/useDeviceWidth';
+import { SessionContext } from '@lib/reactContext';
+import DesktopNav from './DesktopNav';
+import MobileNav from './MobileNav';
 
 export interface Props {
   children?: ReactNode;
@@ -103,7 +102,7 @@ export default function Layout(props: Props): ReactElement {
         hidden: !device.mobile,
       },
     ],
-    [router, session],
+    [router, device, session],
   );
 
   return (

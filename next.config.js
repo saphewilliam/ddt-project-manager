@@ -5,7 +5,7 @@ module.exports = {
     API_ROOT_SELF: process.env.API_ROOT_SELF,
   },
   images: {
-    domains: ['source.unsplash.com', 'images.unsplash.com', 'avatars.dicebear.com'],
+    domains: ['source.unsplash.com', 'images.unsplash.com'],
   },
   eslint: {
     dirs: ['src'],

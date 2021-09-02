@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
 import cx from 'clsx';
+import React, { ReactElement } from 'react';
 
 export interface Props {
   label: string;

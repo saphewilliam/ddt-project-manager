@@ -1,8 +1,8 @@
-import { nexusModel } from '@lib/nexusHelpers';
+import { booleanArg, extendType, stringArg } from 'nexus';
 import { Session } from 'nexus-prisma';
 import { ApiContext } from '@lib/apiContext';
 import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
-import { booleanArg, extendType, stringArg } from 'nexus';
+import { nexusModel } from '@lib/nexusHelpers';
 
 export const sessionModel = nexusModel(Session, {
   hideFields: ['token'],

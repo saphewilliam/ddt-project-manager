@@ -5,7 +5,6 @@ query getSession($token: String!) {
     team {
       id
       name
-      acronym
     }
     user {
       id

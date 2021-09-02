@@ -1,6 +1,6 @@
 import { PrismaClient, Session } from '@prisma/client';
-import { randomBytes } from 'crypto';
 import { hash, compare } from 'bcrypt';
+import { randomBytes } from 'crypto';
 
 export async function hashPw(plaintext: string): Promise<string> {
   return await hash(plaintext, 10);

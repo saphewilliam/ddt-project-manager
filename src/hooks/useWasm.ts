@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
 import * as AsBind from 'as-bind';
+import { useState, useEffect } from 'react';
+
+type Todo = any;
 
 interface State {
-  instance: Record<string, any> | null;
-  error: Error | null;
+  instance: Record<string, Todo> | null;
   loaded: boolean;
+  error: Error | null;
 }
 
-export default function useWasm(imports?: any): State {
-  const [state, setState] = useState<State>({ loaded: false, instance: null, error: null });
+export default function useWasm(imports?: Todo): State {
+  const [state, setState] = useState<State>({ instance: null, loaded: false, error: null });
 
   const filePath = '/wasm/release.wasm';
 
@@ -19,10 +21,11 @@ export default function useWasm(imports?: any): State {
         const wasm = await fetch(filePath, { signal: abortController.signal });
         if (!wasm.ok) throw new Error(`Failed to fetch wasm resource '${filePath}'.`);
 
-        const instance = await (AsBind as any).instantiate(wasm, imports);
-        if (!abortController.signal.aborted) setState({ loaded: true, instance, error: null });
+        const instance = await (AsBind as Todo).instantiate(wasm, imports);
+        if (!abortController.signal.aborted) setState({ instance, loaded: true, error: null });
       } catch (error) {
-        if (!abortController.signal.aborted) setState({ loaded: false, instance: null, error });
+        if (!abortController.signal.aborted)
+          setState({ instance: null, loaded: false, error: error as Error });
       }
     };
     fetchWasm();

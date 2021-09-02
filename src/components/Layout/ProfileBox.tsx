@@ -1,11 +1,10 @@
-import React, { ReactElement, useMemo } from 'react';
-import cx from 'clsx';
-import { useContext } from 'react';
-import { SessionContext } from '@lib/reactContext';
-import Image from 'next/image';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-jdenticon-sprites';
 import { DotsCircleHorizontalIcon } from '@heroicons/react/outline';
+import cx from 'clsx';
+import Image from 'next/image';
+import React, { ReactElement, useMemo, useContext } from 'react';
+import { SessionContext } from '@lib/reactContext';
 
 export interface Props {
   navCollapsed: boolean;
@@ -37,7 +36,7 @@ export default function ProfileBox(props: Props): ReactElement {
             'bg-dark',
             'relative',
             'p-2',
-            'rounded-full',
+            'rounded-lg',
             'flex',
             'w-9',
             'h-9',

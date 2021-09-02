@@ -35,7 +35,8 @@ export type Attribute = {
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
   attributeLists: Array<AttributeList>;
-  attributesOnProjects: Array<AttributesOnProject>;
+  projects: Array<AttributesOnProject>;
+  subthemes: Array<AttributesOnSubtheme>;
   teamId: Scalars['String'];
   team: Team;
 };
@@ -62,6 +63,19 @@ export type AttributesOnProject = {
   user: User;
   projectId: Scalars['String'];
   project: Project;
+};
+
+export type AttributesOnSubtheme = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  attributeId: Scalars['String'];
+  attribute: Attribute;
+  userId: Scalars['String'];
+  user: User;
+  subthemeId: Scalars['String'];
+  subtheme: Subtheme;
 };
 
 
@@ -125,17 +139,18 @@ export type Project = {
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  description: Scalars['String'];
   number: Scalars['Int'];
   subNumber: Scalars['Int'];
-  description: Scalars['String'];
   type: ProjectType;
   status: ProjectStatus;
   attributes: Array<AttributesOnProject>;
   stones: Array<StonesOnProject>;
+  stats: Array<StatsOnProject>;
   subthemeId: Scalars['String'];
   subtheme: Subtheme;
-  supervisorId: Maybe<Scalars['String']>;
-  supervisor: Maybe<User>;
+  supervisorId: Scalars['String'];
+  supervisor: User;
 };
 
 export enum ProjectStatus {
@@ -198,6 +213,27 @@ export type Session = {
   member: Maybe<Member>;
 };
 
+export type Stat = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  name: Scalars['String'];
+  projects: Array<StatsOnProject>;
+  teamId: Scalars['String'];
+  team: Team;
+};
+
+export type StatsOnProject = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  statId: Scalars['String'];
+  stat: Stat;
+  projectId: Scalars['String'];
+  project: Project;
+};
+
 export type Stone = {
   id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -208,7 +244,8 @@ export type Stone = {
   color: Scalars['String'];
   description: Scalars['String'];
   stoneLists: Array<StoneList>;
-  stonesOnProject: Array<StonesOnProject>;
+  projects: Array<StonesOnProject>;
+  subthemes: Array<StonesOnSubtheme>;
   stoneTypeId: Scalars['String'];
   stoneType: StoneType;
 };
@@ -248,6 +285,19 @@ export type StonesOnProject = {
   project: Project;
 };
 
+export type StonesOnSubtheme = {
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  amount: Scalars['Int'];
+  stoneId: Scalars['String'];
+  stone: Stone;
+  userId: Scalars['String'];
+  user: User;
+  subthemeId: Scalars['String'];
+  subtheme: Subtheme;
+};
+
 export type Subtheme = {
   id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -256,6 +306,8 @@ export type Subtheme = {
   color: Scalars['String'];
   order: Scalars['Int'];
   projects: Array<Project>;
+  attributes: Array<AttributesOnSubtheme>;
+  stones: Array<StonesOnSubtheme>;
   eventId: Scalars['String'];
   event: Event;
 };
@@ -265,12 +317,12 @@ export type Team = {
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
-  acronym: Maybe<Scalars['String']>;
   members: Array<Member>;
   sessions: Array<Session>;
   events: Array<Event>;
   stoneTypes: Array<StoneType>;
   attributes: Array<Attribute>;
+  stats: Array<Stat>;
 };
 
 export type User = {
@@ -286,8 +338,10 @@ export type User = {
   sessions: Array<Session>;
   stoneLists: Array<StoneList>;
   stonesOnProjects: Array<StonesOnProject>;
+  stonesOnSubthemes: Array<StonesOnSubtheme>;
   attributeLists: Array<AttributeList>;
   attributesOnProjects: Array<AttributesOnProject>;
+  attributesOnSubthemes: Array<AttributesOnSubtheme>;
   /** The teams this user is a member of */
   teams: Array<Member>;
   /** The projects that this user supervises */
@@ -316,12 +370,12 @@ export type getSessionQueryVariables = Exact<{
 }>;
 
 
-export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string, acronym: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string>, isAdmin: boolean }, member: Maybe<{ id: string, role: Role }> }> };
+export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string>, isAdmin: boolean }, member: Maybe<{ id: string, role: Role }> }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getTeamsQuery = { teams: Array<{ id: string, name: string, acronym: Maybe<string> }> };
+export type getTeamsQuery = { teams: Array<{ id: string, name: string }> };
 
 
 export const loginDocument = gql`
@@ -344,7 +398,6 @@ export const getSessionDocument = gql`
     team {
       id
       name
-      acronym
     }
     user {
       id
@@ -366,7 +419,6 @@ export const getTeamsDocument = gql`
   teams {
     id
     name
-    acronym
   }
 }
     `;

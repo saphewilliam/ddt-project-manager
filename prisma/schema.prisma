@@ -26,15 +26,18 @@ model User {
   email       String   @unique
   isAdmin     Boolean  @default(false)
 
-  sessions             Session[]
-  stoneLists           StoneList[]
-  stonesOnProjects     StonesOnProject[]
-  attributeLists       AttributeList[]
-  attributesOnProjects AttributesOnProject[]
+  sessions              Session[]
+  stoneLists            StoneList[]
+  stonesOnProjects      StonesOnProject[]
+  stonesOnSubthemes     StonesOnSubtheme[]
+  attributeLists        AttributeList[]
+  attributesOnProjects  AttributesOnProject[]
+  attributesOnSubthemes AttributesOnSubtheme[]
+
   /// The teams this user is a member of
-  teams                Member[]
+  teams    Member[]
   /// The projects that this user supervises
-  projects             Project[]
+  projects Project[]
 }
 
 model Session {
@@ -76,13 +79,13 @@ model Team {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
-  acronym   String?
 
   members    Member[]
   sessions   Session[]
   events     Event[]
   stoneTypes StoneType[]
   attributes Attribute[]
+  stats      Stat[]
 }
 
 // Events
@@ -109,7 +112,9 @@ model Subtheme {
   color     String
   order     Int
 
-  projects Project[]
+  projects   Project[]
+  attributes AttributesOnSubtheme[]
+  stones     StonesOnSubtheme[]
 
   eventId String
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
@@ -151,34 +156,59 @@ model Project {
   updatedAt   DateTime @updatedAt
   name        String
   slug        String   @unique
+  description String
   number      Int
   subNumber   Int
-  description String
 
   type       ProjectType
   status     ProjectStatus
   attributes AttributesOnProject[]
   stones     StonesOnProject[]
+  stats      StatsOnProject[]
 
   subthemeId   String
   subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
-  supervisorId String?
-  supervisor   User?    @relation(fields: [subthemeId], references: [id], onDelete: SetNull)
+  supervisorId String
+  supervisor   User     @relation(fields: [subthemeId], references: [id], onDelete: SetNull)
+}
+
+model Stat {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+
+  projects StatsOnProject[]
+
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model StatsOnProject {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  statId    String
+  stat      Stat    @relation(fields: [statId], references: [id], onDelete: Restrict)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 // Lists
 
 model StoneType {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   name        String
   description String
 
   stones Stone[]
+
   teamId String
-  team   Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
 model Stone {
@@ -191,8 +221,9 @@ model Stone {
   color       String
   description String
 
-  stoneLists      StoneList[]
-  stonesOnProject StonesOnProject[]
+  stoneLists StoneList[]
+  projects   StonesOnProject[]
+  subthemes  StonesOnSubtheme[]
 
   stoneTypeId String
   stoneType   StoneType @relation(fields: [stoneTypeId], references: [id], onDelete: Cascade)
@@ -224,14 +255,29 @@ model StonesOnProject {
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
+model StonesOnSubtheme {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  stoneId    String
+  stone      Stone    @relation(fields: [stoneId], references: [id], onDelete: Restrict)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  subthemeId String
+  subtheme   Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+}
+
 model Attribute {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
 
-  attributeLists       AttributeList[]
-  attributesOnProjects AttributesOnProject[]
+  attributeLists AttributeList[]
+  projects       AttributesOnProject[]
+  subthemes      AttributesOnSubtheme[]
 
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
@@ -261,4 +307,18 @@ model AttributesOnProject {
   user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
   projectId   String
   project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model AttributesOnSubtheme {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  amount    Int
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  subthemeId  String
+  subtheme    Subtheme  @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
 }

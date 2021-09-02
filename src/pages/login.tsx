@@ -1,16 +1,21 @@
-import React, { FormEvent, ReactElement, useCallback, useState } from 'react';
-import Image from 'next/image';
 import cx from 'clsx';
+import { GraphQLClient } from 'graphql-request';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React, {
+  FormEvent,
+  ReactElement,
+  useCallback,
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
+import { useCookies } from 'react-cookie';
+import Button from '@components/Button';
 import { getSdk, getTeamsQuery } from '@graphql/__generated__/codegen-self';
 import { environment } from '@lib/environment';
-import { GraphQLClient } from 'graphql-request';
-import { displayError, promiseWithCatch } from '@lib/util';
-import { useCookies } from 'react-cookie';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useContext } from 'react';
 import { SessionContext } from '@lib/reactContext';
-import Button from '@components/Button';
+import { displayError, promiseWithCatch } from '@lib/util';
 
 interface FormValues {
   email: string;
@@ -127,7 +132,6 @@ export default function LoginPage(): ReactElement {
                   {teams?.teams.map((team) => (
                     <option value={team.id} key={team.id}>
                       {team.name}
-                      {team.acronym !== null ? ` (${team.acronym})` : ''}
                     </option>
                   ))}
                 </select>

@@ -1,14 +1,10 @@
-import React, { ReactElement, useEffect } from 'react';
-import Layout from '@components/Layout';
 import cx from 'clsx';
+import React, { ReactElement } from 'react';
+import Layout from '@components/Layout';
 import useWasm from '@hooks/useWasm';
 
 export default function HomePage(): ReactElement {
   const { instance, loaded, error } = useWasm();
-
-  useEffect(() => {
-    console.log(instance, loaded, error);
-  }, [instance, loaded, error]);
 
   return (
     <Layout>

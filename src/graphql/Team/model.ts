@@ -1,8 +1,8 @@
-import { nexusModel } from '@lib/nexusHelpers';
-import { Team } from 'nexus-prisma';
 import { extendType } from 'nexus';
+import { Team } from 'nexus-prisma';
 import { ApiContext } from '@lib/apiContext';
 import { isValidSesssion } from '@lib/authHelpers';
+import { nexusModel } from '@lib/nexusHelpers';
 
 export const teamModel = nexusModel(Team);
 

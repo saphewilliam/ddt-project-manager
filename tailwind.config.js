@@ -7,9 +7,9 @@ module.exports = {
       primary: {
         DEFAULT: '#FF855D',
       },
-      // secondary: {
-      //   DEFAULT: '#9E79AA',
-      // },
+      secondary: {
+        DEFAULT: '#9E79AA',
+      },
       dark: {
         highlight: '#384152',
         selected: '#2e344a',

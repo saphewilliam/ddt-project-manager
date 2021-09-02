@@ -1,8 +1,8 @@
-import NexusPrismaScalars from 'nexus-prisma/scalars';
 import { makeSchema, fieldAuthorizePlugin, queryComplexityPlugin } from 'nexus';
+import NexusPrismaScalars from 'nexus-prisma/scalars'; // eslint-disable-line import/no-unresolved
+import { FieldAuthorizePluginErrorConfig } from 'nexus/dist/plugins/fieldAuthorizePlugin';
 import path from 'path';
 import * as types from './types';
-import { FieldAuthorizePluginErrorConfig } from 'nexus/dist/plugins/fieldAuthorizePlugin';
 
 export const schema = makeSchema({
   types: [types, NexusPrismaScalars],

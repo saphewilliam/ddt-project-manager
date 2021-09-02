@@ -1,9 +1,9 @@
 import { AppProps } from 'next/app';
 import React, { ReactElement } from 'react';
-import { Toaster } from 'react-hot-toast';
 import { CookiesProvider } from 'react-cookie';
-import { SessionContext } from '@lib/reactContext';
+import { Toaster } from 'react-hot-toast';
 import useSessionData from '@hooks/useSessionData';
+import { SessionContext } from '@lib/reactContext';
 import '@styles/global.scss';
 
 export default function App({ Component, pageProps }: AppProps): ReactElement {

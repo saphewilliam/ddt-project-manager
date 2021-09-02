@@ -1,9 +1,9 @@
-import React, { ReactElement, useState } from 'react';
+import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
+import React, { ReactElement, useState } from 'react';
 import DesktopNavItem from './DesktopNavItem';
 import ProfileBox from './ProfileBox';
-import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
-import { NavItemProps } from '.';
+import { NavItemProps } from './';
 
 interface Props {
   navItems: NavItemProps[];

@@ -1,8 +1,8 @@
-import { getSdk, getSessionQuery } from '@graphql/__generated__/codegen-self';
 import { GraphQLClient } from 'graphql-request';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { getSdk, getSessionQuery } from '@graphql/__generated__/codegen-self';
 import { environment } from '@lib/environment';
 import { promiseWithCatch } from '@lib/util';
 

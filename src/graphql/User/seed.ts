@@ -1,5 +1,5 @@
-import { hashPw } from '@lib/authHelpers';
 import { PrismaClient } from '@prisma/client';
+import { hashPw } from '@lib/authHelpers';
 
 export default async function seedUsers(prisma: PrismaClient): Promise<void> {
   await prisma.user.createMany({

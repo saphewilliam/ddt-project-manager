@@ -5,3 +5,6 @@ public/wasm/
 
 # Sensitive data
 .env
+
+# Logs
+*.log

@@ -1,9 +1,8 @@
-import React, { ComponentProps, ReactElement } from 'react';
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
 import Link from 'next/link';
-import { useRef } from 'react';
-import { ChevronRightIcon } from '@heroicons/react/solid';
-import { NavItemProps } from '.';
+import React, { ComponentProps, ReactElement, useRef } from 'react';
+import { NavItemProps } from './';
 
 export default function DesktopNavItem(props: NavItemProps): ReactElement {
   const ref = useRef<HTMLUListElement>(null);
