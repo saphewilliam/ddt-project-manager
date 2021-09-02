@@ -1,8 +1,8 @@
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-jdenticon-sprites';
-import { DotsCircleHorizontalIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { ReactElement, useMemo, useContext } from 'react';
 import { SessionContext } from '@lib/reactContext';
 
@@ -18,27 +18,28 @@ export default function ProfileBox(props: Props): ReactElement {
   );
 
   return (
-    <div
-      className={cx(
-        'flex',
-        'justify-between',
-        'items-center',
-        'py-4',
-        'px-3.5',
-        'mt-12',
-        'bg-dark-selected',
-      )}
-    >
-      <div className={cx('flex', 'items-center')}>
+    <Link href="/profile">
+      <a
+        title="Profile"
+        className={cx(
+          'flex',
+          'items-center',
+          'py-4',
+          'px-3.5',
+          'mt-12',
+          'bg-dark-selected',
+          'hover:bg-dark-highlight',
+          'transition-colors',
+        )}
+      >
         <div
           className={cx(
             'overflow-hidden',
             'bg-dark',
             'relative',
-            'p-2',
             'rounded-lg',
-            'flex',
             'w-9',
+            'min-w-[2.25rem]',
             'h-9',
           )}
         >
@@ -54,8 +55,8 @@ export default function ProfileBox(props: Props): ReactElement {
         {session && (
           <div
             className={cx(
-              'ml-3',
-              'leading-5',
+              'ml-3.5',
+              'leading-6',
               'whitespace-nowrap',
               'transition-opacity',
               'duration-500',
@@ -65,16 +66,12 @@ export default function ProfileBox(props: Props): ReactElement {
             <p className={cx('font-bold')}>
               {session?.user.firstName} {session?.user.lastName}
             </p>
-            <p className={cx('text-muted', 'text-xs')}>
-              {session?.team?.name} ({session?.member?.role.toLowerCase()})
+            <p className={cx('text-muted', 'text-sm')}>
+              {session?.team?.name} ({session.member?.role.toLowerCase()})
             </p>
           </div>
         )}
-      </div>
-      <button>
-        {/* TODO add menu with settings and logout options */}
-        <DotsCircleHorizontalIcon width={27} />
-      </button>
-    </div>
+      </a>
+    </Link>
   );
 }
