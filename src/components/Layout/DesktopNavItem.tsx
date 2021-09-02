@@ -25,7 +25,7 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
 
   const iconProps: ComponentProps<'svg'> = {
     width: 25,
-    className: cx('text-light', 'transition-all', 'duration-500', !props.navCollapsed && 'mr-3'),
+    className: cx('transition-all', 'duration-500', !props.navCollapsed && 'mr-3'),
   };
 
   const commonChildren: ReactElement = (
@@ -79,9 +79,9 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
                 (!props.expanded || props.navCollapsed ? 0 : ref.current?.scrollHeight) + 'px',
             }}
           >
-            {props.subItems.map((subItem, index) => (
+            {props.subItems.map((subItem, i) => (
               <li
-                key={index}
+                key={i}
                 className={cx(
                   'pl-6',
                   'pr-3',

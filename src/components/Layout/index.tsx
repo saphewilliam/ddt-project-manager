@@ -11,6 +11,7 @@ import {
   TemplateIcon as EventOutline,
   UserGroupIcon as TeamOutline,
   LibraryIcon as AdminOutline,
+  UserIcon as ProfileOutline,
 } from '@heroicons/react/outline';
 import {
   HomeIcon as HomeSolid,
@@ -18,7 +19,11 @@ import {
   TemplateIcon as EventSolid,
   UserGroupIcon as TeamSolid,
   LibraryIcon as AdminSolid,
+  UserIcon as ProfileSolid,
 } from '@heroicons/react/solid';
+import { useContext } from 'react';
+import { SessionContext } from '@lib/reactContext';
+import { Role } from '@graphql/__generated__/codegen-self';
 
 export interface Props {
   children?: ReactNode;
@@ -34,11 +39,13 @@ export interface NavItemProps {
   navCollapsed?: boolean;
   expanded?: boolean;
   setExpanded?: (expand: boolean) => void;
+  hidden?: boolean;
 }
 
 export default function Layout(props: Props): ReactElement {
   const router = useRouter();
   const device = useDeviceWidth();
+  const session = useContext(SessionContext);
 
   const navItems: NavItemProps[] = useMemo<NavItemProps[]>(
     () => [
@@ -77,6 +84,7 @@ export default function Layout(props: Props): ReactElement {
         icon: TeamOutline,
         activeIcon: TeamSolid,
         active: router.pathname.startsWith('/team'),
+        hidden: session?.member?.role !== Role.CAPTAIN,
       },
       {
         href: '/admin',
@@ -84,18 +92,27 @@ export default function Layout(props: Props): ReactElement {
         icon: AdminOutline,
         activeIcon: AdminSolid,
         active: router.pathname.startsWith('/admin'),
+        hidden: !session?.user.isAdmin,
+      },
+      {
+        href: '/profile',
+        label: 'Profile',
+        icon: ProfileOutline,
+        activeIcon: ProfileSolid,
+        active: router.pathname.startsWith('/profile'),
+        hidden: !device.mobile,
       },
     ],
-    [router],
+    [router, session],
   );
 
   return (
-    <div className={cx('w-screen', 'h-screen', 'flex')}>
+    <div className={cx('w-screen', 'h-screen', 'flex', device.mobile && 'flex-col-reverse')}>
       <Head>
         <title>DDT Project Manager</title>
       </Head>
       {device.mobile ? <MobileNav navItems={navItems} /> : <DesktopNav navItems={navItems} />}
-      <main className={cx('px-16', 'pt-12')}>{props.children}</main>
+      <main className={cx('px-16', 'pt-12', 'flex-grow')}>{props.children}</main>
     </div>
   );
 }

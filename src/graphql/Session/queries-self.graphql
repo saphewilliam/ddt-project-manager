@@ -13,6 +13,7 @@ query getSession($token: String!) {
       firstName
       lastName
       avatar
+      isAdmin
     }
     member {
       id

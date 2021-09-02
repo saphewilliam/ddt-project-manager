@@ -89,15 +89,17 @@ export default function DesktopNav(props: Props): ReactElement {
 
         <nav>
           <ul>
-            {props.navItems.map((item, i) => (
-              <DesktopNavItem
-                key={i}
-                {...item}
-                navCollapsed={collapsed}
-                expanded={i === expandedItem}
-                setExpanded={(expand) => setExpandedItem(expand ? i : null)}
-              />
-            ))}
+            {props.navItems
+              .filter((item) => !item.hidden)
+              .map((item, i) => (
+                <DesktopNavItem
+                  key={i}
+                  {...item}
+                  navCollapsed={collapsed}
+                  expanded={i === expandedItem}
+                  setExpanded={(expand) => setExpandedItem(expand ? i : null)}
+                />
+              ))}
           </ul>
         </nav>
       </div>

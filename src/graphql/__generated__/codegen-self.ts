@@ -316,7 +316,7 @@ export type getSessionQueryVariables = Exact<{
 }>;
 
 
-export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string, acronym: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string> }, member: Maybe<{ id: string, role: Role }> }> };
+export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string, acronym: Maybe<string> }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string>, isAdmin: boolean }, member: Maybe<{ id: string, role: Role }> }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -352,6 +352,7 @@ export const getSessionDocument = gql`
       firstName
       lastName
       avatar
+      isAdmin
     }
     member {
       id
