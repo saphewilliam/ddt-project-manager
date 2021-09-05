@@ -12,6 +12,7 @@
   "rules": {
     "react-hooks/exhaustive-deps": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "@typescript-eslint/no-non-null-assertion": "off",
     "import/order": ["warn", {
       "groups": [["builtin", "external"], "internal", "parent", "sibling", "index", "object", "type"],
       "newlines-between": "never",
