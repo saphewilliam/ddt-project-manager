@@ -1,33 +1,38 @@
 import { PrismaClient, Role } from '@prisma/client';
-import { ids } from '@graphql/ids';
+import { idMap } from '@graphql/idMap';
 
 export default async function seedMembers(prisma: PrismaClient): Promise<void> {
   await prisma.member.createMany({
     data: [
       {
-        userId: ids.users.DDT_ADMIN,
-        teamId: ids.teams.DUTCH_DOMINO_TEAM,
+        userId: idMap.users.DDT_ADMIN,
+        teamId: idMap.teams.DUTCH_DOMINO_TEAM,
         role: Role.CAPTAIN,
       },
       {
-        userId: ids.users.WILLIAM_FORD,
-        teamId: ids.teams.DUTCH_DOMINO_TEAM,
+        userId: idMap.users.WILLIAM_FORD,
+        teamId: idMap.teams.DUTCH_DOMINO_TEAM,
         role: Role.GUEST,
       },
       {
-        userId: ids.users.WILLIAM_FORD,
-        teamId: ids.teams.WILLIAM_FORD,
+        userId: idMap.users.WILLIAM_FORD,
+        teamId: idMap.teams.WILLIAM_FORD,
         role: Role.CAPTAIN,
       },
       {
-        userId: ids.users.BAS_VEENHOVEN,
-        teamId: ids.teams.DUTCH_DOMINO_TEAM,
+        userId: idMap.users.BAS_VEENHOVEN,
+        teamId: idMap.teams.DUTCH_DOMINO_TEAM,
         role: Role.BUILDER,
       },
       {
-        userId: ids.users.BAS_VEENHOVEN,
-        teamId: ids.teams.BAS_VEENHOVEN,
+        userId: idMap.users.BAS_VEENHOVEN,
+        teamId: idMap.teams.BAS_VEENHOVEN,
         role: Role.CAPTAIN,
+      },
+      {
+        userId: idMap.users.DON_DOMINO,
+        teamId: idMap.teams.DUTCH_DOMINO_TEAM,
+        role: Role.GUEST,
       },
     ],
   });

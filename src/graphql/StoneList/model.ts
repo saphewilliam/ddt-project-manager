@@ -16,11 +16,9 @@ export const stoneListQuery = extendType({
       resolve: (_, __, ctx: ApiContext) =>
         ctx.prisma.user.findMany({
           where: {
+            teams: { some: { teamId: ctx.session?.teamId ?? '' } },
             stoneLists: {
-              some: {
-                stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } },
-                user: { teams: { some: { teamId: ctx.session?.teamId ?? '' } } },
-              },
+              some: { stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } } },
             },
           },
           orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],

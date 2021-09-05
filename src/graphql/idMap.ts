@@ -1,4 +1,4 @@
-export const ids = {
+export const idMap = {
   users: {
     DDT_ADMIN: '4ffded20-d5f8-41b4-ae5b-60fa8445cc1e',
     WILLIAM_FORD: '80c03794-073c-4ca2-a9de-e0c12f569c2f',
@@ -8,6 +8,7 @@ export const ids = {
     PIM_VRIENS: 'bdd045f2-5fdd-43f0-958c-61ceb332b383',
     WIM_VAN_OTTERDIJK: 'db618c52-6159-421d-85c2-89441c768b54',
     JAAP_VERSCHUREN: 'e6eb7892-2e2b-4d68-88da-a82a430459ad',
+    DON_DOMINO: 'eb3d70d0-72d7-464d-a237-655eac755357',
   },
   events: {
     WDC_2021: '87db2cfc-d4a9-406f-91ce-b73c1ee58c49',
@@ -38,5 +39,28 @@ export const ids = {
     DOMINO_DAY: '1f78f828-8452-47d3-9482-814a6b84f5b8',
     COLOR_CHANGING: 'f9ace773-3e19-417a-9c3c-09d12f50caa6',
     OTHERS: '482f89ac-e643-4a5b-bcf9-ca187bdb0449',
+  },
+  stones: {
+    ROOD_LP_D: '605642d4-d977-4444-927c-09401abfa35f',
+    GEEL_LP_B: 'a0691dac-500c-430c-8d26-aeba1e46fedf',
+    GROEN_LP_B: '31aea453-c2a6-4986-9384-76b3567061b8',
+    GROEN_LP_C: '41cf0538-b49b-4a63-96a1-cbba73d27998',
+    TURQUOISE_LP_B: '2e6433f5-ceaa-4a33-b4e8-bb5d7e07518e',
+    BLAUW_LP_A: '4388a1fd-965e-4040-946d-f5b0b785ae82',
+    BLAUW_LP_D: 'cd43b75f-c0cb-4a6f-89da-8bfe2083266d',
+    IVOOR_LP_C: '501cdc75-1f9e-4086-8333-09d0e112516c',
+    GRIJS_LP_A: 'c8dca259-be20-403e-9b73-fc5179e5af7f',
+    ZWART_LP_A: '62d58719-e504-4e8c-b33c-5c41b041eb51',
+    WIT_LP_B: '8f52e53a-9930-44a9-8695-dc16c0d40eda',
+
+    ROOD_DO_A: '9f90e1e6-9104-4caf-9e36-d8d2a14bb23f',
+    ROOD_DO_B: '2d719248-1bce-4f55-bdf3-27861837fc80',
+    GEEL_DO_A: 'fa480a52-6b01-45e6-a575-afc045ccff95',
+    GEEL_DO_B: '8da34aab-80e8-4173-a224-9f9b3d725648',
+    GROEN_DO_C: '121fbec9-5efd-4647-aa28-1545cb2a3005',
+    BLAUW_DO_B: '8709dd57-b491-46c2-9e16-782c35d475a1',
+    PAARS_DO_A: 'cc892018-35e5-4500-99a3-7fec596a59ec',
+    ZWART_DO_A: 'f39b4a26-6dbb-4054-9aad-cb6dacd98d4d',
+    WIT_DO_A: '38fd9d5d-3e4c-4112-b8c4-114521b361a8',
   },
 };

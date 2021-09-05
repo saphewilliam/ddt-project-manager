@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import { ids } from '@graphql/ids';
+import { idMap } from '@graphql/idMap';
 import { generateSlug } from '@lib/util';
 
 export default async function seedSubthemes(prisma: PrismaClient): Promise<void> {
   await prisma.subtheme.createMany({
     data: [
       {
-        id: ids.subthemes.INTRODUCTION,
+        id: idMap.subthemes.INTRODUCTION,
         name: 'Introduction',
         slug: generateSlug('Introduction'),
         color: '#BF5C22',
@@ -14,7 +14,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 0,
       },
       {
-        id: ids.subthemes.PETER_PAN,
+        id: idMap.subthemes.PETER_PAN,
         name: 'Peter Pan',
         slug: generateSlug('Peter Pan'),
         color: '#488D40',
@@ -22,7 +22,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 1,
       },
       {
-        id: ids.subthemes.EMPERORS_NEW_CLOTHES,
+        id: idMap.subthemes.EMPERORS_NEW_CLOTHES,
         name: "The Emperor's New Clothes",
         slug: generateSlug("The Emperor's New Clothes"),
         color: '#B80C00',
@@ -30,7 +30,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 2,
       },
       {
-        id: ids.subthemes.BEAUTY_AND_THE_BEAST,
+        id: idMap.subthemes.BEAUTY_AND_THE_BEAST,
         name: 'Beauty and the Beast',
         slug: generateSlug('Beauty and the Beast'),
         color: '#9B1CBA',
@@ -38,7 +38,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 3,
       },
       {
-        id: ids.subthemes.DISCOVERY,
+        id: idMap.subthemes.DISCOVERY,
         name: 'Discovery',
         slug: generateSlug('Discovery'),
         color: '#66CEEE',
@@ -46,7 +46,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 0,
       },
       {
-        id: ids.subthemes.FAME,
+        id: idMap.subthemes.FAME,
         name: 'Fame',
         slug: generateSlug('Fame'),
         color: '#E33782',
@@ -54,7 +54,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 1,
       },
       {
-        id: ids.subthemes.DOWNFALL,
+        id: idMap.subthemes.DOWNFALL,
         name: 'Downfall',
         slug: generateSlug('Downfall'),
         color: '#0A0E1F',
@@ -62,7 +62,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 2,
       },
       {
-        id: ids.subthemes.RECOVERY,
+        id: idMap.subthemes.RECOVERY,
         name: 'Recovery',
         slug: generateSlug('Recovery'),
         color: '#FAC31D',
@@ -70,7 +70,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 3,
       },
       {
-        id: ids.subthemes.PAYOFF,
+        id: idMap.subthemes.PAYOFF,
         name: 'Payoff',
         slug: generateSlug('Payoff'),
         color: '#188B1C',

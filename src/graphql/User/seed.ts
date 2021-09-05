@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { ids } from '@graphql/ids';
+import { idMap } from '@graphql/idMap';
 import { hashPw } from '@lib/authHelpers';
 import { generateSlug } from '@lib/util';
 
@@ -7,7 +7,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
   await prisma.user.createMany({
     data: [
       {
-        id: ids.users.DDT_ADMIN,
+        id: idMap.users.DDT_ADMIN,
         firstName: 'DDT',
         lastName: 'Admin',
         displayName: 'DDT',
@@ -17,7 +17,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         isAdmin: true,
       },
       {
-        id: ids.users.WILLIAM_FORD,
+        id: idMap.users.WILLIAM_FORD,
         firstName: 'William',
         lastName: 'Ford',
         displayName: 'William F.',
@@ -27,7 +27,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         isAdmin: true,
       },
       {
-        id: ids.users.BAS_VEENHOVEN,
+        id: idMap.users.BAS_VEENHOVEN,
         firstName: 'Bas',
         lastName: 'Veenhoven',
         displayName: 'Bas V.',
@@ -37,7 +37,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         isAdmin: true,
       },
       {
-        id: ids.users.WASILJA_PETERSE,
+        id: idMap.users.WASILJA_PETERSE,
         firstName: 'Wasilja',
         lastName: 'Peterse',
         displayName: 'Wasilja P.',
@@ -45,7 +45,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         email: 'wasilja_18@hotmail.com',
       },
       {
-        id: ids.users.BART_VRIENS,
+        id: idMap.users.BART_VRIENS,
         firstName: 'Bart',
         lastName: 'Vriens',
         displayName: 'Bart V.',
@@ -53,7 +53,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         email: 'bart_vriens@live.nl',
       },
       {
-        id: ids.users.PIM_VRIENS,
+        id: idMap.users.PIM_VRIENS,
         firstName: 'Pim',
         lastName: 'Vriens',
         displayName: 'Pim V.',
@@ -61,7 +61,7 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         email: 'pim_vriens@hotmail.com',
       },
       {
-        id: ids.users.WIM_VAN_OTTERDIJK,
+        id: idMap.users.WIM_VAN_OTTERDIJK,
         firstName: 'Wim',
         lastName: 'van Otterdijk',
         displayName: 'Wim v O.',
@@ -69,12 +69,20 @@ export default async function seedUsers(prisma: PrismaClient): Promise<void> {
         email: 'w.v.otterdijk@gmail.com',
       },
       {
-        id: ids.users.JAAP_VERSCHUREN,
+        id: idMap.users.JAAP_VERSCHUREN,
         firstName: 'Jaap',
         lastName: 'Verschuren',
         displayName: 'Jaap V.',
         slug: generateSlug('Jaap V.'),
         email: 'jaap_verschuren@hotmail.com',
+      },
+      {
+        id: idMap.users.DON_DOMINO,
+        firstName: 'Don',
+        lastName: 'Domino',
+        displayName: 'DonDomino',
+        slug: generateSlug('DonDomino'),
+        email: 'info@dondomino.eu',
       },
     ],
   });
