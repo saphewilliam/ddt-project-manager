@@ -37,7 +37,7 @@ export default function useSessionData(): getSessionQuery['session'] {
 
       getSession();
     }
-  }, [cookie.ddtauth]);
+  }, [router, cookie.ddtauth]);
 
   return session;
 }

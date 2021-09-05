@@ -1,14 +1,29 @@
 import { PrismaClient, Session } from '@prisma/client';
 import { hash, compare } from 'bcrypt';
 import { randomBytes } from 'crypto';
+import { ApiContext } from './apiContext';
 
 export async function hashPw(plaintext: string): Promise<string> {
   return await hash(plaintext, 10);
 }
 
-export async function isValidSesssion(session: Session | null): Promise<boolean | Error> {
+/** Wrapper for `isValidSession` to use as nexus authorize parameter */
+export async function authorizeSession(
+  _: Record<string, string>,
+  __: Record<string, string>,
+  ctx: ApiContext,
+): Promise<boolean | Error> {
+  return await isValidSession(ctx.session);
+}
+
+export async function isValidSession(
+  session: Session | null,
+  teamMayBeNull = false,
+): Promise<boolean | Error> {
   if (session === null)
     return Error('Please supply a valid session token in the Authorization header');
+
+  if (session.teamId === null && !teamMayBeNull) return Error('Please select a team');
 
   if (session.expiresAt && session.expiresAt < new Date()) return Error('Session expired');
 

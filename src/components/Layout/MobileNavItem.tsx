@@ -1,9 +1,16 @@
 import cx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ComponentProps, ReactElement } from 'react';
 import { NavItemProps } from './';
 
 export default function MobileNavItem(props: NavItemProps): ReactElement {
+  const router = useRouter();
+
+  const isActive = props.exactHref
+    ? router.pathname === props.href
+    : router.pathname.startsWith(props.href);
+
   const iconProps: ComponentProps<'svg'> = {
     width: 30,
     className: cx('transition-all', 'duration-500'),
@@ -20,10 +27,10 @@ export default function MobileNavItem(props: NavItemProps): ReactElement {
             'rounded-xl',
             'transition-colors',
             'hover:bg-dark-selected',
-            props.active && cx('bg-dark-selected', 'border-t-4', 'border-primary'),
+            isActive && cx('bg-dark-selected', 'border-t-4', 'border-primary'),
           )}
         >
-          {props.active ? <props.activeIcon {...iconProps} /> : <props.icon {...iconProps} />}
+          {isActive ? <props.activeIcon {...iconProps} /> : <props.icon {...iconProps} />}
         </a>
       </Link>
     </li>

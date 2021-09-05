@@ -1,5 +1,5 @@
-import { flush, seed } from '@graphql/seed';
 import { PrismaClient } from '@prisma/client';
+import { flush, seed } from '@graphql/seed';
 
 const prisma = new PrismaClient();
 

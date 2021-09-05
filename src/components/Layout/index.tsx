@@ -5,6 +5,7 @@ import {
   UserGroupIcon as TeamOutline,
   LibraryIcon as AdminOutline,
   UserIcon as ProfileOutline,
+  AnnotationIcon as FeedbackOutline,
 } from '@heroicons/react/outline';
 import {
   HomeIcon as HomeSolid,
@@ -13,14 +14,23 @@ import {
   UserGroupIcon as TeamSolid,
   LibraryIcon as AdminSolid,
   UserIcon as ProfileSolid,
+  AnnotationIcon as FeedbackSolid,
 } from '@heroicons/react/solid';
 import cx from 'clsx';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React, { ComponentProps, ReactElement, ReactNode, useMemo, useContext } from 'react';
+import React, {
+  ComponentProps,
+  ReactElement,
+  ReactNode,
+  useMemo,
+  useContext,
+  useEffect,
+} from 'react';
 import { Role } from '@graphql/__generated__/codegen-self';
 import useDeviceWidth from '@hooks/useDeviceWidth';
+import useSdk from '@hooks/useSdk';
 import { SessionContext } from '@lib/reactContext';
+import { displayError } from '@lib/util';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 
@@ -31,7 +41,7 @@ export interface Props {
 export interface NavItemProps {
   label: string;
   href: string;
-  active: boolean;
+  exactHref?: boolean;
   icon: (props: ComponentProps<'svg'>) => ReactElement;
   activeIcon: (props: ComponentProps<'svg'>) => ReactElement;
   subItems?: { label: string; href: string }[];
@@ -42,28 +52,32 @@ export interface NavItemProps {
 }
 
 export default function Layout(props: Props): ReactElement {
-  const router = useRouter();
   const device = useDeviceWidth();
   const session = useContext(SessionContext);
+  const sdk = useSdk();
+  const { data: uiData, error: uiError } = sdk.useGetUi();
+
+  useEffect(() => {
+    if (!uiData && uiError) displayError(uiError.message);
+  }, [uiData, uiError]);
 
   const navItems: NavItemProps[] = useMemo<NavItemProps[]>(
     () => [
       {
         href: '/',
+        exactHref: true,
         label: 'Dashboard',
         icon: HomeOutline,
         activeIcon: HomeSolid,
-        active: router.pathname === '/',
       },
       {
         href: '/lists',
         label: 'Lists',
         icon: ListOutline,
         activeIcon: ListSolid,
-        active: router.pathname.startsWith('/lists'),
-        subItems: Array.from(Array(10)).map(() => ({
-          label: 'hello world lorem ipsum dolor etsam',
-          href: '/lists/hello-world',
+        subItems: uiData?.stoneListUsers.map((user) => ({
+          label: `${user.firstName} ${user.lastName}`,
+          href: `/lists/${user.slug}`,
         })),
       },
       {
@@ -71,10 +85,9 @@ export default function Layout(props: Props): ReactElement {
         label: 'Events',
         icon: EventOutline,
         activeIcon: EventSolid,
-        active: router.pathname.startsWith('/events'),
-        subItems: Array.from(Array(10)).map(() => ({
-          label: 'hello world lorem ipsum dolor etsam',
-          href: '/lists/hello-world',
+        subItems: uiData?.events.map((event) => ({
+          label: event.name,
+          href: `events/${event.slug}`,
         })),
       },
       {
@@ -82,7 +95,6 @@ export default function Layout(props: Props): ReactElement {
         label: 'Team',
         icon: TeamOutline,
         activeIcon: TeamSolid,
-        active: router.pathname.startsWith('/team'),
         hidden: session?.member?.role !== Role.CAPTAIN,
       },
       {
@@ -90,7 +102,6 @@ export default function Layout(props: Props): ReactElement {
         label: 'Admin',
         icon: AdminOutline,
         activeIcon: AdminSolid,
-        active: router.pathname.startsWith('/admin'),
         hidden: !session?.user.isAdmin,
       },
       {
@@ -98,11 +109,17 @@ export default function Layout(props: Props): ReactElement {
         label: 'Profile',
         icon: ProfileOutline,
         activeIcon: ProfileSolid,
-        active: router.pathname.startsWith('/profile'),
         hidden: !device.mobile,
       },
+      {
+        href: '/feedback',
+        label: 'Feedback',
+        icon: FeedbackOutline,
+        activeIcon: FeedbackSolid,
+        hidden: session === null || session?.user.isAdmin,
+      },
     ],
-    [router, device, session],
+    [uiData, device, session],
   );
 
   return (

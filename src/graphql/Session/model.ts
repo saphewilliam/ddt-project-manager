@@ -9,7 +9,7 @@ export const sessionModel = nexusModel(Session, {
   extend(t) {
     t.nullable.field('member', {
       type: 'Member',
-      resolve: (root, __, ctx: ApiContext) => {
+      resolve(root, __, ctx: ApiContext) {
         if (root.teamId === null) return null;
         else
           return ctx.prisma.member.findFirst({

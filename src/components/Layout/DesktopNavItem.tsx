@@ -1,11 +1,17 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ComponentProps, ReactElement, useRef } from 'react';
 import { NavItemProps } from './';
 
 export default function DesktopNavItem(props: NavItemProps): ReactElement {
   const ref = useRef<HTMLUListElement>(null);
+  const router = useRouter();
+
+  const isActive = props.exactHref
+    ? router.pathname === props.href
+    : router.pathname.startsWith(props.href);
 
   const className = cx(
     'flex',
@@ -19,7 +25,7 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
     'text-light',
     'transition-all',
     'hover:bg-dark-selected',
-    props.active && 'bg-dark-selected',
+    isActive && 'bg-dark-selected',
   );
 
   const iconProps: ComponentProps<'svg'> = {
@@ -29,7 +35,7 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
 
   const commonChildren: ReactElement = (
     <div className={cx('flex', 'items-end')}>
-      {props.active ? <props.activeIcon {...iconProps} /> : <props.icon {...iconProps} />}
+      {isActive ? <props.activeIcon {...iconProps} /> : <props.icon {...iconProps} />}
       <span
         className={cx(
           'duration-500',
@@ -79,24 +85,25 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
             }}
           >
             {props.subItems.map((subItem, i) => (
-              <li
-                key={i}
-                className={cx(
-                  'pl-6',
-                  'pr-3',
-                  'py-1',
-                  'border-l-4',
-                  'border-muted',
-                  'hover:bg-dark-selected',
-                  'text-muted',
-                  'hover:text-white',
-                  'transition-colors',
-                  'whitespace-nowrap',
-                  'truncate',
-                )}
-              >
+              <li className={cx('border-l-4', 'border-muted')} key={i}>
                 <Link href={subItem.href}>
-                  <a tabIndex={props.expanded ? 0 : -1}>{subItem.label}</a>
+                  <a
+                    className={cx(
+                      'block',
+                      'pl-6',
+                      'pr-3',
+                      'py-1',
+                      'hover:bg-dark-selected',
+                      'text-muted',
+                      'hover:text-white',
+                      'transition-colors',
+                      'whitespace-nowrap',
+                      'truncate',
+                    )}
+                    tabIndex={props.expanded ? 0 : -1}
+                  >
+                    {subItem.label}
+                  </a>
                 </Link>
               </li>
             ))}

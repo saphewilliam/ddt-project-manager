@@ -176,10 +176,12 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Stone: { // root type
-    code: string; // String!
-    color: string; // String!
+    alias: string; // String!
+    alias2?: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: string; // String!
+    description?: string | null; // String
+    hex: string; // String!
+    hex2?: string | null; // String
     id: string; // ID!
     name: string; // String!
     order: number; // Int!
@@ -199,6 +201,7 @@ export interface NexusGenObjects {
     description: string; // String!
     id: string; // ID!
     name: string; // String!
+    order: number; // Int!
     teamId: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -227,6 +230,7 @@ export interface NexusGenObjects {
     id: string; // ID!
     name: string; // String!
     order: number; // Int!
+    slug: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Team: { // root type
@@ -244,6 +248,7 @@ export interface NexusGenObjects {
     id: string; // ID!
     isAdmin: boolean; // Boolean!
     lastName: string; // String!
+    slug: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
 }
@@ -350,7 +355,9 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
+    events: NexusGenRootTypes['Event'][]; // [Event!]!
     session: NexusGenRootTypes['Session'] | null; // Session
+    stoneListUsers: NexusGenRootTypes['User'][]; // [User!]!
     teams: NexusGenRootTypes['Team'][]; // [Team!]!
   }
   Session: { // field return type
@@ -384,10 +391,12 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Stone: { // field return type
-    code: string; // String!
-    color: string; // String!
+    alias: string; // String!
+    alias2: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: string; // String!
+    description: string | null; // String
+    hex: string; // String!
+    hex2: string | null; // String
     id: string; // ID!
     name: string; // String!
     order: number; // Int!
@@ -413,6 +422,7 @@ export interface NexusGenFieldTypes {
     description: string; // String!
     id: string; // ID!
     name: string; // String!
+    order: number; // Int!
     stones: NexusGenRootTypes['Stone'][]; // [Stone!]!
     team: NexusGenRootTypes['Team']; // Team!
     teamId: string; // String!
@@ -452,6 +462,7 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     order: number; // Int!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
+    slug: string; // String!
     stones: NexusGenRootTypes['StonesOnSubtheme'][]; // [StonesOnSubtheme!]!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -481,6 +492,7 @@ export interface NexusGenFieldTypes {
     lastName: string; // String!
     projects: NexusGenRootTypes['Project'][]; // [Project!]!
     sessions: NexusGenRootTypes['Session'][]; // [Session!]!
+    slug: string; // String!
     stoneLists: NexusGenRootTypes['StoneList'][]; // [StoneList!]!
     stonesOnProjects: NexusGenRootTypes['StonesOnProject'][]; // [StonesOnProject!]!
     stonesOnSubthemes: NexusGenRootTypes['StonesOnSubtheme'][]; // [StonesOnSubtheme!]!
@@ -581,7 +593,9 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Query: { // field return type name
+    events: 'Event'
     session: 'Session'
+    stoneListUsers: 'User'
     teams: 'Team'
   }
   Session: { // field return type name
@@ -615,10 +629,12 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Stone: { // field return type name
-    code: 'String'
-    color: 'String'
+    alias: 'String'
+    alias2: 'String'
     createdAt: 'DateTime'
     description: 'String'
+    hex: 'String'
+    hex2: 'String'
     id: 'ID'
     name: 'String'
     order: 'Int'
@@ -644,6 +660,7 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     id: 'ID'
     name: 'String'
+    order: 'Int'
     stones: 'Stone'
     team: 'Team'
     teamId: 'String'
@@ -683,6 +700,7 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     order: 'Int'
     projects: 'Project'
+    slug: 'String'
     stones: 'StonesOnSubtheme'
     updatedAt: 'DateTime'
   }
@@ -712,6 +730,7 @@ export interface NexusGenFieldTypeNames {
     lastName: 'String'
     projects: 'Project'
     sessions: 'Session'
+    slug: 'String'
     stoneLists: 'StoneList'
     stonesOnProjects: 'StonesOnProject'
     stonesOnSubthemes: 'StonesOnSubtheme'

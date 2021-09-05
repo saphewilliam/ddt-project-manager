@@ -158,8 +158,13 @@ enum ProjectType {
 }
 
 type Query {
+  events: [Event!]!
+
   """Get session by its token"""
   session(token: String!): Session
+
+  """Find all users of this team that have a nonzero stonelist in this team"""
+  stoneListUsers: [User!]!
 
   """Fetch the teams that the user is a member of"""
   teams: [Team!]!
@@ -205,10 +210,12 @@ type StatsOnProject {
 }
 
 type Stone {
-  code: String!
-  color: String!
+  alias: String!
+  alias2: String
   createdAt: DateTime!
-  description: String!
+  description: String
+  hex: String!
+  hex2: String
   id: ID!
   name: String!
   order: Int!
@@ -236,6 +243,7 @@ type StoneType {
   description: String!
   id: ID!
   name: String!
+  order: Int!
   stones: [Stone!]!
   team: Team!
   teamId: String!
@@ -278,6 +286,7 @@ type Subtheme {
   name: String!
   order: Int!
   projects: [Project!]!
+  slug: String!
   stones: [StonesOnSubtheme!]!
   updatedAt: DateTime!
 }
@@ -311,6 +320,7 @@ type User {
   """The projects that this user supervises"""
   projects: [Project!]!
   sessions: [Session!]!
+  slug: String!
   stoneLists: [StoneList!]!
   stonesOnProjects: [StonesOnProject!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!

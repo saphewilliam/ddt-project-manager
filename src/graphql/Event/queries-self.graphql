@@ -1,0 +1,13 @@
+query getUI {
+  events {
+    id
+    name
+    slug
+  }
+  stoneListUsers {
+    id
+    firstName
+    lastName
+    slug
+  }
+}

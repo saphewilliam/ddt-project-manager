@@ -78,10 +78,6 @@ export type AttributesOnSubtheme = {
   subtheme: Subtheme;
 };
 
-
-
-
-
 export type Event = {
   id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -93,7 +89,6 @@ export type Event = {
   teamId: Scalars['String'];
   team: Team;
 };
-
 
 export type Member = {
   id: Scalars['ID'];
@@ -184,8 +179,11 @@ export enum ProjectType {
 }
 
 export type Query = {
+  events: Array<Event>;
   /** Get session by its token */
   session: Maybe<Session>;
+  /** Find all users of this team that have a nonzero stonelist in this team */
+  stoneListUsers: Array<User>;
   /** Fetch the teams that the user is a member of */
   teams: Array<Team>;
 };
@@ -239,10 +237,12 @@ export type Stone = {
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
-  code: Scalars['String'];
+  alias: Scalars['String'];
+  alias2: Maybe<Scalars['String']>;
+  hex: Scalars['String'];
+  hex2: Maybe<Scalars['String']>;
+  description: Maybe<Scalars['String']>;
   order: Scalars['Int'];
-  color: Scalars['String'];
-  description: Scalars['String'];
   stoneLists: Array<StoneList>;
   projects: Array<StonesOnProject>;
   subthemes: Array<StonesOnSubtheme>;
@@ -267,6 +267,7 @@ export type StoneType = {
   updatedAt: Scalars['DateTime'];
   name: Scalars['String'];
   description: Scalars['String'];
+  order: Scalars['Int'];
   stones: Array<Stone>;
   teamId: Scalars['String'];
   team: Team;
@@ -305,6 +306,7 @@ export type Subtheme = {
   name: Scalars['String'];
   color: Scalars['String'];
   order: Scalars['Int'];
+  slug: Scalars['String'];
   projects: Array<Project>;
   attributes: Array<AttributesOnSubtheme>;
   stones: Array<StonesOnSubtheme>;
@@ -332,6 +334,7 @@ export type User = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   displayName: Scalars['String'];
+  slug: Scalars['String'];
   avatar: Maybe<Scalars['String']>;
   email: Scalars['String'];
   isAdmin: Scalars['Boolean'];
@@ -347,6 +350,11 @@ export type User = {
   /** The projects that this user supervises */
   projects: Array<Project>;
 };
+
+export type getUIQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getUIQuery = { events: Array<{ id: string, name: string, slug: string }>, stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
 
 export type loginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -378,6 +386,21 @@ export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 export type getTeamsQuery = { teams: Array<{ id: string, name: string }> };
 
 
+export const getUIDocument = gql`
+    query getUI {
+  events {
+    id
+    name
+    slug
+  }
+  stoneListUsers {
+    id
+    firstName
+    lastName
+    slug
+  }
+}
+    `;
 export const loginDocument = gql`
     mutation login($email: String!, $password: String!, $isPermanent: Boolean!) {
   login(email: $email, password: $password, isPermanent: $isPermanent)
@@ -430,6 +453,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    getUI(variables?: getUIQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUIQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getUIQuery>(getUIDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUI');
+    },
     login(variables: loginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<loginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<loginMutation>(loginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
     },
@@ -447,13 +473,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
 export type Sdk = ReturnType<typeof getSdk>;
 export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   const sdk = getSdk(client, withWrapper);
+  const genKey = <V extends Record<string, unknown> = Record<string, unknown>>(name: string, object: V = {} as V): SWRKeyInterface => [name, ...Object.keys(object).sort().map(key => object[key])];
   return {
     ...sdk,
-    useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
-      return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);
+    useGetUi(variables?: getUIQueryVariables, config?: SWRConfigInterface<getUIQuery, ClientError>) {
+      return useSWR<getUIQuery, ClientError>(genKey<getUIQueryVariables>('GetUi', variables), () => sdk.getUI(variables), config);
     },
-    useGetTeams(key: SWRKeyInterface, variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
-      return useSWR<getTeamsQuery, ClientError>(key, () => sdk.getTeams(variables), config);
+    useGetSession(variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
+      return useSWR<getSessionQuery, ClientError>(genKey<getSessionQueryVariables>('GetSession', variables), () => sdk.getSession(variables), config);
+    },
+    useGetTeams(variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
+      return useSWR<getTeamsQuery, ClientError>(genKey<getTeamsQueryVariables>('GetTeams', variables), () => sdk.getTeams(variables), config);
     }
   };
 }

@@ -1,0 +1,42 @@
+export const ids = {
+  users: {
+    DDT_ADMIN: '4ffded20-d5f8-41b4-ae5b-60fa8445cc1e',
+    WILLIAM_FORD: '80c03794-073c-4ca2-a9de-e0c12f569c2f',
+    BAS_VEENHOVEN: '8aa6b936-9a98-41d7-9752-0fef6ca7b51a',
+    WASILJA_PETERSE: '8c8b138f-5395-4d92-a1a3-473d15507a20',
+    BART_VRIENS: '8fdb6f91-1894-46cd-89e7-4484f5b4d66c',
+    PIM_VRIENS: 'bdd045f2-5fdd-43f0-958c-61ceb332b383',
+    WIM_VAN_OTTERDIJK: 'db618c52-6159-421d-85c2-89441c768b54',
+    JAAP_VERSCHUREN: 'e6eb7892-2e2b-4d68-88da-a82a430459ad',
+  },
+  events: {
+    WDC_2021: '87db2cfc-d4a9-406f-91ce-b73c1ee58c49',
+    DDT_2019: '7794c798-60e5-466f-8332-0853cbb41c1f',
+    VEXX: '7b72e813-7aed-49ae-9d92-93c6f3797583',
+  },
+  subthemes: {
+    INTRODUCTION: 'f64df0f7-038f-4d06-9dfa-222b7b3a1d96',
+    PETER_PAN: 'ccf90f2f-21a9-4844-a9e7-02456f00875e',
+    EMPERORS_NEW_CLOTHES: 'ad2c79fd-3570-4c0e-ac3e-24f0240b070b',
+    BEAUTY_AND_THE_BEAST: '5380613e-6e04-4d80-9b49-7baf6d9a4de5',
+    DISCOVERY: '58322c6a-f531-4cd9-b942-819538eb051c',
+    FAME: 'd1ac3b56-8b35-4965-b6f1-f4113e6adb38',
+    DOWNFALL: 'd6075235-a943-43c5-bd04-5ba0d55b8f46',
+    RECOVERY: 'e3140d5b-31ec-4a11-94e4-fbff33790829',
+    PAYOFF: '7446371e-0ae7-4a1b-88fc-fad5a7b3ee12',
+  },
+  teams: {
+    DUTCH_DOMINO_TEAM: '068eec80-9864-4e07-a0ba-e1a4cbb3902d',
+    WILLIAM_FORD: '0a6b4595-9031-4f97-87c3-652c06d11269',
+    BAS_VEENHOVEN: '0d39db0a-600f-4f1c-a6b2-3ea2c9354ac8',
+  },
+  stoneTypes: {
+    LAMPING: '94c9cfdc-836b-4502-870c-01c9369a1035',
+    DON_DOMINO: '8cd02574-0bba-4442-8e00-fa014db178a8',
+    BULK: 'f8cc9276-869c-4700-85fe-59ca084709fb',
+    MR_DOMINO: '5cf0a284-6cbc-4a29-bd90-bae28df1f3ed',
+    DOMINO_DAY: '1f78f828-8452-47d3-9482-814a6b84f5b8',
+    COLOR_CHANGING: 'f9ace773-3e19-417a-9c3c-09d12f50caa6',
+    OTHERS: '482f89ac-e643-4a5b-bcf9-ca187bdb0449',
+  },
+};

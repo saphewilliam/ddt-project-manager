@@ -1,67 +1,79 @@
 import { PrismaClient } from '@prisma/client';
+import { ids } from '@graphql/ids';
 import { hashPw } from '@lib/authHelpers';
+import { generateSlug } from '@lib/util';
 
 export default async function seedUsers(prisma: PrismaClient): Promise<void> {
   await prisma.user.createMany({
     data: [
       {
-        id: '4ffded20-d5f8-41b4-ae5b-60fa8445cc1e',
+        id: ids.users.DDT_ADMIN,
         firstName: 'DDT',
         lastName: 'Admin',
         displayName: 'DDT',
+        slug: generateSlug('DDT'),
         email: 'info@dutchdominoteam.nl',
         password: await hashPw('Admin123'),
         isAdmin: true,
       },
       {
-        id: '80c03794-073c-4ca2-a9de-e0c12f569c2f',
+        id: ids.users.WILLIAM_FORD,
         firstName: 'William',
         lastName: 'Ford',
         displayName: 'William F.',
+        slug: generateSlug('William F.'),
         email: 'william.ford@telfort.nl',
         password: await hashPw('WilliamFord'),
         isAdmin: true,
       },
       {
-        id: '8aa6b936-9a98-41d7-9752-0fef6ca7b51a',
+        id: ids.users.BAS_VEENHOVEN,
         firstName: 'Bas',
         lastName: 'Veenhoven',
         displayName: 'Bas V.',
+        slug: generateSlug('Bas V.'),
         email: 'bas_veenhoven@hotmail.com',
+        password: await hashPw('BasVeenhoven'),
+        isAdmin: true,
       },
       {
-        id: '8c8b138f-5395-4d92-a1a3-473d15507a20',
+        id: ids.users.WASILJA_PETERSE,
         firstName: 'Wasilja',
         lastName: 'Peterse',
         displayName: 'Wasilja P.',
+        slug: generateSlug('Wasilja P.'),
         email: 'wasilja_18@hotmail.com',
       },
       {
-        id: '8fdb6f91-1894-46cd-89e7-4484f5b4d66c',
+        id: ids.users.BART_VRIENS,
         firstName: 'Bart',
         lastName: 'Vriens',
         displayName: 'Bart V.',
+        slug: generateSlug('Bart V.'),
         email: 'bart_vriens@live.nl',
       },
       {
-        id: 'bdd045f2-5fdd-43f0-958c-61ceb332b383',
+        id: ids.users.PIM_VRIENS,
         firstName: 'Pim',
         lastName: 'Vriens',
         displayName: 'Pim V.',
+        slug: generateSlug('Pim V.'),
         email: 'pim_vriens@hotmail.com',
       },
       {
-        id: 'db618c52-6159-421d-85c2-89441c768b54',
+        id: ids.users.WIM_VAN_OTTERDIJK,
         firstName: 'Wim',
         lastName: 'van Otterdijk',
         displayName: 'Wim v O.',
+        slug: generateSlug('Wim v O.'),
         email: 'w.v.otterdijk@gmail.com',
       },
       {
-        id: 'e6eb7892-2e2b-4d68-88da-a82a430459ad',
+        id: ids.users.JAAP_VERSCHUREN,
         firstName: 'Jaap',
         lastName: 'Verschuren',
         displayName: 'Jaap V.',
+        slug: generateSlug('Jaap V.'),
         email: 'jaap_verschuren@hotmail.com',
       },
     ],

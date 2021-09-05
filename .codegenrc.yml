@@ -12,3 +12,4 @@ generates:
       namingConvention: keep
       skipTypename: true
       avoidOptionals: true
+      autogenSWRKey: true

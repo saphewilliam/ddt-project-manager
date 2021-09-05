@@ -21,6 +21,7 @@ model User {
   firstName   String
   lastName    String
   displayName String
+  slug        String   @unique
   password    String?
   avatar      String?
   email       String   @unique
@@ -72,6 +73,8 @@ model Member {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
 }
 
 model Team {
@@ -111,6 +114,7 @@ model Subtheme {
   name      String
   color     String
   order     Int
+  slug      String   @unique
 
   projects   Project[]
   attributes AttributesOnSubtheme[]
@@ -204,6 +208,7 @@ model StoneType {
   updatedAt   DateTime @updatedAt
   name        String
   description String
+  order       Int
 
   stones Stone[]
 
@@ -216,10 +221,12 @@ model Stone {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   name        String
-  code        String
+  alias       String
+  alias2      String?
+  hex         String
+  hex2        String?
+  description String?
   order       Int
-  color       String
-  description String
 
   stoneLists StoneList[]
   projects   StonesOnProject[]
