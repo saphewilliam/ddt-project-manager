@@ -62,10 +62,12 @@ export default function Navigation(): ReactElement {
         label: 'Lists',
         icon: ListOutline,
         activeIcon: ListSolid,
-        subItems: uiData?.stoneListUsers.map((user) => ({
-          label: `${user.firstName} ${user.lastName}`,
-          href: `/lists/${user.slug}`,
-        })),
+        subItems: [{ label: 'All', href: '/lists/all' }].concat(
+          uiData?.stoneListUsers.map((user) => ({
+            label: `${user.firstName} ${user.lastName}`,
+            href: `/lists/${user.slug}`,
+          })) ?? [],
+        ),
       },
       {
         href: '/events',

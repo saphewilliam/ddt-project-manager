@@ -1,0 +1,48 @@
+fragment stoneListStone on Stone {
+  id
+  name
+  alias
+  alias2
+  hex
+  hex2
+  order
+  stoneTypeId
+}
+
+query getStoneList($userSlug: String!) {
+  stoneList(userSlug: $userSlug) {
+    id
+    amount
+    stone {
+      ...stoneListStone
+    }
+  }
+  user(userSlug: $userSlug) {
+    id
+    displayName
+    firstName
+    lastName
+  }
+  stoneTypes {
+    id
+    name
+  }
+}
+
+query getStoneLists {
+  stones {
+    ...stoneListStone
+    stoneLists {
+			id
+      amount
+      user {
+        id
+        displayName
+      }      
+    }
+  }
+  stoneTypes {
+    id
+    name
+  }
+}

@@ -1,9 +1,17 @@
 import { randomBytes } from 'crypto';
+import { ParsedUrlQuery } from 'querystring';
 import { toast } from 'react-hot-toast';
 
 export function displayError(message: string): void {
   toast.error(message);
   console.error(message);
+}
+
+export function extractURLParam(name: string, query?: ParsedUrlQuery): string | null {
+  if (!query) return null;
+  const raw = query[name];
+  const result: string | null = (Array.isArray(raw) ? raw[0] : raw) || null;
+  return result;
 }
 
 export function generateSlug(raw: string): string {

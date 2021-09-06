@@ -22,7 +22,7 @@ export default async function seedStoneLists(prisma: PrismaClient): Promise<void
       },
       {
         userId: idMap.users.DON_DOMINO,
-        stoneId: idMap.stones.ROOD_DO_B,
+        stoneId: idMap.stones.GEEL_DO_B,
         amount: 27000,
       },
       {

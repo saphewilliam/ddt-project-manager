@@ -182,15 +182,33 @@ export type Query = {
   events: Array<Event>;
   /** Get session by its token */
   session: Maybe<Session>;
-  /** Find all users of this team that have a nonzero stonelist in this team */
-  stoneListUsers: Array<User>;
+  /** Get all stones of a team */
+  stones: Array<Stone>;
+  /** Get stonelist of a user in a team */
+  stoneList: Array<StoneList>;
+  /** Get all stonetypes of a team */
+  stoneTypes: Array<StoneType>;
   /** Fetch the teams that the user is a member of */
   teams: Array<Team>;
+  /** Find user by its slug */
+  user: Maybe<User>;
+  /** Find all users of this team that have a nonzero stonelist in this team */
+  stoneListUsers: Array<User>;
 };
 
 
 export type QuerysessionArgs = {
   token: Scalars['String'];
+};
+
+
+export type QuerystoneListArgs = {
+  userSlug: Scalars['String'];
+};
+
+
+export type QueryuserArgs = {
+  userSlug: Scalars['String'];
 };
 
 export enum Role {
@@ -380,12 +398,37 @@ export type getSessionQueryVariables = Exact<{
 
 export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string>, isAdmin: boolean }, member: Maybe<{ id: string, role: Role }> }> };
 
+export type stoneListStoneFragment = { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string };
+
+export type getStoneListQueryVariables = Exact<{
+  userSlug: Scalars['String'];
+}>;
+
+
+export type getStoneListQuery = { stoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string } }>, user: Maybe<{ id: string, displayName: string, firstName: string, lastName: string }>, stoneTypes: Array<{ id: string, name: string }> };
+
+export type getStoneListsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getStoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, user: { id: string, displayName: string } }> }>, stoneTypes: Array<{ id: string, name: string }> };
+
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type getTeamsQuery = { teams: Array<{ id: string, name: string }> };
 
-
+export const stoneListStoneFragmentDoc = gql`
+    fragment stoneListStone on Stone {
+  id
+  name
+  alias
+  alias2
+  hex
+  hex2
+  order
+  stoneTypeId
+}
+    `;
 export const getUIDocument = gql`
     query getUI {
   events {
@@ -437,6 +480,46 @@ export const getSessionDocument = gql`
   }
 }
     `;
+export const getStoneListDocument = gql`
+    query getStoneList($userSlug: String!) {
+  stoneList(userSlug: $userSlug) {
+    id
+    amount
+    stone {
+      ...stoneListStone
+    }
+  }
+  user(userSlug: $userSlug) {
+    id
+    displayName
+    firstName
+    lastName
+  }
+  stoneTypes {
+    id
+    name
+  }
+}
+    ${stoneListStoneFragmentDoc}`;
+export const getStoneListsDocument = gql`
+    query getStoneLists {
+  stones {
+    ...stoneListStone
+    stoneLists {
+      id
+      amount
+      user {
+        id
+        displayName
+      }
+    }
+  }
+  stoneTypes {
+    id
+    name
+  }
+}
+    ${stoneListStoneFragmentDoc}`;
 export const getTeamsDocument = gql`
     query getTeams {
   teams {
@@ -465,6 +548,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getSession(variables: getSessionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getSessionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getSessionQuery>(getSessionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSession');
     },
+    getStoneList(variables: getStoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getStoneListQuery>(getStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneList');
+    },
+    getStoneLists(variables?: getStoneListsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getStoneListsQuery>(getStoneListsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneLists');
+    },
     getTeams(variables?: getTeamsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getTeamsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getTeamsQuery>(getTeamsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTeams');
     }
@@ -481,6 +570,12 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     },
     useGetSession(variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
       return useSWR<getSessionQuery, ClientError>(genKey<getSessionQueryVariables>('GetSession', variables), () => sdk.getSession(variables), config);
+    },
+    useGetStoneList(variables: getStoneListQueryVariables, config?: SWRConfigInterface<getStoneListQuery, ClientError>) {
+      return useSWR<getStoneListQuery, ClientError>(genKey<getStoneListQueryVariables>('GetStoneList', variables), () => sdk.getStoneList(variables), config);
+    },
+    useGetStoneLists(variables?: getStoneListsQueryVariables, config?: SWRConfigInterface<getStoneListsQuery, ClientError>) {
+      return useSWR<getStoneListsQuery, ClientError>(genKey<getStoneListsQueryVariables>('GetStoneLists', variables), () => sdk.getStoneLists(variables), config);
     },
     useGetTeams(variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
       return useSWR<getTeamsQuery, ClientError>(genKey<getTeamsQueryVariables>('GetTeams', variables), () => sdk.getTeams(variables), config);

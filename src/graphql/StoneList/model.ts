@@ -1,4 +1,4 @@
-import { extendType } from 'nexus';
+import { extendType, stringArg } from 'nexus';
 import { StoneList } from 'nexus-prisma';
 import { ApiContext } from '@lib/apiContext';
 import { authorizeSession } from '@lib/authHelpers';
@@ -9,19 +9,20 @@ export const stoneListModel = nexusModel(StoneList);
 export const stoneListQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.list.field('stoneListUsers', {
-      type: 'User',
-      description: 'Find all users of this team that have a nonzero stonelist in this team',
+    t.list.field('stoneList', {
+      type: 'StoneList',
+      args: {
+        userSlug: stringArg(),
+      },
       authorize: authorizeSession,
-      resolve: (_, __, ctx: ApiContext) =>
-        ctx.prisma.user.findMany({
+      description: 'Get stonelist of a user in a team',
+      resolve: (_, args, ctx: ApiContext) =>
+        ctx.prisma.stoneList.findMany({
           where: {
-            teams: { some: { teamId: ctx.session?.teamId ?? '' } },
-            stoneLists: {
-              some: { stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } } },
-            },
+            user: { slug: args.userSlug },
+            stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } },
           },
-          orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],
+          orderBy: [{ stone: { stoneType: { order: 'asc' } } }, { stone: { order: 'asc' } }],
         }),
     });
   },

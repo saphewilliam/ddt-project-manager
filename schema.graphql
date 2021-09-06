@@ -163,11 +163,23 @@ type Query {
   """Get session by its token"""
   session(token: String!): Session
 
+  """Get stonelist of a user in a team"""
+  stoneList(userSlug: String!): [StoneList!]!
+
   """Find all users of this team that have a nonzero stonelist in this team"""
   stoneListUsers: [User!]!
 
+  """Get all stonetypes of a team"""
+  stoneTypes: [StoneType!]!
+
+  """Get all stones of a team"""
+  stones: [Stone!]!
+
   """Fetch the teams that the user is a member of"""
   teams: [Team!]!
+
+  """Find user by its slug"""
+  user(userSlug: String!): User
 }
 
 enum Role {
