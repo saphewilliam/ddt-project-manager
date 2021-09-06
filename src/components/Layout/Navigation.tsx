@@ -74,7 +74,7 @@ export default function Navigation(): ReactElement {
         activeIcon: EventSolid,
         subItems: uiData?.events.map((event) => ({
           label: event.name,
-          href: `events/${event.slug}`,
+          href: `/events/${event.slug}`,
         })),
       },
       {
