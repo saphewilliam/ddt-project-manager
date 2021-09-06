@@ -2,8 +2,8 @@ import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
 import React, { ReactElement, useState } from 'react';
 import DesktopNavItem from './DesktopNavItem';
+import { NavItemProps } from './Navigation';
 import ProfileBox from './ProfileBox';
-import { NavItemProps } from './';
 
 interface Props {
   navItems: NavItemProps[];

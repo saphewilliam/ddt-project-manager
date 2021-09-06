@@ -7,9 +7,7 @@ export default function useSdk(): ReturnType<typeof getSdkWithHooks> {
   const [cookies] = useCookies(['ddtauth']);
 
   const client = new GraphQLClient(environment.endpoints.self, {
-    headers: {
-      authorization: `Bearer ${cookies.ddtauth}`,
-    },
+    headers: { authorization: `Bearer ${cookies.ddtauth}` },
   });
 
   return getSdkWithHooks(client);

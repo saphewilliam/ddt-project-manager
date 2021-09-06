@@ -4,8 +4,8 @@
     "prefix": "saphe-component",
     "description": "Boilerplate Typescipt React component",
     "body": [
-      "import React, { ReactElement } from 'react';",
       "import cx from 'clsx';",
+      "import React, { ReactElement } from 'react';",
       "",
       "export interface Props {}",
       "",

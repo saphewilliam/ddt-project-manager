@@ -2,7 +2,7 @@ import cx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ComponentProps, ReactElement } from 'react';
-import { NavItemProps } from './';
+import { NavItemProps } from './Navigation';
 
 export default function MobileNavItem(props: NavItemProps): ReactElement {
   const router = useRouter();

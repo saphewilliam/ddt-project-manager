@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ComponentProps, ReactElement, useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { NavItemProps } from './';
+import DesktopNavTooltip from './DesktopNavTooltip';
+import { NavItemProps } from './Navigation';
 
 export default function DesktopNavItem(props: NavItemProps): ReactElement {
   const [tooltipTop, setTooltipTop] = useState<number | undefined>(undefined);
@@ -123,70 +124,13 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
         </Link>
       )}
       {createPortal(
-        <div
-          style={{ top: tooltipTop, left: 65 }}
-          className={cx(
-            'fixed',
-            'w-56',
-            'pointer-events-none',
-            'transition-opacity',
-            !showTooltip && cx('opacity-0'),
-          )}
-        >
-          <Link href={props.href}>
-            <a
-              title={props.label}
-              tabIndex={-1}
-              className={cx(
-                'block',
-                'py-2',
-                'px-6',
-                'bg-primary',
-                'font-bold',
-                showTooltip && 'pointer-events-auto',
-              )}
-            >
-              {props.label}
-            </a>
-          </Link>
-          {props.subItems && props.subItems.length > 0 && (
-            <ul
-              style={{ maxHeight: window.innerHeight - (tooltipTop ?? 0) - 60 }}
-              className={cx(
-                'pb-2',
-                'overflow-y-scroll',
-                'scrollbar',
-                'scrollbar-thin',
-                'bg-dark',
-                'scrollbar-track-dark',
-                'scrollbar-thumb-dark-highlight',
-                showTooltip && 'pointer-events-auto',
-              )}
-            >
-              {props.subItems.map((subItem, i) => (
-                <li key={i}>
-                  <Link href={subItem.href}>
-                    <a
-                      tabIndex={-1}
-                      className={cx(
-                        'block',
-                        'px-6',
-                        'py-2',
-                        'hover:bg-dark-selected',
-                        'text-light',
-                        'transition-colors',
-                        'whitespace-nowrap',
-                        'truncate',
-                      )}
-                    >
-                      {subItem.label}
-                    </a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>,
+        <DesktopNavTooltip
+          label={props.label}
+          href={props.href}
+          subItems={props.subItems}
+          show={showTooltip}
+          top={tooltipTop}
+        />,
         document.querySelector('#__next')!,
       )}
     </li>

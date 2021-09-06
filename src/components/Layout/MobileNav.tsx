@@ -1,7 +1,7 @@
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import MobileNavItem from './MobileNavItem';
-import { NavItemProps } from './';
+import { NavItemProps } from './Navigation';
 
 export interface Props {
   navItems: NavItemProps[];
