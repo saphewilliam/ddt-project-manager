@@ -1,17 +1,26 @@
 import cx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useMemo } from 'react';
 import Layout from '@components/Layout';
 import useSdk from '@hooks/useSdk';
-import { fontColorFromBackground, formatNumber } from '@lib/stoneListHelpers';
+import {
+  fontColorFromBackground,
+  formatNumber,
+  makeStonelistTableData,
+  StonelistTableData,
+} from '@lib/stoneListHelpers';
 import { displayError, extractURLParam } from '@lib/util';
 
 export default function ListUserPage(): ReactElement {
   const router = useRouter();
-  const sdk = useSdk();
   const slug = extractURLParam('slug', router.query);
 
+  const sdk = useSdk();
   const { data, error } = sdk.useGetStoneList({ userSlug: slug ?? '' });
+
+  const tableData = useMemo<StonelistTableData>(() => {
+    return makeStonelistTableData(data);
+  }, [data]);
 
   useEffect(() => {
     if (!data && error) displayError(error.message);
@@ -22,32 +31,35 @@ export default function ListUserPage(): ReactElement {
       <h1 className={cx('font-bold', 'text-4xl')}>
         {data?.user?.firstName} {data?.user?.lastName}&apos;s List
       </h1>
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Color</th>
-              <th>{data?.user?.displayName ?? 'Loading...'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.stoneList.map((row) => (
-              <tr key={row.id}>
-                <td
-                  style={{
-                    backgroundColor: row.stone.hex,
-                    color: fontColorFromBackground(row.stone.hex),
-                  }}
-                >
-                  {row.stone.name}
-                </td>
-                <td>{formatNumber(row.amount)}</td>
-                <td>edit</td>
+
+      {tableData.map((table, index) => (
+        <div key={index}>
+          <h2 className={cx('font-bold', 'text-2xl', 'mb-4', 'mt-8')}>{table.name}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Color</th>
+                <th>Amount</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {table.rows.map((row) => (
+                <tr key={row.id}>
+                  <td
+                    style={{
+                      backgroundColor: row.stone.hex,
+                      color: fontColorFromBackground(row.stone.hex),
+                    }}
+                  >
+                    {row.stone.name}
+                  </td>
+                  <td>{formatNumber(row.amount)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
     </Layout>
   );
 }

@@ -405,12 +405,12 @@ export type getStoneListQueryVariables = Exact<{
 }>;
 
 
-export type getStoneListQuery = { stoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string } }>, user: Maybe<{ id: string, displayName: string, firstName: string, lastName: string }>, stoneTypes: Array<{ id: string, name: string }> };
+export type getStoneListQuery = { stoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string } }>, user: Maybe<{ id: string, firstName: string, lastName: string }>, stoneTypes: Array<{ id: string, name: string }> };
 
 export type getStoneListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getStoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, user: { id: string, displayName: string } }> }>, stoneTypes: Array<{ id: string, name: string }> };
+export type getStoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, userId: string }> }>, stoneTypes: Array<{ id: string, name: string }>, stoneListUsers: Array<{ id: string, displayName: string }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -491,7 +491,6 @@ export const getStoneListDocument = gql`
   }
   user(userSlug: $userSlug) {
     id
-    displayName
     firstName
     lastName
   }
@@ -508,15 +507,16 @@ export const getStoneListsDocument = gql`
     stoneLists {
       id
       amount
-      user {
-        id
-        displayName
-      }
+      userId
     }
   }
   stoneTypes {
     id
     name
+  }
+  stoneListUsers {
+    id
+    displayName
   }
 }
     ${stoneListStoneFragmentDoc}`;

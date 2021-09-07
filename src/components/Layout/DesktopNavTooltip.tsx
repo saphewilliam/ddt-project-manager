@@ -45,7 +45,6 @@ export default function DesktopNavTooltip(props: Props): ReactElement {
           className={cx(
             'pb-2',
             'overflow-y-scroll',
-            'scrollbar',
             'scrollbar-thin',
             'bg-dark',
             'scrollbar-track-dark',

@@ -25,7 +25,6 @@ export default function DesktopNav(props: Props): ReactElement {
         'duration-500',
         'overflow-y-scroll',
         'overflow-x-hidden',
-        'scrollbar',
         'scrollbar-thin',
         'bg-dark',
         'text-light',

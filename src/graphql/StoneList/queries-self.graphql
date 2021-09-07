@@ -19,7 +19,6 @@ query getStoneList($userSlug: String!) {
   }
   user(userSlug: $userSlug) {
     id
-    displayName
     firstName
     lastName
   }
@@ -35,14 +34,15 @@ query getStoneLists {
     stoneLists {
 			id
       amount
-      user {
-        id
-        displayName
-      }      
+      userId   
     }
   }
   stoneTypes {
     id
     name
+  }
+  stoneListUsers {
+    id
+    displayName
   }
 }
