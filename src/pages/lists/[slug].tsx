@@ -1,7 +1,8 @@
 import cx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import Layout from '@components/Layout';
+import useDisplayError from '@hooks/useDisplayError';
 import useSdk from '@hooks/useSdk';
 import {
   fontColorFromBackground,
@@ -9,7 +10,7 @@ import {
   makeStonelistTableData,
   StonelistTableData,
 } from '@lib/stoneListHelpers';
-import { displayError, extractURLParam } from '@lib/util';
+import { extractURLParam } from '@lib/util';
 
 export default function ListUserPage(): ReactElement {
   const router = useRouter();
@@ -22,9 +23,7 @@ export default function ListUserPage(): ReactElement {
     return makeStonelistTableData(data);
   }, [data]);
 
-  useEffect(() => {
-    if (!data && error) displayError(error.message);
-  }, [data, error]);
+  useDisplayError(data, error);
 
   return (
     <Layout>

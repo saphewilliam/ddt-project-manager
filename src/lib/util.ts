@@ -1,11 +1,6 @@
 import { randomBytes } from 'crypto';
 import { ParsedUrlQuery } from 'querystring';
-import { toast } from 'react-hot-toast';
-
-export function displayError(message: string): void {
-  toast.error(message);
-  console.error(message);
-}
+import { displayError } from '@hooks/useDisplayError';
 
 export function extractURLParam(name: string, query?: ParsedUrlQuery): string | null {
   if (!query) return null;

@@ -13,9 +13,10 @@ import React, {
 import { useCookies } from 'react-cookie';
 import Button from '@components/Button';
 import { getSdk, getTeamsQuery } from '@graphql/__generated__/codegen-self';
+import { displayError } from '@hooks/useDisplayError';
 import { environment } from '@lib/environment';
 import { SessionContext } from '@lib/reactContext';
-import { displayError, promiseWithCatch } from '@lib/util';
+import { promiseWithCatch } from '@lib/util';
 
 interface FormValues {
   email: string;

@@ -1,6 +1,7 @@
 import cx from 'clsx';
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import Layout from '@components/Layout';
+import useDisplayError from '@hooks/useDisplayError';
 import useSdk from '@hooks/useSdk';
 import {
   fontColorFromBackground,
@@ -8,7 +9,6 @@ import {
   makeStonelistsTableData,
   StonelistsTableData,
 } from '@lib/stoneListHelpers';
-import { displayError } from '@lib/util';
 
 export default function ListAllPage(): ReactElement {
   const sdk = useSdk();
@@ -18,9 +18,7 @@ export default function ListAllPage(): ReactElement {
     return makeStonelistsTableData(data);
   }, [data]);
 
-  useEffect(() => {
-    if (!data && error) displayError(error.message);
-  }, [data, error]);
+  useDisplayError(data, error);
 
   return (
     <Layout>
