@@ -34,6 +34,11 @@ export default async function seedMembers(prisma: PrismaClient): Promise<void> {
         teamId: idMap.teams.DUTCH_DOMINO_TEAM,
         role: Role.GUEST,
       },
+      {
+        userId: idMap.users.BART_VRIENS,
+        teamId: idMap.teams.DUTCH_DOMINO_TEAM,
+        role: Role.CAPTAIN,
+      },
     ],
   });
 }

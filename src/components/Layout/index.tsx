@@ -20,7 +20,7 @@ export default function Layout(props: Props): ReactElement {
         <title>DDT Project Manager</title>
       </Head>
       {session !== null && <Navigation />}
-      <main className={cx('sm:px-16', 'px-4', 'pt-12', 'flex-grow', 'overflow-y-scroll')}>
+      <main className={cx('sm:px-16', 'px-4', 'pt-12', 'flex-grow', 'overflow-y-auto')}>
         {session !== null ? (
           props.children
         ) : (

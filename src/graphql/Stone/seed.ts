@@ -21,7 +21,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 1,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Rood LP-C',
         alias: 'Rood',
@@ -45,7 +45,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 4,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Oranje LP-A',
         alias: 'Oranje',
@@ -88,7 +88,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 9,
       },
       {
-        // id: '',
+        id: idMap.stones.GEEL_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Geel LP-A',
         alias: 'Maïsgeel',
@@ -128,7 +128,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 14,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Groen LP-D',
         alias: 'Groen (nieuw)',
@@ -144,7 +144,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 16,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_LP_F,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Groen LP-F',
         alias: 'Transparantgroen',
@@ -152,7 +152,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 17,
       },
       {
-        // id: '',
+        id: idMap.stones.TURQUOISE_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Turquoise LP-A',
         alias: 'Mintgroen',
@@ -208,7 +208,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 24,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Blauw LP-E',
         alias: 'Donkerblauw',
@@ -249,7 +249,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 29,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Roze LP-A',
         alias: 'Felroze',
@@ -281,7 +281,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 33,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Roze LP-E',
         alias: 'Zalmroze',
@@ -289,7 +289,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 34,
       },
       {
-        // id: '',
+        id: idMap.stones.IVOOR_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Ivoor LP-A',
         alias: 'Ivoor',
@@ -393,7 +393,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 47,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Wit LP-A',
         alias: 'Wit',
@@ -433,7 +433,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 52,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_DD_C,
         stoneTypeId: idMap.stoneTypes.DOMINO_DAY,
         name: 'Paars DD-C',
         alias: 'Mixpaars',
@@ -570,7 +570,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 69,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_MD_C,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Wit MD-C',
         alias: 'Minis wit',
@@ -836,7 +836,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 100,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_DD_A,
         stoneTypeId: idMap.stoneTypes.DOMINO_DAY,
         name: 'Groen DD-A',
         alias: 'Lichtgroen',

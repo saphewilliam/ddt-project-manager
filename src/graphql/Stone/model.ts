@@ -4,7 +4,24 @@ import { ApiContext } from '@lib/apiContext';
 import { authorizeSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
-export const stoneModel = nexusModel(Stone);
+export const stoneModel = nexusModel(Stone, {
+  hideFields: ['stoneLists'],
+  extend(t) {
+    t.list.field('stoneLists', {
+      type: 'StoneList',
+      authorize: authorizeSession,
+      resolve(root, _, ctx: ApiContext) {
+        return ctx.prisma.stoneList.findMany({
+          where: {
+            stoneId: root.id,
+            user: { teams: { some: { teamId: ctx.session?.teamId ?? '' } } },
+          },
+          orderBy: [{ user: { firstName: 'asc' } }, { user: { lastName: 'asc' } }],
+        });
+      },
+    });
+  },
+});
 
 export const stoneQuery = extendType({
   type: 'Query',

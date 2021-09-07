@@ -41,16 +41,27 @@ export const idMap = {
     OTHERS: '482f89ac-e643-4a5b-bcf9-ca187bdb0449',
   },
   stones: {
+    ROOD_LP_C: '396a2a36-a7d3-4efa-bbeb-fdf1c7ecb5f9',
     ROOD_LP_D: '605642d4-d977-4444-927c-09401abfa35f',
+    ORANJE_LP_A: '57afbecb-dfb9-47ab-8253-b2aa6f07bb20',
+    GEEL_LP_A: '1a066ed0-93b6-4f3b-9a00-66b667aa9eb6',
     GEEL_LP_B: 'a0691dac-500c-430c-8d26-aeba1e46fedf',
     GROEN_LP_B: '31aea453-c2a6-4986-9384-76b3567061b8',
     GROEN_LP_C: '41cf0538-b49b-4a63-96a1-cbba73d27998',
+    GROEN_LP_D: 'f37921ff-af53-449f-b3e5-020cdf322868',
+    GROEN_LP_F: 'f3550c9b-3fe3-4095-a479-24bf79219236',
+    TURQUOISE_LP_A: '8e5aa3f7-0934-4df1-8bdd-a0ceb6a56308',
     TURQUOISE_LP_B: '2e6433f5-ceaa-4a33-b4e8-bb5d7e07518e',
     BLAUW_LP_A: '4388a1fd-965e-4040-946d-f5b0b785ae82',
     BLAUW_LP_D: 'cd43b75f-c0cb-4a6f-89da-8bfe2083266d',
+    BLAUW_LP_E: '22dd60d6-88aa-46c1-bca9-396eb0a39b30',
+    ROZE_LP_A: 'ffa1bd31-f8d2-449d-a0a7-c3f9a1f1df3f',
+    ROZE_LP_E: '4095901f-640e-4347-be92-2416ff71510f',
+    IVOOR_LP_A: '2ff73af7-b214-445b-bb28-96aa5c66cb10',
     IVOOR_LP_C: '501cdc75-1f9e-4086-8333-09d0e112516c',
     GRIJS_LP_A: 'c8dca259-be20-403e-9b73-fc5179e5af7f',
     ZWART_LP_A: '62d58719-e504-4e8c-b33c-5c41b041eb51',
+    WIT_LP_A: '455bf7d9-ec7a-42cd-95f4-072f5d11478e',
     WIT_LP_B: '8f52e53a-9930-44a9-8695-dc16c0d40eda',
 
     ROOD_DO_A: '9f90e1e6-9104-4caf-9e36-d8d2a14bb23f',
@@ -62,5 +73,10 @@ export const idMap = {
     PAARS_DO_A: 'cc892018-35e5-4500-99a3-7fec596a59ec',
     ZWART_DO_A: 'f39b4a26-6dbb-4054-9aad-cb6dacd98d4d',
     WIT_DO_A: '38fd9d5d-3e4c-4112-b8c4-114521b361a8',
+
+    PAARS_DD_C: 'd1cbabac-d67d-40ed-babe-89df9eef3cd6',
+    GROEN_DD_A: '347e8425-a026-468c-a0a2-cfbd46605bcf',
+
+    WIT_MD_C: '0be27e9f-4298-4d26-9519-38e25a5e95d4',
   },
 };

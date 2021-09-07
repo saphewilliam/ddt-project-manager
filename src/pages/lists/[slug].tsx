@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, useMemo, useEffect } from 'react';
 import Layout from '@components/Layout';
 import useDisplayError from '@hooks/useDisplayError';
 import useSdk from '@hooks/useSdk';
@@ -19,16 +19,18 @@ export default function ListUserPage(): ReactElement {
   const sdk = useSdk();
   const { data, error } = sdk.useGetStoneList({ userSlug: slug ?? '' });
 
-  const tableData = useMemo<StonelistTableData>(() => {
-    return makeStonelistTableData(data);
-  }, [data]);
+  const tableData = useMemo<StonelistTableData>(() => makeStonelistTableData(data), [data]);
 
   useDisplayError(data, error);
+
+  useEffect(() => {
+    if (data?.user === null) router.push('/lists');
+  }, [data]);
 
   return (
     <Layout>
       <h1 className={cx('font-bold', 'text-4xl')}>
-        {data?.user?.firstName} {data?.user?.lastName}&apos;s List
+        {data?.user && `${data.user.firstName} ${data.user.lastName}'s List`}
       </h1>
 
       {tableData.map((table, index) => (

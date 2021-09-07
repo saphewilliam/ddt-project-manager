@@ -14,9 +14,7 @@ export default function ListAllPage(): ReactElement {
   const sdk = useSdk();
   const { data, error } = sdk.useGetStoneLists();
 
-  const tableData = useMemo<StonelistsTableData>(() => {
-    return makeStonelistsTableData(data);
-  }, [data]);
+  const tableData = useMemo<StonelistsTableData>(() => makeStonelistsTableData(data), [data]);
 
   useDisplayError(data, error);
 

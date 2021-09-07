@@ -4,8 +4,8 @@ import { idMap } from '@graphql/idMap';
 export default async function seedStoneLists(prisma: PrismaClient): Promise<void> {
   await prisma.stoneList.createMany({
     data: [
+      // DonDomino
       {
-        // DonDomino
         userId: idMap.users.DON_DOMINO,
         stoneId: idMap.stones.ROOD_DO_A,
         amount: 2000,
@@ -50,8 +50,8 @@ export default async function seedStoneLists(prisma: PrismaClient): Promise<void
         stoneId: idMap.stones.WIT_DO_A,
         amount: 1000,
       },
+      // William Ford
       {
-        // William
         userId: idMap.users.WILLIAM_FORD,
         stoneId: idMap.stones.ROOD_LP_D,
         amount: 792,
@@ -110,6 +110,102 @@ export default async function seedStoneLists(prisma: PrismaClient): Promise<void
         userId: idMap.users.WILLIAM_FORD,
         stoneId: idMap.stones.WIT_DO_A,
         amount: 324879,
+      },
+      // Bart Vriens
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.ROOD_LP_C,
+        amount: 1114,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.ORANJE_LP_A,
+        amount: 1016,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.GEEL_LP_A,
+        amount: 2064,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.GEEL_LP_B,
+        amount: 2199,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.GROEN_LP_D,
+        amount: 2034,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.GROEN_LP_F,
+        amount: 511,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.TURQUOISE_LP_A,
+        amount: 1615,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.TURQUOISE_LP_B,
+        amount: 1498,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.BLAUW_LP_A,
+        amount: 1407,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.BLAUW_LP_E,
+        amount: 2716,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.ROZE_LP_A,
+        amount: 2545,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.ROZE_LP_E,
+        amount: 916,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.IVOOR_LP_A,
+        amount: 223,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.ZWART_LP_A,
+        amount: 1060,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.WIT_LP_A,
+        amount: 2413,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.WIT_LP_B,
+        amount: 839,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.PAARS_DD_C,
+        amount: 803,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.GROEN_DD_A,
+        amount: 213,
+      },
+      {
+        userId: idMap.users.BART_VRIENS,
+        stoneId: idMap.stones.WIT_MD_C,
+        amount: 500,
       },
     ],
   });
