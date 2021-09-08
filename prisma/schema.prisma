@@ -173,7 +173,7 @@ model Project {
   subthemeId   String
   subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
   supervisorId String
-  supervisor   User     @relation(fields: [subthemeId], references: [id], onDelete: SetNull)
+  supervisor   User     @relation(fields: [supervisorId], references: [id], onDelete: SetNull)
 }
 
 model Stat {

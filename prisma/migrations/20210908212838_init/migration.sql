@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('CAPTAIN', 'BUILDER', 'GUEST');
 
 -- CreateEnum
-CREATE TYPE "ProjectStatus" AS ENUM ('CANCELLED', 'STARTING', 'PLANNING', 'PLANNED', 'BUILDING', 'BUILT');
+CREATE TYPE "ProjectStatus" AS ENUM ('CANCELLED', 'STARTING', 'PLANNING', 'PLANNED', 'READY', 'BUILDING', 'BUILT');
 
 -- CreateEnum
 CREATE TYPE "ProjectType" AS ENUM ('FIELD_L1', 'FIELD_L2', 'FIELD_M50', 'FIELD_FLAT', 'FIELD_CROSS_L2', 'FIELD_CIRCLE', 'WALL_X', 'WALL_S', 'WALL_T', 'WALL_SPEED', 'WALL_CUBE', 'WALL_OCTO', 'FALLWALL', 'SPIRAL', 'STRUCTURE', 'HANDSET', 'DECOR', 'OTHER');
@@ -21,7 +21,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -34,7 +34,7 @@ CREATE TABLE "Session" (
     "userId" TEXT NOT NULL,
     "teamId" TEXT,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -46,7 +46,7 @@ CREATE TABLE "Member" (
     "userId" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Member_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -56,7 +56,7 @@ CREATE TABLE "Team" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Team_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -69,7 +69,7 @@ CREATE TABLE "Event" (
     "slug" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -83,7 +83,7 @@ CREATE TABLE "Subtheme" (
     "slug" TEXT NOT NULL,
     "eventId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Subtheme_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -101,7 +101,7 @@ CREATE TABLE "Project" (
     "subthemeId" TEXT NOT NULL,
     "supervisorId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -112,7 +112,7 @@ CREATE TABLE "Stat" (
     "name" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Stat_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -124,7 +124,7 @@ CREATE TABLE "StatsOnProject" (
     "statId" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "StatsOnProject_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -137,7 +137,7 @@ CREATE TABLE "StoneType" (
     "order" INTEGER NOT NULL,
     "teamId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "StoneType_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -154,7 +154,7 @@ CREATE TABLE "Stone" (
     "order" INTEGER NOT NULL,
     "stoneTypeId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Stone_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -166,7 +166,7 @@ CREATE TABLE "StoneList" (
     "stoneId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "StoneList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -179,7 +179,7 @@ CREATE TABLE "StonesOnProject" (
     "userId" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "StonesOnProject_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -192,7 +192,7 @@ CREATE TABLE "StonesOnSubtheme" (
     "userId" TEXT NOT NULL,
     "subthemeId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "StonesOnSubtheme_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -203,7 +203,7 @@ CREATE TABLE "Attribute" (
     "name" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "Attribute_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -215,7 +215,7 @@ CREATE TABLE "AttributeList" (
     "attributeId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "AttributeList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -228,7 +228,7 @@ CREATE TABLE "AttributesOnProject" (
     "userId" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "AttributesOnProject_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -241,116 +241,116 @@ CREATE TABLE "AttributesOnSubtheme" (
     "userId" TEXT NOT NULL,
     "subthemeId" TEXT NOT NULL,
 
-    PRIMARY KEY ("id")
+    CONSTRAINT "AttributesOnSubtheme_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User.slug_unique" ON "User"("slug");
+CREATE UNIQUE INDEX "User_slug_key" ON "User"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Session.token_unique" ON "Session"("token");
+CREATE UNIQUE INDEX "Session_token_key" ON "Session"("token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Member.userId_teamId_unique" ON "Member"("userId", "teamId");
+CREATE UNIQUE INDEX "Member_userId_teamId_key" ON "Member"("userId", "teamId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Event.slug_unique" ON "Event"("slug");
+CREATE UNIQUE INDEX "Event_slug_key" ON "Event"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Subtheme.slug_unique" ON "Subtheme"("slug");
+CREATE UNIQUE INDEX "Subtheme_slug_key" ON "Subtheme"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Project.slug_unique" ON "Project"("slug");
+CREATE UNIQUE INDEX "Project_slug_key" ON "Project"("slug");
 
 -- AddForeignKey
-ALTER TABLE "Session" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Session" ADD FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Member" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Member" ADD CONSTRAINT "Member_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Member" ADD FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Member" ADD CONSTRAINT "Member_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Event" ADD FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Event" ADD CONSTRAINT "Event_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Subtheme" ADD FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Subtheme" ADD CONSTRAINT "Subtheme_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD FOREIGN KEY ("subthemeId") REFERENCES "Subtheme"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Project" ADD CONSTRAINT "Project_subthemeId_fkey" FOREIGN KEY ("subthemeId") REFERENCES "Subtheme"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD FOREIGN KEY ("subthemeId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Project" ADD CONSTRAINT "Project_supervisorId_fkey" FOREIGN KEY ("supervisorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Stat" ADD FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Stat" ADD CONSTRAINT "Stat_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StatsOnProject" ADD FOREIGN KEY ("statId") REFERENCES "Stat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StatsOnProject" ADD CONSTRAINT "StatsOnProject_statId_fkey" FOREIGN KEY ("statId") REFERENCES "Stat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StatsOnProject" ADD FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StatsOnProject" ADD CONSTRAINT "StatsOnProject_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoneType" ADD FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StoneType" ADD CONSTRAINT "StoneType_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Stone" ADD FOREIGN KEY ("stoneTypeId") REFERENCES "StoneType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Stone" ADD CONSTRAINT "Stone_stoneTypeId_fkey" FOREIGN KEY ("stoneTypeId") REFERENCES "StoneType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoneList" ADD FOREIGN KEY ("stoneId") REFERENCES "Stone"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StoneList" ADD CONSTRAINT "StoneList_stoneId_fkey" FOREIGN KEY ("stoneId") REFERENCES "Stone"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoneList" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StoneList" ADD CONSTRAINT "StoneList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StonesOnProject" ADD FOREIGN KEY ("stoneId") REFERENCES "Stone"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StonesOnProject" ADD CONSTRAINT "StonesOnProject_stoneId_fkey" FOREIGN KEY ("stoneId") REFERENCES "Stone"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StonesOnProject" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StonesOnProject" ADD CONSTRAINT "StonesOnProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StonesOnProject" ADD FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StonesOnProject" ADD CONSTRAINT "StonesOnProject_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StonesOnSubtheme" ADD FOREIGN KEY ("stoneId") REFERENCES "Stone"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StonesOnSubtheme" ADD CONSTRAINT "StonesOnSubtheme_stoneId_fkey" FOREIGN KEY ("stoneId") REFERENCES "Stone"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StonesOnSubtheme" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StonesOnSubtheme" ADD CONSTRAINT "StonesOnSubtheme_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StonesOnSubtheme" ADD FOREIGN KEY ("subthemeId") REFERENCES "Subtheme"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StonesOnSubtheme" ADD CONSTRAINT "StonesOnSubtheme_subthemeId_fkey" FOREIGN KEY ("subthemeId") REFERENCES "Subtheme"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attribute" ADD FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributeList" ADD FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AttributeList" ADD CONSTRAINT "AttributeList_attributeId_fkey" FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributeList" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AttributeList" ADD CONSTRAINT "AttributeList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributesOnProject" ADD FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AttributesOnProject" ADD CONSTRAINT "AttributesOnProject_attributeId_fkey" FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributesOnProject" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AttributesOnProject" ADD CONSTRAINT "AttributesOnProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributesOnProject" ADD FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AttributesOnProject" ADD CONSTRAINT "AttributesOnProject_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributesOnSubtheme" ADD FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AttributesOnSubtheme" ADD CONSTRAINT "AttributesOnSubtheme_attributeId_fkey" FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributesOnSubtheme" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AttributesOnSubtheme" ADD CONSTRAINT "AttributesOnSubtheme_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AttributesOnSubtheme" ADD FOREIGN KEY ("subthemeId") REFERENCES "Subtheme"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "AttributesOnSubtheme" ADD CONSTRAINT "AttributesOnSubtheme_subthemeId_fkey" FOREIGN KEY ("subthemeId") REFERENCES "Subtheme"("id") ON DELETE CASCADE ON UPDATE CASCADE;
