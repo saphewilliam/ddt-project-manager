@@ -11,14 +11,16 @@ import seedSubthemes from './Subtheme/seed';
 import seedTeams from './Team/seed';
 import seedUsers from './User/seed';
 
-export async function flush(prisma: PrismaClient): Promise<void> {
+const prisma = new PrismaClient();
+
+async function flush(prisma: PrismaClient): Promise<void> {
   console.log('Flushing db...');
   await prisma.user.deleteMany({});
   await prisma.team.deleteMany({});
   await prisma.event.deleteMany({});
 }
 
-export async function seed(prisma: PrismaClient): Promise<void> {
+async function seed(prisma: PrismaClient): Promise<void> {
   console.log('Seeding Teams...');
   await seedTeams(prisma);
 
@@ -46,3 +48,17 @@ export async function seed(prisma: PrismaClient): Promise<void> {
   console.log('Seeding Subthemes...');
   await seedSubthemes(prisma);
 }
+
+async function main(): Promise<void> {
+  await flush(prisma);
+  await seed(prisma);
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
