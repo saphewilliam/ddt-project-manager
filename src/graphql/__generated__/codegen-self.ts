@@ -180,6 +180,7 @@ export enum ProjectType {
 
 export type Query = {
   events: Array<Event>;
+  event: Maybe<Event>;
   /** Get session by its token */
   session: Maybe<Session>;
   /** Get all stones of a team */
@@ -194,6 +195,11 @@ export type Query = {
   user: Maybe<User>;
   /** Find all users of this team that have a nonzero stonelist in this team */
   stoneListUsers: Array<User>;
+};
+
+
+export type QueryeventArgs = {
+  eventSlug: Scalars['String'];
 };
 
 
@@ -261,11 +267,11 @@ export type Stone = {
   hex2: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   order: Scalars['Int'];
-  stoneLists: Array<StoneList>;
   projects: Array<StonesOnProject>;
   subthemes: Array<StonesOnSubtheme>;
   stoneTypeId: Scalars['String'];
   stoneType: StoneType;
+  stoneLists: Array<StoneList>;
 };
 
 export type StoneList = {

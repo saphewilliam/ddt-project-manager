@@ -355,6 +355,7 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
+    event: NexusGenRootTypes['Event'] | null; // Event
     events: NexusGenRootTypes['Event'][]; // [Event!]!
     session: NexusGenRootTypes['Session'] | null; // Session
     stoneList: NexusGenRootTypes['StoneList'][]; // [StoneList!]!
@@ -597,6 +598,7 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Query: { // field return type name
+    event: 'Event'
     events: 'Event'
     session: 'Session'
     stoneList: 'StoneList'
@@ -763,6 +765,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    event: { // args
+      eventSlug: string; // String!
+    }
     session: { // args
       token: string; // String!
     }

@@ -3,15 +3,15 @@ import * as style from '@dicebear/avatars-jdenticon-sprites';
 import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { ReactElement, useMemo, useContext } from 'react';
-import { SessionContext } from '@lib/reactContext';
+import React, { ReactElement, useMemo } from 'react';
+import useSession from '@hooks/useSession';
 
 export interface Props {
   navCollapsed: boolean;
 }
 
 export default function ProfileBox(props: Props): ReactElement {
-  const session = useContext(SessionContext);
+  const session = useSession();
   const avatar = useMemo(
     () => Buffer.from(createAvatar(style, { seed: session?.user.id })).toString('base64'),
     [session],

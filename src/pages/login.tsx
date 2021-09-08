@@ -2,20 +2,13 @@ import cx from 'clsx';
 import { GraphQLClient } from 'graphql-request';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, {
-  FormEvent,
-  ReactElement,
-  useCallback,
-  useState,
-  useEffect,
-  useContext,
-} from 'react';
+import React, { FormEvent, ReactElement, useCallback, useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Button from '@components/Button';
 import { getSdk, getTeamsQuery } from '@graphql/__generated__/codegen-self';
 import { displayError } from '@hooks/useDisplayError';
+import useSession from '@hooks/useSession';
 import { environment } from '@lib/environment';
-import { SessionContext } from '@lib/reactContext';
 import { promiseWithCatch } from '@lib/util';
 
 interface FormValues {
@@ -38,7 +31,7 @@ export default function LoginPage(): ReactElement {
   const [cookie, setCookie, removeCookie] = useCookies(['ddtauth']);
 
   const router = useRouter();
-  const session = useContext(SessionContext);
+  const session = useSession();
 
   const setSessionTeam = useCallback(
     async (teamId: string, token?: string) => {

@@ -16,12 +16,12 @@ import {
   UserIcon as ProfileSolid,
   AnnotationIcon as FeedbackSolid,
 } from '@heroicons/react/solid';
-import React, { ReactElement, useContext, useMemo, ComponentProps } from 'react';
+import React, { ReactElement, useMemo, ComponentProps } from 'react';
 import { Role } from '@graphql/__generated__/codegen-self';
 import useDeviceWidth from '@hooks/useDeviceWidth';
 import useDisplayError from '@hooks/useDisplayError';
 import useSdk from '@hooks/useSdk';
-import { SessionContext } from '@lib/reactContext';
+import useSession from '@hooks/useSession';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 
@@ -40,7 +40,7 @@ export interface NavItemProps {
 
 export default function Navigation(): ReactElement {
   const device = useDeviceWidth();
-  const session = useContext(SessionContext);
+  const session = useSession();
   const sdk = useSdk();
   const { data: uiData, error: uiError } = sdk.useGetUi();
 

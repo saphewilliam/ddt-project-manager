@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { extendType } from 'nexus';
+import { extendType, stringArg } from 'nexus';
 import { Event } from 'nexus-prisma';
 import { ApiContext } from '@lib/apiContext';
 import { authorizeSession } from '@lib/authHelpers';
@@ -17,6 +17,17 @@ export const eventQuery = extendType({
         ctx.prisma.event.findMany({
           where: { teamId: ctx.session?.teamId ?? '' },
           orderBy: { date: Prisma.SortOrder.asc },
+        }),
+    });
+    t.nullable.field('event', {
+      type: 'Event',
+      args: {
+        eventSlug: stringArg(),
+      },
+      authorize: authorizeSession,
+      resolve: (_, args, ctx: ApiContext) =>
+        ctx.prisma.event.findFirst({
+          where: { slug: args.eventSlug, teamId: ctx.session?.teamId ?? '' },
         }),
     });
   },

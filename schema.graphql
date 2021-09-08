@@ -158,6 +158,7 @@ enum ProjectType {
 }
 
 type Query {
+  event(eventSlug: String!): Event
   events: [Event!]!
 
   """Get session by its token"""
