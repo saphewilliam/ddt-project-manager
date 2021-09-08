@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { getSdk, getSessionQuery } from '@graphql/__generated__/codegen-self';
+import { SessionContext } from '@hooks/useSession';
 import { environment } from '@lib/environment';
-import { SessionContext } from '@lib/reactContext';
 import { promiseWithCatch } from '@lib/util';
 
 export interface Props {
