@@ -1,7 +1,6 @@
 import { PrismaClient, Session } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-const prisma = new PrismaClient();
+import { prisma } from '@lib/prisma';
 
 export interface ApiContext {
   req: NextApiRequest;
