@@ -24,7 +24,7 @@ export default function Layout(props: Props): ReactElement {
       <main className={cx('flex', 'flex-col', 'justify-between', 'flex-grow', 'overflow-y-auto')}>
         {session !== null ? (
           <>
-            <div className={cx('sm:px-16', 'px-4', 'py-12')}>{props.children}</div>
+            <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>{props.children}</div>
             <SocketFooter />
           </>
         ) : (

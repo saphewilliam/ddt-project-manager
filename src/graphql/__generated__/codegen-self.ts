@@ -30,97 +30,91 @@ export type Scalars = {
 };
 
 export type Attribute = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
   attributeLists: Array<AttributeList>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
   projects: Array<AttributesOnProject>;
   subthemes: Array<AttributesOnSubtheme>;
-  teamId: Scalars['String'];
   team: Team;
+  teamId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type AttributeList = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  attributeId: Scalars['String'];
   attribute: Attribute;
-  userId: Scalars['String'];
+  attributeId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
   user: User;
+  userId: Scalars['String'];
 };
 
 export type AttributesOnProject = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  attributeId: Scalars['String'];
   attribute: Attribute;
-  userId: Scalars['String'];
-  user: User;
-  projectId: Scalars['String'];
+  attributeId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   project: Project;
+  projectId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type AttributesOnSubtheme = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  attributeId: Scalars['String'];
   attribute: Attribute;
-  userId: Scalars['String'];
-  user: User;
-  subthemeId: Scalars['String'];
+  attributeId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   subtheme: Subtheme;
+  subthemeId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type Event = {
-  id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
   date: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
   slug: Scalars['String'];
   subthemes: Array<Subtheme>;
-  teamId: Scalars['String'];
   team: Team;
+  teamId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Member = {
-  id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   role: Role;
-  userId: Scalars['String'];
-  user: User;
-  teamId: Scalars['String'];
   team: Team;
+  teamId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type Mutation = {
   /** Generate a new session for a user with an active account */
   login: Scalars['String'];
-  /** Set the `team` field of an active session */
-  setSessionTeam: Session;
   /** Invalidate an active session */
   logout: Session;
+  /** Set the `team` field of an active session */
+  setSessionTeam: Session;
 };
 
 
 export type MutationloginArgs = {
   email: Scalars['String'];
-  password: Scalars['String'];
   isPermanent: Scalars['Boolean'];
-};
-
-
-export type MutationsetSessionTeamArgs = {
-  token: Scalars['String'];
-  teamId: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -128,74 +122,80 @@ export type MutationlogoutArgs = {
   token: Scalars['String'];
 };
 
+
+export type MutationsetSessionTeamArgs = {
+  teamId: Scalars['String'];
+  token: Scalars['String'];
+};
+
 export type Project = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  slug: Scalars['String'];
-  description: Scalars['String'];
-  number: Scalars['Int'];
-  subNumber: Scalars['Int'];
-  type: ProjectType;
-  status: ProjectStatus;
   attributes: Array<AttributesOnProject>;
-  stones: Array<StonesOnProject>;
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  number: Scalars['Int'];
+  slug: Scalars['String'];
   stats: Array<StatsOnProject>;
-  subthemeId: Scalars['String'];
+  status: ProjectStatus;
+  stones: Array<StonesOnProject>;
+  subNumber: Scalars['Int'];
   subtheme: Subtheme;
-  supervisorId: Scalars['String'];
+  subthemeId: Scalars['String'];
   supervisor: User;
+  supervisorId: Scalars['String'];
+  type: ProjectType;
+  updatedAt: Scalars['DateTime'];
 };
 
 export enum ProjectStatus {
-  CANCELLED = 'CANCELLED',
-  STARTING = 'STARTING',
-  PLANNING = 'PLANNING',
-  PLANNED = 'PLANNED',
-  READY = 'READY',
   BUILDING = 'BUILDING',
-  BUILT = 'BUILT'
+  BUILT = 'BUILT',
+  CANCELLED = 'CANCELLED',
+  PLANNED = 'PLANNED',
+  PLANNING = 'PLANNING',
+  READY = 'READY',
+  STARTING = 'STARTING'
 }
 
 export enum ProjectType {
+  DECOR = 'DECOR',
+  FALLWALL = 'FALLWALL',
+  FIELD_CIRCLE = 'FIELD_CIRCLE',
+  FIELD_CROSS_L2 = 'FIELD_CROSS_L2',
+  FIELD_FLAT = 'FIELD_FLAT',
   FIELD_L1 = 'FIELD_L1',
   FIELD_L2 = 'FIELD_L2',
   FIELD_M50 = 'FIELD_M50',
-  FIELD_FLAT = 'FIELD_FLAT',
-  FIELD_CROSS_L2 = 'FIELD_CROSS_L2',
-  FIELD_CIRCLE = 'FIELD_CIRCLE',
-  WALL_X = 'WALL_X',
-  WALL_S = 'WALL_S',
-  WALL_T = 'WALL_T',
-  WALL_SPEED = 'WALL_SPEED',
-  WALL_CUBE = 'WALL_CUBE',
-  WALL_OCTO = 'WALL_OCTO',
-  FALLWALL = 'FALLWALL',
+  HANDSET = 'HANDSET',
+  OTHER = 'OTHER',
   SPIRAL = 'SPIRAL',
   STRUCTURE = 'STRUCTURE',
-  HANDSET = 'HANDSET',
-  DECOR = 'DECOR',
-  OTHER = 'OTHER'
+  WALL_CUBE = 'WALL_CUBE',
+  WALL_OCTO = 'WALL_OCTO',
+  WALL_S = 'WALL_S',
+  WALL_SPEED = 'WALL_SPEED',
+  WALL_T = 'WALL_T',
+  WALL_X = 'WALL_X'
 }
 
 export type Query = {
-  events: Array<Event>;
   event: Maybe<Event>;
+  events: Array<Event>;
   /** Get session by its token */
   session: Maybe<Session>;
-  /** Get all stones of a team */
-  stones: Array<Stone>;
   /** Get stonelist of a user in a team */
   stoneList: Array<StoneList>;
+  /** Find all users of this team that have a nonzero stonelist in this team */
+  stoneListUsers: Array<User>;
   /** Get all stonetypes of a team */
   stoneTypes: Array<StoneType>;
+  /** Get all stones of a team */
+  stones: Array<Stone>;
   /** Fetch the teams that the user is a member of */
   teams: Array<Team>;
   /** Find user by its slug */
   user: Maybe<User>;
-  /** Find all users of this team that have a nonzero stonelist in this team */
-  stoneListUsers: Array<User>;
 };
 
 
@@ -219,161 +219,161 @@ export type QueryuserArgs = {
 };
 
 export enum Role {
-  CAPTAIN = 'CAPTAIN',
   BUILDER = 'BUILDER',
+  CAPTAIN = 'CAPTAIN',
   GUEST = 'GUEST'
 }
 
 export type Session = {
-  id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   expiresAt: Maybe<Scalars['DateTime']>;
-  userId: Scalars['String'];
-  user: User;
-  teamId: Maybe<Scalars['String']>;
-  team: Maybe<Team>;
+  id: Scalars['ID'];
   member: Maybe<Member>;
+  team: Maybe<Team>;
+  teamId: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type Stat = {
-  id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   name: Scalars['String'];
   projects: Array<StatsOnProject>;
-  teamId: Scalars['String'];
   team: Team;
+  teamId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type StatsOnProject = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  statId: Scalars['String'];
-  stat: Stat;
-  projectId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   project: Project;
+  projectId: Scalars['String'];
+  stat: Stat;
+  statId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Stone = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
   alias: Scalars['String'];
   alias2: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  description: Maybe<Scalars['String']>;
   hex: Scalars['String'];
   hex2: Maybe<Scalars['String']>;
-  description: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
   order: Scalars['Int'];
   projects: Array<StonesOnProject>;
-  subthemes: Array<StonesOnSubtheme>;
-  stoneTypeId: Scalars['String'];
-  stoneType: StoneType;
   stoneLists: Array<StoneList>;
+  stoneType: StoneType;
+  stoneTypeId: Scalars['String'];
+  subthemes: Array<StonesOnSubtheme>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type StoneList = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  stoneId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   stone: Stone;
-  userId: Scalars['String'];
+  stoneId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
   user: User;
+  userId: Scalars['String'];
 };
 
 export type StoneType = {
-  id: Scalars['ID'];
   createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
   description: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
   order: Scalars['Int'];
   stones: Array<Stone>;
-  teamId: Scalars['String'];
   team: Team;
+  teamId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type StonesOnProject = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  stoneId: Scalars['String'];
-  stone: Stone;
-  userId: Scalars['String'];
-  user: User;
-  projectId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   project: Project;
+  projectId: Scalars['String'];
+  stone: Stone;
+  stoneId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type StonesOnSubtheme = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   amount: Scalars['Int'];
-  stoneId: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   stone: Stone;
-  userId: Scalars['String'];
-  user: User;
-  subthemeId: Scalars['String'];
+  stoneId: Scalars['String'];
   subtheme: Subtheme;
+  subthemeId: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type Subtheme = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  color: Scalars['String'];
-  order: Scalars['Int'];
-  slug: Scalars['String'];
-  projects: Array<Project>;
   attributes: Array<AttributesOnSubtheme>;
-  stones: Array<StonesOnSubtheme>;
-  eventId: Scalars['String'];
+  color: Scalars['String'];
+  createdAt: Scalars['DateTime'];
   event: Event;
+  eventId: Scalars['String'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  order: Scalars['Int'];
+  projects: Array<Project>;
+  slug: Scalars['String'];
+  stones: Array<StonesOnSubtheme>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Team = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  name: Scalars['String'];
-  members: Array<Member>;
-  sessions: Array<Session>;
-  events: Array<Event>;
-  stoneTypes: Array<StoneType>;
   attributes: Array<Attribute>;
+  createdAt: Scalars['DateTime'];
+  events: Array<Event>;
+  id: Scalars['ID'];
+  members: Array<Member>;
+  name: Scalars['String'];
+  sessions: Array<Session>;
   stats: Array<Stat>;
+  stoneTypes: Array<StoneType>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type User = {
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  displayName: Scalars['String'];
-  slug: Scalars['String'];
-  avatar: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-  isAdmin: Scalars['Boolean'];
-  sessions: Array<Session>;
-  stoneLists: Array<StoneList>;
-  stonesOnProjects: Array<StonesOnProject>;
-  stonesOnSubthemes: Array<StonesOnSubtheme>;
   attributeLists: Array<AttributeList>;
   attributesOnProjects: Array<AttributesOnProject>;
   attributesOnSubthemes: Array<AttributesOnSubtheme>;
-  /** The teams this user is a member of */
-  teams: Array<Member>;
+  avatar: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  displayName: Scalars['String'];
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  id: Scalars['ID'];
+  isAdmin: Scalars['Boolean'];
+  lastName: Scalars['String'];
   /** The projects that this user supervises */
   projects: Array<Project>;
+  sessions: Array<Session>;
+  slug: Scalars['String'];
+  stoneLists: Array<StoneList>;
+  stonesOnProjects: Array<StonesOnProject>;
+  stonesOnSubthemes: Array<StonesOnSubtheme>;
+  /** The teams this user is a member of */
+  teams: Array<Member>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type getUIQueryVariables = Exact<{ [key: string]: never; }>;

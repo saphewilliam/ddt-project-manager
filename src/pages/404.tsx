@@ -15,7 +15,7 @@ export default function Custom404(): ReactElement {
           'text-center',
           'w-full',
           'h-full',
-          'sm:pb-32',
+          'sm:pb-18',
           'pb-14',
         )}
       >
