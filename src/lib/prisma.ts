@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-empty-interface*/
 
 import { PrismaClient } from '@prisma/client';
+import { environment } from './environment';
 
 declare global {
   namespace NodeJS {
@@ -8,8 +9,8 @@ declare global {
   }
 }
 
-// Prevent multiple instances of Prisma Client in development
 declare const global: NodeJS.Global & { prisma?: PrismaClient };
 
+// Prevent multiple instances of Prisma Client in development
 export const prisma = global.prisma || new PrismaClient();
-if (process.env.NODE_ENV === 'development') global.prisma = prisma;
+if (environment.env === 'DEVELOP') global.prisma = prisma;

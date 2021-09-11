@@ -1,7 +1,7 @@
 import { makeSchema, fieldAuthorizePlugin, queryComplexityPlugin } from 'nexus';
 import NexusPrismaScalars from 'nexus-prisma/scalars'; // eslint-disable-line import/no-unresolved
 import { FieldAuthorizePluginErrorConfig } from 'nexus/dist/plugins/fieldAuthorizePlugin';
-import path from 'path';
+import { join } from 'path';
 import * as types from './types';
 
 export const schema = makeSchema({
@@ -18,7 +18,11 @@ export const schema = makeSchema({
     output: true,
   },
   outputs: {
-    typegen: path.join(__dirname, '/__generated__/nexus.d.ts'),
-    schema: path.join(__dirname, '../../schema.graphql'),
+    typegen: join(process.cwd(), 'src', 'graphql', '__generated__', 'nexus.d.ts'),
+    schema: join(process.cwd(), 'schema.graphql'),
+  },
+  contextType: {
+    export: 'ApiContext',
+    module: join(process.cwd(), 'src', 'lib', 'apiContext.ts'),
   },
 });

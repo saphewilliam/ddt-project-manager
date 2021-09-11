@@ -1,6 +1,5 @@
 import { extendType, stringArg } from 'nexus';
 import { StoneList } from 'nexus-prisma';
-import { ApiContext } from '@lib/apiContext';
 import { authorizeSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
@@ -16,7 +15,7 @@ export const stoneListQuery = extendType({
       },
       authorize: authorizeSession,
       description: 'Get stonelist of a user in a team',
-      resolve: (_, args, ctx: ApiContext) =>
+      resolve: (_, args, ctx) =>
         ctx.prisma.stoneList.findMany({
           where: {
             user: { slug: args.userSlug },

@@ -4,6 +4,7 @@
  */
 
 
+import type { ApiContext } from "./../../lib/apiContext"
 import type { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 import type { QueryComplexity } from "nexus/dist/plugins/queryComplexityPlugin"
 import type { core } from "nexus"
@@ -67,7 +68,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  ProjectStatus: "BUILDING" | "BUILT" | "CANCELLED" | "PLANNED" | "PLANNING" | "STARTING"
+  ProjectStatus: "BUILDING" | "BUILT" | "CANCELLED" | "PLANNED" | "PLANNING" | "READY" | "STARTING"
   ProjectType: "DECOR" | "FALLWALL" | "FIELD_CIRCLE" | "FIELD_CROSS_L2" | "FIELD_FLAT" | "FIELD_L1" | "FIELD_L2" | "FIELD_M50" | "HANDSET" | "OTHER" | "SPIRAL" | "STRUCTURE" | "WALL_CUBE" | "WALL_OCTO" | "WALL_S" | "WALL_SPEED" | "WALL_T" | "WALL_X"
   Role: "BUILDER" | "CAPTAIN" | "GUEST"
 }
@@ -811,7 +812,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: ApiContext;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

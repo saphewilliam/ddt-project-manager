@@ -1,20 +1,31 @@
 import { ApolloServer } from 'apollo-server-micro';
-import { PageConfig } from 'next';
+import { NextApiRequest, NextApiResponse, PageConfig } from 'next';
 import { schema } from '@graphql/schema';
 import { createApiContext } from '@lib/apiContext';
-import { environment } from '@lib/environment';
 
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   schema,
   context: createApiContext,
-  tracing: environment.env === 'DEVELOP',
-  playground: environment.env === 'DEVELOP',
 });
 
-export const config: PageConfig = {
-  api: {
-    bodyParser: false,
-  },
-};
+const startServer = apolloServer.start();
 
-export default server.createHandler({ path: '/api/graphql' });
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<void | boolean> {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', 'https://studio.apollographql.com');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  if (req.method === 'OPTIONS') {
+    res.end();
+    return false;
+  }
+
+  await startServer;
+  await apolloServer.createHandler({
+    path: '/api/graphql',
+  })(req, res);
+}
+
+export const config: PageConfig = { api: { bodyParser: false } };

@@ -153,6 +153,7 @@ export enum ProjectStatus {
   STARTING = 'STARTING',
   PLANNING = 'PLANNING',
   PLANNED = 'PLANNED',
+  READY = 'READY',
   BUILDING = 'BUILDING',
   BUILT = 'BUILT'
 }

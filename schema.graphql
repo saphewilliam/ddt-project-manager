@@ -133,6 +133,7 @@ enum ProjectStatus {
   CANCELLED
   PLANNED
   PLANNING
+  READY
   STARTING
 }
 

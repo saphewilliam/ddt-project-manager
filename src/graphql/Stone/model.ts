@@ -1,6 +1,5 @@
 import { extendType } from 'nexus';
 import { Stone } from 'nexus-prisma';
-import { ApiContext } from '@lib/apiContext';
 import { authorizeSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
@@ -10,7 +9,7 @@ export const stoneModel = nexusModel(Stone, {
     t.list.field('stoneLists', {
       type: 'StoneList',
       authorize: authorizeSession,
-      resolve(root, _, ctx: ApiContext) {
+      resolve(root, _, ctx) {
         return ctx.prisma.stoneList.findMany({
           where: {
             stoneId: root.id,
@@ -30,7 +29,7 @@ export const stoneQuery = extendType({
       type: 'Stone',
       authorize: authorizeSession,
       description: 'Get all stones of a team',
-      resolve(_, __, ctx: ApiContext) {
+      resolve(_, __, ctx) {
         return ctx.prisma.stone.findMany({
           where: { stoneType: { teamId: ctx.session?.teamId ?? '' } },
           orderBy: [{ stoneType: { order: 'asc' } }, { order: 'asc' }],

@@ -1,6 +1,5 @@
 import { extendType, stringArg } from 'nexus';
 import { User } from 'nexus-prisma';
-import { ApiContext } from '@lib/apiContext';
 import { authorizeSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
@@ -16,7 +15,7 @@ export const userQuery = extendType({
         userSlug: stringArg(),
       },
       authorize: authorizeSession,
-      resolve: (_, args, ctx: ApiContext) =>
+      resolve: (_, args, ctx) =>
         ctx.prisma.user.findFirst({
           where: { teams: { some: { teamId: ctx.session?.teamId ?? '' } }, slug: args.userSlug },
         }),
@@ -25,7 +24,7 @@ export const userQuery = extendType({
       type: 'User',
       description: 'Find all users of this team that have a nonzero stonelist in this team',
       authorize: authorizeSession,
-      resolve: (_, __, ctx: ApiContext) =>
+      resolve: (_, __, ctx) =>
         ctx.prisma.user.findMany({
           where: {
             teams: { some: { teamId: ctx.session?.teamId ?? '' } },

@@ -1,6 +1,5 @@
 import { booleanArg, extendType, stringArg } from 'nexus';
 import { Session } from 'nexus-prisma';
-import { ApiContext } from '@lib/apiContext';
 import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
@@ -9,7 +8,7 @@ export const sessionModel = nexusModel(Session, {
   extend(t) {
     t.nullable.field('member', {
       type: 'Member',
-      resolve(root, __, ctx: ApiContext) {
+      resolve(root, __, ctx) {
         if (root.teamId === null) return null;
         else
           return ctx.prisma.member.findFirst({
@@ -29,8 +28,7 @@ export const sessionQuery = extendType({
       args: {
         token: stringArg(),
       },
-      resolve: (_, args, ctx: ApiContext) =>
-        ctx.prisma.session.findUnique({ where: { token: args.token } }),
+      resolve: (_, args, ctx) => ctx.prisma.session.findUnique({ where: { token: args.token } }),
     });
   },
 });
@@ -46,8 +44,7 @@ export const sessionMutation = extendType({
         password: stringArg(),
         isPermanent: booleanArg(),
       },
-      resolve: (_, args, ctx: ApiContext) =>
-        loginUser(args.email, args.password, args.isPermanent, ctx.prisma),
+      resolve: (_, args, ctx) => loginUser(args.email, args.password, args.isPermanent, ctx.prisma),
     });
     t.field('setSessionTeam', {
       type: 'Session',
@@ -56,7 +53,7 @@ export const sessionMutation = extendType({
         token: stringArg(),
         teamId: stringArg(),
       },
-      resolve: (_, args, ctx: ApiContext) => setSessionTeam(args.token, args.teamId, ctx.prisma),
+      resolve: (_, args, ctx) => setSessionTeam(args.token, args.teamId, ctx.prisma),
     });
     t.field('logout', {
       type: 'Session',
@@ -64,7 +61,7 @@ export const sessionMutation = extendType({
       args: {
         token: stringArg(),
       },
-      resolve: (_, args, ctx: ApiContext) => logoutUser(args.token, ctx.prisma),
+      resolve: (_, args, ctx) => logoutUser(args.token, ctx.prisma),
     });
   },
 });
