@@ -1,6 +1,7 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useContext } from 'react';
+import { NavigationContext } from '@components/Providers/NavigationProvider';
 import DesktopNavItem from './DesktopNavItem';
 import { NavItemProps } from './Navigation';
 import ProfileBox from './ProfileBox';
@@ -10,10 +11,8 @@ interface Props {
 }
 
 export default function DesktopNav(props: Props): ReactElement {
-  const [collapsed, setCollapsed] = useState(false);
-  const [expandedItem, setExpandedItem] = useState<number | null>(null);
-
-  const navWidth = collapsed ? 2 * 12 + 41 : 2 * 12 + 258;
+  const navState = useContext(NavigationContext);
+  const navWidth = navState.collapsed ? 2 * 12 + 41 : 2 * 12 + 258;
 
   return (
     <div
@@ -46,7 +45,7 @@ export default function DesktopNav(props: Props): ReactElement {
             'mb-7',
             'mt-4',
             'duration-500',
-            collapsed ? 'mx-1' : 'mx-3',
+            navState.collapsed ? 'mx-1' : 'mx-3',
           )}
         >
           <h1
@@ -58,7 +57,7 @@ export default function DesktopNav(props: Props): ReactElement {
               'absolute',
               'right-[3.2rem]',
               'duration-500',
-              collapsed && cx('pointer-events-none', 'opacity-0'),
+              navState.collapsed && cx('pointer-events-none', 'opacity-0'),
             )}
           >
             DDT Project Manager
@@ -72,13 +71,13 @@ export default function DesktopNav(props: Props): ReactElement {
               'bg-dark-selected',
               'hover:bg-dark-highlight',
             )}
-            onClick={() => setCollapsed(!collapsed)}
+            onClick={() => navState.setCollapsed(!navState.collapsed)}
           >
             <ChevronDoubleRightIcon
               width={16}
               className={cx(
                 'text-light',
-                !collapsed && 'rotate-180',
+                !navState.collapsed && 'rotate-180',
                 'transition-transform',
                 'duration-500',
               )}
@@ -91,19 +90,13 @@ export default function DesktopNav(props: Props): ReactElement {
             {props.navItems
               .filter((item) => !item.hidden)
               .map((item, i) => (
-                <DesktopNavItem
-                  key={i}
-                  {...item}
-                  navCollapsed={collapsed}
-                  expanded={i === expandedItem}
-                  setExpanded={(expand) => setExpandedItem(expand ? i : null)}
-                />
+                <DesktopNavItem key={i} {...item} />
               ))}
           </ul>
         </nav>
       </div>
 
-      <ProfileBox navCollapsed={collapsed} />
+      <ProfileBox />
     </div>
   );
 }

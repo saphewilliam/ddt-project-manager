@@ -26,15 +26,13 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 
 export interface NavItemProps {
+  id: number;
   label: string;
   href: string;
   exactHref?: boolean;
   icon: (props: ComponentProps<'svg'>) => ReactElement;
   activeIcon: (props: ComponentProps<'svg'>) => ReactElement;
   subItems?: { label: string; href: string }[];
-  navCollapsed?: boolean;
-  expanded?: boolean;
-  setExpanded?: (expand: boolean) => void;
   hidden?: boolean;
 }
 
@@ -49,6 +47,7 @@ export default function Navigation(): ReactElement {
   const navItems: NavItemProps[] = useMemo<NavItemProps[]>(
     () => [
       {
+        id: 0,
         href: '/',
         exactHref: true,
         label: 'Dashboard',
@@ -56,6 +55,7 @@ export default function Navigation(): ReactElement {
         activeIcon: HomeSolid,
       },
       {
+        id: 1,
         href: '/lists',
         label: 'Lists',
         icon: ListOutline,
@@ -68,6 +68,7 @@ export default function Navigation(): ReactElement {
         ),
       },
       {
+        id: 2,
         href: '/events',
         label: 'Events',
         icon: EventOutline,
@@ -78,6 +79,7 @@ export default function Navigation(): ReactElement {
         })),
       },
       {
+        id: 3,
         href: '/team',
         label: 'Team',
         icon: TeamOutline,
@@ -85,6 +87,7 @@ export default function Navigation(): ReactElement {
         hidden: session?.member?.role !== Role.CAPTAIN,
       },
       {
+        id: 4,
         href: '/admin',
         label: 'Admin',
         icon: AdminOutline,
@@ -92,6 +95,7 @@ export default function Navigation(): ReactElement {
         hidden: !session?.user.isAdmin,
       },
       {
+        id: 5,
         href: '/profile',
         label: 'Profile',
         icon: ProfileOutline,
@@ -99,6 +103,7 @@ export default function Navigation(): ReactElement {
         hidden: !device?.xs,
       },
       {
+        id: 6,
         href: '/feedback',
         label: 'Feedback',
         icon: FeedbackOutline,

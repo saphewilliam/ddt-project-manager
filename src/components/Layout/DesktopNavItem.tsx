@@ -2,14 +2,24 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { ComponentProps, ReactElement, useRef, useEffect, useState } from 'react';
+import React, {
+  ComponentProps,
+  ReactElement,
+  useRef,
+  useEffect,
+  useState,
+  useContext,
+} from 'react';
 import { createPortal } from 'react-dom';
+import { NavigationContext } from '@components/Providers/NavigationProvider';
 import DesktopNavTooltip from './DesktopNavTooltip';
 import { NavItemProps } from './Navigation';
 
 export default function DesktopNavItem(props: NavItemProps): ReactElement {
   const [tooltipTop, setTooltipTop] = useState<number | undefined>(undefined);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const navState = useContext(NavigationContext);
 
   const itemRef = useRef<HTMLLIElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
@@ -24,7 +34,7 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
     'items-center',
     'justify-between',
     'py-2',
-    props.navCollapsed ? 'px-2' : 'px-3',
+    navState.collapsed ? 'px-2' : 'px-3',
     'w-full',
     'rounded-md',
     'cursor-pointer',
@@ -36,13 +46,13 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
 
   const iconProps: ComponentProps<'svg'> = {
     width: 25,
-    className: cx('transition-all', 'duration-500', !props.navCollapsed && 'mr-3'),
+    className: cx('transition-all', 'duration-500', !navState.collapsed && 'mr-3'),
   };
 
   const commonChildren: ReactElement = (
     <div className={cx('flex', 'items-end')}>
       {isActive ? <props.activeIcon {...iconProps} /> : <props.icon {...iconProps} />}
-      <span className={cx('duration-500', 'transition-opacity', props.navCollapsed && 'opacity-0')}>
+      <span className={cx('duration-500', 'transition-opacity', navState.collapsed && 'opacity-0')}>
         {props.label}
       </span>
     </div>
@@ -53,15 +63,15 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
   }, [itemRef]);
 
   useEffect(() => {
-    if (!props.navCollapsed) setShowTooltip(false);
-  }, [props.navCollapsed]);
+    if (!navState.collapsed) setShowTooltip(false);
+  }, [navState.collapsed]);
 
   return (
     <li
       ref={itemRef}
       className={cx('my-1')}
-      onMouseEnter={() => props.navCollapsed && setShowTooltip(true)}
-      onMouseLeave={() => props.navCollapsed && setShowTooltip(false)}
+      onMouseEnter={() => navState.collapsed && setShowTooltip(true)}
+      onMouseLeave={() => navState.collapsed && setShowTooltip(false)}
     >
       {props.subItems && props.subItems.length > 0 ? (
         <>
@@ -69,33 +79,41 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
             title={props.label}
             className={className}
             onClick={() =>
-              !props.navCollapsed && props.setExpanded && props.setExpanded(!props.expanded)
+              !navState.collapsed &&
+              navState.setExpandedItem(navState.expandedItem === props.id ? null : props.id)
             }
           >
             {commonChildren}
             <ChevronRightIcon
               width={18}
-              className={cx('transition-all', 'duration-200', props.expanded && 'rotate-90')}
+              className={cx(
+                'transition-all',
+                'duration-200',
+                navState.expandedItem === props.id && 'rotate-90',
+              )}
             />
           </button>
           <ul
             ref={listRef}
             className={cx(
-              props.navCollapsed ? 'ml-[1.2rem]' : 'ml-[1.4rem]',
-              props.expanded && !props.navCollapsed && 'my-2',
+              navState.collapsed ? 'ml-[1.2rem]' : 'ml-[1.4rem]',
+              navState.expandedItem === props.id && !navState.collapsed && 'my-2',
               'transition-all',
               'duration-500',
               'overflow-hidden',
             )}
             style={{
-              maxHeight: !props.expanded || props.navCollapsed ? 0 : listRef.current?.scrollHeight,
+              maxHeight:
+                !(navState.expandedItem === props.id) || navState.collapsed
+                  ? 0
+                  : listRef.current?.scrollHeight,
             }}
           >
             {props.subItems.map((subItem, i) => (
               <li className={cx('border-l-4', 'border-muted')} key={i}>
                 <Link href={subItem.href}>
                   <a
-                    tabIndex={props.expanded && !props.navCollapsed ? 0 : -1}
+                    tabIndex={navState.expandedItem === props.id && !navState.collapsed ? 0 : -1}
                     className={cx(
                       'block',
                       'pl-6',

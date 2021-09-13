@@ -3,14 +3,12 @@ import * as style from '@dicebear/avatars-jdenticon-sprites';
 import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, useContext, useMemo } from 'react';
+import { NavigationContext } from '@components/Providers/NavigationProvider';
 import useSession from '@hooks/useSession';
 
-export interface Props {
-  navCollapsed: boolean;
-}
-
-export default function ProfileBox(props: Props): ReactElement {
+export default function ProfileBox(): ReactElement {
+  const navState = useContext(NavigationContext);
   const session = useSession();
   const avatar = useMemo(
     () => Buffer.from(createAvatar(style, { seed: session?.user.id })).toString('base64'),
@@ -60,7 +58,7 @@ export default function ProfileBox(props: Props): ReactElement {
               'whitespace-nowrap',
               'transition-opacity',
               'duration-500',
-              props.navCollapsed && cx('opacity-0', 'pointer-events-none'),
+              navState.collapsed && cx('opacity-0', 'pointer-events-none'),
             )}
           >
             <p className={cx('font-bold')}>
