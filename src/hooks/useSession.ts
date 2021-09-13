@@ -1,7 +1,6 @@
-import { createContext, useContext } from 'react';
+import { useContext } from 'react';
+import { SessionContext } from '@components/Providers/SessionProvider';
 import { getSessionQuery } from '@graphql/__generated__/codegen-self';
-
-export const SessionContext = createContext<getSessionQuery['session']>(null);
 
 export default function useSession(): getSessionQuery['session'] {
   return useContext(SessionContext);

@@ -7,7 +7,7 @@ on:
 
 jobs:
   main_cd:
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,11 +19,7 @@ jobs:
         run: printf 'DATABASE_URL=${{ secrets.DATABASE_URL_MAIN }}' > .env
       - name: Install dependencies
         run: yarn
-      # - name: Generate GraphQL Types
-      #   run: |
-      #     yarn prisma:generate
-      #     yarn nexus:generate
       - name: Lint
-        run: yarn lint:api
-      # - name: Update Database
-      #   run: yarn mig:deploy
+        run: yarn lint
+      - name: Update Database
+        run: yarn prisma migrate deploy

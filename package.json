@@ -19,6 +19,10 @@
     "generate:nexus": "yarn tsn --files src/graphql/schema",
     "generate:graphql": "graphql-codegen -r dotenv/config -c .codegenrc.yml",
     "generate": "yarn generate:prisma && yarn generate:nexus && yarn generate:graphql",
+    "db:flush": "yarn tsn --files src/graphql/flush",
+    "db:seed": "yarn tsn --files src/graphql/seed",
+    "db:reset": "yarn db:flush && yarn db:seed",
+    "postinstall": "yarn generate:prisma && yarn generate:nexus",
     "tsn": "ts-node -r tsconfig-paths/register -r dotenv/config -O \"{\\\"module\\\":\\\"commonjs\\\"}\""
   },
   "prisma": {
@@ -35,6 +39,7 @@
     "clsx": "1.1.1",
     "graphql": "15.5.3",
     "graphql-request": "3.5.0",
+    "graphql-scalars": "1.10.1",
     "graphql-tag": "2.12.5",
     "micro": "9.3.4",
     "next": "11.1.2",

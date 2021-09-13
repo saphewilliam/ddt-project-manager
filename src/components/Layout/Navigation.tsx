@@ -96,7 +96,7 @@ export default function Navigation(): ReactElement {
         label: 'Profile',
         icon: ProfileOutline,
         activeIcon: ProfileSolid,
-        hidden: !device.mobile,
+        hidden: !device?.xs,
       },
       {
         href: '/feedback',
@@ -109,5 +109,5 @@ export default function Navigation(): ReactElement {
     [uiData, device, session],
   );
 
-  return device.mobile ? <MobileNav navItems={navItems} /> : <DesktopNav navItems={navItems} />;
+  return device?.xs ? <MobileNav navItems={navItems} /> : <DesktopNav navItems={navItems} />;
 }

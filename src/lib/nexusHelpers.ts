@@ -1,9 +1,8 @@
 import { objectType } from 'nexus';
 import { NexusObjectTypeConfig, NexusObjectTypeDef, ObjectDefinitionBlock } from 'nexus/dist/core';
-import { NexusGenObjects } from '@graphql/__generated__/nexus';
 
 interface Model {
-  $name: keyof NexusGenObjects;
+  $name: string;
   $description: string | undefined;
 }
 

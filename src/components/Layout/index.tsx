@@ -16,7 +16,7 @@ export default function Layout(props: Props): ReactElement {
   const session = useSession();
 
   return (
-    <div className={cx('w-screen', 'h-screen', 'flex', device.mobile && 'flex-col-reverse')}>
+    <div className={cx('w-screen', 'h-screen', 'flex', device?.xs && 'flex-col-reverse')}>
       <Head>
         <title>DDT Project Manager</title>
       </Head>

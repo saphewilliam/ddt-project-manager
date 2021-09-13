@@ -13,13 +13,6 @@ import seedUsers from './User/seed';
 
 const prisma = new PrismaClient();
 
-async function flush(prisma: PrismaClient): Promise<void> {
-  console.log('Flushing db...');
-  await prisma.user.deleteMany({});
-  await prisma.team.deleteMany({});
-  await prisma.event.deleteMany({});
-}
-
 async function seed(prisma: PrismaClient): Promise<void> {
   console.log('Seeding Teams...');
   await seedTeams(prisma);
@@ -49,12 +42,7 @@ async function seed(prisma: PrismaClient): Promise<void> {
   await seedSubthemes(prisma);
 }
 
-async function main(): Promise<void> {
-  await flush(prisma);
-  await seed(prisma);
-}
-
-main()
+seed(prisma)
   .catch((e) => {
     console.error(e);
     process.exit(1);

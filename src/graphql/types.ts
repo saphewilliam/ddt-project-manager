@@ -1,3 +1,6 @@
+import { GraphQLScalarType } from 'graphql';
+import { DateTimeResolver } from 'graphql-scalars';
+
 export * from './Attribute/model';
 export * from './AttributeList/model';
 export * from './AttributesOnProject/model';
@@ -16,3 +19,5 @@ export * from './StoneType/model';
 export * from './Subtheme/model';
 export * from './Team/model';
 export * from './User/model';
+
+export const dateTimeScalar = new GraphQLScalarType(DateTimeResolver);
