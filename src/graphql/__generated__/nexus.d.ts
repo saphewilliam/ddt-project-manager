@@ -704,12 +704,8 @@ export interface NexusGenArgTypes {
       isPermanent: boolean; // Boolean!
       password: string; // String!
     }
-    logout: { // args
-      token: string; // String!
-    }
     setSessionTeam: { // args
       teamId: string; // String!
-      token: string; // String!
     }
   }
   Query: {

@@ -13,7 +13,7 @@ export interface Props {
 
 export default function Layout(props: Props): ReactElement {
   const device = useDeviceWidth();
-  const session = useSession();
+  const { session } = useSession();
 
   return (
     <div className={cx('w-screen', 'h-screen', 'flex', device?.xs && 'flex-col-reverse')}>

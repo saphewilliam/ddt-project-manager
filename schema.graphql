@@ -84,10 +84,10 @@ type Mutation {
   login(email: String!, isPermanent: Boolean!, password: String!): String!
 
   """Invalidate an active session"""
-  logout(token: String!): Session!
+  logout: Session!
 
   """Set the `team` field of an active session"""
-  setSessionTeam(teamId: String!, token: String!): Session!
+  setSessionTeam(teamId: String!): Session!
 }
 
 type Project {

@@ -1,6 +1,6 @@
 import { PrismaClient, Session } from '@prisma/client';
 import { hash, compare } from 'bcrypt';
-import { randomBytes } from 'crypto';
+import { nanoid } from 'nanoid';
 import { ApiContext } from './apiContext';
 
 export async function hashPw(plaintext: string): Promise<string> {
@@ -35,7 +35,7 @@ export async function generateUniqueRandomId(prisma: PrismaClient): Promise<stri
   let token = '';
 
   while (!unique) {
-    token = randomBytes(32).toString('hex');
+    token = nanoid(64);
     const found = await prisma.session.findUnique({ where: { token } });
     unique = found === null;
   }

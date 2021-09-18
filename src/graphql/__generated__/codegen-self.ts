@@ -107,14 +107,8 @@ export type MutationloginArgs = {
 };
 
 
-export type MutationlogoutArgs = {
-  token: Scalars['String'];
-};
-
-
 export type MutationsetSessionTeamArgs = {
   teamId: Scalars['String'];
-  token: Scalars['String'];
 };
 
 export type Project = {
@@ -380,12 +374,16 @@ export type loginMutationVariables = Exact<{
 export type loginMutation = { login: string };
 
 export type setSessionTeamMutationVariables = Exact<{
-  token: Scalars['String'];
   teamId: Scalars['String'];
 }>;
 
 
 export type setSessionTeamMutation = { setSessionTeam: { id: string } };
+
+export type logoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type logoutMutation = { logout: { id: string } };
 
 export type getSessionQueryVariables = Exact<{
   token: Scalars['String'];
@@ -446,8 +444,15 @@ export const loginDocument = gql`
 }
     `;
 export const setSessionTeamDocument = gql`
-    mutation setSessionTeam($token: String!, $teamId: String!) {
-  setSessionTeam(token: $token, teamId: $teamId) {
+    mutation setSessionTeam($teamId: String!) {
+  setSessionTeam(teamId: $teamId) {
+    id
+  }
+}
+    `;
+export const logoutDocument = gql`
+    mutation logout {
+  logout {
     id
   }
 }
@@ -540,6 +545,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     setSessionTeam(variables: setSessionTeamMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<setSessionTeamMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<setSessionTeamMutation>(setSessionTeamDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'setSessionTeam');
+    },
+    logout(variables?: logoutMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<logoutMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<logoutMutation>(logoutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'logout');
     },
     getSession(variables: getSessionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getSessionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getSessionQuery>(getSessionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSession');

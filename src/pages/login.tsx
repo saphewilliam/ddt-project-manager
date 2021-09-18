@@ -28,19 +28,25 @@ export default function LoginPage(): ReactElement {
   const [showTeams, setShowTeams] = useState(false);
   const [teams, setTeams] = useState<getTeamsQuery | null>(null);
   const [team, setTeam] = useState('');
+  const [loading, setLoading] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies(['ddtauth']);
 
   const router = useRouter();
-  const session = useSession();
+  const { session } = useSession();
 
   const setSessionTeam = useCallback(
     async (teamId: string, token?: string) => {
-      const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
-      const data = await promiseWithCatch(
-        sdk.setSessionTeam({ token: token ?? cookie.ddtauth, teamId }),
-        'Could not select team',
-      );
-      if (!data) return;
+      const client = new GraphQLClient(environment.endpoints.self, {
+        headers: { authorization: `Bearer ${token ?? cookie.ddtauth}` },
+      });
+
+      const sdk = getSdk(client);
+
+      const data = await promiseWithCatch(sdk.setSessionTeam({ teamId }), 'Could not select team');
+      if (!data) {
+        setLoading(false);
+        return;
+      }
 
       router.push('/');
     },
@@ -62,7 +68,7 @@ export default function LoginPage(): ReactElement {
       } else if (data.teams.length === 1) {
         const teamId = data.teams[0]?.id;
         if (!teamId) return;
-        setSessionTeam(teamId, token);
+        await setSessionTeam(teamId, token);
       } else {
         setTeams(data);
         setShowTeams(true);
@@ -74,22 +80,33 @@ export default function LoginPage(): ReactElement {
   async function handleLoginSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
+    setLoading(true);
     const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
     const data = await promiseWithCatch(sdk.login(formValues), 'Failed to log in');
-    if (!data) return;
+    if (!data) {
+      setLoading(false);
+      return;
+    }
 
-    setCookie('ddtauth', data.login, { path: '/' });
-    getSessionTeams(data.login);
+    const expireDate = new Date();
+    expireDate.setFullYear(expireDate.getFullYear() + 5);
+    setCookie('ddtauth', data.login, { path: '/', expires: expireDate });
+
+    await getSessionTeams(data.login);
+
+    setLoading(false);
   }
 
   async function handleTeamSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
+    setLoading(true);
     setSessionTeam(team);
   }
 
   // Detect teamless tokens on page load
   useEffect(() => {
     if (session !== null && !showTeams) getSessionTeams();
+    else setLoading(false);
   }, [session]);
 
   return (
@@ -130,7 +147,7 @@ export default function LoginPage(): ReactElement {
                   ))}
                 </select>
               </div>
-              <Button label="Select team" />
+              <Button label="Select team" loading={loading} />
             </form>
           ) : (
             <form onSubmit={handleLoginSubmit}>
@@ -175,7 +192,7 @@ export default function LoginPage(): ReactElement {
                 <a>Forgot password?</a>
               </Link> */}
               </div>
-              <Button label="Sign in" />
+              <Button label="Sign in" loading={loading} />
             </form>
           )}
         </div>

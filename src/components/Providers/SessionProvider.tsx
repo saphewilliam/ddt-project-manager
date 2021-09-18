@@ -1,6 +1,14 @@
 import { GraphQLClient } from 'graphql-request';
 import { useRouter } from 'next/router';
-import React, { createContext, ReactElement, ReactNode, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useCookies } from 'react-cookie';
 import { getSdk, getSessionQuery } from '@graphql/__generated__/codegen-self';
 import { environment } from '@lib/environment';
@@ -10,7 +18,14 @@ export interface Props {
   children?: ReactNode;
 }
 
-export const SessionContext = createContext<getSessionQuery['session']>(null);
+export const SessionContext = createContext<{
+  setSession: Dispatch<SetStateAction<getSessionQuery['session']>>;
+  session: getSessionQuery['session'];
+}>({
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setSession: () => {},
+  session: null,
+});
 
 export default function SessionProvider(props: Props): ReactElement {
   const router = useRouter();
@@ -21,13 +36,13 @@ export default function SessionProvider(props: Props): ReactElement {
     if (!cookie.ddtauth && router.pathname !== '/login') router.push('/login');
     if (cookie.ddtauth) {
       const getSession = async () => {
-        const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
+        const client = new GraphQLClient(environment.endpoints.self);
+        const sdk = getSdk(client);
         const data = await promiseWithCatch(
           sdk.getSession({ token: cookie.ddtauth }),
           'Could not fetch session',
         );
         if (!data) return;
-
         if (
           data.session &&
           (data.session.expiresAt === null || data.session.expiresAt > new Date().toISOString())
@@ -40,10 +55,13 @@ export default function SessionProvider(props: Props): ReactElement {
           if (router.pathname !== '/login') router.push('/login');
         }
       };
-
       getSession();
     }
   }, [router]);
 
-  return <SessionContext.Provider value={session}>{props.children}</SessionContext.Provider>;
+  return (
+    <SessionContext.Provider value={{ session, setSession }}>
+      {props.children}
+    </SessionContext.Provider>
+  );
 }

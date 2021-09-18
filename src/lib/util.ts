@@ -1,4 +1,4 @@
-import { randomBytes } from 'crypto';
+import { nanoid } from 'nanoid';
 import { ParsedUrlQuery } from 'querystring';
 import { displayError } from '@hooks/useDisplayError';
 
@@ -10,9 +10,7 @@ export function extractURLParam(name: string, query?: ParsedUrlQuery): string | 
 }
 
 export function generateSlug(raw: string): string {
-  return `${raw.toLowerCase().replace(/\s/g, '-').replace(/\./g, '')}-${randomBytes(3).toString(
-    'hex',
-  )}`;
+  return `${raw.toLowerCase().replace(/\s/g, '-').replace(/\./g, '')}-${nanoid(6)}`;
 }
 
 export async function promiseWithCatch<T>(

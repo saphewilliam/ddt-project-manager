@@ -9,7 +9,7 @@ import useSession from '@hooks/useSession';
 
 export default function ProfileBox(): ReactElement {
   const navState = useContext(NavigationContext);
-  const session = useSession();
+  const { session } = useSession();
   const avatar = useMemo(
     () => Buffer.from(createAvatar(style, { seed: session?.user.id })).toString('base64'),
     [session],

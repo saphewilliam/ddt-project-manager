@@ -10,6 +10,8 @@ const apolloServer = new ApolloServer({
 
 const startServer = apolloServer.start();
 
+export const config: PageConfig = { api: { bodyParser: false } };
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -27,5 +29,3 @@ export default async function handler(
     path: '/api/graphql',
   })(req, res);
 }
-
-export const config: PageConfig = { api: { bodyParser: false } };

@@ -1,6 +1,12 @@
 import { booleanArg, extendType, stringArg } from 'nexus';
 import { Session } from 'nexus-prisma';
-import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
+import {
+  authorizeSession,
+  isValidSession,
+  loginUser,
+  logoutUser,
+  setSessionTeam,
+} from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
 export const sessionModel = nexusModel(Session, {
@@ -49,19 +55,17 @@ export const sessionMutation = extendType({
     t.field('setSessionTeam', {
       type: 'Session',
       description: 'Set the `team` field of an active session',
+      authorize: (_, __, ctx) => isValidSession(ctx.session, true),
       args: {
-        token: stringArg(),
         teamId: stringArg(),
       },
-      resolve: (_, args, ctx) => setSessionTeam(args.token, args.teamId, ctx.prisma),
+      resolve: (_, args, ctx) => setSessionTeam(ctx.session?.token ?? '', args.teamId, ctx.prisma),
     });
     t.field('logout', {
       type: 'Session',
       description: 'Invalidate an active session',
-      args: {
-        token: stringArg(),
-      },
-      resolve: (_, args, ctx) => logoutUser(args.token, ctx.prisma),
+      authorize: authorizeSession,
+      resolve: (_, __, ctx) => logoutUser(ctx.session?.token ?? '', ctx.prisma),
     });
   },
 });
