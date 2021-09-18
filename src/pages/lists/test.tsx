@@ -1,31 +1,37 @@
 import React, { ReactElement } from 'react';
-import useTable, { c } from '@hooks/useTable';
+import useTable from '@hooks/useTable';
 
 export default function TestTablePage(): ReactElement {
-  const { headers, rows } = useTable(
+  const { headers, rows } = useTable<{
+    name: string;
+    age: number;
+    hidden: boolean;
+    boxChecked: boolean;
+    house: { streetName: string; houseNumber: number };
+  }>(
     {
-      name: c<string>(),
-      age: c<number>(),
-      hidden: c<number>(),
-      boxChecked: c<boolean>(),
-      house: c<{ streetName: string; houseNumber: number }>({
+      name: {},
+      age: {},
+      hidden: { hidden: true },
+      boxChecked: {},
+      house: {
         label: 'Address',
         renderCell: ({ value, row }) => (
-          <td>{`${value.streetName} ${value.houseNumber} ${row}`}</td>
+          <td>{`${value.streetName} ${value.houseNumber} ${row.hidden}`}</td>
         ),
-      }),
+      },
     },
     [
       {
         age: 27,
         boxChecked: true,
-        hidden: 48,
+        hidden: false,
         name: 'Jenna Hunterson',
         house: { houseNumber: 298, streetName: 'Broadway' },
       },
       {
         boxChecked: false,
-        hidden: 98,
+        hidden: true,
         house: { houseNumber: 34, streetName: 'Abbey Road' },
         age: 79,
         name: 'Paul McCartney',
@@ -34,7 +40,7 @@ export default function TestTablePage(): ReactElement {
         house: { streetName: 'Boulevard of broken dreams', houseNumber: 28 },
         name: 'Billie Joe Armstrong',
         boxChecked: true,
-        hidden: 2,
+        hidden: false,
         age: 49,
       },
     ],
@@ -61,11 +67,3 @@ export default function TestTablePage(): ReactElement {
     </table>
   );
 }
-
-// interface Hello {
-//   id: number;
-//   name?: string;
-//   recursive?: Hello;
-// }
-
-// const hello: Hello = {};
