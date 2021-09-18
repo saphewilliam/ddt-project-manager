@@ -7,6 +7,7 @@ export default function TestTablePage(): ReactElement {
     age: number;
     hidden: boolean;
     boxChecked: boolean;
+    musical: string | null;
     house: { streetName: string; houseNumber: number };
   }>(
     {
@@ -14,6 +15,7 @@ export default function TestTablePage(): ReactElement {
       age: {},
       hidden: { hidden: true },
       boxChecked: {},
+      musical: { defaultValue: 'None' },
       house: {
         label: 'Address',
         renderCell: ({ value, row }) => (
@@ -28,6 +30,7 @@ export default function TestTablePage(): ReactElement {
         hidden: false,
         name: 'Jenna Hunterson',
         house: { houseNumber: 298, streetName: 'Broadway' },
+        musical: 'Waitress',
       },
       {
         boxChecked: false,

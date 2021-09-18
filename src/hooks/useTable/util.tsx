@@ -17,16 +17,19 @@ export function makeHeaders<T extends ColumnTypes>(columns: Columns<T>): State['
     });
 }
 
-export function makeRows<T extends ColumnTypes>(columns: T, data: Data<T>): State['rows'] {
+export function makeRows<T extends ColumnTypes, U extends Columns<T>>(
+  columns: U,
+  data: Data<T>,
+): State['rows'] {
   return data.map((row) => ({
     cells: (Object.entries(columns) as [string, Column<T, Any>][])
       .filter(([, args]) => !args.hidden)
       .map(([columnName, opts]) => {
-        const defaultRenderCell = () => <td>{String(row[columnName])}</td>;
+        const defaultRenderCell = () => <td>{String(row[columnName] ?? opts.defaultValue)}</td>;
 
-        const { renderCell = defaultRenderCell } = opts;
+        const { renderCell = defaultRenderCell, defaultValue } = opts;
 
-        return { render: () => renderCell({ value: row[columnName], row }) };
+        return { render: () => renderCell({ value: row[columnName] ?? defaultValue, row }) };
       }),
   }));
 }
