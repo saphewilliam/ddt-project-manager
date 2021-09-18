@@ -1,29 +1,30 @@
 import React, { ReactElement } from 'react';
-import useTable from '@hooks/useTable';
-import { c } from '@hooks/useTable/util';
+import useTable, { c } from '@hooks/useTable';
 
-export default function ComponentName(): ReactElement {
+export default function TestTablePage(): ReactElement {
   const { headers, rows } = useTable(
     {
-      name: c<string>({ label: 'Name' }),
-      age: c<number>({ label: 'Age' }),
-      hidden: c<number>({ label: 'Hidden' }),
-      checked: c<boolean>({ label: 'Checked' }),
+      name: c<string>(),
+      age: c<number>(),
+      hidden: c<number>(),
+      boxChecked: c<boolean>(),
       house: c<{ streetName: string; houseNumber: number }>({
-        label: 'House',
-        render: (value) => `${value.streetName} ${value.houseNumber}`,
+        label: 'Address',
+        renderCell: ({ value, row }) => (
+          <td>{`${value.streetName} ${value.houseNumber} ${row}`}</td>
+        ),
       }),
     },
     [
       {
         age: 27,
-        checked: true,
+        boxChecked: true,
         hidden: 48,
         name: 'Jenna Hunterson',
         house: { houseNumber: 298, streetName: 'Broadway' },
       },
       {
-        checked: false,
+        boxChecked: false,
         hidden: 98,
         house: { houseNumber: 34, streetName: 'Abbey Road' },
         age: 79,
@@ -32,7 +33,7 @@ export default function ComponentName(): ReactElement {
       {
         house: { streetName: 'Boulevard of broken dreams', houseNumber: 28 },
         name: 'Billie Joe Armstrong',
-        checked: true,
+        boxChecked: true,
         hidden: 2,
         age: 49,
       },
@@ -44,7 +45,7 @@ export default function ComponentName(): ReactElement {
       <thead>
         <tr>
           {headers.map((header, i) => (
-            <th key={i}>{header.label}</th>
+            <header.render key={i} />
           ))}
         </tr>
       </thead>
@@ -52,7 +53,7 @@ export default function ComponentName(): ReactElement {
         {rows.map((row, i) => (
           <tr key={i}>
             {row.cells.map((cell, j) => (
-              <td key={j}>{cell.render()}</td>
+              <cell.render key={j} />
             ))}
           </tr>
         ))}
@@ -60,3 +61,11 @@ export default function ComponentName(): ReactElement {
     </table>
   );
 }
+
+// interface Hello {
+//   id: number;
+//   name?: string;
+//   recursive?: Hello;
+// }
+
+// const hello: Hello = {};

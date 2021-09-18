@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
 /** The sorting state of a column */
 export enum SortState {
@@ -11,12 +11,16 @@ export enum SortState {
 }
 
 /** Used to type column values */
-export interface Column<T> {
-  /** Required: name shown at the top of the column */
-  label: string;
+export interface Column<T extends Columns<T>, U> {
+  /** Optional: name shown at the top of the column */
+  label?: string;
+  /** Optional: specifies how the cells in this column render */
+  renderCell?: (props: { row: Row<T>; value: U }) => ReactElement;
+  /** Optional: specifies how the header cell of this column renders */
+  renderHead?: (props: { label: string }) => ReactElement;
+
   /** Optional (default = `false`): don't show this column at all */
   // hidden?: boolean;
-  render?: (value: T) => ReactNode;
   // sort: eeeh
   // type: if type is not string, number, or bool, then renderCell is required, default = string
   // defaultValue: makes the value nullable
@@ -49,8 +53,9 @@ export interface Column<T> {
 // export type Column<T = string> = ValueColumn | ObjectColumn;
 
 /** User input object for column configuration */
-export interface Columns {
-  [columnName: string]: Column<any>;
+export interface Columns<T extends Columns<T>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [columnName: string]: Column<T, any>;
 }
 
 // From https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c
@@ -85,16 +90,18 @@ export interface Columns {
 //   };
 
 /** User input object for row configuration */
-export type Row<T extends Columns> = { [P in keyof T]: T[P] extends Column<infer T> ? T : never };
+export type Row<T extends Columns<T>> = {
+  [P in keyof T]: T[P] extends Column<T, infer U> ? U : never;
+};
 
 /** User input object for data configuration */
-export type Data<T extends Columns> = Array<Row<T>>;
+export type Data<T extends Columns<T>> = Array<Row<T>>;
 
 export interface State {
   headers: {
     name: string;
     label: string;
-    // render: () => ReactNode;
+    render: () => ReactElement;
     // toggleHide: (value?: boolean) => void;
     // hidden: boolean;
     // toggleSort: (state?: SortState) => void;
@@ -102,7 +109,7 @@ export interface State {
   }[];
   rows: {
     cells: {
-      render: () => ReactNode;
+      render: () => ReactElement;
     }[];
   }[];
 }
