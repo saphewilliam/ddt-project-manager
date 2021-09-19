@@ -9,6 +9,8 @@ import {
   Options,
   RenderCellProps,
   RenderHeadProps,
+  SortInfo,
+  SortOrder,
   State,
 } from './types';
 
@@ -16,6 +18,8 @@ export function makeHeaders<T extends ColumnTypes>(
   columns: Columns<T>,
   hidden: Hidden<T>,
   setHidden: Dispatch<SetStateAction<Hidden<T>>>,
+  sortInfo: SortInfo,
+  sort: (columnName: string) => void,
   options?: Options<T>,
 ): { headers: State<T>['headers']; originalHeaders: State<T>['originalHeaders'] } {
   const headers: State<T>['headers'] = [];
@@ -45,6 +49,8 @@ export function makeHeaders<T extends ColumnTypes>(
         label,
         hidden: columnHidden,
         toggleHide: !unhideable ? toggleHide : undefined,
+        sortOrder: sortInfo?.columnName === name ? sortInfo.order : SortOrder.UNSORTED,
+        toggleSort: () => sort(name),
       };
 
       originalHeaders.push(header);

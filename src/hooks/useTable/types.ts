@@ -1,7 +1,7 @@
 import { Dispatch, ReactElement, SetStateAction } from 'react';
 
 /** The sorting state of a column */
-export enum SortState {
+export enum SortOrder {
   /** Sort data in this column in ascending order */
   ASC = 'ASC',
   /** Sort data in this column in descending order */
@@ -27,9 +27,9 @@ export interface RenderHeadProps {
   name: string;
   label: string;
   hidden: boolean;
-  toggleHide?: (value?: boolean) => void;
-  // sortState: SortState;
-  // toggleSort: (state?: SortState) => void;
+  toggleHide?: (hide?: boolean) => void;
+  sortOrder: SortOrder;
+  toggleSort: (order?: SortOrder) => void;
 }
 
 export interface RenderCellProps<T extends ColumnTypes = Any, U = Any> {
@@ -46,6 +46,8 @@ export interface Column<T extends ColumnTypes, U = Any> {
   hidden?: boolean;
   /** Optional (default = `false`): user is not able to hide this column */
   unhideable?: boolean;
+  /** Optional: custom sorting function for this column */
+  sort?: (a: U, b: U, invert: boolean) => number;
   /** Optional: specifies how the header cell of this column renders */
   renderHead?: (props: RenderHeadProps) => ReactElement;
   /** Optional: specifies how the cells in this column render */
@@ -83,14 +85,25 @@ export type Hidden<T extends ColumnTypes> = {
 export interface HiddenState<T extends ColumnTypes> {
   hidden: Hidden<T>;
   setHidden: Dispatch<SetStateAction<Hidden<T>>>;
-  setAllHidden: (value: boolean) => void;
+  setAllHidden: (hide: boolean) => void;
 }
 
 export interface PaginationState<T extends ColumnTypes> {
   page: number;
   pageAmount: number;
-  setPage: (page: number) => void;
+  setPage: (pageNumber: number) => void;
   paginatedData: Data<T>;
+}
+
+export type SortInfo = {
+  order: SortOrder;
+  columnName: string;
+} | null;
+
+export interface SortState<T extends ColumnTypes> {
+  sortedData: Data<T>;
+  sortInfo: SortInfo;
+  sort: (columnName: string) => void;
 }
 
 /** Output table state object */
@@ -107,7 +120,7 @@ export interface State<T extends ColumnTypes> {
   pagination: {
     page: number;
     pageAmount: number;
-    setPage: (page: number) => void;
+    setPage: (pageNumber: number) => void;
     nextPage: () => void;
     canNext: boolean;
     prevPage: () => void;

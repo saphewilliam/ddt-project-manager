@@ -1,10 +1,17 @@
 import cx from 'clsx';
-import React, { ReactElement } from 'react';
-import useTable, { RenderCellProps, RenderHeadProps } from '@hooks/useTable';
+import React, { ReactElement, useState } from 'react';
+import useTable, { RenderCellProps, RenderHeadProps, SortOrder } from '@hooks/useTable';
 
 export default function TestTablePage(): ReactElement {
+  const [musicalInput, setMusicalInput] = useState<string | undefined>(undefined);
+
   function TH(props: RenderHeadProps): ReactElement {
-    return <th onClick={() => props.toggleHide && props.toggleHide()}>{props.label}</th>;
+    return (
+      <th onClick={() => props.toggleSort()}>
+        {props.label}{' '}
+        {props.sortOrder === SortOrder.ASC ? 'v' : props.sortOrder === SortOrder.DESC ? '^' : ''}
+      </th>
+    );
   }
 
   function TD(props: RenderCellProps): ReactElement {
@@ -54,6 +61,7 @@ export default function TestTablePage(): ReactElement {
         boxChecked: true,
         hidden: false,
         age: 49,
+        musical: musicalInput,
       },
       {
         age: 60,
@@ -114,6 +122,19 @@ export default function TestTablePage(): ReactElement {
           ))}
         </tbody>
       </table>
+
+      <div className={cx('flex', 'flex-col')}>
+        <label htmlFor="musical" className={cx('mb-2')}>
+          Billie Joe Armstrong&apos;s Musical
+        </label>
+        <input
+          type="text"
+          name="musical"
+          id="musical"
+          value={musicalInput ?? ''}
+          onChange={({ target: { value: v } }) => setMusicalInput(v === '' ? undefined : v)}
+        />
+      </div>
 
       <div className={cx('flex', 'flex-col')}>
         {originalHeaders.map((header, i) => (

@@ -3,6 +3,7 @@ import { Columns, ColumnTypes, Data, Options, State } from './types';
 import useHidden from './useHidden';
 import useIntermediateMemo from './useIntermediateMemo';
 import usePagination from './usePagination';
+import useSort from './useSort';
 import { makeHeaders, makeRows } from './util';
 
 export default function useTable<T extends ColumnTypes>(
@@ -14,21 +15,27 @@ export default function useTable<T extends ColumnTypes>(
   const dataMemo = useIntermediateMemo(data);
   const optionsMemo = useIntermediateMemo(options);
 
-  const { hidden, setHidden, setAllHidden } = useHidden(columnsMemo);
+  const { sortedData, sortInfo, sort } = useSort(columnsMemo, dataMemo);
 
   const { page, pageAmount, setPage, paginatedData } = usePagination(
-    dataMemo,
+    sortedData,
     optionsMemo?.pageSize,
   );
 
+  useEffect(() => {
+    if (optionsMemo?.pageSize !== undefined) setPage(0);
+  }, [sortedData]);
+
+  const { hidden, setHidden, setAllHidden } = useHidden(columnsMemo);
+
   const { headers, originalHeaders } = useMemo(
-    () => makeHeaders(columnsMemo, hidden, setHidden, optionsMemo),
-    [columnsMemo, hidden, setHidden, optionsMemo],
+    () => makeHeaders(columnsMemo, hidden, setHidden, sortInfo, sort, optionsMemo),
+    [columnsMemo, optionsMemo, hidden, setHidden, sortInfo, sort],
   );
 
   const { rows, originalRows } = useMemo(
-    () => makeRows(columns, paginatedData, hidden, optionsMemo),
-    [columnsMemo, paginatedData, hidden, optionsMemo],
+    () => makeRows(columnsMemo, paginatedData, hidden, optionsMemo),
+    [columnsMemo, optionsMemo, paginatedData, hidden],
   );
 
   return {
