@@ -65,14 +65,15 @@ export type Data<T extends ColumnTypes> = Array<Row<T>>;
 
 /** User input object for options configuration */
 export interface Options<T extends ColumnTypes> {
+  /** Optional: enable pagination */
+  pageSize?: number;
+  /** Optional: set default styling for the table elements */
   style?: {
     /** Optional: specifies how the header cell of the columns render by default */
     renderHead?: (props: RenderHeadProps) => ReactElement;
     /** Optional: specifies how the header cell of the columns render by default */
     renderCell?: (props: RenderCellProps<T>) => ReactElement;
   };
-  // /** Optional: enable pagination */
-  // pageSize?: number;
 }
 
 export type Hidden<T extends ColumnTypes> = {
@@ -83,6 +84,13 @@ export interface HiddenState<T extends ColumnTypes> {
   hidden: Hidden<T>;
   setHidden: Dispatch<SetStateAction<Hidden<T>>>;
   setAllHidden: (value: boolean) => void;
+}
+
+export interface PaginationState<T extends ColumnTypes> {
+  page: number;
+  pageAmount: number;
+  setPage: (page: number) => void;
+  paginatedData: Data<T>;
 }
 
 /** Output table state object */
@@ -96,12 +104,13 @@ export interface State<T extends ColumnTypes> {
     hideAll: () => void;
     showAll: () => void;
   };
-  // pagination: {
-  //   page: number;
-  //   setPage: () => void;
-  //   nextPage: () => void;
-  //   canNext: boolean;
-  //   prevPage: () => void;
-  //   canPrev: boolean;
-  // };
+  pagination: {
+    page: number;
+    pageAmount: number;
+    setPage: (page: number) => void;
+    nextPage: () => void;
+    canNext: boolean;
+    prevPage: () => void;
+    canPrev: boolean;
+  };
 }

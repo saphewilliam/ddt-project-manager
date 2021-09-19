@@ -11,7 +11,7 @@ export default function TestTablePage(): ReactElement {
     return <td style={{ background: '#f7d40a' }}>{String(props.value)}</td>;
   }
 
-  const { headers, originalHeaders, rows, hiddenCols } = useTable<{
+  const { headers, originalHeaders, rows, hiddenCols, pagination } = useTable<{
     name: string;
     age: number;
     hidden: boolean;
@@ -77,8 +77,16 @@ export default function TestTablePage(): ReactElement {
         name: 'Spongebob Squarepants',
         musical: 'Spongebob the Musical',
       },
+      {
+        name: 'Peter Griffin',
+        boxChecked: false,
+        hidden: false,
+        house: { houseNumber: 31, streetName: 'Spooner Street' },
+        age: 45,
+      },
     ],
     {
+      pageSize: 3,
       style: {
         renderHead: TH,
         renderCell: TD,
@@ -136,6 +144,44 @@ export default function TestTablePage(): ReactElement {
           onClick={hiddenCols.hideAll}
         >
           Hide All
+        </button>
+      </div>
+
+      <div className={cx('space-x-3')}>
+        <button
+          className={cx(
+            'bg-secondary',
+            'disabled:bg-dark-highlight',
+            'disabled:cursor-not-allowed',
+            'text-white',
+            'font-bold',
+            'py-2',
+            'px-5',
+            'rounded-md',
+          )}
+          disabled={!pagination.canPrev}
+          onClick={pagination.prevPage}
+        >
+          Previous page
+        </button>
+        <span>
+          Page {pagination.page} of {pagination.pageAmount}
+        </span>
+        <button
+          className={cx(
+            'bg-secondary',
+            'disabled:bg-dark-highlight',
+            'disabled:cursor-not-allowed',
+            'text-white',
+            'font-bold',
+            'py-2',
+            'px-5',
+            'rounded-md',
+          )}
+          disabled={!pagination.canNext}
+          onClick={pagination.nextPage}
+        >
+          Next page
         </button>
       </div>
     </section>

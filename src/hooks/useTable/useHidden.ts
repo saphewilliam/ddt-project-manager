@@ -25,8 +25,7 @@ export default function useHidden<T extends ColumnTypes>(columns: Columns<T>): H
   const [hidden, setHidden] = useState(getHidden(columns));
 
   useEffect(() => {
-    const newHidden = getHidden(columns, hidden);
-    if (JSON.stringify(newHidden) !== JSON.stringify(hidden)) setHidden(newHidden);
+    setHidden(getHidden(columns, hidden));
   }, [columns]);
 
   const setAllHidden = useCallback(
