@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Columns, ColumnTypes, Data, Options, State } from './types';
+import useHidden from './useHidden';
 import { makeHeaders, makeRows } from './util';
 
 export default function useTable<T extends ColumnTypes>(
@@ -7,11 +8,23 @@ export default function useTable<T extends ColumnTypes>(
   data: Data<T>,
   options?: Options<T>,
 ): State<T> {
-  const { headers, originalHeaders } = useMemo(() => makeHeaders(columns), [columns]);
-  const { rows, originalRows } = useMemo(
-    () => makeRows(columns, data, options),
-    [columns, data, options],
+  const { hidden, setHidden, setAllHidden } = useHidden(columns);
+
+  const { headers, originalHeaders } = useMemo(
+    () => makeHeaders(columns, hidden, setHidden, options),
+    [columns, hidden, setHidden, options],
   );
 
-  return { headers, originalHeaders, rows, originalRows };
+  const { rows, originalRows } = useMemo(
+    () => makeRows(columns, data, hidden, options),
+    [columns, data, hidden, options],
+  );
+
+  return {
+    headers,
+    originalHeaders,
+    rows,
+    originalRows,
+    hiddenCols: { hidden, hideAll: () => setAllHidden(true), showAll: () => setAllHidden(false) },
+  };
 }

@@ -1,9 +1,11 @@
-import { ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 import {
+  Any,
   Column,
   Columns,
   ColumnTypes,
   Data,
+  Hidden,
   Options,
   RenderCellProps,
   RenderHeadProps,
@@ -12,8 +14,8 @@ import {
 
 export function makeHeaders<T extends ColumnTypes>(
   columns: Columns<T>,
-  // hidden: boolean,
-  // toggleHide: (value?: boolean) => void,
+  hidden: Hidden<T>,
+  setHidden: Dispatch<SetStateAction<Hidden<T>>>,
   options?: Options<T>,
 ): { headers: State<T>['headers']; originalHeaders: State<T>['originalHeaders'] } {
   const headers: State<T>['headers'] = [];
@@ -28,23 +30,35 @@ export function makeHeaders<T extends ColumnTypes>(
 
       const defaultRenderHead = ({ label }: { label: string }) => <th>{label}</th>;
 
-      const { label = defaultLabel, renderHead = options?.style?.renderHead ?? defaultRenderHead } =
-        args;
+      const {
+        label = defaultLabel,
+        renderHead = options?.style?.renderHead ?? defaultRenderHead,
+        unhideable = false,
+      } = args;
 
-      const header: RenderHeadProps = { name, label };
+      const columnHidden = hidden[name]!;
+      const toggleHide = (value?: boolean) =>
+        setHidden({ ...hidden, [name]: value ?? !columnHidden });
+
+      const header: RenderHeadProps = {
+        name,
+        label,
+        hidden: columnHidden,
+        toggleHide: !unhideable ? toggleHide : undefined,
+      };
 
       originalHeaders.push(header);
-      // if !columnHidden
-      headers.push({ ...header, render: () => renderHead(header) });
+      if (!columnHidden) headers.push({ ...header, render: () => renderHead(header) });
     }
   }
 
   return { headers, originalHeaders };
 }
 
-export function makeRows<T extends ColumnTypes, U extends Columns<T>>(
-  columns: U,
+export function makeRows<T extends ColumnTypes>(
+  columns: Columns<T>,
   data: Data<T>,
+  hidden: Hidden<T>,
   options?: Options<T>,
 ): { rows: State<T>['rows']; originalRows: State<T>['originalRows'] } {
   const rows: State<T>['rows'] = [];
@@ -56,18 +70,15 @@ export function makeRows<T extends ColumnTypes, U extends Columns<T>>(
 
     for (const [columnName, columnArgs] of Object.entries<Column<T>>(columns)) {
       if (!columnArgs.hidden) {
-        const defaultRenderCell = () => (
-          <td>{String(row[columnName] ?? columnArgs.defaultValue)}</td>
-        );
+        const columnHidden = hidden[columnName]!;
+        const value = (row as Record<string, Any>)[columnName] ?? columnArgs.defaultValue;
+        const defaultRenderCell = () => <td>{String(value)}</td>;
+        const renderCell = columnArgs.renderCell ?? options?.style?.renderCell ?? defaultRenderCell;
 
-        const { renderCell = options?.style?.renderCell ?? defaultRenderCell, defaultValue } =
-          columnArgs;
-
-        const cell: RenderCellProps<T> = { row, value: row[columnName] ?? defaultValue };
+        const cell: RenderCellProps<T> = { row, value };
 
         originalCells.push(cell);
-        // if !columnHidden
-        cells.push({ ...cell, render: () => renderCell(cell) });
+        if (!columnHidden) cells.push({ ...cell, render: () => renderCell(cell) });
       }
     }
 

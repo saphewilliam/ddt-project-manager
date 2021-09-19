@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 
 /** The sorting state of a column */
 export enum SortState {
@@ -26,8 +26,8 @@ export type Columns<T extends ColumnTypes> = {
 export interface RenderHeadProps {
   name: string;
   label: string;
-  // hidden: boolean;
-  // toggleHide: (value?: boolean) => void;
+  hidden: boolean;
+  toggleHide?: (value?: boolean) => void;
   // sortState: SortState;
   // toggleSort: (state?: SortState) => void;
 }
@@ -40,10 +40,12 @@ export interface RenderCellProps<T extends ColumnTypes = Any, U = Any> {
 export interface Column<T extends ColumnTypes, U = Any> {
   /** Optional: name shown at the top of the column */
   label?: string;
-  /** Optional (default = `false`): don't show this column at all */
-  hidden?: boolean;
   /** Optional: the value that should replace undefined at runtime */
   defaultValue?: U;
+  /** Optional (default = `false`): don't show this column at all */
+  hidden?: boolean;
+  /** Optional (default = `false`): user is not able to hide this column */
+  unhideable?: boolean;
   /** Optional: specifies how the header cell of this column renders */
   renderHead?: (props: RenderHeadProps) => ReactElement;
   /** Optional: specifies how the cells in this column render */
@@ -52,8 +54,7 @@ export interface Column<T extends ColumnTypes, U = Any> {
 
 /** User input object for data row configuration */
 export type Row<T extends ColumnTypes> = Partial<Pick<T, RowOptionals<T>>> &
-  Omit<T, RowOptionals<T>> &
-  Record<string, Any>;
+  Omit<T, RowOptionals<T>>;
 
 type RowOptionals<T extends ColumnTypes> = {
   [K in keyof T]: null extends T[K] ? K : undefined extends T[K] ? K : never;
@@ -74,8 +75,27 @@ export interface Options<T extends ColumnTypes> {
   // pageSize?: number;
 }
 
+export type Hidden<T extends ColumnTypes> = {
+  [P in keyof T]: boolean;
+};
+
+export interface HiddenState<T extends ColumnTypes> {
+  hidden: Hidden<T>;
+  setHidden: Dispatch<SetStateAction<Hidden<T>>>;
+  setAllHidden: (value: boolean) => void;
+}
+
 /** Output table state object */
 export interface State<T extends ColumnTypes> {
+  headers: (RenderHeadProps & { render: () => ReactElement })[];
+  originalHeaders: RenderHeadProps[];
+  rows: { cells: (RenderCellProps<T> & { render: () => ReactElement })[] }[];
+  originalRows: { originalCells: RenderCellProps<T>[] }[];
+  hiddenCols: {
+    hidden: Hidden<T>;
+    hideAll: () => void;
+    showAll: () => void;
+  };
   // pagination: {
   //   page: number;
   //   setPage: () => void;
@@ -84,8 +104,4 @@ export interface State<T extends ColumnTypes> {
   //   prevPage: () => void;
   //   canPrev: boolean;
   // };
-  headers: (RenderHeadProps & { render: () => ReactElement })[];
-  originalHeaders: RenderHeadProps[];
-  rows: { cells: (RenderCellProps<T> & { render: () => ReactElement })[] }[];
-  originalRows: { originalCells: RenderCellProps<T>[] }[];
 }

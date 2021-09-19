@@ -1,16 +1,17 @@
+import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import useTable, { RenderCellProps, RenderHeadProps } from '@hooks/useTable';
 
 export default function TestTablePage(): ReactElement {
   function TH(props: RenderHeadProps): ReactElement {
-    return <th onClick={() => props.toggleHide}>{props.label}</th>;
+    return <th onClick={() => props.toggleHide && props.toggleHide()}>{props.label}</th>;
   }
 
   function TD(props: RenderCellProps): ReactElement {
     return <td style={{ background: '#f7d40a' }}>{String(props.value)}</td>;
   }
 
-  const { headers, rows } = useTable<{
+  const { headers, originalHeaders, rows, hiddenCols } = useTable<{
     name: string;
     age: number;
     hidden: boolean;
@@ -20,7 +21,7 @@ export default function TestTablePage(): ReactElement {
   }>(
     {
       name: {},
-      age: {},
+      age: { unhideable: true },
       hidden: { hidden: true },
       boxChecked: {},
       musical: { defaultValue: 'None' },
@@ -86,23 +87,57 @@ export default function TestTablePage(): ReactElement {
   );
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {headers.map((header, i) => (
-            <header.render key={i} />
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, i) => (
-          <tr key={i}>
-            {row.cells.map((cell, j) => (
-              <cell.render key={j} />
+    <section className={cx('space-y-5', 'p-6')}>
+      <table>
+        <thead>
+          <tr>
+            {headers.map((header, i) => (
+              <header.render key={i} />
             ))}
           </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i}>
+              {row.cells.map((cell, j) => (
+                <cell.render key={j} />
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className={cx('flex', 'flex-col')}>
+        {originalHeaders.map((header, i) => (
+          <label htmlFor={i.toString()} key={i} className={cx('flex', 'items-center', 'space-x-2')}>
+            <input
+              className={cx('disabled:text-dark-highlight')}
+              disabled={!header.toggleHide}
+              type="checkbox"
+              name={i.toString()}
+              id={i.toString()}
+              checked={!header.hidden}
+              onChange={() => header.toggleHide && header.toggleHide()}
+            />
+            <span>{header.label}</span>
+          </label>
         ))}
-      </tbody>
-    </table>
+      </div>
+
+      <div className={cx('space-x-3')}>
+        <button
+          className={cx('bg-primary', 'text-white', 'font-bold', 'py-2', 'px-5', 'rounded-md')}
+          onClick={hiddenCols.showAll}
+        >
+          Show All
+        </button>
+        <button
+          className={cx('bg-primary', 'text-white', 'font-bold', 'py-2', 'px-5', 'rounded-md')}
+          onClick={hiddenCols.hideAll}
+        >
+          Hide All
+        </button>
+      </div>
+    </section>
   );
 }
