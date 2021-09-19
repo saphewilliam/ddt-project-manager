@@ -23,17 +23,31 @@ export type Columns<T extends ColumnTypes> = {
   [P in keyof T]: Column<T, T[P]>;
 };
 
-export interface Column<T extends ColumnTypes, U> {
+export interface RenderHeadProps {
+  name: string;
+  label: string;
+  // hidden: boolean;
+  // toggleHide: (value?: boolean) => void;
+  // sortState: SortState;
+  // toggleSort: (state?: SortState) => void;
+}
+
+export interface RenderCellProps<T extends ColumnTypes = Any, U = Any> {
+  row: Row<T>;
+  value: U;
+}
+
+export interface Column<T extends ColumnTypes, U = Any> {
   /** Optional: name shown at the top of the column */
   label?: string;
   /** Optional (default = `false`): don't show this column at all */
   hidden?: boolean;
   /** Optional: the value that should replace undefined at runtime */
   defaultValue?: U;
-  /** Optional: specifies how the cells in this column render */
-  renderCell?: (props: { row: Row<T>; value: U }) => ReactElement;
   /** Optional: specifies how the header cell of this column renders */
-  renderHead?: (props: { label: string }) => ReactElement;
+  renderHead?: (props: RenderHeadProps) => ReactElement;
+  /** Optional: specifies how the cells in this column render */
+  renderCell?: (props: RenderCellProps<T, U>) => ReactElement;
 }
 
 /** User input object for data row configuration */
@@ -49,22 +63,29 @@ type RowOptionals<T extends ColumnTypes> = {
 export type Data<T extends ColumnTypes> = Array<Row<T>>;
 
 /** User input object for options configuration */
-export interface Options {}
+export interface Options<T extends ColumnTypes> {
+  style?: {
+    /** Optional: specifies how the header cell of the columns render by default */
+    renderHead?: (props: RenderHeadProps) => ReactElement;
+    /** Optional: specifies how the header cell of the columns render by default */
+    renderCell?: (props: RenderCellProps<T>) => ReactElement;
+  };
+  // /** Optional: enable pagination */
+  // pageSize?: number;
+}
 
 /** Output table state object */
-export interface State {
-  headers: {
-    name: string;
-    label: string;
-    render: () => ReactElement;
-    // toggleHide: (value?: boolean) => void;
-    // hidden: boolean;
-    // toggleSort: (state?: SortState) => void;
-    // sortState: SortState;
-  }[];
-  rows: {
-    cells: {
-      render: () => ReactElement;
-    }[];
-  }[];
+export interface State<T extends ColumnTypes> {
+  // pagination: {
+  //   page: number;
+  //   setPage: () => void;
+  //   nextPage: () => void;
+  //   canNext: boolean;
+  //   prevPage: () => void;
+  //   canPrev: boolean;
+  // };
+  headers: (RenderHeadProps & { render: () => ReactElement })[];
+  originalHeaders: RenderHeadProps[];
+  rows: { cells: (RenderCellProps<T> & { render: () => ReactElement })[] }[];
+  originalRows: { originalCells: RenderCellProps<T>[] }[];
 }

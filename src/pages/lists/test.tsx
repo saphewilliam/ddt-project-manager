@@ -1,7 +1,15 @@
 import React, { ReactElement } from 'react';
-import useTable from '@hooks/useTable';
+import useTable, { RenderCellProps, RenderHeadProps } from '@hooks/useTable';
 
 export default function TestTablePage(): ReactElement {
+  function TH(props: RenderHeadProps): ReactElement {
+    return <th onClick={() => props.toggleHide}>{props.label}</th>;
+  }
+
+  function TD(props: RenderCellProps): ReactElement {
+    return <td style={{ background: '#f7d40a' }}>{String(props.value)}</td>;
+  }
+
   const { headers, rows } = useTable<{
     name: string;
     age: number;
@@ -46,7 +54,35 @@ export default function TestTablePage(): ReactElement {
         hidden: false,
         age: 49,
       },
+      {
+        age: 60,
+        boxChecked: false,
+        hidden: true,
+        house: { streetName: 'Baker St.', houseNumber: 22 },
+        name: 'Sherlock Holmes',
+      },
+      {
+        house: { streetName: 'Pennsylvania Avenue', houseNumber: 1600 },
+        name: 'Joe Biden',
+        boxChecked: true,
+        hidden: false,
+        age: 78,
+      },
+      {
+        house: { streetName: 'Conch Street', houseNumber: 24 },
+        age: 35,
+        boxChecked: false,
+        hidden: false,
+        name: 'Spongebob Squarepants',
+        musical: 'Spongebob the Musical',
+      },
     ],
+    {
+      style: {
+        renderHead: TH,
+        renderCell: TD,
+      },
+    },
   );
 
   return (
