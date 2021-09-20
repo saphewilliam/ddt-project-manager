@@ -4,7 +4,7 @@ import useHidden from './useHidden';
 import useIntermediateMemo from './useIntermediateMemo';
 import usePagination from './usePagination';
 import useSort from './useSort';
-import { makeHeaders, makeRows } from './util';
+import { makeHeaders, makeOriginalRows, makeRows } from './util';
 
 export default function useTable<T extends ColumnTypes>(
   columns: Columns<T>,
@@ -33,16 +33,21 @@ export default function useTable<T extends ColumnTypes>(
     [columnsMemo, optionsMemo, hidden, setHidden, sortInfo, sort],
   );
 
-  const { rows, originalRows } = useMemo(
+  const originalRows = useMemo(
+    () => makeOriginalRows(columnsMemo, dataMemo),
+    [columnsMemo, dataMemo],
+  );
+
+  const rows = useMemo(
     () => makeRows(columnsMemo, paginatedData, hidden, optionsMemo),
     [columnsMemo, optionsMemo, paginatedData, hidden],
   );
 
   return {
-    headers,
     originalHeaders,
-    rows,
+    headers,
     originalRows,
+    rows,
     hiddenCols: {
       hidden,
       hideAll: () => setAllHidden(true),

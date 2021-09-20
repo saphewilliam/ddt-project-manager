@@ -7,7 +7,10 @@ export default function TestTablePage(): ReactElement {
 
   function TH(props: RenderHeadProps): ReactElement {
     return (
-      <th onClick={() => props.toggleSort()}>
+      <th
+        className={cx(props.toggleSort && 'cursor-pointer', 'select-none')}
+        onClick={() => props.toggleSort && props.toggleSort()}
+      >
         {props.label}{' '}
         {props.sortOrder === SortOrder.ASC ? 'v' : props.sortOrder === SortOrder.DESC ? '^' : ''}
       </th>
@@ -25,9 +28,10 @@ export default function TestTablePage(): ReactElement {
     boxChecked: boolean;
     musical: string | null;
     house: { streetName: string; houseNumber: number };
+    hiddenAnd: boolean | null;
   }>(
     {
-      name: {},
+      name: { unsortable: true },
       age: { unhideable: true },
       hidden: { hidden: true },
       boxChecked: {},
@@ -37,13 +41,18 @@ export default function TestTablePage(): ReactElement {
         renderCell: ({ value, row }) => (
           <td>{`${value.streetName} ${value.houseNumber} ${row.hidden}`}</td>
         ),
+        sort: (a, b, invert) => (invert ? -1 : 1) * (a.houseNumber - b.houseNumber),
+      },
+      hiddenAnd: {
+        label: 'Hidden AND Gate',
+        defaultValue: (row) => row.hidden && row.boxChecked,
       },
     },
     [
       {
         age: 27,
         boxChecked: true,
-        hidden: false,
+        hidden: true,
         name: 'Jenna Hunterson',
         house: { houseNumber: 298, streetName: 'Broadway' },
         musical: 'Waitress',

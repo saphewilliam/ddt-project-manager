@@ -29,7 +29,7 @@ export interface RenderHeadProps {
   hidden: boolean;
   toggleHide?: (hide?: boolean) => void;
   sortOrder: SortOrder;
-  toggleSort: (order?: SortOrder) => void;
+  toggleSort?: (order?: SortOrder) => void;
 }
 
 export interface RenderCellProps<T extends ColumnTypes = Any, U = Any> {
@@ -37,17 +37,21 @@ export interface RenderCellProps<T extends ColumnTypes = Any, U = Any> {
   value: U;
 }
 
+export type DefaultValue<T extends ColumnTypes, U> = U | ((row: Row<T>) => U);
+
 export interface Column<T extends ColumnTypes, U = Any> {
   /** Optional: name shown at the top of the column */
   label?: string;
   /** Optional: the value that should replace undefined at runtime */
-  defaultValue?: U;
+  defaultValue?: DefaultValue<T, U>;
   /** Optional (default = `false`): don't show this column at all */
   hidden?: boolean;
   /** Optional (default = `false`): user is not able to hide this column */
   unhideable?: boolean;
   /** Optional: custom sorting function for this column */
   sort?: (a: U, b: U, invert: boolean) => number;
+  /** Optional (default = `false`): user is not able to sort this column */
+  unsortable?: boolean;
   /** Optional: specifies how the header cell of this column renders */
   renderHead?: (props: RenderHeadProps) => ReactElement;
   /** Optional: specifies how the cells in this column render */

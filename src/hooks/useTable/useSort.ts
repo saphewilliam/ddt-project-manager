@@ -1,15 +1,32 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Any, Columns, ColumnTypes, Data, SortInfo, SortOrder, SortState } from './types';
+import {
+  Any,
+  Columns,
+  ColumnTypes,
+  Data,
+  DefaultValue,
+  Row,
+  SortInfo,
+  SortOrder,
+  SortState,
+} from './types';
+import { getDefaultValue } from './util';
 
-function sortWrapper<T>(
-  sort: (a: T, b: T, invert: boolean) => number,
-  invert: boolean,
-  a?: T,
-  b?: T,
-  defaultValue?: T,
+function sortWrapper<T extends ColumnTypes, U>(
+  sort: (a: U, b: U, invert: boolean) => number,
+  a: Row<T>,
+  b: Row<T>,
+  sortInfo: SortInfo,
+  defaultValue?: DefaultValue<T, U>,
 ): number {
-  const aValue = a ?? defaultValue;
-  const bValue = b ?? defaultValue;
+  if (!sortInfo) return 0;
+
+  const getValue = (r: Row<T>) =>
+    (r as Record<string, Any>)[sortInfo.columnName] ?? getDefaultValue(defaultValue, r);
+
+  const invert = sortInfo.order === SortOrder.DESC;
+  const aValue = getValue(a);
+  const bValue = getValue(b);
 
   if (aValue === undefined && bValue === undefined) return 0;
   else if (aValue === undefined) return invert ? -1 : 1;
@@ -17,15 +34,15 @@ function sortWrapper<T>(
   return sort(aValue, bValue, invert);
 }
 
-function defaultNumberSort(a: number, b: number, invert: boolean): number {
+function sortNumbers(a: number, b: number, invert: boolean): number {
   return (invert ? -1 : 1) * (a - b);
 }
 
-function defaultStringSort(a: string, b: string, invert: boolean): number {
+function sortStrings(a: string, b: string, invert: boolean): number {
   return (invert ? -1 : 1) * a.localeCompare(b);
 }
 
-function defaultBooleanSort(a: boolean, b: boolean, invert: boolean): number {
+function sortBooleans(a: boolean, b: boolean, invert: boolean): number {
   if (a && !b) return invert ? 1 : -1;
   if (b && !a) return invert ? -1 : 1;
   return 0;
@@ -33,12 +50,19 @@ function defaultBooleanSort(a: boolean, b: boolean, invert: boolean): number {
 
 function getColumnType<T extends ColumnTypes>(
   data: Data<T>,
+  columns: Columns<T>,
   columnName: string | null,
 ): string | null {
-  if (columnName === null) return null;
+  if (columnName === null || data.length === 0) return null;
+
+  const isValidType = (type: string) => ['string', 'number', 'boolean'].indexOf(type) !== -1;
+
+  const defaultValueType = typeof getDefaultValue(columns[columnName]?.defaultValue, data[0]!);
+  if (isValidType(defaultValueType)) return defaultValueType;
+
   for (const row of data) {
     const type = typeof (row as Record<string, Any>)[columnName];
-    if (['string', 'number', 'boolean'].indexOf(type) !== -1) return type;
+    if (isValidType(type)) return type;
   }
   return null;
 }
@@ -51,11 +75,11 @@ export default function useSort<T extends ColumnTypes>(
 
   const sortedData = useMemo(() => {
     if (sortInfo !== null) {
-      const { columnName, order } = sortInfo;
+      const { columnName } = sortInfo;
       const customSort = columns[columnName]?.sort;
       const defaultValue = columns[columnName]?.defaultValue;
-      const invert = order === SortOrder.DESC;
-      const colType = getColumnType(data, columnName);
+
+      const colType = getColumnType(data, columns, columnName);
 
       if (colType === null && customSort === undefined) {
         console.error(`Column '${columnName}' does not have a sorting function configured`);
@@ -63,17 +87,10 @@ export default function useSort<T extends ColumnTypes>(
       }
 
       return [...data].sort((a, b) => {
-        const aValue = (a as Record<string, Any>)[columnName];
-        const bValue = (b as Record<string, Any>)[columnName];
-
-        if (customSort !== undefined)
-          return sortWrapper(customSort, invert, aValue, bValue, defaultValue);
-        else if (colType === 'string')
-          return sortWrapper(defaultStringSort, invert, aValue, bValue, defaultValue);
-        else if (colType === 'boolean')
-          return sortWrapper(defaultBooleanSort, invert, aValue, bValue, defaultValue);
-        else if (colType === 'number')
-          return sortWrapper(defaultNumberSort, invert, aValue, bValue, defaultValue);
+        if (customSort !== undefined) return sortWrapper(customSort, a, b, sortInfo, defaultValue);
+        if (colType === 'string') return sortWrapper(sortStrings, a, b, sortInfo, defaultValue);
+        if (colType === 'boolean') return sortWrapper(sortBooleans, a, b, sortInfo, defaultValue);
+        if (colType === 'number') return sortWrapper(sortNumbers, a, b, sortInfo, defaultValue);
         else return 0;
       });
     } else return data;
