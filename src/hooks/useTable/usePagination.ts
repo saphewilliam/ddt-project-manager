@@ -8,7 +8,7 @@ export default function usePagination<T extends ColumnTypes>(
   const [page, setPage] = useState(0);
 
   const pageAmount = useMemo(
-    () => (pageSize === undefined ? 1 : Math.ceil(data.length / pageSize)),
+    () => (pageSize === undefined || data.length === 0 ? 1 : Math.ceil(data.length / pageSize)),
     [data, pageSize],
   );
 

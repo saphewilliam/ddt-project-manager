@@ -5,8 +5,9 @@ import {
   Columns,
   ColumnTypes,
   Data,
-  DefaultValue,
   Hidden,
+  HighlightFunc,
+  MatchedText,
   Options,
   RenderCellProps,
   RenderHeadProps,
@@ -15,14 +16,6 @@ import {
   SortOrder,
   State,
 } from './types';
-
-export function getDefaultValue<T extends ColumnTypes, U>(
-  defaultValue: DefaultValue<T, U>,
-  row: Row<T>,
-): U {
-  if (typeof defaultValue !== 'function') return defaultValue;
-  else return (defaultValue as (row: Row<T>) => U)(row);
-}
 
 export function makeHeaders<T extends ColumnTypes>(
   columns: Columns<T>,
@@ -73,17 +66,25 @@ export function makeHeaders<T extends ColumnTypes>(
 }
 
 function makeRow<T extends ColumnTypes, U>(
-  callback: (cell: RenderCellProps<T>, columnsArgs: Column<T>, columnName: string) => U | null,
+  callback: (
+    row: Row<T>,
+    value: U,
+    matchedText: MatchedText,
+    columnsArgs: Column<T>,
+    columnName: string,
+  ) => U | null,
   columns: Columns<T>,
   row: Row<T>,
+  highlight: HighlightFunc,
 ): U[] {
   const cells: U[] = [];
 
   for (const [columnName, columnArgs] of Object.entries<Column<T>>(columns)) {
-    const { hidden, defaultValue } = columnArgs;
-    if (!hidden) {
-      const value = (row as Record<string, Any>)[columnName] ?? getDefaultValue(defaultValue, row);
-      const cell = callback({ row, value }, columnArgs, columnName);
+    if (!columnArgs.hidden) {
+      const value = (row as Record<string, Any>)[columnName];
+      const stringValue = columnArgs.stringify ? columnArgs.stringify(value, row) : String(value);
+      const matched = highlight(stringValue);
+      const cell = callback(row, value, matched, columnArgs, columnName);
       if (cell) cells.push(cell);
     }
   }
@@ -94,11 +95,17 @@ function makeRow<T extends ColumnTypes, U>(
 export function makeOriginalRows<T extends ColumnTypes>(
   columns: Columns<T>,
   data: Data<T>,
+  highlight: HighlightFunc,
 ): State<T>['originalRows'] {
   const originalRows: State<T>['originalRows'] = [];
 
   for (const row of data) {
-    const originalCells = makeRow((cell) => cell, columns, row);
+    const originalCells = makeRow<T, RenderCellProps<T>>(
+      (row, value, matchedText) => ({ row, value, matchedText }),
+      columns,
+      row,
+      highlight,
+    );
     originalRows.push({ originalCells });
   }
 
@@ -109,23 +116,27 @@ export function makeRows<T extends ColumnTypes>(
   columns: Columns<T>,
   data: Data<T>,
   hidden: Hidden<T>,
+  highlight: HighlightFunc,
   options?: Options<T>,
 ): State<T>['rows'] {
   const rows: State<T>['rows'] = [];
 
   for (const row of data) {
-    const cells = makeRow(
-      (cell, columnArgs, columnName) => {
+    const cells = makeRow<T, RenderCellProps<T> & { render: () => ReactElement }>(
+      (row, value, matched, columnArgs, columnName) => {
         if (hidden[columnName]) return null;
         else {
-          const defaultRenderCell = () => <td>{String(cell.value)}</td>;
+          const defaultRenderCell = () => <td>{value}</td>;
           const renderCell =
             columnArgs.renderCell ?? options?.style?.renderCell ?? defaultRenderCell;
+
+          const cell: RenderCellProps<T> = { value, row, matchedText: matched };
           return { ...cell, render: () => renderCell(cell) };
         }
       },
       columns,
       row,
+      highlight,
     );
 
     rows.push({ cells });

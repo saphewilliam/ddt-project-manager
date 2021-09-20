@@ -1,28 +1,15 @@
 import { useCallback, useMemo, useState } from 'react';
-import {
-  Any,
-  Columns,
-  ColumnTypes,
-  Data,
-  DefaultValue,
-  Row,
-  SortInfo,
-  SortOrder,
-  SortState,
-} from './types';
-import { getDefaultValue } from './util';
+import { Any, Columns, ColumnTypes, Data, Row, SortInfo, SortOrder, SortState } from './types';
 
 function sortWrapper<T extends ColumnTypes, U>(
   sort: (a: U, b: U, invert: boolean) => number,
   a: Row<T>,
   b: Row<T>,
   sortInfo: SortInfo,
-  defaultValue?: DefaultValue<T, U>,
 ): number {
   if (!sortInfo) return 0;
 
-  const getValue = (r: Row<T>) =>
-    (r as Record<string, Any>)[sortInfo.columnName] ?? getDefaultValue(defaultValue, r);
+  const getValue = (r: Row<T>) => (r as Record<string, Any>)[sortInfo.columnName];
 
   const invert = sortInfo.order === SortOrder.DESC;
   const aValue = getValue(a);
@@ -50,15 +37,11 @@ function sortBooleans(a: boolean, b: boolean, invert: boolean): number {
 
 function getColumnType<T extends ColumnTypes>(
   data: Data<T>,
-  columns: Columns<T>,
   columnName: string | null,
 ): string | null {
   if (columnName === null || data.length === 0) return null;
 
   const isValidType = (type: string) => ['string', 'number', 'boolean'].indexOf(type) !== -1;
-
-  const defaultValueType = typeof getDefaultValue(columns[columnName]?.defaultValue, data[0]!);
-  if (isValidType(defaultValueType)) return defaultValueType;
 
   for (const row of data) {
     const type = typeof (row as Record<string, Any>)[columnName];
@@ -77,20 +60,27 @@ export default function useSort<T extends ColumnTypes>(
     if (sortInfo !== null) {
       const { columnName } = sortInfo;
       const customSort = columns[columnName]?.sort;
-      const defaultValue = columns[columnName]?.defaultValue;
+      const stringify = columns[columnName]?.stringify;
+      const colType = getColumnType(data, columnName);
 
-      const colType = getColumnType(data, columns, columnName);
-
-      if (colType === null && customSort === undefined) {
-        console.error(`Column '${columnName}' does not have a sorting function configured`);
+      if (!stringify && colType === null && customSort === undefined) {
+        console.error(
+          `Column '${columnName}' does not have a sorting or stringify function configured`,
+        );
         return data;
       }
 
       return [...data].sort((a, b) => {
-        if (customSort !== undefined) return sortWrapper(customSort, a, b, sortInfo, defaultValue);
-        if (colType === 'string') return sortWrapper(sortStrings, a, b, sortInfo, defaultValue);
-        if (colType === 'boolean') return sortWrapper(sortBooleans, a, b, sortInfo, defaultValue);
-        if (colType === 'number') return sortWrapper(sortNumbers, a, b, sortInfo, defaultValue);
+        if (customSort !== undefined) return sortWrapper(customSort, a, b, sortInfo);
+        if (colType === 'string') return sortWrapper(sortStrings, a, b, sortInfo);
+        if (colType === 'boolean') return sortWrapper(sortBooleans, a, b, sortInfo);
+        if (colType === 'number') return sortWrapper(sortNumbers, a, b, sortInfo);
+        if (stringify)
+          return sortStrings(
+            stringify((a as Record<string, Any>)[columnName], a),
+            stringify((b as Record<string, Any>)[columnName], b),
+            sortInfo.order === SortOrder.DESC,
+          );
         else return 0;
       });
     } else return data;
