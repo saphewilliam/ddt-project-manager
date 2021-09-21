@@ -8,41 +8,46 @@ import {
   Hidden,
   HighlightFunc,
   Options,
+  Row,
   SearchMode,
   SearchState,
 } from './types';
 
-async function searchExact<T extends ColumnTypes>(
-  data: Data<T>,
-  columns: Columns<T>,
+async function searchFuzzy<T extends ColumnTypes>(
+  preparedData: PreparedData<T>,
   searchString: string,
   columnNames: string[],
 ): Promise<Data<T>> {
-  console.log(columns, searchString, columnNames);
-  // TODO
-  // const $rows = $('#table tr');
-  // $('#search').keyup(function () {
-  //   const val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-
-  //   $rows
-  //     .show()
-  //     .filter(function () {
-  //       const text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-  //       return !~text.indexOf(val);
-  //     })
-  //     .hide();
-  // });
-
-  return data;
+  const searched = await fuzzysort.goAsync(searchString, preparedData, { keys: columnNames });
+  return searched.map((row) => row.obj.originalRow);
 }
 
-async function searchFuzzy<T extends ColumnTypes>(
-  data: Data<T>,
-  columns: Columns<T>,
+async function searchExact<T extends ColumnTypes>(
+  preparedData: PreparedData<T>,
   searchString: string,
   columnNames: string[],
 ): Promise<Data<T>> {
-  const rows = data.map((row) =>
+  const searched = preparedData.filter((row) => {
+    for (const [columnName, value] of Object.entries(row)) {
+      if (
+        columnNames.indexOf(columnName) !== -1 &&
+        (value as string).toLowerCase().indexOf(searchString.toLowerCase()) !== -1
+      )
+        return true;
+    }
+    return false;
+  });
+
+  return searched.map((row) => row.originalRow);
+}
+
+type PreparedData<T extends ColumnTypes> = { originalRow: Row<T> }[];
+
+async function prepareData<T extends ColumnTypes>(
+  data: Data<T>,
+  columns: Columns<T>,
+): Promise<PreparedData<T>> {
+  return data.map((row) =>
     Object.entries(columns).reduce(
       (prev, [columnName, column]) => {
         const value = (row as Record<string, Any>)[columnName];
@@ -52,9 +57,6 @@ async function searchFuzzy<T extends ColumnTypes>(
       { originalRow: row },
     ),
   );
-
-  const sorted = await fuzzysort.goAsync(searchString, rows, { keys: columnNames });
-  return sorted.map((row) => row.obj.originalRow);
 }
 
 export default function useSearch<T extends ColumnTypes>(
@@ -70,13 +72,19 @@ export default function useSearch<T extends ColumnTypes>(
     (query: string) => {
       if (searchString === '') return [{ value: query, highlighted: false }];
       else if (options?.search?.mode === SearchMode.EXACT) {
-        // TODO
-        return [{ value: query, highlighted: false }];
+        const match = query.toLowerCase().indexOf(searchString.toLowerCase());
+        if (match === -1) return [{ value: query, highlighted: false }];
+        else
+          return [
+            { value: query.substr(0, match), highlighted: false },
+            { value: query.substr(match, searchString.length), highlighted: true },
+            { value: query.substr(searchString.length + 1), highlighted: false },
+          ];
       } else {
         const match = fuzzysort.single(searchString, query);
         if (match === null) return [{ value: query, highlighted: false }];
         else {
-          const delimiter = '~.*';
+          const delimiter = '~.*>+';
           return fuzzysort
             .highlight(match, delimiter, delimiter)!
             .split(delimiter)
@@ -90,11 +98,14 @@ export default function useSearch<T extends ColumnTypes>(
   useEffect(() => {
     if (searchString === '') setSearchedData(data);
     else {
-      const columnNames = Object.keys(columns).filter((columnName) => !hidden[columnName]);
-      if (options?.search?.mode === SearchMode.EXACT)
-        searchExact(data, columns, searchString, columnNames).then((data) => setSearchedData(data));
-      else
-        searchFuzzy(data, columns, searchString, columnNames).then((data) => setSearchedData(data));
+      const search = async () => {
+        const columnNames = Object.keys(columns).filter((columnName) => !hidden[columnName]);
+        const preparedData = await prepareData(data, columns);
+        if (options?.search?.mode === SearchMode.EXACT)
+          setSearchedData(await searchExact(preparedData, searchString, columnNames));
+        else setSearchedData(await searchFuzzy(preparedData, searchString, columnNames));
+      };
+      search();
     }
   }, [columns, data, hidden, options, searchString, setSearchedData]);
 

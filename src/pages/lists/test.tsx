@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import React, { ReactElement, useState } from 'react';
-import useTable, { RenderCellProps, RenderHeadProps, SortOrder } from '@hooks/useTable';
+import useTable, { RenderCellProps, RenderHeadProps, SearchMode, SortOrder } from '@hooks/useTable';
 
 export default function TestTablePage(): ReactElement {
   const [musicalInput, setMusicalInput] = useState<string | undefined>(undefined);
@@ -110,6 +110,7 @@ export default function TestTablePage(): ReactElement {
       ],
       {
         pageSize: 3,
+        search: { mode: SearchMode.EXACT },
         style: {
           renderHead: TH,
           renderCell: TD,

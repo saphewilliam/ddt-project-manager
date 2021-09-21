@@ -112,8 +112,8 @@ export interface Options<T extends ColumnTypes> {
   search?: {
     /** Optional (default = `SearchMode.FUZZY`): the text matching algorithm used to search the table */
     mode?: SearchMode;
-    /** Optional (default = `false`): debounce the search input. Useful for large datasets which take more time to search */
-    debounce?: boolean;
+    // /** Optional (default = `false`): debounce the search input. Useful for large datasets which take more time to search */
+    // debounce?: boolean;
   };
   /** Optional: set default styling for the table elements */
   style?: {
