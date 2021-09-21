@@ -1,5 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Column, Columns, ColumnTypes, Hidden, HiddenState } from './types';
+import { useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react';
+import { Column, Columns, ColumnTypes } from './types';
+
+export type Hidden<T extends ColumnTypes> = {
+  [P in keyof T]: boolean;
+};
+
+interface HiddenState<T extends ColumnTypes> {
+  hidden: Hidden<T>;
+  setHidden: Dispatch<SetStateAction<Hidden<T>>>;
+  setAllHidden: (hide: boolean) => void;
+}
 
 function getHidden<T extends ColumnTypes>(
   columns: Columns<T>,

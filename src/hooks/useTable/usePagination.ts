@@ -1,5 +1,12 @@
 import { useState, useCallback, useMemo } from 'react';
-import { ColumnTypes, Data, PaginationState } from './types';
+import { ColumnTypes, Data } from './types';
+
+interface PaginationState<T extends ColumnTypes> {
+  page: number;
+  pageAmount: number;
+  setPage: (pageNumber: number) => void;
+  paginatedData: Data<T>;
+}
 
 export default function usePagination<T extends ColumnTypes>(
   data: Data<T>,

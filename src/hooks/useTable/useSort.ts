@@ -1,5 +1,17 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Any, Columns, ColumnTypes, Data, Row, SortInfo, SortOrder, SortState } from './types';
+import { Any, Columns, ColumnTypes, Data, Row, SortOrder } from './types';
+import { ColumnType, ColumnTypeEnum } from './useColumnType';
+
+export type SortInfo = {
+  order: SortOrder;
+  columnName: string;
+} | null;
+
+interface SortState<T extends ColumnTypes> {
+  sortedData: Data<T>;
+  sortInfo: SortInfo;
+  sort: (columnName: string) => void;
+}
 
 function sortWrapper<T extends ColumnTypes, U>(
   sort: (a: U, b: U, invert: boolean) => number,
@@ -35,24 +47,10 @@ function sortBooleans(a: boolean, b: boolean, invert: boolean): number {
   return 0;
 }
 
-function getColumnType<T extends ColumnTypes>(
-  data: Data<T>,
-  columnName: string | null,
-): string | null {
-  if (columnName === null || data.length === 0) return null;
-
-  const isValidType = (type: string) => ['string', 'number', 'boolean'].indexOf(type) !== -1;
-
-  for (const row of data) {
-    const type = typeof (row as Record<string, Any>)[columnName];
-    if (isValidType(type)) return type;
-  }
-  return null;
-}
-
 export default function useSort<T extends ColumnTypes>(
   columns: Columns<T>,
   data: Data<T>,
+  columnType: ColumnType<T>,
 ): SortState<T> {
   const [sortInfo, setSortInfo] = useState<SortInfo>(null);
 
@@ -61,7 +59,7 @@ export default function useSort<T extends ColumnTypes>(
       const { columnName } = sortInfo;
       const customSort = columns[columnName]?.sort;
       const stringify = columns[columnName]?.stringify;
-      const colType = getColumnType(data, columnName);
+      const colType = columnType[columnName]!;
 
       if (!stringify && colType === null && customSort === undefined) {
         console.error(
@@ -72,9 +70,9 @@ export default function useSort<T extends ColumnTypes>(
 
       return [...data].sort((a, b) => {
         if (customSort !== undefined) return sortWrapper(customSort, a, b, sortInfo);
-        if (colType === 'string') return sortWrapper(sortStrings, a, b, sortInfo);
-        if (colType === 'boolean') return sortWrapper(sortBooleans, a, b, sortInfo);
-        if (colType === 'number') return sortWrapper(sortNumbers, a, b, sortInfo);
+        if (colType === ColumnTypeEnum.STRING) return sortWrapper(sortStrings, a, b, sortInfo);
+        if (colType === ColumnTypeEnum.BOOLEAN) return sortWrapper(sortBooleans, a, b, sortInfo);
+        if (colType === ColumnTypeEnum.NUMBER) return sortWrapper(sortNumbers, a, b, sortInfo);
         if (stringify)
           return sortStrings(
             stringify((a as Record<string, Any>)[columnName], a),
@@ -84,7 +82,7 @@ export default function useSort<T extends ColumnTypes>(
         else return 0;
       });
     } else return data;
-  }, [columns, data, sortInfo]);
+  }, [columns, data, columnType, sortInfo]);
 
   const sort = useCallback(
     (columnName: string) => {

@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Columns, ColumnTypes, Data, Options, State } from './types';
+import useColumnType from './useColumnType';
 import useDefaultValues from './useDefaultValues';
 import useHidden from './useHidden';
 import useIntermediateMemo from './useIntermediateMemo';
@@ -23,16 +24,20 @@ export default function useTable<T extends ColumnTypes>(
   // Set undefined values to defaultvalue
   const { defaultValuesData } = useDefaultValues(dataMemo, columnsMemo);
 
+  // Find the runtime type of each column
+  const { columnType } = useColumnType(columnsMemo, defaultValuesData);
+
   // Search filter the data
   const { searchedData, searchString, setSearchString, highlight } = useSearch(
     columnsMemo,
     defaultValuesData,
     hidden,
+    columnType,
     optionsMemo,
   );
 
   // Sort the searched data
-  const { sortedData, sortInfo, sort } = useSort(columnsMemo, searchedData);
+  const { sortedData, sortInfo, sort } = useSort(columnsMemo, searchedData, columnType);
 
   // Paginate the searched, sorted data
   const { paginatedData, page, pageAmount, setPage } = usePagination(
@@ -43,21 +48,21 @@ export default function useTable<T extends ColumnTypes>(
   // Set page to 0 if sorted data updates
   useEffect(() => {
     if (optionsMemo?.pageSize !== undefined) setPage(0);
-  }, [sortedData]);
+  }, [sortedData, optionsMemo, setPage]);
 
   const { headers, originalHeaders } = useMemo(
     () => makeHeaders(columnsMemo, hidden, setHidden, sortInfo, sort, optionsMemo),
-    [columnsMemo, optionsMemo, hidden, setHidden, sortInfo, sort],
+    [columnsMemo, hidden, setHidden, sortInfo, sort, optionsMemo],
   );
 
   const originalRows = useMemo(
     () => makeOriginalRows(columnsMemo, dataMemo, highlight),
-    [columnsMemo, dataMemo],
+    [columnsMemo, dataMemo, highlight],
   );
 
   const rows = useMemo(
     () => makeRows(columnsMemo, paginatedData, hidden, highlight, optionsMemo),
-    [columnsMemo, optionsMemo, paginatedData, hidden],
+    [columnsMemo, paginatedData, hidden, highlight, optionsMemo],
   );
 
   return {

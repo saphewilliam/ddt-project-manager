@@ -1,17 +1,19 @@
 import fuzzysort from 'fuzzysort';
-import { useCallback, useEffect, useState } from 'react';
-import {
-  Any,
-  Columns,
-  ColumnTypes,
-  Data,
-  Hidden,
-  HighlightFunc,
-  Options,
-  Row,
-  SearchMode,
-  SearchState,
-} from './types';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Any, Columns, ColumnTypes, Data, Options, Row, SearchMode } from './types';
+import { ColumnType, ColumnTypeEnum } from './useColumnType';
+import { Hidden } from './useHidden';
+
+export type MatchedText = { value: string; highlighted: boolean }[];
+
+export type HighlightFunc = (match: string) => MatchedText;
+
+interface SearchState<T extends ColumnTypes> {
+  searchedData: Data<T>;
+  setSearchString: Dispatch<SetStateAction<string>>;
+  searchString: string;
+  highlight: HighlightFunc;
+}
 
 async function searchFuzzy<T extends ColumnTypes>(
   preparedData: PreparedData<T>,
@@ -59,10 +61,32 @@ async function prepareData<T extends ColumnTypes>(
   );
 }
 
+function getSearchableColumnNames<T extends ColumnTypes>(
+  columns: Columns<T>,
+  columnType: ColumnType<T>,
+  hidden: Hidden<T>,
+): string[] {
+  return Object.entries(columns)
+    .filter(([columnName, column]) => {
+      if (hidden[columnName] || column.unsearchable) return false;
+      if (column.stringify) return true;
+      if (columnType[columnName]! === ColumnTypeEnum.COMPLEX) {
+        console.warn(
+          `Column '${columnName}' is being searched, but is a complex object with no preconfigured stringify function. Please define a stringify function OR set 'unsearchable' to 'true'`,
+        );
+        return false;
+      }
+      if (columnType[columnName]! === ColumnTypeEnum.UNDEFINED) return false;
+      return true;
+    })
+    .map(([columnName]) => columnName);
+}
+
 export default function useSearch<T extends ColumnTypes>(
   columns: Columns<T>,
   data: Data<T>,
   hidden: Hidden<T>,
+  columnType: ColumnType<T>,
   options?: Options<T>,
 ): SearchState<T> {
   const [searchString, setSearchString] = useState('');
@@ -99,7 +123,7 @@ export default function useSearch<T extends ColumnTypes>(
     if (searchString === '') setSearchedData(data);
     else {
       const search = async () => {
-        const columnNames = Object.keys(columns).filter((columnName) => !hidden[columnName]);
+        const columnNames = getSearchableColumnNames(columns, columnType, hidden);
         const preparedData = await prepareData(data, columns);
         if (options?.search?.mode === SearchMode.EXACT)
           setSearchedData(await searchExact(preparedData, searchString, columnNames));
@@ -107,7 +131,7 @@ export default function useSearch<T extends ColumnTypes>(
       };
       search();
     }
-  }, [columns, data, hidden, options, searchString, setSearchedData]);
+  }, [columns, data, hidden, options, searchString, setSearchedData, columnType]);
 
   return { searchString, setSearchString, searchedData, highlight };
 }

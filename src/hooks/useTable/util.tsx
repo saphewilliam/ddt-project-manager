@@ -5,17 +5,16 @@ import {
   Columns,
   ColumnTypes,
   Data,
-  Hidden,
-  HighlightFunc,
-  MatchedText,
   Options,
   RenderCellProps,
   RenderHeadProps,
   Row,
-  SortInfo,
   SortOrder,
   State,
 } from './types';
+import { Hidden } from './useHidden';
+import { MatchedText, HighlightFunc } from './useSearch';
+import { SortInfo } from './useSort';
 
 export function makeHeaders<T extends ColumnTypes>(
   columns: Columns<T>,

@@ -1,7 +1,7 @@
 import { Dispatch, ReactElement, SetStateAction } from 'react';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Any = any;
+import { DefaultValue } from './useDefaultValues';
+import { Hidden } from './useHidden';
+import { MatchedText } from './useSearch';
 
 /** The sorting state of a column */
 export enum SortOrder {
@@ -22,50 +22,8 @@ export enum SearchMode {
   // REGEX? https://stackoverflow.com/questions/9127498/how-to-perform-a-real-time-search-and-filter-on-a-html-table
 }
 
-export type Hidden<T extends ColumnTypes> = {
-  [P in keyof T]: boolean;
-};
-
-export interface HiddenState<T extends ColumnTypes> {
-  hidden: Hidden<T>;
-  setHidden: Dispatch<SetStateAction<Hidden<T>>>;
-  setAllHidden: (hide: boolean) => void;
-}
-
-export type DefaultValue<T extends ColumnTypes, U> = U | ((row: Row<T>) => U);
-
-export interface DefaultValuesState<T extends ColumnTypes> {
-  defaultValuesData: Data<T>;
-}
-
-export interface PaginationState<T extends ColumnTypes> {
-  page: number;
-  pageAmount: number;
-  setPage: (pageNumber: number) => void;
-  paginatedData: Data<T>;
-}
-
-export type SortInfo = {
-  order: SortOrder;
-  columnName: string;
-} | null;
-
-export interface SortState<T extends ColumnTypes> {
-  sortedData: Data<T>;
-  sortInfo: SortInfo;
-  sort: (columnName: string) => void;
-}
-
-export type MatchedText = { value: string; highlighted: boolean }[];
-
-export type HighlightFunc = (match: string) => MatchedText;
-
-export interface SearchState<T extends ColumnTypes> {
-  searchedData: Data<T>;
-  setSearchString: Dispatch<SetStateAction<string>>;
-  searchString: string;
-  highlight: HighlightFunc;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Any = any;
 
 export interface RenderHeadProps {
   name: string;
@@ -98,6 +56,8 @@ export interface Column<T extends ColumnTypes, U = Any> {
   unsortable?: boolean;
   /** Optional: convert cell content to string for string matching / searching purposes */
   stringify?: (value: U, row: Row<T>) => string;
+  /** Optional (default = `false`): user is not able to search this column */
+  unsearchable?: boolean;
   /** Optional: overrides how the header cell of this column renders */
   renderHead?: (props: RenderHeadProps) => ReactElement;
   /** Optional: overrides how the cells in this column render */
