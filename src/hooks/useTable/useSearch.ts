@@ -78,7 +78,7 @@ export default function useSearch<T extends ColumnTypes>(
           return [
             { value: query.substr(0, match), highlighted: false },
             { value: query.substr(match, searchString.length), highlighted: true },
-            { value: query.substr(searchString.length + 1), highlighted: false },
+            { value: query.substr(match + searchString.length), highlighted: false },
           ];
       } else {
         const match = fuzzysort.single(searchString, query);
