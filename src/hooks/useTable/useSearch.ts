@@ -31,7 +31,7 @@ async function searchExact<T extends ColumnTypes>(
     for (const [columnName, value] of Object.entries(row)) {
       if (
         columnNames.indexOf(columnName) !== -1 &&
-        (value as string).toLowerCase().indexOf(searchString.toLowerCase()) !== -1
+        (value as unknown as string).toLowerCase().indexOf(searchString.toLowerCase()) !== -1
       )
         return true;
     }

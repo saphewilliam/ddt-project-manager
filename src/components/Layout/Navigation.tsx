@@ -19,8 +19,7 @@ import {
 import React, { ReactElement, useMemo, ComponentProps } from 'react';
 import { Role } from '@graphql/__generated__/codegen-self';
 import useDeviceWidth from '@hooks/useDeviceWidth';
-import useDisplayError from '@hooks/useDisplayError';
-import useSdk from '@hooks/useSdk';
+import useSafeQuery from '@hooks/useSafeQuery';
 import useSession from '@hooks/useSession';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
@@ -39,10 +38,7 @@ export interface NavItemProps {
 export default function Navigation(): ReactElement {
   const device = useDeviceWidth();
   const { session } = useSession();
-  const sdk = useSdk();
-  const { data: uiData, error: uiError } = sdk.useGetUi();
-
-  useDisplayError(uiData, uiError);
+  const { data } = useSafeQuery('useGetUi', {});
 
   const navItems: NavItemProps[] = useMemo<NavItemProps[]>(
     () => [
@@ -61,7 +57,7 @@ export default function Navigation(): ReactElement {
         icon: ListOutline,
         activeIcon: ListSolid,
         subItems: [{ label: 'All', href: '/lists/all' }].concat(
-          uiData?.stoneListUsers.map((user) => ({
+          data?.stoneListUsers.map((user) => ({
             label: `${user.firstName} ${user.lastName}`,
             href: `/lists/${user.slug}`,
           })) ?? [],
@@ -73,7 +69,7 @@ export default function Navigation(): ReactElement {
         label: 'Events',
         icon: EventOutline,
         activeIcon: EventSolid,
-        subItems: uiData?.events.map((event) => ({
+        subItems: data?.events.map((event) => ({
           label: event.name,
           href: `/events/${event.slug}`,
         })),
@@ -111,7 +107,7 @@ export default function Navigation(): ReactElement {
         hidden: session === null || session?.user.isAdmin,
       },
     ],
-    [uiData, device, session],
+    [data, device, session],
   );
 
   return device?.xs ? <MobileNav navItems={navItems} /> : <DesktopNav navItems={navItems} />;

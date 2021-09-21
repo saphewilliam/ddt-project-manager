@@ -1,0 +1,8 @@
+query getStoneListUsers {
+  stoneListUsers {
+    id
+    firstName
+    lastName
+    slug
+  }
+}
