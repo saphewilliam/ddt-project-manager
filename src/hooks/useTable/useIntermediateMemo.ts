@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export default function useIntermediateMemo<T>(input: T): T {
-  const [object, setObject] = useState<T>(input);
+export default function useIntermediateMemo<T>(inputObj: T): T {
+  const [memoObj, setMemoObj] = useState<T>(inputObj);
 
   useEffect(() => {
-    if (JSON.stringify(object) !== JSON.stringify(input)) setObject(input);
-  }, [input]);
+    if (JSON.stringify(memoObj) !== JSON.stringify(inputObj)) setMemoObj(inputObj);
+  }, [inputObj]);
 
-  return object;
+  return memoObj;
 }

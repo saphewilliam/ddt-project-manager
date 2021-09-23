@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'reac
 import { Any, Columns, ColumnTypes, Data, Options, Row, SearchMode } from './types';
 import { ColumnType, ColumnTypeEnum } from './useColumnType';
 import { Hidden } from './useHidden';
+import { getRowValue } from './util';
 
 export type MatchedText = { value: string; highlighted: boolean }[];
 
@@ -52,7 +53,7 @@ async function prepareData<T extends ColumnTypes>(
   return data.map((row) =>
     Object.entries(columns).reduce(
       (prev, [columnName, column]) => {
-        const value = (row as Record<string, Any>)[columnName];
+        const value = getRowValue(row, columnName);
         const stringValue = column.stringify ? column.stringify(value, row) : String(value);
         return { ...prev, [columnName]: stringValue };
       },
@@ -72,7 +73,7 @@ function getSearchableColumnNames<T extends ColumnTypes>(
       if (column.stringify) return true;
       if (columnType[columnName]! === ColumnTypeEnum.COMPLEX) {
         console.warn(
-          `Column '${columnName}' is being searched, but is a complex object with no preconfigured stringify function. Please define a stringify function OR set 'unsearchable' to 'true'`,
+          `Column '${columnName}' is being searched, but is a complex object with no preconfigured 'stringify' function. Please define a stringify function OR set 'unsearchable' to 'true'`,
         );
         return false;
       }

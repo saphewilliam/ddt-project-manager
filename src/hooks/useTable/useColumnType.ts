@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Any, Columns, ColumnTypes, Data } from './types';
+import { Columns, ColumnTypes, Data } from './types';
+import { getRowValue } from './util';
 
 interface ColumnTypeState<T extends ColumnTypes> {
   columnType: ColumnType<T>;
@@ -18,10 +19,8 @@ export type ColumnType<T extends ColumnTypes> = {
 };
 
 function findColumnType<T extends ColumnTypes>(data: Data<T>, columnName: string): ColumnTypeEnum {
-  if (data.length === 0) return ColumnTypeEnum.UNDEFINED;
-
   for (const row of data) {
-    const type = typeof (row as Record<string, Any>)[columnName];
+    const type = typeof getRowValue(row, columnName);
     switch (type) {
       case 'undefined':
         continue;

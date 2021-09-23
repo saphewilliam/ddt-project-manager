@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Any, Columns, ColumnTypes, Data, Row } from './types';
+import { getRowValue } from './util';
 
 export type DefaultValue<T extends ColumnTypes, U> = U | ((row: Row<T>) => U);
 
@@ -23,9 +24,9 @@ export default function useDefaultValues<T extends ColumnTypes>(
     () =>
       data.map((row) =>
         Object.entries(columns).reduce(
-          (prev, [name, column]) => ({
+          (prev, [columnName, column]) => ({
             ...prev,
-            [name]: (row as Record<string, Any>)[name] ?? getDefaultValue(column.defaultValue, row),
+            [columnName]: getRowValue(row, columnName) ?? getDefaultValue(column.defaultValue, row),
           }),
           {} as Row<T>,
         ),

@@ -16,6 +16,10 @@ import { Hidden } from './useHidden';
 import { MatchedText, HighlightFunc } from './useSearch';
 import { SortInfo } from './useSort';
 
+export function getRowValue<T extends ColumnTypes>(row: Row<T>, columnName: string): Any {
+  return (row as Record<string, Any>)[columnName];
+}
+
 export function makeHeaders<T extends ColumnTypes>(
   columns: Columns<T>,
   hidden: Hidden<T>,
@@ -80,7 +84,7 @@ function makeRow<T extends ColumnTypes, U>(
 
   for (const [columnName, columnArgs] of Object.entries<Column<T>>(columns)) {
     if (!columnArgs.hidden) {
-      const value = (row as Record<string, Any>)[columnName];
+      const value = getRowValue(row, columnName);
       const stringValue = columnArgs.stringify ? columnArgs.stringify(value, row) : String(value);
       const matched = highlight(stringValue);
       const cell = callback(row, value, matched, columnArgs, columnName);

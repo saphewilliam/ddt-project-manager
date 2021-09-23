@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Any, Columns, ColumnTypes, Data, Row, SortOrder } from './types';
+import { Columns, ColumnTypes, Data, Row, SortOrder } from './types';
 import { ColumnType, ColumnTypeEnum } from './useColumnType';
+import { getRowValue } from './util';
 
 export type SortInfo = {
   order: SortOrder;
@@ -21,11 +22,9 @@ function sortWrapper<T extends ColumnTypes, U>(
 ): number {
   if (!sortInfo) return 0;
 
-  const getValue = (r: Row<T>) => (r as Record<string, Any>)[sortInfo.columnName];
-
   const invert = sortInfo.order === SortOrder.DESC;
-  const aValue = getValue(a);
-  const bValue = getValue(b);
+  const aValue = getRowValue(a, sortInfo.columnName);
+  const bValue = getRowValue(b, sortInfo.columnName);
 
   if (aValue === undefined && bValue === undefined) return 0;
   else if (aValue === undefined) return invert ? -1 : 1;
@@ -75,8 +74,8 @@ export default function useSort<T extends ColumnTypes>(
         if (colType === ColumnTypeEnum.NUMBER) return sortWrapper(sortNumbers, a, b, sortInfo);
         if (stringify)
           return sortStrings(
-            stringify((a as Record<string, Any>)[columnName], a),
-            stringify((b as Record<string, Any>)[columnName], b),
+            stringify(getRowValue(a, columnName), a),
+            stringify(getRowValue(b, columnName), b),
             sortInfo.order === SortOrder.DESC,
           );
         else return 0;
