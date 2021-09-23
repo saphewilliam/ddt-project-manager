@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Any, Columns, ColumnTypes, Data, Row } from './types';
+import { Columns, ColumnTypes, Data, Row } from './types';
 import { getRowValue } from './util';
 
 export type DefaultValue<T extends ColumnTypes, U> = U | ((row: Row<T>) => U);

@@ -1,6 +1,6 @@
 import fuzzysort from 'fuzzysort';
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { Any, Columns, ColumnTypes, Data, Options, Row, SearchMode } from './types';
+import { Columns, ColumnTypes, Data, Options, Row, SearchMode } from './types';
 import { ColumnType, ColumnTypeEnum } from './useColumnType';
 import { Hidden } from './useHidden';
 import { getRowValue } from './util';
