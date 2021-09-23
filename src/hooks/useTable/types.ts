@@ -1,7 +1,10 @@
-import { ReactNode } from 'react';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
+import { DefaultValue } from './useDefaultValues';
+import { Hidden } from './useHidden';
+import { MatchedText } from './useSearch';
 
 /** The sorting state of a column */
-export enum SortState {
+export enum SortOrder {
   /** Sort data in this column in ascending order */
   ASC = 'ASC',
   /** Sort data in this column in descending order */
@@ -10,99 +13,139 @@ export enum SortState {
   UNSORTED = 'UNSORTED',
 }
 
-/** Used to type column values */
-export interface Column<T> {
-  /** Required: name shown at the top of the column */
-  label: string;
-  /** Optional (default = `false`): don't show this column at all */
-  // hidden?: boolean;
-  render?: (value: T) => ReactNode;
-  // sort: eeeh
-  // type: if type is not string, number, or bool, then renderCell is required, default = string
-  // defaultValue: makes the value nullable
-  // TODO also make a function that accepts the row
-  // defaultValue?: T;
-  // nullable?: boolean;
+/** How a search is performed on a table */
+export enum SearchMode {
+  /** Only show result if a substring in the row matches exactly with the search string */
+  EXACT = 'EXACT',
+  /** Show result if a value in the row fuzzily matches with the search string. For more info: https://www.npmjs.com/package/fuzzysort */
+  FUZZY = 'FUZZY',
+  // REGEX? https://stackoverflow.com/questions/9127498/how-to-perform-a-real-time-search-and-filter-on-a-html-table
 }
 
-// interface ColumnBase {
-//   /** Required: name shown at the top of the column */
-//   label: string;
-//   /** Optional (default = `false`): don't show this column at all */
-//   hidden?: boolean;
-//   // render?: (value: { row: any; value: string }) => ReactNode;
-//   // sort: eeeh
-//   // type: if type is not string, number, or bool, then renderCell is required, default = string
-//   // defaultValue: makes the value nullable
-// }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Any = any;
 
-// interface ValueColumn extends ColumnBase {
-//   /** Optional (default = `ColumnType.string`): the value type of the column */
-//   type?: ColumnType.STRING | ColumnType.NUMBER | ColumnType.BOOLEAN;
-// }
+export interface RenderHeadProps {
+  name: string;
+  label: string;
+  hidden: boolean;
+  toggleHide?: (hide?: boolean) => void;
+  sortOrder: SortOrder;
+  toggleSort?: (order?: SortOrder) => void;
+}
 
-// interface ObjectColumn extends ColumnBase {
-//   /** Optional (default = `ColumnType.string`): the value type of the column */
-//   type: ColumnType.OBJECT;
-// }
-
-// export type Column<T = string> = ValueColumn | ObjectColumn;
+export interface RenderCellProps<T extends ColumnTypes = Any, U = Any> {
+  row: Row<T>;
+  value: U;
+  matchedText: MatchedText;
+}
 
 /** User input object for column configuration */
-export interface Columns {
-  [columnName: string]: Column<any>;
+export interface Column<T extends ColumnTypes, U = Any> {
+  /** Optional: name shown at the top of the column */
+  label?: string;
+  /** Optional: the value that should replace undefined at runtime */
+  defaultValue?: DefaultValue<T, U>;
+  /** Optional (default = `false`): don't show this column at all */
+  hidden?: boolean;
+  /** Optional (default = `false`): user is not able to hide this column */
+  unhideable?: boolean;
+  /** Optional: custom sorting function for this column */
+  sort?: (a: U, b: U, invert: boolean) => number;
+  /** Optional (default = `false`): user is not able to sort this column */
+  unsortable?: boolean;
+  /** Optional: convert cell content to string for string matching / searching purposes */
+  stringify?: (value: U, row: Row<T>) => string;
+  /** Optional (default = `false`): user is not able to search this column */
+  unsearchable?: boolean;
+  /** Optional: overrides how the header cell of this column renders */
+  renderHead?: (props: RenderHeadProps) => ReactElement;
+  /** Optional: overrides how the cells in this column render */
+  renderCell?: (props: RenderCellProps<T, U>) => ReactElement;
 }
 
-// From https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c
-// type SubType<Base, Condition> = Pick<
-//   Base,
-//   {
-//     [Key in keyof Base]: Base[Key] extends Condition ? Key : never;
-//   }[keyof Base]
-// >;
-
-// export type Data<T extends Columns> = {
-//   [P in keyof T]?: FieldValue<T[P]>;
-// } &
-//   {
-//     [P in keyof SubType<T, { validation: { required: string } }>]: FieldValue<T[P]>;
-//   };
-
-// export type GetColumnType<T extends Column> = T extends { type: ColumnType.BOOLEAN }
-//   ? boolean
-//   : T extends { type: ColumnType.NUMBER }
-//   ? number
-//   : T extends { type: ColumnType.OBJECT }
-//   ? Record<string, any>
-//   : string;
-
-/** User input object for data configuration */
-// export type Data<T extends Columns> = {
-//   [P in keyof T]?: T[P] extends Column<infer T> ? T : never;
-// } &
-//   {
-//     [P in keyof SubType<T, { defaultValue: number }>]: T[P] extends Column<infer T> ? T : never;
-//   };
-
-/** User input object for row configuration */
-export type Row<T extends Columns> = { [P in keyof T]: T[P] extends Column<infer T> ? T : never };
-
-/** User input object for data configuration */
-export type Data<T extends Columns> = Array<Row<T>>;
-
-export interface State {
-  headers: {
-    name: string;
-    label: string;
-    // render: () => ReactNode;
-    // toggleHide: (value?: boolean) => void;
-    // hidden: boolean;
-    // toggleSort: (state?: SortState) => void;
-    // sortState: SortState;
-  }[];
-  rows: {
-    cells: {
-      render: () => ReactNode;
-    }[];
-  }[];
+/** User input object for options configuration */
+export interface Options<T extends ColumnTypes> {
+  /** Optional: enable pagination with `n` size pages*/
+  pageSize?: number;
+  /** Optional: settings for the table search module */
+  search?: {
+    /** Optional (default = `SearchMode.FUZZY`): the text matching algorithm used to search the table */
+    mode?: SearchMode;
+    // /** Optional (default = `false`): debounce the search input. Useful for large datasets which take more time to search */
+    // debounce?: boolean;
+  };
+  /** Optional: set default styling for the table elements */
+  style?: {
+    /** Optional: specifies how the header cells of the columns render by default */
+    renderHead?: (props: RenderHeadProps) => ReactElement;
+    /** Optional: specifies how the cells in the columns render by default */
+    renderCell?: (props: RenderCellProps<T>) => ReactElement;
+  };
 }
+
+/** Output table state object */
+export interface State<T extends ColumnTypes> {
+  /** Processed headers, used for displaying in the table */
+  headers: (RenderHeadProps & { render: () => ReactElement })[];
+  /** Original headers, used for external data manipulation */
+  originalHeaders: RenderHeadProps[];
+  /** Processed rows, used for displaying in the table */
+  rows: { cells: (RenderCellProps<T> & { render: () => ReactElement })[] }[];
+  /** Original rows, used for external data analysis */
+  originalRows: { originalCells: RenderCellProps<T>[] }[];
+  /** Hidden columns helpers */
+  hiddenHelpers: {
+    /** Object containing information about which columns are hidden */
+    hidden: Hidden<T>;
+    /** Utility function to hide all hideable columns */
+    hideAll: () => void;
+    /** Utility function to show all columns */
+    showAll: () => void;
+  };
+  /** Pagination helpers */
+  paginationHelpers: {
+    /** Current page number (between 1 and `pageAmount`) */
+    page: number;
+    /** Amount of pages */
+    pageAmount: number;
+    /** Utility function to set the current page if possible */
+    setPage: (pageNumber: number) => void;
+    /** Utility function to move to the next page if possible */
+    nextPage: () => void;
+    /** Whether or not there is a next page to go to */
+    canNext: boolean;
+    /** Utility function to move to the previous page if possible */
+    prevPage: () => void;
+    /** Whether or not there is a previous page to go to */
+    canPrev: boolean;
+  };
+  /** Search helpers */
+  searchHelpers: {
+    /** String which the table is being searched on */
+    searchString: string;
+    /** Utility function to set the search string */
+    setSearchString: Dispatch<SetStateAction<string>>;
+  };
+}
+
+/** User input type for column type configuration */
+export interface ColumnTypes {
+  [columnName: string]: Any;
+}
+
+/** User input object for column configuration */
+export type Columns<T extends ColumnTypes> = {
+  [P in keyof T]: Column<T, T[P]>;
+};
+
+/** Data input object */
+export type Data<T extends ColumnTypes> = Array<Row<T>>;
+
+/** User input object for data row configuration */
+export type Row<T extends ColumnTypes> = Partial<Pick<T, RowOptionals<T>>> &
+  Omit<T, RowOptionals<T>>;
+
+type RowOptionals<T extends ColumnTypes> = {
+  [K in keyof T]: null extends T[K] ? K : undefined extends T[K] ? K : never;
+}[keyof T];

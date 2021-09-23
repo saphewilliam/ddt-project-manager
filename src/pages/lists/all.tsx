@@ -1,8 +1,7 @@
 import cx from 'clsx';
 import React, { ReactElement, useMemo } from 'react';
 import Layout from '@components/Layout';
-import useDisplayError from '@hooks/useDisplayError';
-import useSdk from '@hooks/useSdk';
+import useSafeQuery from '@hooks/useSafeQuery';
 import {
   fontColorFromBackground,
   formatNumber,
@@ -11,12 +10,9 @@ import {
 } from '@lib/stoneListHelpers';
 
 export default function ListAllPage(): ReactElement {
-  const sdk = useSdk();
-  const { data, error } = sdk.useGetStoneLists();
+  const { data } = useSafeQuery('useGetStoneLists', {});
 
   const tableData = useMemo<StonelistsTableData>(() => makeStonelistsTableData(data), [data]);
-
-  useDisplayError(data, error);
 
   return (
     <Layout>

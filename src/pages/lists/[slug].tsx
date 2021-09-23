@@ -2,8 +2,7 @@ import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useEffect } from 'react';
 import Layout from '@components/Layout';
-import useDisplayError from '@hooks/useDisplayError';
-import useSdk from '@hooks/useSdk';
+import useSafeQuery from '@hooks/useSafeQuery';
 import {
   fontColorFromBackground,
   formatNumber,
@@ -16,12 +15,9 @@ export default function ListUserPage(): ReactElement {
   const router = useRouter();
   const slug = extractURLParam('slug', router.query);
 
-  const sdk = useSdk();
-  const { data, error } = sdk.useGetStoneList({ userSlug: slug ?? '' });
+  const { data } = useSafeQuery('useGetStoneList', { userSlug: slug ?? '' });
 
   const tableData = useMemo<StonelistTableData>(() => makeStonelistTableData(data), [data]);
-
-  useDisplayError(data, error);
 
   useEffect(() => {
     if (data?.user === null) router.push('/lists');

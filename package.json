@@ -37,6 +37,7 @@
     "as-bind": "0.8.2",
     "bcrypt": "5.0.1",
     "clsx": "1.1.1",
+    "fuzzysort": "1.1.4",
     "graphql": "15.5.3",
     "graphql-request": "3.5.0",
     "graphql-scalars": "1.10.1",

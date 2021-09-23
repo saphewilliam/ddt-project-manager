@@ -411,6 +411,11 @@ export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type getTeamsQuery = { teams: Array<{ id: string, name: string }> };
 
+export type getStoneListUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getStoneListUsersQuery = { stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
+
 export const stoneListStoneFragmentDoc = gql`
     fragment stoneListStone on Stone {
   id
@@ -529,6 +534,16 @@ export const getTeamsDocument = gql`
   }
 }
     `;
+export const getStoneListUsersDocument = gql`
+    query getStoneListUsers {
+  stoneListUsers {
+    id
+    firstName
+    lastName
+    slug
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -560,29 +575,34 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getTeams(variables?: getTeamsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getTeamsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getTeamsQuery>(getTeamsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTeams');
+    },
+    getStoneListUsers(variables?: getStoneListUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListUsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getStoneListUsersQuery>(getStoneListUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneListUsers');
     }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;
 export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   const sdk = getSdk(client, withWrapper);
-  const genKey = <V extends Record<string, unknown> = Record<string, unknown>>(name: string, object: V = {} as V): SWRKeyInterface => [name, ...Object.keys(object).sort().map(key => object[key])];
   return {
     ...sdk,
-    useGetUi(variables?: getUIQueryVariables, config?: SWRConfigInterface<getUIQuery, ClientError>) {
-      return useSWR<getUIQuery, ClientError>(genKey<getUIQueryVariables>('GetUi', variables), () => sdk.getUI(variables), config);
+    useGetUi(key: SWRKeyInterface, variables?: getUIQueryVariables, config?: SWRConfigInterface<getUIQuery, ClientError>) {
+      return useSWR<getUIQuery, ClientError>(key, () => sdk.getUI(variables), config);
     },
-    useGetSession(variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
-      return useSWR<getSessionQuery, ClientError>(genKey<getSessionQueryVariables>('GetSession', variables), () => sdk.getSession(variables), config);
+    useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
+      return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);
     },
-    useGetStoneList(variables: getStoneListQueryVariables, config?: SWRConfigInterface<getStoneListQuery, ClientError>) {
-      return useSWR<getStoneListQuery, ClientError>(genKey<getStoneListQueryVariables>('GetStoneList', variables), () => sdk.getStoneList(variables), config);
+    useGetStoneList(key: SWRKeyInterface, variables: getStoneListQueryVariables, config?: SWRConfigInterface<getStoneListQuery, ClientError>) {
+      return useSWR<getStoneListQuery, ClientError>(key, () => sdk.getStoneList(variables), config);
     },
-    useGetStoneLists(variables?: getStoneListsQueryVariables, config?: SWRConfigInterface<getStoneListsQuery, ClientError>) {
-      return useSWR<getStoneListsQuery, ClientError>(genKey<getStoneListsQueryVariables>('GetStoneLists', variables), () => sdk.getStoneLists(variables), config);
+    useGetStoneLists(key: SWRKeyInterface, variables?: getStoneListsQueryVariables, config?: SWRConfigInterface<getStoneListsQuery, ClientError>) {
+      return useSWR<getStoneListsQuery, ClientError>(key, () => sdk.getStoneLists(variables), config);
     },
-    useGetTeams(variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
-      return useSWR<getTeamsQuery, ClientError>(genKey<getTeamsQueryVariables>('GetTeams', variables), () => sdk.getTeams(variables), config);
+    useGetTeams(key: SWRKeyInterface, variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
+      return useSWR<getTeamsQuery, ClientError>(key, () => sdk.getTeams(variables), config);
+    },
+    useGetStoneListUsers(key: SWRKeyInterface, variables?: getStoneListUsersQueryVariables, config?: SWRConfigInterface<getStoneListUsersQuery, ClientError>) {
+      return useSWR<getStoneListUsersQuery, ClientError>(key, () => sdk.getStoneListUsers(variables), config);
     }
   };
 }
