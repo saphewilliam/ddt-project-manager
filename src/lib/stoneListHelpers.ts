@@ -1,4 +1,11 @@
-import { getStoneListsQuery, getStoneListQuery } from '@graphql/__generated__/codegen-self';
+import { ColorCell, EditCell } from '@components/StoneList/StoneListCells';
+import {
+  getStoneListsQuery,
+  getStoneListQuery,
+  Role,
+  getSessionQuery,
+} from '@graphql/__generated__/codegen-self';
+import { Columns } from '@hooks/useTable';
 
 export function fontColorFromBackground(hex: string): string {
   const r = parseInt(hex.substr(1, 2), 16);
@@ -15,9 +22,9 @@ export function formatNumber(number: number): string {
   return String(number).replace(/(.)(?=(\d{3})+$)/g, '$1.');
 }
 
-export type StoneListTableData = StoneListTable[];
+export type StoneListTableData = StoneListTableType[];
 
-export interface StoneListTable {
+export interface StoneListTableType {
   title: string;
   rows: {
     id: string;
@@ -48,8 +55,36 @@ export type StoneListColumnTypes = {
     order: number;
   };
   total: number;
-  edit: string;
+  edit: () => void;
 };
+
+export function makeStoneListTableColumns(
+  userColumns: StoneListUserColumns,
+  session: getSessionQuery['session'],
+): Columns<StoneListColumnTypes> {
+  return {
+    color: {
+      renderCell: ColorCell,
+      unhideable: true,
+      sort: (a, b, invert) => (invert ? 1 : -1) * (a.order - b.order),
+    },
+    ...userColumns.reduce(
+      (prev, curr) => ({ ...prev, [curr.userId]: { label: curr.displayname, defaultValue: 0 } }),
+      {},
+    ),
+    total: {
+      hidden: userColumns.length <= 1,
+      unhideable: true,
+    },
+    edit: {
+      renderCell: EditCell,
+      label: '',
+      hidden: !(session?.user.isAdmin || session?.member?.role === Role.CAPTAIN),
+      unhideable: true,
+      unsortable: true,
+    },
+  };
+}
 
 export function makeStoneListTableData(
   data: getStoneListQuery | undefined | null,
@@ -123,7 +158,7 @@ export type StoneListUserColumns = {
   displayname: string;
 }[];
 
-export function getStoneListUserColumns(rows: StoneListTable['rows']): StoneListUserColumns {
+export function getStoneListUserColumns(rows: StoneListTableType['rows']): StoneListUserColumns {
   const userIds: Record<string, boolean> = {};
   const result: StoneListUserColumns = [];
 

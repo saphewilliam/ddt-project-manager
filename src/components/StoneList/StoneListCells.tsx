@@ -23,7 +23,7 @@ export function ColorCell(props: RenderCellProps): ReactElement {
           className={cx('w-5', 'cursor-pointer')}
           data-tip={props.value.alias}
         />
-        <ReactTooltip place="left" effect="solid" />
+        <ReactTooltip place="right" effect="solid" />
       </div>
     </td>
   );
@@ -45,7 +45,7 @@ export function EditCell(props: RenderCellProps): ReactElement {
           'hover:text-white',
           'hover:bg-primary',
         )}
-        onClick={() => alert(props.value)}
+        onClick={() => props.value()}
       >
         <PencilIcon className={cx('w-4')} />
       </button>

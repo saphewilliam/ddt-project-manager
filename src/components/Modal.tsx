@@ -1,12 +1,13 @@
 import { XIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
-import React, { ReactElement, ReactNode, SetStateAction, Dispatch } from 'react';
+import React, { ReactElement } from 'react';
 
 export interface Props {
   title: string;
   show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
-  children?: ReactNode;
+  setShow: (value: boolean) => void;
+  body?: ReactElement;
+  footer?: ReactElement;
 }
 
 export default function Modal(props: Props): ReactElement {
@@ -58,11 +59,18 @@ export default function Modal(props: Props): ReactElement {
         >
           <div className={cx('flex', 'justify-between', 'items-center', 'py-3', 'px-5')}>
             <h3 className={cx('text-xl', 'font-bold')}>{props.title}</h3>
-            <button onClick={() => props.setShow(false)}>
+            <button onClick={() => props.setShow(false)} tabIndex={props.show ? 0 : -1}>
               <XIcon className={cx('w-4')} />
             </button>
           </div>
-          {props.children && <div className={cx('p-5')}>{props.children}</div>}
+
+          {props.body && <div className={cx('p-5')}>{props.body}</div>}
+
+          {props.footer && (
+            <div className={cx('flex', 'justify-end', 'py-3', 'px-5', 'space-x-3')}>
+              {props.footer}
+            </div>
+          )}
         </div>
       </div>
     </>
