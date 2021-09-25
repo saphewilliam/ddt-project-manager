@@ -30,9 +30,11 @@ export default function Button(props: Props): ReactElement {
   const className = cx(
     props.className,
     'block',
-    props.loading ? 'bg-muted' : cx('bg-primary', 'hover:bg-primary-dark'),
+    props.loading
+      ? 'bg-muted'
+      : cx('bg-primary', 'hover:bg-primary-light', 'shadow', 'hover:shadow-md'),
     props.loading && 'cursor-default',
-    'transition-colors',
+    'transition-all',
     'text-white',
     'py-2',
     'px-5',

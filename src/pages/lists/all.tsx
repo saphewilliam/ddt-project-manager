@@ -19,7 +19,7 @@ export default function ListAllPage(): ReactElement {
         <>
           <h1 className={cx('font-bold', 'text-4xl')}>List All</h1>
           {tableData.map((table, index) => (
-            <StoneList key={index} title={table.title} rows={table.rows} showTotal />
+            <StoneList key={index} title={table.title} rows={table.rows} />
           ))}
         </>
       )}

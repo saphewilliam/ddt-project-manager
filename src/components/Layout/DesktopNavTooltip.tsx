@@ -67,7 +67,7 @@ export default function DesktopNavTooltip(props: Props): ReactElement {
                     'py-2',
                     subItem.href === router.asPath
                       ? cx('bg-dark-selected', 'text-white')
-                      : cx('hover:bg-dark-selected', 'text-muted', 'hover:text-white'),
+                      : cx('hover:bg-dark-selected', 'text-light', 'hover:text-white'),
                     'transition-colors',
                     'whitespace-nowrap',
                     'truncate',
