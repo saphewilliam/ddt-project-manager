@@ -133,7 +133,7 @@ export default function LoginPage(): ReactElement {
           <hr className={cx('my-8', 'text-muted')} />
 
           {showTeams ? (
-            <form onSubmit={handleTeamSubmit}>
+            <form onSubmit={handleTeamSubmit} className={cx('flex', 'flex-col')}>
               <div className={cx('flex', 'flex-col', 'mb-4')}>
                 <label htmlFor="team">Team</label>
                 <select id="team" value={team} onChange={(e) => setTeam(e.target.value)}>
@@ -150,8 +150,8 @@ export default function LoginPage(): ReactElement {
               <Button label="Select team" loading={loading} />
             </form>
           ) : (
-            <form onSubmit={handleLoginSubmit}>
-              <div className={cx('flex', 'flex-col', 'mb-4')}>
+            <form onSubmit={handleLoginSubmit} className={cx('flex', 'flex-col', 'space-y-4')}>
+              <div className={cx('flex', 'flex-col')}>
                 <label htmlFor="email" className={cx('mb-1')}>
                   Email
                 </label>
@@ -163,7 +163,7 @@ export default function LoginPage(): ReactElement {
                   value={formValues.email}
                 />
               </div>
-              <div className={cx('flex', 'flex-col', 'mb-4')}>
+              <div className={cx('flex', 'flex-col')}>
                 <label htmlFor="password" className={cx('mb-1')}>
                   Password
                 </label>
@@ -175,7 +175,7 @@ export default function LoginPage(): ReactElement {
                   value={formValues.password}
                 />
               </div>
-              <div className={cx('flex', 'justify-between', 'mb-4')}>
+              <div className={cx('flex', 'justify-between')}>
                 <label htmlFor="remember">
                   <input
                     className={cx('mr-2')}

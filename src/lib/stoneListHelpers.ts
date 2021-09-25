@@ -117,3 +117,23 @@ export function makeStoneListsTableData(data: getStoneListsQuery | undefined): S
     }))
     .filter((table) => table.rows.length > 0);
 }
+
+export type StoneListUserColumns = {
+  userId: string;
+  displayname: string;
+}[];
+
+export function getStoneListUserColumns(rows: StoneListTable['rows']): StoneListUserColumns {
+  const userIds: Record<string, boolean> = {};
+  const result: StoneListUserColumns = [];
+
+  rows.forEach((row) =>
+    row.stoneLists.forEach((stoneList) => {
+      if (!userIds[stoneList.userId]) {
+        userIds[stoneList.userId] = true;
+        result.push({ userId: stoneList.userId, displayname: stoneList.displayName });
+      }
+    }),
+  );
+  return result;
+}

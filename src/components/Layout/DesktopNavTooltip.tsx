@@ -1,5 +1,6 @@
 import cx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { NavItemProps } from './Navigation';
 
@@ -12,11 +13,14 @@ export interface Props {
 }
 
 export default function DesktopNavTooltip(props: Props): ReactElement {
+  const router = useRouter();
+
   return (
     <div
       style={{ top: props.top, left: 65 }}
       className={cx(
         'fixed',
+        'z-20',
         'w-56',
         'pointer-events-none',
         'transition-opacity',
@@ -61,8 +65,9 @@ export default function DesktopNavTooltip(props: Props): ReactElement {
                     'block',
                     'px-6',
                     'py-2',
-                    'hover:bg-dark-selected',
-                    'text-light',
+                    subItem.href === router.asPath
+                      ? cx('bg-dark-selected', 'text-white')
+                      : cx('hover:bg-dark-selected', 'text-muted', 'hover:text-white'),
                     'transition-colors',
                     'whitespace-nowrap',
                     'truncate',

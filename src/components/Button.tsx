@@ -6,6 +6,7 @@ import ReactLoading from 'react-loading';
 interface PropsBase {
   label: string;
   loading?: boolean;
+  className?: string;
 }
 
 interface ButtonProps extends PropsBase {
@@ -27,13 +28,14 @@ export default function Button(props: Props): ReactElement {
   );
 
   const className = cx(
+    props.className,
     'block',
-    'mt-2',
-    props.loading ? 'bg-muted' : 'bg-primary',
+    props.loading ? 'bg-muted' : cx('bg-primary', 'hover:bg-primary-dark'),
     props.loading && 'cursor-default',
+    'transition-colors',
     'text-white',
-    'w-full',
-    'py-3',
+    'py-2',
+    'px-5',
     'rounded-lg',
     'font-bold',
   );

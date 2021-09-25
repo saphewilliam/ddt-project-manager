@@ -1,8 +1,8 @@
 import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useEffect, useState } from 'react';
-import ReactLoading from 'react-loading';
 import Layout from '@components/Layout';
+import Loading from '@components/Loading';
 import StoneList from '@components/StoneList';
 import { getStoneListQuery } from '@graphql/__generated__/codegen-self';
 import useSdk from '@hooks/useSdk';
@@ -18,31 +18,31 @@ export default function ListUserPage(): ReactElement {
   useEffect(() => {
     const updateStoneList = async () => {
       const slug = extractURLParam('slug', router.query);
-      const newStoneList = await getStoneList({ userSlug: slug ?? '' });
-      setStoneList(newStoneList);
+      if (slug !== null) {
+        const newStoneList = await getStoneList({ userSlug: slug });
+        if (newStoneList?.user === null) router.push('/lists');
+        else setStoneList(newStoneList);
+      }
     };
     setStoneList(null);
     updateStoneList();
-  }, [router]);
+  }, [router.asPath]);
 
   const tableData = useMemo(() => makeStoneListTableData(stoneList), [stoneList]);
 
-  useEffect(() => {
-    if (stoneList?.user === null) router.push('/lists');
-  }, [stoneList]);
-
   return (
     <Layout>
-      <h1 className={cx('font-bold', 'text-4xl')}>
-        {stoneList?.user && `${stoneList.user.firstName} ${stoneList.user.lastName}'s List`}
-      </h1>
-
       {stoneList === null ? (
-        <ReactLoading color="#989A9E" type="spinningBubbles" />
+        <Loading />
       ) : (
-        tableData.map((table, index) => (
-          <StoneList key={index} title={table.title} rows={table.rows} />
-        ))
+        <>
+          <h1 className={cx('font-bold', 'text-4xl')}>
+            {stoneList?.user && `${stoneList.user.firstName} ${stoneList.user.lastName}'s List`}
+          </h1>
+          {tableData.map((table, index) => (
+            <StoneList key={index} title={table.title} rows={table.rows} />
+          ))}
+        </>
       )}
     </Layout>
   );
