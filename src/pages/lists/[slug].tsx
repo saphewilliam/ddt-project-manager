@@ -1,62 +1,49 @@
 import cx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useMemo, useEffect } from 'react';
+import React, { ReactElement, useMemo, useEffect, useState } from 'react';
+import ReactLoading from 'react-loading';
 import Layout from '@components/Layout';
-import useSafeQuery from '@hooks/useSafeQuery';
-import {
-  fontColorFromBackground,
-  formatNumber,
-  makeStonelistTableData,
-  StonelistTableData,
-} from '@lib/stoneListHelpers';
+import StoneList from '@components/StoneList';
+import { getStoneListQuery } from '@graphql/__generated__/codegen-self';
+import useSdk from '@hooks/useSdk';
+import { makeStoneListTableData } from '@lib/stoneListHelpers';
 import { extractURLParam } from '@lib/util';
 
 export default function ListUserPage(): ReactElement {
   const router = useRouter();
-  const slug = extractURLParam('slug', router.query);
+  const { getStoneList } = useSdk();
 
-  const { data } = useSafeQuery('useGetStoneList', { userSlug: slug ?? '' });
-
-  const tableData = useMemo<StonelistTableData>(() => makeStonelistTableData(data), [data]);
+  const [stoneList, setStoneList] = useState<getStoneListQuery | null>(null);
 
   useEffect(() => {
-    if (data?.user === null) router.push('/lists');
-  }, [data]);
+    const updateStoneList = async () => {
+      const slug = extractURLParam('slug', router.query);
+      const newStoneList = await getStoneList({ userSlug: slug ?? '' });
+      setStoneList(newStoneList);
+    };
+    setStoneList(null);
+    updateStoneList();
+  }, [router]);
+
+  const tableData = useMemo(() => makeStoneListTableData(stoneList), [stoneList]);
+
+  useEffect(() => {
+    if (stoneList?.user === null) router.push('/lists');
+  }, [stoneList]);
 
   return (
     <Layout>
       <h1 className={cx('font-bold', 'text-4xl')}>
-        {data?.user && `${data.user.firstName} ${data.user.lastName}'s List`}
+        {stoneList?.user && `${stoneList.user.firstName} ${stoneList.user.lastName}'s List`}
       </h1>
 
-      {tableData.map((table, index) => (
-        <div key={index}>
-          <h2 className={cx('font-bold', 'text-2xl', 'mb-4', 'mt-8')}>{table.name}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Color</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {table.rows.map((row) => (
-                <tr key={row.id}>
-                  <td
-                    style={{
-                      backgroundColor: row.stone.hex,
-                      color: fontColorFromBackground(row.stone.hex),
-                    }}
-                  >
-                    {row.stone.name}
-                  </td>
-                  <td>{formatNumber(row.amount)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+      {stoneList === null ? (
+        <ReactLoading color="#989A9E" type="spinningBubbles" />
+      ) : (
+        tableData.map((table, index) => (
+          <StoneList key={index} title={table.title} rows={table.rows} />
+        ))
+      )}
     </Layout>
   );
 }

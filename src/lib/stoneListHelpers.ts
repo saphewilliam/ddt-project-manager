@@ -15,62 +15,105 @@ export function formatNumber(number: number): string {
   return String(number).replace(/(.)(?=(\d{3})+$)/g, '$1.');
 }
 
-export type StonelistsTableData = { name: string; rows: getStoneListsQuery['stones'] }[];
+export type StoneListTableData = StoneListTable[];
 
-export function makeStonelistTableData(data: getStoneListQuery | undefined): StonelistTableData {
-  const result: StonelistTableData = [];
-  if (data === undefined) return result;
+export interface StoneListTable {
+  title: string;
+  rows: {
+    id: string;
+    name: string;
+    alias: string;
+    alias2?: string | null;
+    hex: string;
+    hex2?: string | null;
+    order: number;
+    stoneTypeId: string;
+    stoneLists: {
+      id: string;
+      amount: number;
+      userId: string;
+      displayName: string;
+    }[];
+  }[];
+}
+
+export type StoneListColumnTypes = {
+  color: {
+    id: string;
+    name: string;
+    alias: string;
+    alias2?: string | null;
+    hex: string;
+    hex2?: string | null;
+    order: number;
+  };
+  total: number;
+  edit: string;
+};
+
+export function makeStoneListTableData(
+  data: getStoneListQuery | undefined | null,
+): StoneListTableData {
+  const result: StoneListTableData = [];
+  if (data === undefined || data === null) return result;
 
   let stoneTypeId = '';
   for (let i = 0, j = -1; i < data.stoneList.length; i++) {
-    if (stoneTypeId !== data.stoneList[i]!.stone.stoneTypeId) {
-      stoneTypeId = data.stoneList[i]!.stone.stoneTypeId;
-      result.push({ name: stoneTypeId, rows: [] });
+    const { stone, id, amount } = data.stoneList[i]!;
+    if (stoneTypeId !== stone.stoneTypeId) {
+      stoneTypeId = stone.stoneTypeId;
+      result.push({ title: stoneTypeId, rows: [] });
       j++;
     }
-    result[j]!.rows.push(data.stoneList[i]!);
+
+    result[j]!.rows.push({
+      ...stone,
+      stoneLists: [
+        {
+          amount,
+          id,
+          userId: data.user?.id ?? '',
+          displayName: `${data.user?.firstName} ${data.user?.lastName}`,
+        },
+      ],
+    });
   }
+
   return result.map((table) => ({
     ...table,
-    name: data.stoneTypes.find((stoneType) => stoneType.id === table.name)!.name,
+    title: data.stoneTypes.find((stoneType) => stoneType.id === table.title)!.name,
   }));
 }
 
-export type StonelistTableData = { name: string; rows: getStoneListQuery['stoneList'] }[];
-
-export function makeStonelistsTableData(data: getStoneListsQuery | undefined): StonelistsTableData {
-  const result: StonelistsTableData = [];
+export function makeStoneListsTableData(data: getStoneListsQuery | undefined): StoneListTableData {
+  const result: StoneListTableData = [];
   if (data === undefined) return result;
 
   let stoneTypeId = '';
+  data.stoneListUsers[0]?.displayName;
   for (let i = 0, j = -1; i < data.stones.length; i++) {
-    if (stoneTypeId !== data.stones[i]!.stoneTypeId) {
-      stoneTypeId = data.stones[i]!.stoneTypeId;
-      result.push({ name: stoneTypeId, rows: [] });
+    const stone = data.stones[i]!;
+    if (stoneTypeId !== stone.stoneTypeId) {
+      stoneTypeId = stone.stoneTypeId;
+      result.push({ title: stoneTypeId, rows: [] });
       j++;
     }
-    if (data.stones[i]!.stoneLists.length > 0) result[j]!.rows.push(data.stones[i]!);
+    if (data.stones[i]!.stoneLists.length > 0)
+      result[j]!.rows.push({
+        ...stone,
+        stoneLists: stone.stoneLists.map((stoneList) => ({
+          ...stoneList,
+          displayName:
+            data.stoneListUsers.find((user) => user.id === stoneList.userId)?.displayName ??
+            'No name',
+        })),
+      });
   }
 
-  return (
-    result
-      // Insert 0 values
-      .map((table) => ({
-        name: data.stoneTypes.find((stoneType) => stoneType.id === table.name)!.name,
-        rows: table.rows.map((row) => ({
-          ...row,
-          stoneLists: data.stoneListUsers.map(
-            (user) =>
-              row.stoneLists.find((stoneList) => stoneList.userId === user.id) ?? {
-                id: user.id,
-                amount: 0,
-                userId: user.id,
-              },
-          ),
-        })),
-      }))
-      // Hide unused tables
-      .filter((table) => table.rows.length > 0)
-    // TODO hide unused columns
-  );
+  return result
+    .map((table) => ({
+      ...table,
+      title: data.stoneTypes.find((stoneType) => stoneType.id === table.title)!.name,
+    }))
+    .filter((table) => table.rows.length > 0);
 }
