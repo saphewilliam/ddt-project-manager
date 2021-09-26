@@ -9,8 +9,25 @@ fragment stoneListStone on Stone {
   stoneTypeId
 }
 
-query getStoneList($userSlug: String!) {
-  stoneList(userSlug: $userSlug) {
+query getStoneList(
+  $userId: String!
+  $stoneId: String!
+) {
+  stoneList(
+    userId: $userId
+    stoneId: $stoneId
+  ) {
+    id
+    amount
+  }
+}
+
+query getUserStoneList(
+  $userSlug: String!
+) {
+  userStoneList(
+    userSlug: $userSlug
+  ) {
     id
     amount
     stone {

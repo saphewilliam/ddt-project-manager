@@ -1,0 +1,8 @@
+query getStones {
+  stones {
+    id
+    name
+    alias
+    alias2
+  }
+}

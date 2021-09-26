@@ -1,7 +1,7 @@
 import { ColorCell, EditCell } from '@components/StoneList/StoneListCells';
 import {
   getStoneListsQuery,
-  getStoneListQuery,
+  getUserStoneListQuery,
   Role,
   getSessionQuery,
 } from '@graphql/__generated__/codegen-self';
@@ -87,14 +87,14 @@ export function makeStoneListTableColumns(
 }
 
 export function makeStoneListTableData(
-  data: getStoneListQuery | undefined | null,
+  data: getUserStoneListQuery | undefined | null,
 ): StoneListTableData {
   const result: StoneListTableData = [];
   if (data === undefined || data === null) return result;
 
   let stoneTypeId = '';
-  for (let i = 0, j = -1; i < data.stoneList.length; i++) {
-    const { stone, id, amount } = data.stoneList[i]!;
+  for (let i = 0, j = -1; i < data.userStoneList.length; i++) {
+    const { stone, id, amount } = data.userStoneList[i]!;
     if (stoneTypeId !== stone.stoneTypeId) {
       stoneTypeId = stone.stoneTypeId;
       result.push({ title: stoneTypeId, rows: [] });

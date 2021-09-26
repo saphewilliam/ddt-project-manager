@@ -9,8 +9,10 @@ export async function hashPw(plaintext: string): Promise<string> {
 
 /** Wrapper for `isValidSession` to use as nexus authorize parameter */
 export async function authorizeSession(
-  _: Record<string, string>,
-  __: Record<string, string>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _: Record<string, any>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  __: Record<string, any>,
   ctx: ApiContext,
 ): Promise<boolean | Error> {
   return await isValidSession(ctx.session);
@@ -19,7 +21,7 @@ export async function authorizeSession(
 export async function isValidSession(
   session: Session | null,
   teamMayBeNull = false,
-): Promise<boolean | Error> {
+): Promise<true | Error> {
   if (session === null)
     return Error('Please supply a valid session token in the Authorization header');
 

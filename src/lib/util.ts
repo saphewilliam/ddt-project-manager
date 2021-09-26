@@ -20,7 +20,9 @@ export async function promiseWithCatch<T>(
   return promise
     .then((data) => data)
     .catch((error: Error) => {
-      displayError(`${messagePrefix}: ${error.message.substring(0, error.message.indexOf(':'))}`);
+      displayError(
+        `${messagePrefix ?? 'ERROR'}: ${error.message.substring(0, error.message.indexOf(':'))}`,
+      );
       return null;
     });
 }

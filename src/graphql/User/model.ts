@@ -20,6 +20,16 @@ export const userQuery = extendType({
           where: { teams: { some: { teamId: ctx.session?.teamId ?? '' } }, slug: args.userSlug },
         }),
     });
+    t.list.field('users', {
+      type: 'User',
+      description: 'Find all users of this team',
+      authorize: authorizeSession,
+      resolve: (_, __, ctx) =>
+        ctx.prisma.user.findMany({
+          where: { teams: { some: { teamId: ctx.session?.teamId ?? '' } } },
+          orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],
+        }),
+    });
     t.list.field('stoneListUsers', {
       type: 'User',
       description: 'Find all users of this team that have a nonzero stonelist in this team',

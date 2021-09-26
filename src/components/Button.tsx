@@ -12,6 +12,7 @@ interface PropsBase {
   label: string;
   type?: ButtonType;
   loading?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -38,7 +39,7 @@ export default function Button(props: Props): ReactElement {
   const className = cx(
     props.className,
     'block',
-    props.loading
+    props.loading || props.disabled
       ? cx('bg-muted', 'text-white')
       : type === ButtonType.PRIMARY
       ? cx(
@@ -52,7 +53,7 @@ export default function Button(props: Props): ReactElement {
       : type === ButtonType.EMPTY
       ? cx('text-black', 'font-semibold')
       : '',
-    props.loading && 'cursor-default',
+    (props.loading || props.disabled) && 'cursor-default',
     'transition-all',
     'py-2',
     'px-5',
@@ -74,7 +75,7 @@ export default function Button(props: Props): ReactElement {
       </a>
     </Link>
   ) : (
-    <button disabled={props.loading} className={className} onClick={handleClick}>
+    <button disabled={props.loading || props.disabled} className={className} onClick={handleClick}>
       {children}
     </button>
   );

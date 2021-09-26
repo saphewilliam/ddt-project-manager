@@ -17,6 +17,7 @@ import StoneListTable from './StoneListTable';
 export interface Props {
   title: string;
   rows: StoneListTableType['rows'];
+  revalidate: () => Promise<boolean>;
 }
 
 export default function StoneList(props: Props): ReactElement {
@@ -26,6 +27,7 @@ export default function StoneList(props: Props): ReactElement {
     show: false,
     stoneId: '',
     userId: '',
+    amount: 0,
   });
 
   useEffect(() => {
@@ -50,6 +52,7 @@ export default function StoneList(props: Props): ReactElement {
             show: true,
             stoneId: row.id,
             userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
+            amount: null,
           }),
       })),
     [props.rows],
@@ -87,7 +90,11 @@ export default function StoneList(props: Props): ReactElement {
         title={props.title}
       />
 
-      <StoneListEditModal settings={editModalSettings} setSettings={setEditModalSettings} />
+      <StoneListEditModal
+        settings={editModalSettings}
+        setSettings={setEditModalSettings}
+        revalidate={props.revalidate}
+      />
 
       <StoneListTable headers={headers} rows={rows} />
     </section>
