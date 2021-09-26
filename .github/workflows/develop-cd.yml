@@ -1,0 +1,28 @@
+name: Develop CD
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  develop_cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Add DotEnv Variables
+        run: printf 'DATABASE_URL=${{ secrets.DATABASE_URL_DEVELOP }}' > .env
+      - name: Install dependencies
+        run: yarn
+      - name: Lint
+        run: yarn lint
+      - name: Update Database
+        run: |
+          yarn db:flush
+          yarn prisma migrate deploy
+          yarn db:seed

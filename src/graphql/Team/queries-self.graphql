@@ -1,0 +1,6 @@
+query getTeams {
+  teams {
+    id
+    name
+  }
+}

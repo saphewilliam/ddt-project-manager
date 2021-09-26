@@ -1,0 +1,112 @@
+{
+  "Saphe React TS Component": {
+    "scope": "typescriptreact",
+    "prefix": "saphe-component",
+    "description": "Boilerplate Typescipt React component",
+    "body": [
+      "import cx from 'clsx';",
+      "import React, { ReactElement } from 'react';",
+      "",
+      "export interface Props {}",
+      "",
+      "export default function ${1:ComponentName}(props: Props): ReactElement {",
+      "  return ${2:<div />};",
+      "}",
+      ""
+    ]
+  },
+  "Saphe Prisma Seeding Function Boilerplate": {
+    "scope": "typescript",
+    "prefix": "saphe-seed",
+    "description": "Boilerplate Typescript Prisma seeding function",
+    "body": [
+      "import { PrismaClient } from '@prisma/client';",
+      "",
+      "export default async function seed${1:ModelName}s(prisma: PrismaClient): Promise<void> {",
+      "  await prisma.${2:model}.createMany({",
+      "    data: [],",
+      "  });",
+      "}",
+      ""
+    ]
+  },
+  "Saphe React TS Icon Component": {
+    "scope": "typescriptreact",
+    "prefix": "saphe-icon",
+    "description": "Boilerplate Typescript React Icon Component",
+    "body": [
+      "import React, { ReactElement, SVGProps } from 'react';",
+      "",
+      "export default function Icon${1:Name}(props: SVGProps<SVGSVGElement>): ReactElement {",
+      "  return (",
+      "    <svg",
+      "      width=\"24\"",
+      "      height=\"24\"",
+      "      viewBox=\"0 0 24 24\"",
+      "      fill=\"none\"",
+      "      xmlns=\"http://www.w3.org/2000/svg\"",
+      "      {...props}",
+      "    >",
+      "      ${2:<path />}",
+      "    </svg>",
+      "  );",
+      "}",
+      ""
+    ]
+  },
+  "Saphe Nexus model": {
+    "scope": "typescript",
+    "prefix": "saphe-nexus-model",
+    "description": "Boilerplate Typescript Nexus Model",
+    "body": [
+      "import { nexusModel } from '@lib/nexusHelpers';",
+      "import { ${2:Model} } from 'nexus-prisma';",
+      "",
+      "export const ${1:modelName}Model = nexusModel(${2:Model});",
+      ""
+    ]
+  },
+  "Saphe NextJS TS Static Props and Paths": {
+    "scope": "typescriptreact",
+    "prefix": "saphe-static-props-paths",
+    "description": "Boilerplate Typescript NextJS Static Props and Paths",
+    "body": [
+      "import { GetStaticPaths, GetStaticProps } from 'next';",
+      "import { extractURLParam } from '@lib/util';",
+      "",
+      "export const getStaticPaths: GetStaticPaths = async () => {",
+      "  return {",
+      "    paths: [",
+      "      {",
+      "        params: { paramName: 'paramValue' },",
+      "        locale: 'en',",
+      "      },",
+      "    ],",
+      "    fallback: true,",
+      "  };",
+      "};",
+      "",
+      "export const getStaticProps: GetStaticProps<Props> = async (context) => {",
+      "  const slug = extractURLParam('slug', context.params);",
+      "",
+      "  if (slug === 'itemFound')",
+      "    return {",
+      "      props: { slug },",
+      "      revalidate: 30,",
+      "    };",
+      "  else if (slug === 'redirect')",
+      "    return {",
+      "      redirect: {",
+      "        destination: '/route',",
+      "        permanent: false,",
+      "      },",
+      "    };",
+      "  else",
+      "    return {",
+      "      notFound: true,",
+      "    };",
+      "};",
+      ""
+    ]
+  }
+}

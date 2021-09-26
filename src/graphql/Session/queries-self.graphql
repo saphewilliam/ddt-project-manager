@@ -1,0 +1,22 @@
+query getSession($token: String!) {
+  session(token: $token) {
+    id
+    expiresAt
+    team {
+      id
+      name
+    }
+    user {
+      id
+      displayName
+      firstName
+      lastName
+      avatar
+      isAdmin
+    }
+    member {
+      id
+      role
+    }
+  }
+}

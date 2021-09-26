@@ -1,0 +1,10 @@
+projects:
+  self:
+    schema: schema.graphql
+    documents: ./src/graphql/*/{queries,mutations}-self.graphql
+    extensions:
+      endpoints:
+        default:
+          url: http://localhost:3000/api/graphql
+          headers:
+            Authorization: Bearer SrWVCfS29TZ6a4gsSFL8ZDVQdGAN2ygHDfno4IBUJCVcejC-fYbmXgthv_F3LvrV
