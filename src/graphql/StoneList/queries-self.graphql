@@ -22,12 +22,8 @@ query getStoneList(
   }
 }
 
-query getUserStoneList(
-  $userSlug: String!
-) {
-  userStoneList(
-    userSlug: $userSlug
-  ) {
+query getUserStoneList($userSlug: String!) {
+  userStoneList(userSlug: $userSlug) {
     id
     amount
     stone {
