@@ -10,7 +10,7 @@ export interface Props {
 export default function MobileNav(props: Props): ReactElement {
   return (
     <nav className={cx('bg-dark', 'text-light')}>
-      <ul className={cx('flex', 'justify-between', 'items-end', 'px-4', 'py-2')}>
+      <ul className={cx('flex', 'justify-around', 'items-end', 'px-1', 'py-2')}>
         {props.navItems
           .filter((item) => !item.hidden)
           .map((item, i) => (

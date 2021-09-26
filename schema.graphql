@@ -88,6 +88,7 @@ type Mutation {
 
   """Set the `team` field of an active session"""
   setSessionTeam(teamId: String!): Session!
+  updateStoneList(amount: Int!, stoneId: String!, userId: String!): StoneList
 }
 
 type Project {
@@ -148,8 +149,8 @@ type Query {
   """Get session by its token"""
   session(token: String!): Session
 
-  """Get stonelist of a user in a team"""
-  stoneList(userSlug: String!): [StoneList!]!
+  """Get a single stonelist record"""
+  stoneList(stoneId: String!, userId: String!): StoneList
 
   """Find all users of this team that have a nonzero stonelist in this team"""
   stoneListUsers: [User!]!
@@ -165,6 +166,12 @@ type Query {
 
   """Find user by its slug"""
   user(userSlug: String!): User
+
+  """Get stonelist of a user in a team"""
+  userStoneList(userSlug: String!): [StoneList!]!
+
+  """Find all users of this team"""
+  users: [User!]!
 }
 
 enum Role {

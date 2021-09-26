@@ -1,55 +1,28 @@
 import cx from 'clsx';
 import React, { ReactElement, useMemo } from 'react';
 import Layout from '@components/Layout';
+import Loading from '@components/Loading';
+import StoneList from '@components/StoneList';
 import useSafeQuery from '@hooks/useSafeQuery';
-import {
-  fontColorFromBackground,
-  formatNumber,
-  makeStonelistsTableData,
-  StonelistsTableData,
-} from '@lib/stoneListHelpers';
+import { makeStoneListsTableData } from '@lib/stoneListHelpers';
 
 export default function ListAllPage(): ReactElement {
-  const { data } = useSafeQuery('useGetStoneLists', {});
+  const { data, revalidate } = useSafeQuery('useGetStoneLists', {});
 
-  const tableData = useMemo<StonelistsTableData>(() => makeStonelistsTableData(data), [data]);
+  const tableData = useMemo(() => makeStoneListsTableData(data), [data]);
 
   return (
     <Layout>
-      <h1 className={cx('font-bold', 'text-4xl')}>List All</h1>
-
-      {tableData.map((table, index) => (
-        <div key={index}>
-          <h2 className={cx('font-bold', 'text-2xl', 'mb-4', 'mt-8')}>{table.name}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Color</th>
-                {data?.stoneListUsers.map((user) => (
-                  <th key={user.id}>{user.displayName}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {table.rows.map((row) => (
-                <tr key={row.id}>
-                  <td
-                    style={{
-                      backgroundColor: row.hex,
-                      color: fontColorFromBackground(row.hex),
-                    }}
-                  >
-                    {row.name}
-                  </td>
-                  {row.stoneLists.map((stoneList) => (
-                    <td key={stoneList.id}>{formatNumber(stoneList.amount)}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+      {data === undefined ? (
+        <Loading />
+      ) : (
+        <>
+          <h1 className={cx('font-bold', 'text-4xl')}>List All</h1>
+          {tableData.map((table, index) => (
+            <StoneList key={index} title={table.title} rows={table.rows} revalidate={revalidate} />
+          ))}
+        </>
+      )}
     </Layout>
   );
 }

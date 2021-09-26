@@ -3,9 +3,17 @@ import Link from 'next/link';
 import React, { ReactElement, MouseEvent, useCallback } from 'react';
 import ReactLoading from 'react-loading';
 
+export enum ButtonType {
+  PRIMARY = 'PRIMARY',
+  EMPTY = 'EMPTY',
+}
+
 interface PropsBase {
   label: string;
+  type?: ButtonType;
   loading?: boolean;
+  disabled?: boolean;
+  className?: string;
 }
 
 interface ButtonProps extends PropsBase {
@@ -19,6 +27,8 @@ interface LinkProps extends PropsBase {
 export type Props = PropsBase | ButtonProps | LinkProps;
 
 export default function Button(props: Props): ReactElement {
+  const type = props.type ?? ButtonType.PRIMARY;
+
   const handleClick = useCallback(
     (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement, globalThis.MouseEvent>) => {
       if ('onClick' in props && !props.loading) props.onClick(e);
@@ -27,15 +37,27 @@ export default function Button(props: Props): ReactElement {
   );
 
   const className = cx(
+    props.className,
     'block',
-    'mt-2',
-    props.loading ? 'bg-muted' : 'bg-primary',
-    props.loading && 'cursor-default',
-    'text-white',
-    'w-full',
-    'py-3',
+    props.loading || props.disabled
+      ? cx('bg-muted', 'text-white')
+      : type === ButtonType.PRIMARY
+      ? cx(
+          'bg-primary',
+          'hover:bg-primary-light',
+          'shadow',
+          'hover:shadow-md',
+          'text-white',
+          'font-bold',
+        )
+      : type === ButtonType.EMPTY
+      ? cx('text-black', 'font-semibold')
+      : '',
+    (props.loading || props.disabled) && 'cursor-default',
+    'transition-all',
+    'py-2',
+    'px-5',
     'rounded-lg',
-    'font-bold',
   );
 
   const children: ReactElement = props.loading ? (
@@ -53,7 +75,7 @@ export default function Button(props: Props): ReactElement {
       </a>
     </Link>
   ) : (
-    <button disabled={props.loading} className={className} onClick={handleClick}>
+    <button disabled={props.loading || props.disabled} className={className} onClick={handleClick}>
       {children}
     </button>
   );

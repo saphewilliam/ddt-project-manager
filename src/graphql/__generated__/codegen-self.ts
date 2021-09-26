@@ -97,6 +97,7 @@ export type Mutation = {
   logout: Session;
   /** Set the `team` field of an active session */
   setSessionTeam: Session;
+  updateStoneList: Maybe<StoneList>;
 };
 
 
@@ -109,6 +110,13 @@ export type MutationloginArgs = {
 
 export type MutationsetSessionTeamArgs = {
   teamId: Scalars['String'];
+};
+
+
+export type MutationupdateStoneListArgs = {
+  amount: Scalars['Int'];
+  stoneId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type Project = {
@@ -167,8 +175,8 @@ export type Query = {
   events: Array<Event>;
   /** Get session by its token */
   session: Maybe<Session>;
-  /** Get stonelist of a user in a team */
-  stoneList: Array<StoneList>;
+  /** Get a single stonelist record */
+  stoneList: Maybe<StoneList>;
   /** Find all users of this team that have a nonzero stonelist in this team */
   stoneListUsers: Array<User>;
   /** Get all stonetypes of a team */
@@ -179,6 +187,10 @@ export type Query = {
   teams: Array<Team>;
   /** Find user by its slug */
   user: Maybe<User>;
+  /** Get stonelist of a user in a team */
+  userStoneList: Array<StoneList>;
+  /** Find all users of this team */
+  users: Array<User>;
 };
 
 
@@ -193,11 +205,17 @@ export type QuerysessionArgs = {
 
 
 export type QuerystoneListArgs = {
-  userSlug: Scalars['String'];
+  stoneId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 
 export type QueryuserArgs = {
+  userSlug: Scalars['String'];
+};
+
+
+export type QueryuserStoneListArgs = {
   userSlug: Scalars['String'];
 };
 
@@ -392,14 +410,36 @@ export type getSessionQueryVariables = Exact<{
 
 export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string>, isAdmin: boolean }, member: Maybe<{ id: string, role: Role }> }> };
 
+export type getStonesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getStonesQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: Maybe<string> }> };
+
+export type updateStoneListMutationVariables = Exact<{
+  stoneId: Scalars['String'];
+  userId: Scalars['String'];
+  amount: Scalars['Int'];
+}>;
+
+
+export type updateStoneListMutation = { updateStoneList: Maybe<{ id: string, amount: number, user: { id: string, firstName: string, lastName: string }, stone: { id: string, name: string } }> };
+
 export type stoneListStoneFragment = { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string };
 
 export type getStoneListQueryVariables = Exact<{
+  userId: Scalars['String'];
+  stoneId: Scalars['String'];
+}>;
+
+
+export type getStoneListQuery = { stoneList: Maybe<{ id: string, amount: number }> };
+
+export type getUserStoneListQueryVariables = Exact<{
   userSlug: Scalars['String'];
 }>;
 
 
-export type getStoneListQuery = { stoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string } }>, user: Maybe<{ id: string, firstName: string, lastName: string }>, stoneTypes: Array<{ id: string, name: string }> };
+export type getUserStoneListQuery = { userStoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string } }>, user: Maybe<{ id: string, firstName: string, lastName: string }>, stoneTypes: Array<{ id: string, name: string }> };
 
 export type getStoneListsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -415,6 +455,11 @@ export type getStoneListUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type getStoneListUsersQuery = { stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
+
+export type getUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getUsersQuery = { users: Array<{ id: string, firstName: string, lastName: string }> };
 
 export const stoneListStoneFragmentDoc = gql`
     fragment stoneListStone on Stone {
@@ -486,9 +531,44 @@ export const getSessionDocument = gql`
   }
 }
     `;
+export const getStonesDocument = gql`
+    query getStones {
+  stones {
+    id
+    name
+    alias
+    alias2
+  }
+}
+    `;
+export const updateStoneListDocument = gql`
+    mutation updateStoneList($stoneId: String!, $userId: String!, $amount: Int!) {
+  updateStoneList(stoneId: $stoneId, userId: $userId, amount: $amount) {
+    id
+    user {
+      id
+      firstName
+      lastName
+    }
+    stone {
+      id
+      name
+    }
+    amount
+  }
+}
+    `;
 export const getStoneListDocument = gql`
-    query getStoneList($userSlug: String!) {
-  stoneList(userSlug: $userSlug) {
+    query getStoneList($userId: String!, $stoneId: String!) {
+  stoneList(userId: $userId, stoneId: $stoneId) {
+    id
+    amount
+  }
+}
+    `;
+export const getUserStoneListDocument = gql`
+    query getUserStoneList($userSlug: String!) {
+  userStoneList(userSlug: $userSlug) {
     id
     amount
     stone {
@@ -544,6 +624,15 @@ export const getStoneListUsersDocument = gql`
   }
 }
     `;
+export const getUsersDocument = gql`
+    query getUsers {
+  users {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -567,8 +656,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getSession(variables: getSessionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getSessionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getSessionQuery>(getSessionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSession');
     },
+    getStones(variables?: getStonesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStonesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getStonesQuery>(getStonesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStones');
+    },
+    updateStoneList(variables: updateStoneListMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<updateStoneListMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<updateStoneListMutation>(updateStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateStoneList');
+    },
     getStoneList(variables: getStoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getStoneListQuery>(getStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneList');
+    },
+    getUserStoneList(variables: getUserStoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUserStoneListQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getUserStoneListQuery>(getUserStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserStoneList');
     },
     getStoneLists(variables?: getStoneListsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getStoneListsQuery>(getStoneListsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneLists');
@@ -578,6 +676,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getStoneListUsers(variables?: getStoneListUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListUsersQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getStoneListUsersQuery>(getStoneListUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneListUsers');
+    },
+    getUsers(variables?: getUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getUsersQuery>(getUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUsers');
     }
   };
 }
@@ -592,8 +693,14 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
       return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);
     },
+    useGetStones(key: SWRKeyInterface, variables?: getStonesQueryVariables, config?: SWRConfigInterface<getStonesQuery, ClientError>) {
+      return useSWR<getStonesQuery, ClientError>(key, () => sdk.getStones(variables), config);
+    },
     useGetStoneList(key: SWRKeyInterface, variables: getStoneListQueryVariables, config?: SWRConfigInterface<getStoneListQuery, ClientError>) {
       return useSWR<getStoneListQuery, ClientError>(key, () => sdk.getStoneList(variables), config);
+    },
+    useGetUserStoneList(key: SWRKeyInterface, variables: getUserStoneListQueryVariables, config?: SWRConfigInterface<getUserStoneListQuery, ClientError>) {
+      return useSWR<getUserStoneListQuery, ClientError>(key, () => sdk.getUserStoneList(variables), config);
     },
     useGetStoneLists(key: SWRKeyInterface, variables?: getStoneListsQueryVariables, config?: SWRConfigInterface<getStoneListsQuery, ClientError>) {
       return useSWR<getStoneListsQuery, ClientError>(key, () => sdk.getStoneLists(variables), config);
@@ -603,6 +710,9 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     },
     useGetStoneListUsers(key: SWRKeyInterface, variables?: getStoneListUsersQueryVariables, config?: SWRConfigInterface<getStoneListUsersQuery, ClientError>) {
       return useSWR<getStoneListUsersQuery, ClientError>(key, () => sdk.getStoneListUsers(variables), config);
+    },
+    useGetUsers(key: SWRKeyInterface, variables?: getUsersQueryVariables, config?: SWRConfigInterface<getUsersQuery, ClientError>) {
+      return useSWR<getUsersQuery, ClientError>(key, () => sdk.getUsers(variables), config);
     }
   };
 }

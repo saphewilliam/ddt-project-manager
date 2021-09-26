@@ -1,7 +1,7 @@
 import cx from 'clsx';
 import Head from 'next/head';
 import React, { ReactElement, ReactNode } from 'react';
-import ReactLoading from 'react-loading';
+import Loading from '@components/Loading';
 import useDeviceWidth from '@hooks/useDeviceWidth';
 import useSession from '@hooks/useSession';
 import Navigation from './Navigation';
@@ -28,9 +28,7 @@ export default function Layout(props: Props): ReactElement {
             <SocketFooter />
           </>
         ) : (
-          <div className={cx('flex', 'justify-center', 'items-center', 'h-full')}>
-            <ReactLoading color="#989A9E" type="spinningBubbles" className={cx('mb-28')} />
-          </div>
+          <Loading className={cx('mb-28')} />
         )}
       </main>
     </div>

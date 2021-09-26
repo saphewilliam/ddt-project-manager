@@ -83,11 +83,12 @@ export default function useSort<T extends ColumnTypes>(
     } else return data;
   }, [columns, data, columnType, sortInfo]);
 
+  // TODO make sorting order variable
   const sort = useCallback(
     (columnName: string) => {
-      if (sortInfo?.columnName !== columnName) setSortInfo({ columnName, order: SortOrder.ASC });
-      else if (sortInfo.order === SortOrder.ASC) setSortInfo({ columnName, order: SortOrder.DESC });
-      else if (sortInfo.order === SortOrder.DESC) setSortInfo(null);
+      if (sortInfo?.columnName !== columnName) setSortInfo({ columnName, order: SortOrder.DESC });
+      else if (sortInfo.order === SortOrder.DESC) setSortInfo({ columnName, order: SortOrder.ASC });
+      else if (sortInfo.order === SortOrder.ASC) setSortInfo(null);
     },
     [sortInfo, setSortInfo],
   );

@@ -119,9 +119,9 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
                       'pl-6',
                       'pr-3',
                       'py-1',
-                      'hover:bg-dark-selected',
-                      'text-muted',
-                      'hover:text-white',
+                      subItem.href === router.asPath
+                        ? 'bg-dark-selected'
+                        : cx('hover:bg-dark-selected', 'text-muted', 'hover:text-white'),
                       'transition-colors',
                       'whitespace-nowrap',
                       'truncate',

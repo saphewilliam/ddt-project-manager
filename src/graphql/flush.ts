@@ -8,7 +8,6 @@ async function flush(prisma: PrismaClient): Promise<void> {
   console.log('Flushing db...');
   await prisma.user.deleteMany({});
   await prisma.team.deleteMany({});
-  await prisma.event.deleteMany({});
 }
 
 flush(prisma)

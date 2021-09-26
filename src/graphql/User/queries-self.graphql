@@ -6,3 +6,11 @@ query getStoneListUsers {
     slug
   }
 }
+
+query getUsers {
+  users {
+    id
+    firstName
+    lastName
+  }
+}

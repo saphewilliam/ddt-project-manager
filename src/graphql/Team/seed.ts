@@ -13,8 +13,16 @@ export default async function seedTeams(prisma: PrismaClient): Promise<void> {
         name: "William's Team",
       },
       {
-        id: idMap.teams.BAS_VEENHOVEN,
-        name: "Bas's Team",
+        id: idMap.teams.WASILJA_PETERSE,
+        name: "Wasilja's Team",
+      },
+      {
+        id: idMap.teams.THOMAS_VAN_WELY,
+        name: "Thomas's Team",
+      },
+      {
+        id: idMap.teams.WOUT_DUTOIT,
+        name: "Wout's Team",
       },
     ],
   });

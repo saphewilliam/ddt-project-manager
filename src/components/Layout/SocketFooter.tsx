@@ -9,8 +9,21 @@ import SMBtn from './SocialMediaButton';
 export default function SocketFooter(): ReactElement {
   const d = new Date();
   return (
-    <footer className={cx('flex', 'justify-between', 'items-center', 'py-3', 'px-8', 'bg-light')}>
-      <span className={cx('text-sm')}>
+    <footer
+      className={cx(
+        'flex',
+        'flex-col',
+        'md:flex-row',
+        'justify-between',
+        'items-center',
+        'py-3',
+        'px-8',
+        'space-y-2',
+        'md:space-y-0',
+        'bg-light',
+      )}
+    >
+      <span className={cx('text-sm', 'text-center', 'w-48', 'sm:w-auto')}>
         &copy; {d.getFullYear()}{' '}
         <Link href="https://dutchdominoteam.nl">
           <a target="_blank" rel="noopener" className={cx('font-semibold')}>

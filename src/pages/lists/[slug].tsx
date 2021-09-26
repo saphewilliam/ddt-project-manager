@@ -1,62 +1,59 @@
 import cx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useMemo, useEffect } from 'react';
+import React, { ReactElement, useMemo, useEffect, useState, useCallback } from 'react';
 import Layout from '@components/Layout';
-import useSafeQuery from '@hooks/useSafeQuery';
-import {
-  fontColorFromBackground,
-  formatNumber,
-  makeStonelistTableData,
-  StonelistTableData,
-} from '@lib/stoneListHelpers';
-import { extractURLParam } from '@lib/util';
+import Loading from '@components/Loading';
+import StoneList from '@components/StoneList';
+import { getUserStoneListQuery } from '@graphql/__generated__/codegen-self';
+import useSdk from '@hooks/useSdk';
+import { makeStoneListTableData } from '@lib/stoneListHelpers';
+import { extractURLParam, promiseWithCatch } from '@lib/util';
 
 export default function ListUserPage(): ReactElement {
   const router = useRouter();
-  const slug = extractURLParam('slug', router.query);
+  const { getUserStoneList } = useSdk();
 
-  const { data } = useSafeQuery('useGetStoneList', { userSlug: slug ?? '' });
+  const [stoneList, setStoneList] = useState<getUserStoneListQuery | null>(null);
 
-  const tableData = useMemo<StonelistTableData>(() => makeStonelistTableData(data), [data]);
+  const updateStoneList = useCallback(async () => {
+    const slug = extractURLParam('slug', router.query);
+    if (slug !== null) {
+      const newStoneList = await promiseWithCatch(
+        getUserStoneList({ userSlug: slug }),
+        'Could not fetch users',
+      );
+      if (newStoneList?.user === null) router.push('/lists');
+      else setStoneList(newStoneList);
+    }
+    return true;
+  }, [router.asPath]);
 
   useEffect(() => {
-    if (data?.user === null) router.push('/lists');
-  }, [data]);
+    setStoneList(null);
+    updateStoneList();
+  }, [router.asPath]);
+
+  const tableData = useMemo(() => makeStoneListTableData(stoneList), [stoneList]);
 
   return (
     <Layout>
-      <h1 className={cx('font-bold', 'text-4xl')}>
-        {data?.user && `${data.user.firstName} ${data.user.lastName}'s List`}
-      </h1>
-
-      {tableData.map((table, index) => (
-        <div key={index}>
-          <h2 className={cx('font-bold', 'text-2xl', 'mb-4', 'mt-8')}>{table.name}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Color</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {table.rows.map((row) => (
-                <tr key={row.id}>
-                  <td
-                    style={{
-                      backgroundColor: row.stone.hex,
-                      color: fontColorFromBackground(row.stone.hex),
-                    }}
-                  >
-                    {row.stone.name}
-                  </td>
-                  <td>{formatNumber(row.amount)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+      {stoneList === null ? (
+        <Loading />
+      ) : (
+        <>
+          <h1 className={cx('font-bold', 'text-4xl')}>
+            {stoneList?.user && `${stoneList.user.firstName} ${stoneList.user.lastName}'s List`}
+          </h1>
+          {tableData.map((table, index) => (
+            <StoneList
+              key={index}
+              title={table.title}
+              rows={table.rows}
+              revalidate={updateStoneList}
+            />
+          ))}
+        </>
+      )}
     </Layout>
   );
 }

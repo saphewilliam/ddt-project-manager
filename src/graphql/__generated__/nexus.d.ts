@@ -282,6 +282,7 @@ export interface NexusGenFieldTypes {
     login: string; // String!
     logout: NexusGenRootTypes['Session']; // Session!
     setSessionTeam: NexusGenRootTypes['Session']; // Session!
+    updateStoneList: NexusGenRootTypes['StoneList'] | null; // StoneList
   }
   Project: { // field return type
     attributes: NexusGenRootTypes['AttributesOnProject'][]; // [AttributesOnProject!]!
@@ -306,12 +307,14 @@ export interface NexusGenFieldTypes {
     event: NexusGenRootTypes['Event'] | null; // Event
     events: NexusGenRootTypes['Event'][]; // [Event!]!
     session: NexusGenRootTypes['Session'] | null; // Session
-    stoneList: NexusGenRootTypes['StoneList'][]; // [StoneList!]!
+    stoneList: NexusGenRootTypes['StoneList'] | null; // StoneList
     stoneListUsers: NexusGenRootTypes['User'][]; // [User!]!
     stoneTypes: NexusGenRootTypes['StoneType'][]; // [StoneType!]!
     stones: NexusGenRootTypes['Stone'][]; // [Stone!]!
     teams: NexusGenRootTypes['Team'][]; // [Team!]!
     user: NexusGenRootTypes['User'] | null; // User
+    userStoneList: NexusGenRootTypes['StoneList'][]; // [StoneList!]!
+    users: NexusGenRootTypes['User'][]; // [User!]!
   }
   Session: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -525,6 +528,7 @@ export interface NexusGenFieldTypeNames {
     login: 'String'
     logout: 'Session'
     setSessionTeam: 'Session'
+    updateStoneList: 'StoneList'
   }
   Project: { // field return type name
     attributes: 'AttributesOnProject'
@@ -555,6 +559,8 @@ export interface NexusGenFieldTypeNames {
     stones: 'Stone'
     teams: 'Team'
     user: 'User'
+    userStoneList: 'StoneList'
+    users: 'User'
   }
   Session: { // field return type name
     createdAt: 'DateTime'
@@ -707,6 +713,11 @@ export interface NexusGenArgTypes {
     setSessionTeam: { // args
       teamId: string; // String!
     }
+    updateStoneList: { // args
+      amount: number; // Int!
+      stoneId: string; // String!
+      userId: string; // String!
+    }
   }
   Query: {
     event: { // args
@@ -716,9 +727,13 @@ export interface NexusGenArgTypes {
       token: string; // String!
     }
     stoneList: { // args
-      userSlug: string; // String!
+      stoneId: string; // String!
+      userId: string; // String!
     }
     user: { // args
+      userSlug: string; // String!
+    }
+    userStoneList: { // args
       userSlug: string; // String!
     }
   }
