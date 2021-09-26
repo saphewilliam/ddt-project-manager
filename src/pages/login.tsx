@@ -63,7 +63,7 @@ export default function LoginPage(): ReactElement {
       if (!data) return;
 
       if (data.teams.length === 0) {
-        displayError(`${session?.user.displayName} is not a member of any teams`);
+        displayError(`Failed to log in: ${session?.user.displayName} is not a member of any teams`);
         removeCookie('ddtauth');
       } else if (data.teams.length === 1) {
         const teamId = data.teams[0]?.id;

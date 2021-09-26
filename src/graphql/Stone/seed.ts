@@ -5,7 +5,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
   await prisma.stone.createMany({
     data: [
       {
-        // id: '',
+        id: idMap.stones.ROOD_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Rood LP-A',
         alias: 'Bordeaux',
@@ -13,7 +13,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 0,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Rood LP-B',
         alias: 'Donkerrood',
@@ -37,7 +37,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 3,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Rood LP-E',
         alias: 'Bordeaux (oud)',
@@ -53,7 +53,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 5,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Oranje LP-B',
         alias: 'Lichtoranje',
@@ -61,7 +61,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 6,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Oranje LP-C',
         alias: 'Middeltint',
@@ -70,7 +70,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 7,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Oranje LP-D',
         alias: 'Dof donkeroranje',
@@ -79,7 +79,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 8,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Oranje LP-E',
         alias: 'Zandoranje',
@@ -104,7 +104,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 11,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Groen LP-A',
         alias: 'Lichtgroen (oud)',
@@ -136,7 +136,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 15,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Groen LP-E',
         alias: 'Donkergroen (oud)',
@@ -168,7 +168,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 19,
       },
       {
-        // id: '',
+        id: idMap.stones.TURQUOISE_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Turquoise LP-C',
         alias: 'Turquoise (oud)',
@@ -184,7 +184,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 21,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Blauw LP-B',
         alias: 'Lichtblauw (marmer)',
@@ -192,7 +192,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 22,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Blauw LP-C',
         alias: 'Lichtblauw (oud)',
@@ -216,7 +216,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 25,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Paars LP-A',
         alias: 'Donkerviolet',
@@ -224,7 +224,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 26,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Paars LP-B',
         alias: 'Lichtviolet',
@@ -233,7 +233,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 27,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Paars LP-C',
         alias: 'Paars',
@@ -241,7 +241,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 28,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Paars LP-D',
         alias: 'Lila',
@@ -257,7 +257,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 30,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Roze LP-B',
         alias: 'Roze',
@@ -265,7 +265,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 31,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Roze LP-C',
         alias: 'Lichtroze',
@@ -273,7 +273,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 32,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Roze LP-D',
         alias: 'Altrosa',
@@ -297,7 +297,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 35,
       },
       {
-        // id: '',
+        id: idMap.stones.IVOOR_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Ivoor LP-B',
         alias: 'Witgoud',
@@ -313,7 +313,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 37,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Bruin LP-A',
         alias: 'Bruin',
@@ -321,7 +321,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 38,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Bruin LP-B',
         alias: 'Lichtbruin',
@@ -329,7 +329,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 39,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Bruin LP-C',
         alias: 'Goud',
@@ -337,7 +337,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 40,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Bruin LP-D',
         alias: 'Okergeel',
@@ -345,7 +345,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 41,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Bruin LP-E',
         alias: 'Bruin mat',
@@ -361,7 +361,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 43,
       },
       {
-        // id: '',
+        id: idMap.stones.GRIJS_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Grijs LP-B',
         alias: 'Lichtgrijs',
@@ -369,7 +369,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 44,
       },
       {
-        // id: '',
+        id: idMap.stones.GRIJS_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Grijs LP-C',
         alias: 'Zilver',
@@ -377,7 +377,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 45,
       },
       {
-        // id: '',
+        id: idMap.stones.GRIJS_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Grijs LP-D',
         alias: 'Donkergrijs',
@@ -409,7 +409,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 49,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_DD_A,
         stoneTypeId: idMap.stoneTypes.DOMINO_DAY,
         name: 'Blauw DD-A',
         alias: 'Donkerblauw',
@@ -417,7 +417,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 50,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_DD_A,
         stoneTypeId: idMap.stoneTypes.DOMINO_DAY,
         name: 'Paars DD-A',
         alias: 'Paars',
@@ -425,7 +425,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 51,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_DD_B,
         stoneTypeId: idMap.stoneTypes.DOMINO_DAY,
         name: 'Paars DD-B',
         alias: 'Lila',
@@ -442,7 +442,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 53,
       },
       {
-        // id: '',
+        id: idMap.stones.GRIJS_DD_A,
         stoneTypeId: idMap.stoneTypes.DOMINO_DAY,
         name: 'Grijs DD-A',
         alias: 'Donkergrijs',
@@ -450,7 +450,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 54,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_BK_A,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Blauw BK-A',
         alias: 'Ice',
@@ -458,7 +458,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 55,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_BK_B,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Blauw BK-B',
         alias: 'Island Blue',
@@ -466,7 +466,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 56,
       },
       {
-        // id: '',
+        id: idMap.stones.TURQUOISE_BK_A,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Turquoise BK-A',
         alias: 'Teal',
@@ -474,7 +474,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 57,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_BK_A,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Paars BK-A',
         alias: 'Indigo',
@@ -482,7 +482,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 58,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Rood MD-A',
         alias: 'Bordeaux',
@@ -490,7 +490,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 59,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_MD_B,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Rood MD-B',
         alias: 'Rood',
@@ -498,7 +498,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 60,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Oranje MD-A',
         alias: 'Oranje',
@@ -506,7 +506,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 61,
       },
       {
-        // id: '',
+        id: idMap.stones.GEEL_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Geel MD-A',
         alias: 'Geel',
@@ -514,7 +514,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 62,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Groen MD-A',
         alias: 'Groen',
@@ -522,7 +522,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 63,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Blauw MD-A',
         alias: 'Blauw',
@@ -530,7 +530,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 64,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Paars MD-A',
         alias: 'Paars',
@@ -538,7 +538,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 65,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_MD_B,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Paars MD-B',
         alias: 'Lila',
@@ -546,7 +546,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 66,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Roze MD-A',
         alias: 'Lichtroze',
@@ -554,7 +554,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 67,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Wit MD-A',
         alias: 'Wit',
@@ -562,7 +562,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 68,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_MD_B,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Wit MD-B',
         alias: 'Transparant',
@@ -578,7 +578,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 70,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_MD_A,
         stoneTypeId: idMap.stoneTypes.MR_DOMINO,
         name: 'Zwart MD-A',
         alias: 'Zwart',
@@ -586,7 +586,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 71,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_OV_A,
         stoneTypeId: idMap.stoneTypes.OTHERS,
         name: 'Mix OV-A',
         alias: 'Mix Lamping (rest)',
@@ -594,7 +594,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 72,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_BK_C,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Blauw BK-C',
         alias: 'Navy Blue',
@@ -602,7 +602,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 73,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Rood CC-A',
         alias: 'Donkerrood',
@@ -611,7 +611,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 74,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Roze CC-A',
         alias: 'Roze',
@@ -620,7 +620,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 75,
       },
       {
-        // id: '',
+        id: idMap.stones.GEEL_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Geel CC-A',
         alias: 'Geel',
@@ -629,7 +629,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 76,
       },
       {
-        // id: '',
+        id: idMap.stones.GEEL_CC_B,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Geel CC-B',
         alias: 'Geel',
@@ -638,7 +638,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 77,
       },
       {
-        // id: '',
+        id: idMap.stones.GEEL_CC_C,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Geel CC-C',
         alias: 'Geel',
@@ -647,7 +647,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 78,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Groen CC-A',
         alias: 'Groen',
@@ -656,7 +656,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 79,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_CC_B,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Groen CC-B',
         alias: 'Donkergroen',
@@ -665,7 +665,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 80,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_LP_A,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Mix LP-A',
         alias: 'Diversen Mix',
@@ -673,7 +673,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 81,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_LP_B,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Mix LP-B',
         alias: 'Groen Mix',
@@ -681,7 +681,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 82,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Mix LP-C',
         alias: 'Oranje Mix',
@@ -689,7 +689,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 83,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Mix LP-D',
         alias: 'Blauw Mix',
@@ -697,7 +697,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 84,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Mix CC-A',
         alias: 'CC Diversen Mix',
@@ -705,7 +705,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 85,
       },
       {
-        // id: '',
+        id: idMap.stones.GEEL_LP_C,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Geel LP-C',
         alias: 'Geel (mat)',
@@ -713,7 +713,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 86,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_LP_F,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Oranje LP-F',
         alias: 'Oranje (glans)',
@@ -721,7 +721,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 87,
       },
       {
-        // id: '',
+        id: idMap.stones.IVOOR_LP_D,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Ivoor LP-D',
         alias: 'Kaki',
@@ -729,7 +729,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 88,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Paars LP-E',
         alias: 'Paars (glans)',
@@ -737,7 +737,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 89,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-A',
         alias: 'Zwart',
@@ -746,7 +746,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 90,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_B,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-B',
         alias: 'Zwart',
@@ -755,7 +755,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 91,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_C,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-C',
         alias: 'Zwart',
@@ -764,7 +764,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 92,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_D,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-D',
         alias: 'Zwart',
@@ -773,7 +773,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 93,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_E,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-E',
         alias: 'Zwart',
@@ -782,7 +782,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 94,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_F,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-F',
         alias: 'Zwart',
@@ -791,7 +791,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 95,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_G,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-G',
         alias: 'Zwart',
@@ -800,7 +800,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 96,
       },
       {
-        // id: '',
+        id: idMap.stones.ZWART_CC_H,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Zwart CC-H',
         alias: 'Zwart',
@@ -809,7 +809,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 97,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_CC_A,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Wit CC-A',
         alias: 'Wit',
@@ -818,7 +818,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 98,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_CC_B,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Wit CC-B',
         alias: 'Wit',
@@ -827,7 +827,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 99,
       },
       {
-        // id: '',
+        id: idMap.stones.ROOD_CC_B,
         stoneTypeId: idMap.stoneTypes.COLOR_CHANGING,
         name: 'Rood CC-B',
         alias: 'Rood',
@@ -844,7 +844,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 101,
       },
       {
-        // id: '',
+        id: idMap.stones.MIX_LP_E,
         stoneTypeId: idMap.stoneTypes.LAMPING,
         name: 'Mix LP-E',
         alias: 'Productiefouten',
@@ -869,7 +869,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 104,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_DO_A,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Oranje DO-A',
         alias: 'Fluo Oranje',
@@ -878,7 +878,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 105,
       },
       {
-        // id: '',
+        id: idMap.stones.ORANJE_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Oranje DO-B',
         alias: 'Oranje',
@@ -902,7 +902,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 108,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_DO_A,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Groen DO-A',
         alias: 'Fluo Lichtgroen',
@@ -910,7 +910,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 109,
       },
       {
-        // id: '',
+        id: idMap.stones.GROEN_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Groen DO-B',
         alias: 'Lichtgroen',
@@ -926,7 +926,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 111,
       },
       {
-        // id: '',
+        id: idMap.stones.BLAUW_DO_A,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Blauw DO-A',
         alias: 'Dof Lichtblauw',
@@ -950,7 +950,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 114,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Paars DO-B',
         alias: 'Pastelviolet',
@@ -958,7 +958,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 115,
       },
       {
-        // id: '',
+        id: idMap.stones.PAARS_DO_C,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Paars DO-C',
         alias: 'Fuchsia',
@@ -966,7 +966,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 116,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_DO_A,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Roze DO-A',
         alias: 'Fluo Roze',
@@ -974,7 +974,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 117,
       },
       {
-        // id: '',
+        id: idMap.stones.ROZE_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Roze DO-B',
         alias: 'Roze',
@@ -982,7 +982,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 118,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_DO_A,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Bruin DO-A',
         alias: 'Goud',
@@ -990,7 +990,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 119,
       },
       {
-        // id: '',
+        id: idMap.stones.BRUIN_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Bruin DO-B',
         alias: 'Donkergrijs',
@@ -1006,7 +1006,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 121,
       },
       {
-        // id: '',
+        id: idMap.stones.GRIJS_DO_A,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Grijs DO-A',
         alias: 'Zilver',
@@ -1014,7 +1014,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 122,
       },
       {
-        // id: '',
+        id: idMap.stones.GRIJS_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Grijs DO-B',
         alias: 'Grijs',
@@ -1030,7 +1030,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 124,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_DO_B,
         stoneTypeId: idMap.stoneTypes.DON_DOMINO,
         name: 'Wit DO-B',
         alias: 'Transparant',
@@ -1038,7 +1038,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 125,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_BK_A,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Wit BK-A',
         alias: 'Clear',
@@ -1046,7 +1046,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 126,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_BK_B,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Wit BK-B',
         alias: 'Clear Jade',
@@ -1054,7 +1054,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 127,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_BK_C,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Wit BK-C',
         alias: 'Clear Teal',
@@ -1062,7 +1062,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 128,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_BK_D,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Wit BK-D',
         alias: 'Clear Blue',
@@ -1070,7 +1070,7 @@ export default async function seedStones(prisma: PrismaClient): Promise<void> {
         order: 129,
       },
       {
-        // id: '',
+        id: idMap.stones.WIT_BK_E,
         stoneTypeId: idMap.stoneTypes.BULK,
         name: 'Wit BK-E',
         alias: 'Clear Purple',
