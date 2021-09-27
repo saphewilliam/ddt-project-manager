@@ -11,7 +11,7 @@ import React, {
   useContext,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { NavigationContext } from '@components/Providers/NavigationProvider';
+import { NavigationContext } from '@providers/NavigationProvider';
 import DesktopNavTooltip from './DesktopNavTooltip';
 import { NavItemProps } from './Navigation';
 

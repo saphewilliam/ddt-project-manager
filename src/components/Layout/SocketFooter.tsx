@@ -1,9 +1,9 @@
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
-import IconFacebook from '@components/Icons/IconFacebook';
-import IconInstagram from '@components/Icons/IconInstagram';
-import IconYouTube from '@components/Icons/IconYouTube';
+import IconFacebook from '@icons/IconFacebook';
+import IconInstagram from '@icons/IconInstagram';
+import IconYouTube from '@icons/IconYouTube';
 import SMBtn from './SocialMediaButton';
 
 export default function SocketFooter(): ReactElement {
