@@ -16,11 +16,11 @@ export interface Props {
 export default function ListTemplate(props: Props): ReactElement {
   return (
     <Layout>
-      {props.data === undefined ? (
+      {props.loading ? (
         <Loading />
       ) : (
         <>
-          <h1 className={cx('font-bold', 'text-4xl')}>List All</h1>
+          <h1 className={cx('font-bold', 'text-4xl')}>{props.title}</h1>
 
           <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
 
