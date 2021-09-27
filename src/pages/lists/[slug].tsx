@@ -1,9 +1,6 @@
-import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useEffect, useState, useCallback } from 'react';
-import Layout from '@components/Layout';
-import Loading from '@components/Loading';
-import StoneList from '@components/StoneList';
+import ListTemplate from '@components/templates/ListTemplate';
 import { getUserStoneListQuery } from '@graphql/__generated__/codegen-self';
 import useSdk from '@hooks/useSdk';
 import { makeStoneListTableData } from '@lib/stoneListHelpers';
@@ -36,24 +33,11 @@ export default function ListUserPage(): ReactElement {
   const tableData = useMemo(() => makeStoneListTableData(stoneList), [stoneList]);
 
   return (
-    <Layout>
-      {stoneList === null ? (
-        <Loading />
-      ) : (
-        <>
-          <h1 className={cx('font-bold', 'text-4xl')}>
-            {stoneList?.user && `${stoneList.user.firstName} ${stoneList.user.lastName}'s List`}
-          </h1>
-          {tableData.map((table, index) => (
-            <StoneList
-              key={index}
-              title={table.title}
-              rows={table.rows}
-              revalidate={updateStoneList}
-            />
-          ))}
-        </>
-      )}
-    </Layout>
+    <ListTemplate
+      loading={stoneList === null}
+      data={tableData}
+      revalidate={updateStoneList}
+      title={stoneList?.user ? `${stoneList.user.firstName} ${stoneList.user.lastName}` : ''}
+    />
   );
 }

@@ -1,5 +1,6 @@
 import cx from 'clsx';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
+import ReactTooltip from 'react-tooltip';
 import { State as TableState } from '@hooks/useTable';
 import { StoneListColumnTypes } from '@lib/stoneListHelpers';
 
@@ -9,6 +10,10 @@ export interface Props {
 }
 
 export default function StoneListTable(props: Props): ReactElement {
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [props.rows]);
+
   return (
     <div className={cx('relative', 'w-full')}>
       <table className={cx('text-left', 'w-full')}>

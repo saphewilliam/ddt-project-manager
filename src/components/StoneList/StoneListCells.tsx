@@ -2,7 +2,6 @@ import { PencilIcon } from '@heroicons/react/outline';
 import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import ReactTooltip from 'react-tooltip';
 import { RenderCellProps, RenderHeadProps, SortOrder } from '@hooks/useTable';
 import { fontColorFromBackground, formatNumber } from '@lib/stoneListHelpers';
 
@@ -20,10 +19,10 @@ export function ColorCell(props: RenderCellProps): ReactElement {
       <div className={cx('flex', 'justify-between')}>
         <span>{props.value.name}</span>
         <InformationCircleIcon
-          className={cx('w-5', 'cursor-pointer')}
+          className={cx('w-5', 'cursor-pointer', 'ml-3')}
+          data-for="stoneListToolTip"
           data-tip={props.value.alias}
         />
-        <ReactTooltip place="right" effect="solid" />
       </div>
     </td>
   );
