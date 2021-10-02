@@ -11,3 +11,11 @@ query getUI {
     slug
   }
 }
+
+query getEvents {
+  events {
+    id
+    name
+    slug
+  }
+}

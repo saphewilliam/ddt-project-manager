@@ -14,6 +14,7 @@
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-empty-interface": "warn",
+    "@next/next/no-document-import-in-page": "off",
     "import/order": ["warn", {
       "groups": [["builtin", "external"], "internal", "parent", "sibling", "index", "object", "type"],
       "newlines-between": "never",
@@ -22,5 +23,6 @@
         "caseInsensitive": true
       }
     }]
+    
   }
 }
