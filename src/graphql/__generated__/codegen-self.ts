@@ -382,6 +382,11 @@ export type getUIQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type getUIQuery = { events: Array<{ id: string, name: string, slug: string }>, stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
 
+export type getEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string }> };
+
 export type loginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -484,6 +489,15 @@ export const getUIDocument = gql`
     id
     firstName
     lastName
+    slug
+  }
+}
+    `;
+export const getEventsDocument = gql`
+    query getEvents {
+  events {
+    id
+    name
     slug
   }
 }
@@ -644,6 +658,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getUI(variables?: getUIQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUIQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getUIQuery>(getUIDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUI');
     },
+    getEvents(variables?: getEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getEventsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getEventsQuery>(getEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getEvents');
+    },
     login(variables: loginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<loginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<loginMutation>(loginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
     },
@@ -689,6 +706,9 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     ...sdk,
     useGetUi(key: SWRKeyInterface, variables?: getUIQueryVariables, config?: SWRConfigInterface<getUIQuery, ClientError>) {
       return useSWR<getUIQuery, ClientError>(key, () => sdk.getUI(variables), config);
+    },
+    useGetEvents(key: SWRKeyInterface, variables?: getEventsQueryVariables, config?: SWRConfigInterface<getEventsQuery, ClientError>) {
+      return useSWR<getEventsQuery, ClientError>(key, () => sdk.getEvents(variables), config);
     },
     useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
       return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);
