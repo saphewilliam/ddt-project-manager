@@ -6,6 +6,7 @@ import ReactLoading from 'react-loading';
 export enum ButtonType {
   PRIMARY = 'PRIMARY',
   EMPTY = 'EMPTY',
+  SECONDARY = 'SECONDARY', 
 }
 
 interface PropsBase {
@@ -52,6 +53,15 @@ export default function Button(props: Props): ReactElement {
         )
       : type === ButtonType.EMPTY
       ? cx('text-black', 'font-semibold')
+      : type === ButtonType.SECONDARY
+      ? cx(
+        'bg-secondary',
+        'hover:bg-secondary-light',
+        'shadow',
+        'hover:shadow-md',
+        'text-white',
+        'font-bold',
+      )
       : '',
     (props.loading || props.disabled) && 'cursor-default',
     'transition-all',
