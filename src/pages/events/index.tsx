@@ -14,9 +14,7 @@ export default function EventsPage(): ReactElement {
         {data?.events.map((event) => (
           <li key={event.id}>
             <Link href={`/events/${event.slug}`}>
-              <a>
-                {event.name}
-              </a>
+              <a>{event.name}</a>
             </Link>
           </li>
         ))}
