@@ -8,6 +8,7 @@ import Navigation from './Navigation';
 import SocketFooter from './SocketFooter';
 
 export interface Props {
+  title?: string;
   children?: ReactNode;
 }
 
@@ -18,13 +19,16 @@ export default function Layout(props: Props): ReactElement {
   return (
     <div className={cx('w-screen', 'h-screen', 'flex', device?.xs && 'flex-col-reverse')}>
       <Head>
-        <title>DDT Project Manager</title>
+        <title>DDT Project Manager{props.title ? `- ${props.title}` : ''}</title>
       </Head>
       {session !== null && <Navigation />}
       <main className={cx('flex', 'flex-col', 'justify-between', 'flex-grow', 'overflow-y-auto')}>
         {session !== null ? (
           <>
-            <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>{props.children}</div>
+            <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>
+              {props.title && <h1 className={cx('font-bold', 'text-4xl')}>{props.title}</h1>}
+              {props.children}
+            </div>
             <SocketFooter />
           </>
         ) : (

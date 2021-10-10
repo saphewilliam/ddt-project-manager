@@ -1,4 +1,3 @@
-import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Layout from '@components/Layout';
@@ -8,8 +7,7 @@ export default function ListsPage(): ReactElement {
   const { data } = useSafeQuery('useGetStoneListUsers', {});
 
   return (
-    <Layout>
-      <h1 className={cx('font-bold', 'text-4xl')}>Lists</h1>
+    <Layout title="Lists">
       <ul>
         <li key={0}>
           <Link href={`/lists/all`}>
