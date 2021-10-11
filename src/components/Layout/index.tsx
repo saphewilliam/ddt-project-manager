@@ -19,7 +19,7 @@ export default function Layout(props: Props): ReactElement {
   return (
     <div className={cx('w-screen', 'h-screen', 'flex', device?.xs && 'flex-col-reverse')}>
       <Head>
-        <title>DDT Project Manager{props.title ? `- ${props.title}` : ''}</title>
+        <title>DDT Project Manager{props.title ? ` - ${props.title}` : ''}</title>
       </Head>
       {session !== null && <Navigation />}
       <main className={cx('flex', 'flex-col', 'justify-between', 'flex-grow', 'overflow-y-auto')}>

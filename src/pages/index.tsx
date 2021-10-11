@@ -6,7 +6,9 @@ export default function HomePage(): ReactElement {
   const { instance, loaded, error } = useWasm();
 
   const title: string =
-    loaded && instance && instance.exports.addString('Hello', 'world') + (error && error.message);
+    loaded && instance
+      ? instance.exports.addString('Hello', 'world') + (error ? error.message : '')
+      : '';
 
   return <Layout title={title}></Layout>;
 }

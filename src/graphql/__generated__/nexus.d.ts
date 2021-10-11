@@ -19,7 +19,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  ProjectStatus: "BUILDING" | "BUILT" | "CANCELLED" | "PLANNED" | "PLANNING" | "READY" | "STARTING"
+  ProjectStatus: "BUILDING" | "BUILT" | "CANCELLED" | "COUNTED" | "PLANNED" | "PLANNING" | "READY" | "STARTING"
   ProjectType: "DECOR" | "FALLWALL" | "FIELD_CIRCLE" | "FIELD_CROSS_L2" | "FIELD_FLAT" | "FIELD_L1" | "FIELD_L2" | "FIELD_M50" | "HANDSET" | "OTHER" | "SPIRAL" | "STRUCTURE" | "WALL_CUBE" | "WALL_OCTO" | "WALL_S" | "WALL_SPEED" | "WALL_T" | "WALL_X"
   Role: "BUILDER" | "CAPTAIN" | "GUEST"
 }
@@ -95,7 +95,7 @@ export interface NexusGenObjects {
     status: NexusGenEnums['ProjectStatus']; // ProjectStatus!
     subNumber: number; // Int!
     subthemeId: string; // String!
-    supervisorId: string; // String!
+    supervisorId?: string | null; // String
     type: NexusGenEnums['ProjectType']; // ProjectType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
@@ -116,12 +116,12 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   StatsOnProject: { // root type
-    amount: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     projectId: string; // String!
     statId: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    value: string; // String!
   }
   Stone: { // root type
     alias: string; // String!
@@ -298,14 +298,15 @@ export interface NexusGenFieldTypes {
     subNumber: number; // Int!
     subtheme: NexusGenRootTypes['Subtheme']; // Subtheme!
     subthemeId: string; // String!
-    supervisor: NexusGenRootTypes['User']; // User!
-    supervisorId: string; // String!
+    supervisor: NexusGenRootTypes['User'] | null; // User
+    supervisorId: string | null; // String
     type: NexusGenEnums['ProjectType']; // ProjectType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
     event: NexusGenRootTypes['Event'] | null; // Event
     events: NexusGenRootTypes['Event'][]; // [Event!]!
+    project: NexusGenRootTypes['Project'] | null; // Project
     session: NexusGenRootTypes['Session'] | null; // Session
     stoneList: NexusGenRootTypes['StoneList'] | null; // StoneList
     stoneListUsers: NexusGenRootTypes['User'][]; // [User!]!
@@ -337,7 +338,6 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   StatsOnProject: { // field return type
-    amount: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     project: NexusGenRootTypes['Project']; // Project!
@@ -345,6 +345,7 @@ export interface NexusGenFieldTypes {
     stat: NexusGenRootTypes['Stat']; // Stat!
     statId: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    value: string; // String!
   }
   Stone: { // field return type
     alias: string; // String!
@@ -552,6 +553,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     event: 'Event'
     events: 'Event'
+    project: 'Project'
     session: 'Session'
     stoneList: 'StoneList'
     stoneListUsers: 'User'
@@ -583,7 +585,6 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   StatsOnProject: { // field return type name
-    amount: 'Int'
     createdAt: 'DateTime'
     id: 'ID'
     project: 'Project'
@@ -591,6 +592,7 @@ export interface NexusGenFieldTypeNames {
     stat: 'Stat'
     statId: 'String'
     updatedAt: 'DateTime'
+    value: 'String'
   }
   Stone: { // field return type name
     alias: 'String'
@@ -722,6 +724,10 @@ export interface NexusGenArgTypes {
   Query: {
     event: { // args
       eventSlug: string; // String!
+    }
+    project: { // args
+      eventSlug: string; // String!
+      projectSlug: string; // String!
     }
     session: { // args
       token: string; // String!
