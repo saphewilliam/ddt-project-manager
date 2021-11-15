@@ -1,6 +1,6 @@
 import { makeSchema, fieldAuthorizePlugin, queryComplexityPlugin } from 'nexus';
 import { FieldAuthorizePluginErrorConfig } from 'nexus/dist/plugins/fieldAuthorizePlugin';
-import { join as pathJoin } from 'path';
+import { join } from 'path';
 import * as types from './types';
 
 export const schema = makeSchema({
@@ -13,15 +13,17 @@ export const schema = makeSchema({
     queryComplexityPlugin(),
   ],
   outputs: {
-    typegen: pathJoin(process.cwd(), 'src', 'graphql', '__generated__', 'nexus.d.ts'),
-    schema: pathJoin(process.cwd(), 'schema.graphql'),
+    // TODO: Remove?
+    // typegen: pathJoin(process.cwd(), 'src', 'graphql', '__generated__', 'nexus.d.ts'),
+    typegen: join(process.cwd(), 'node_modules', '@types', 'nexus-typegen', 'index.d.ts'),
+    schema: join(process.cwd(), 'schema.graphql'),
   },
   nonNullDefaults: {
     input: true,
     output: true,
   },
   contextType: {
-    export: 'ApiContext',
-    module: pathJoin(process.cwd(), 'src', 'lib', 'apiContext.ts'),
+    export: 'Context',
+    module: join(process.cwd(), 'src', 'graphql', 'context.ts'),
   },
 });

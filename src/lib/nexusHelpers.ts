@@ -9,7 +9,7 @@ interface Model {
 export function nexusModel<T extends string>(
   model: Model,
   options?: {
-    hideFields?: string[];
+    hide?: string[];
     extend?: (t: ObjectDefinitionBlock<T>) => void;
   },
 ): NexusObjectTypeDef<T> {
@@ -22,7 +22,7 @@ export function nexusModel<T extends string>(
       const fields = Object.values(model)
         .filter((field) => field !== undefined)
         .filter((field) => JSON.stringify(Object.keys(field)) === JSON.stringify(nexusNames))
-        .filter((field) => !options?.hideFields?.find((hidden) => hidden === field.name));
+        .filter((field) => !options?.hide?.find((hidden) => hidden === field.name));
 
       fields.forEach((field) => t.field(field));
 

@@ -1,3 +1,4 @@
+import { Columns } from '@saphe/react-table';
 import { ColorCell, EditCell } from '@components/StoneList/StoneListCells';
 import {
   getStoneListsQuery,
@@ -5,7 +6,6 @@ import {
   Role,
   getSessionQuery,
 } from '@graphql/__generated__/codegen-self';
-import { Columns } from '@hooks/useTable';
 
 export function fontColorFromBackground(hex: string): string {
   const r = parseInt(hex.substr(1, 2), 16);
@@ -66,7 +66,7 @@ export function makeStoneListTableColumns(
     color: {
       renderCell: ColorCell,
       unhideable: true,
-      sort: (a, b, invert) => (invert ? 1 : -1) * (a.order - b.order),
+      sort: (a, b) => a.order - b.order,
     },
     ...userColumns.reduce(
       (prev, curr) => ({ ...prev, [curr.userId]: { label: curr.displayname, defaultValue: 0 } }),

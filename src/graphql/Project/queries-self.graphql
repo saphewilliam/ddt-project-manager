@@ -1,0 +1,55 @@
+query getProject($projectSlug: String!, $eventSlug: String!) {
+  project(projectSlug: $projectSlug, eventSlug: $eventSlug) {
+    id
+    name
+    description
+    status
+    number
+    subNumber
+    type
+    supervisor {
+      id
+      displayName
+    }
+    stones {
+      id
+      amount
+      user {
+        id
+        displayName
+      }
+      stone {
+        id
+        name
+      }
+    }
+    stats {
+      id
+      value
+      stat {
+        id
+        name
+      }
+    }
+    attributes {
+      id
+      amount
+      attribute {
+        id
+        name
+      }
+      user {
+        id
+        displayName
+      }
+    }
+    subtheme {
+      id
+      name
+      event {
+        id
+        name
+      }
+    }
+  }
+}

@@ -9,14 +9,8 @@ fragment stoneListStone on Stone {
   stoneTypeId
 }
 
-query getStoneList(
-  $userId: String!
-  $stoneId: String!
-) {
-  stoneList(
-    userId: $userId
-    stoneId: $stoneId
-  ) {
+query getStoneList($userId: String!, $stoneId: String!) {
+  stoneList(userId: $userId, stoneId: $stoneId) {
     id
     amount
   }
@@ -45,9 +39,9 @@ query getStoneLists {
   stones {
     ...stoneListStone
     stoneLists {
-			id
+      id
       amount
-      userId   
+      userId
     }
   }
   stoneTypes {

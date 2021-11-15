@@ -1,4 +1,3 @@
-import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback, useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -30,8 +29,7 @@ export default function ListsPage(): ReactElement {
   }, []);
 
   return (
-    <Layout>
-      <h1 className={cx('font-bold', 'text-4xl')}>Profile</h1>
+    <Layout title="Profile">
       <Button label="Log Out" onClick={handleLogout} loading={loading} />
     </Layout>
   );

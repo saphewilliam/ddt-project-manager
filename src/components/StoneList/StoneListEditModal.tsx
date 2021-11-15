@@ -1,6 +1,7 @@
 import cx from 'clsx';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
 import Modal from '@components/Modal';
 import useSafeQuery from '@hooks/useSafeQuery';
@@ -17,7 +18,7 @@ export interface StoneListEditModalSettings {
 export interface Props {
   settings: StoneListEditModalSettings;
   setSettings: (settings: StoneListEditModalSettings) => void;
-  revalidate: () => Promise<boolean>;
+  swrKey: string;
 }
 
 export default function StoneListEditModal(props: Props): ReactElement {
@@ -30,6 +31,8 @@ export default function StoneListEditModal(props: Props): ReactElement {
   const { data: usersData } = useSafeQuery('useGetUsers', {});
   const { getStoneList, updateStoneList } = useSdk();
 
+  const { mutate } = useSWRConfig();
+
   const updateAmount = useCallback(async () => {
     setLoading(true);
     const { stoneList } = await getStoneList({ stoneId, userId });
@@ -37,6 +40,26 @@ export default function StoneListEditModal(props: Props): ReactElement {
     else setAmount(0);
     setLoading(false);
   }, [stoneId, userId]);
+
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+    if (stoneId === '' || userId === '' || amount === null) return;
+    setLoading(true);
+    const data = await promiseWithCatch(
+      updateStoneList({ stoneId, userId, amount: amount! }),
+      'Could not edit stonelist',
+    );
+    if (data?.updateStoneList) {
+      const { user, stone, amount } = data.updateStoneList;
+      await mutate(props.swrKey);
+      toast.success(
+        `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} to ${amount}!`,
+        { duration: 7000 },
+      );
+      props.setSettings({ ...props.settings, show: false });
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
     setStoneId(props.settings.stoneId);
@@ -54,7 +77,7 @@ export default function StoneListEditModal(props: Props): ReactElement {
       title="Edit Stonelist"
       body={
         <>
-          <form className={cx('space-y-4')}>
+          <form className={cx('space-y-4')} onSubmit={handleSubmit}>
             <div className={cx('flex', 'flex-col', 'space-y-1')}>
               <label htmlFor="editStoneListStone">Stone</label>
               <select
@@ -124,23 +147,7 @@ export default function StoneListEditModal(props: Props): ReactElement {
             label="Submit"
             disabled={stoneId === '' || userId === '' || amount === null}
             loading={loading}
-            onClick={async () => {
-              setLoading(true);
-              const data = await promiseWithCatch(
-                updateStoneList({ stoneId, userId, amount: amount! }),
-                'Could not edit stonelist',
-              );
-              if (data?.updateStoneList) {
-                const { user, stone, amount } = data.updateStoneList;
-                props.revalidate();
-                toast.success(
-                  `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} to ${amount}!`,
-                  { duration: 7000 },
-                );
-                props.setSettings({ ...props.settings, show: false });
-              }
-              setLoading(false);
-            }}
+            onClick={handleSubmit}
           />
         </>
       }

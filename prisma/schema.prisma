@@ -4,7 +4,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 generator nexusPrisma {
@@ -131,6 +131,7 @@ enum ProjectStatus {
   READY
   BUILDING
   BUILT
+  COUNTED
 }
 
 enum ProjectType {
@@ -172,8 +173,8 @@ model Project {
 
   subthemeId   String
   subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
-  supervisorId String
-  supervisor   User     @relation(fields: [supervisorId], references: [id], onDelete: SetNull)
+  supervisorId String?
+  supervisor   User?    @relation(fields: [supervisorId], references: [id], onDelete: SetNull)
 }
 
 model Stat {
@@ -192,7 +193,7 @@ model StatsOnProject {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  amount    Int
+  value     String
 
   statId    String
   stat      Stat    @relation(fields: [statId], references: [id], onDelete: Restrict)

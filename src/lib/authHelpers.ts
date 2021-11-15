@@ -1,7 +1,7 @@
 import { PrismaClient, Session } from '@prisma/client';
 import { hash, compare } from 'bcrypt';
 import { nanoid } from 'nanoid';
-import { ApiContext } from './apiContext';
+import { Context } from '../graphql/context';
 
 export async function hashPw(plaintext: string): Promise<string> {
   return await hash(plaintext, 10);
@@ -13,7 +13,7 @@ export async function authorizeSession(
   _: Record<string, any>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __: Record<string, any>,
-  ctx: ApiContext,
+  ctx: Context,
 ): Promise<boolean | Error> {
   return await isValidSession(ctx.session);
 }

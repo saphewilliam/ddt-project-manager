@@ -3,6 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import seedEvents from './Event/seed';
 import seedMembers from './Member/seed';
+import seedProjects from './Project/seed';
 import seedSessions from './Session/seed';
 import seedStones from './Stone/seed';
 import seedStoneLists from './StoneList/seed';
@@ -40,6 +41,9 @@ async function seed(prisma: PrismaClient): Promise<void> {
 
   console.log('Seeding Subthemes...');
   await seedSubthemes(prisma);
+
+  console.log('Seeding Projects...');
+  await seedProjects(prisma);
 }
 
 seed(prisma)

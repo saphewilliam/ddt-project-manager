@@ -2,7 +2,7 @@ import { GraphQLClient } from 'graphql-request';
 import * as Dom from 'graphql-request/dist/types.dom';
 import gql from 'graphql-tag';
 import { ClientError } from 'graphql-request/dist/types';
-import useSWR, { ConfigInterface as SWRConfigInterface, keyInterface as SWRKeyInterface } from 'swr';
+import useSWR, { SWRConfiguration as SWRConfigInterface, Key as SWRKeyInterface } from 'swr';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -133,8 +133,8 @@ export type Project = {
   subNumber: Scalars['Int'];
   subtheme: Subtheme;
   subthemeId: Scalars['String'];
-  supervisor: User;
-  supervisorId: Scalars['String'];
+  supervisor: Maybe<User>;
+  supervisorId: Maybe<Scalars['String']>;
   type: ProjectType;
   updatedAt: Scalars['DateTime'];
 };
@@ -143,6 +143,7 @@ export enum ProjectStatus {
   BUILDING = 'BUILDING',
   BUILT = 'BUILT',
   CANCELLED = 'CANCELLED',
+  COUNTED = 'COUNTED',
   PLANNED = 'PLANNED',
   PLANNING = 'PLANNING',
   READY = 'READY',
@@ -173,6 +174,8 @@ export enum ProjectType {
 export type Query = {
   event: Maybe<Event>;
   events: Array<Event>;
+  /** Fetches a project based on its slug */
+  project: Maybe<Project>;
   /** Get session by its token */
   session: Maybe<Session>;
   /** Get a single stonelist record */
@@ -196,6 +199,12 @@ export type Query = {
 
 export type QueryeventArgs = {
   eventSlug: Scalars['String'];
+};
+
+
+export type QueryprojectArgs = {
+  eventSlug: Scalars['String'];
+  projectSlug: Scalars['String'];
 };
 
 
@@ -248,7 +257,6 @@ export type Stat = {
 };
 
 export type StatsOnProject = {
-  amount: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   project: Project;
@@ -256,6 +264,7 @@ export type StatsOnProject = {
   stat: Stat;
   statId: Scalars['String'];
   updatedAt: Scalars['DateTime'];
+  value: Scalars['String'];
 };
 
 export type Stone = {
@@ -387,6 +396,14 @@ export type getEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string }> };
 
+export type getProjectQueryVariables = Exact<{
+  projectSlug: Scalars['String'];
+  eventSlug: Scalars['String'];
+}>;
+
+
+export type getProjectQuery = { project: { id: string, name: string, description: string, status: ProjectStatus, number: number, subNumber: number, type: ProjectType, supervisor: { id: string, displayName: string } | null, stones: Array<{ id: string, amount: number, user: { id: string, displayName: string }, stone: { id: string, name: string } }>, stats: Array<{ id: string, value: string, stat: { id: string, name: string } }>, attributes: Array<{ id: string, amount: number, attribute: { id: string, name: string }, user: { id: string, displayName: string } }>, subtheme: { id: string, name: string, event: { id: string, name: string } } } | null };
+
 export type loginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -413,12 +430,12 @@ export type getSessionQueryVariables = Exact<{
 }>;
 
 
-export type getSessionQuery = { session: Maybe<{ id: string, expiresAt: Maybe<any>, team: Maybe<{ id: string, name: string }>, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: Maybe<string>, isAdmin: boolean }, member: Maybe<{ id: string, role: Role }> }> };
+export type getSessionQuery = { session: { id: string, expiresAt: any | null, team: { id: string, name: string } | null, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: string | null, isAdmin: boolean }, member: { id: string, role: Role } | null } | null };
 
 export type getStonesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getStonesQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: Maybe<string> }> };
+export type getStonesQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: string | null }> };
 
 export type updateStoneListMutationVariables = Exact<{
   stoneId: Scalars['String'];
@@ -427,9 +444,9 @@ export type updateStoneListMutationVariables = Exact<{
 }>;
 
 
-export type updateStoneListMutation = { updateStoneList: Maybe<{ id: string, amount: number, user: { id: string, firstName: string, lastName: string }, stone: { id: string, name: string } }> };
+export type updateStoneListMutation = { updateStoneList: { id: string, amount: number, user: { id: string, firstName: string, lastName: string }, stone: { id: string, name: string } } | null };
 
-export type stoneListStoneFragment = { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string };
+export type stoneListStoneFragment = { id: string, name: string, alias: string, alias2: string | null, hex: string, hex2: string | null, order: number, stoneTypeId: string };
 
 export type getStoneListQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -437,19 +454,19 @@ export type getStoneListQueryVariables = Exact<{
 }>;
 
 
-export type getStoneListQuery = { stoneList: Maybe<{ id: string, amount: number }> };
+export type getStoneListQuery = { stoneList: { id: string, amount: number } | null };
 
 export type getUserStoneListQueryVariables = Exact<{
   userSlug: Scalars['String'];
 }>;
 
 
-export type getUserStoneListQuery = { userStoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string } }>, user: Maybe<{ id: string, firstName: string, lastName: string }>, stoneTypes: Array<{ id: string, name: string }> };
+export type getUserStoneListQuery = { userStoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: string | null, hex: string, hex2: string | null, order: number, stoneTypeId: string } }>, user: { id: string, firstName: string, lastName: string } | null, stoneTypes: Array<{ id: string, name: string }> };
 
 export type getStoneListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getStoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: Maybe<string>, hex: string, hex2: Maybe<string>, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, userId: string }> }>, stoneTypes: Array<{ id: string, name: string }>, stoneListUsers: Array<{ id: string, displayName: string }> };
+export type getStoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: string | null, hex: string, hex2: string | null, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, userId: string }> }>, stoneTypes: Array<{ id: string, name: string }>, stoneListUsers: Array<{ id: string, displayName: string }> };
 
 export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -499,6 +516,63 @@ export const getEventsDocument = gql`
     id
     name
     slug
+  }
+}
+    `;
+export const getProjectDocument = gql`
+    query getProject($projectSlug: String!, $eventSlug: String!) {
+  project(projectSlug: $projectSlug, eventSlug: $eventSlug) {
+    id
+    name
+    description
+    status
+    number
+    subNumber
+    type
+    supervisor {
+      id
+      displayName
+    }
+    stones {
+      id
+      amount
+      user {
+        id
+        displayName
+      }
+      stone {
+        id
+        name
+      }
+    }
+    stats {
+      id
+      value
+      stat {
+        id
+        name
+      }
+    }
+    attributes {
+      id
+      amount
+      attribute {
+        id
+        name
+      }
+      user {
+        id
+        displayName
+      }
+    }
+    subtheme {
+      id
+      name
+      event {
+        id
+        name
+      }
+    }
   }
 }
     `;
@@ -661,6 +735,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getEvents(variables?: getEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getEventsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<getEventsQuery>(getEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getEvents');
     },
+    getProject(variables: getProjectQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getProjectQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<getProjectQuery>(getProjectDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProject');
+    },
     login(variables: loginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<loginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<loginMutation>(loginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
     },
@@ -709,6 +786,9 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
     },
     useGetEvents(key: SWRKeyInterface, variables?: getEventsQueryVariables, config?: SWRConfigInterface<getEventsQuery, ClientError>) {
       return useSWR<getEventsQuery, ClientError>(key, () => sdk.getEvents(variables), config);
+    },
+    useGetProject(key: SWRKeyInterface, variables: getProjectQueryVariables, config?: SWRConfigInterface<getProjectQuery, ClientError>) {
+      return useSWR<getProjectQuery, ClientError>(key, () => sdk.getProject(variables), config);
     },
     useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
       return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);

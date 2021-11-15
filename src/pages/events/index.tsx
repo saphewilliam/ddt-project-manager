@@ -9,8 +9,7 @@ export default function EventsPage(): ReactElement {
   const { data } = useSafeQuery('useGetEvents', {});
 
   return (
-    <Layout>
-      <h1 className={cx('font-bold', 'text-4xl')}>Events</h1>
+    <Layout title="Events">
       <ul className={cx('grid', 'gap-4', 'grid-cols-3')}>
         {data?.events.map((event) => (
           <li

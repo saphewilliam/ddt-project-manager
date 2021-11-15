@@ -10,7 +10,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Introduction',
         slug: generateSlug('Introduction'),
         color: '#BF5C22',
-        eventId: '87db2cfc-d4a9-406f-91ce-b73c1ee58c49',
+        eventId: idMap.events.WDC_2021,
         order: 0,
       },
       {
@@ -18,7 +18,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Peter Pan',
         slug: generateSlug('Peter Pan'),
         color: '#488D40',
-        eventId: '87db2cfc-d4a9-406f-91ce-b73c1ee58c49',
+        eventId: idMap.events.WDC_2021,
         order: 1,
       },
       {
@@ -26,7 +26,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: "The Emperor's New Clothes",
         slug: generateSlug("The Emperor's New Clothes"),
         color: '#B80C00',
-        eventId: '87db2cfc-d4a9-406f-91ce-b73c1ee58c49',
+        eventId: idMap.events.WDC_2021,
         order: 2,
       },
       {
@@ -34,15 +34,23 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Beauty and the Beast',
         slug: generateSlug('Beauty and the Beast'),
         color: '#9B1CBA',
-        eventId: '87db2cfc-d4a9-406f-91ce-b73c1ee58c49',
+        eventId: idMap.events.WDC_2021,
         order: 3,
+      },
+      {
+        id: idMap.subthemes.VEXX_PROJECT,
+        name: 'Project',
+        slug: generateSlug('Project'),
+        color: '#40FFBF',
+        eventId: idMap.events.VEXX,
+        order: 0,
       },
       {
         id: idMap.subthemes.DISCOVERY,
         name: 'Discovery',
         slug: generateSlug('Discovery'),
         color: '#66CEEE',
-        eventId: '7794c798-60e5-466f-8332-0853cbb41c1f',
+        eventId: idMap.events.DDT_2019,
         order: 0,
       },
       {
@@ -50,7 +58,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Fame',
         slug: generateSlug('Fame'),
         color: '#E33782',
-        eventId: '7794c798-60e5-466f-8332-0853cbb41c1f',
+        eventId: idMap.events.DDT_2019,
         order: 1,
       },
       {
@@ -58,7 +66,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Downfall',
         slug: generateSlug('Downfall'),
         color: '#0A0E1F',
-        eventId: '7794c798-60e5-466f-8332-0853cbb41c1f',
+        eventId: idMap.events.DDT_2019,
         order: 2,
       },
       {
@@ -66,7 +74,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Recovery',
         slug: generateSlug('Recovery'),
         color: '#FAC31D',
-        eventId: '7794c798-60e5-466f-8332-0853cbb41c1f',
+        eventId: idMap.events.DDT_2019,
         order: 3,
       },
       {
@@ -74,7 +82,7 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         name: 'Payoff',
         slug: generateSlug('Payoff'),
         color: '#188B1C',
-        eventId: '7794c798-60e5-466f-8332-0853cbb41c1f',
+        eventId: idMap.events.DDT_2019,
         order: 4,
       },
     ],

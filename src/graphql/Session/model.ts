@@ -10,7 +10,7 @@ import {
 import { nexusModel } from '@lib/nexusHelpers';
 
 export const sessionModel = nexusModel(Session, {
-  hideFields: ['token'],
+  hide: ['token'],
   extend(t) {
     t.nullable.field('member', {
       type: 'Member',

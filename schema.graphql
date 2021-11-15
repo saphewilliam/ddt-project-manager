@@ -105,8 +105,8 @@ type Project {
   subNumber: Int!
   subtheme: Subtheme!
   subthemeId: String!
-  supervisor: User!
-  supervisorId: String!
+  supervisor: User
+  supervisorId: String
   type: ProjectType!
   updatedAt: DateTime!
 }
@@ -115,6 +115,7 @@ enum ProjectStatus {
   BUILDING
   BUILT
   CANCELLED
+  COUNTED
   PLANNED
   PLANNING
   READY
@@ -145,6 +146,9 @@ enum ProjectType {
 type Query {
   event(eventSlug: String!): Event
   events: [Event!]!
+
+  """Fetches a project based on its slug"""
+  project(eventSlug: String!, projectSlug: String!): Project
 
   """Get session by its token"""
   session(token: String!): Session
@@ -203,7 +207,6 @@ type Stat {
 }
 
 type StatsOnProject {
-  amount: Int!
   createdAt: DateTime!
   id: ID!
   project: Project!
@@ -211,6 +214,7 @@ type StatsOnProject {
   stat: Stat!
   statId: String!
   updatedAt: DateTime!
+  value: String!
 }
 
 type Stone {

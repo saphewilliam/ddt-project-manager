@@ -1,5 +1,6 @@
 import cx from 'clsx';
 import { GraphQLClient } from 'graphql-request';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { FormEvent, ReactElement, useCallback, useState, useEffect } from 'react';
@@ -111,6 +112,9 @@ export default function LoginPage(): ReactElement {
 
   return (
     <div className={cx('w-screen', 'h-screen', 'flex')}>
+      <Head>
+        <title>DDT Project Manager - Login</title>
+      </Head>
       <div className={cx('w-7/12', 'bg-dark')}>
         <div className={cx('w-full', 'h-full', 'relative')}>
           <Image src="/img/login_bg.jpg" alt="Login Background" layout="fill" objectFit="cover" />
