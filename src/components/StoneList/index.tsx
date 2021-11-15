@@ -1,7 +1,7 @@
+import useTable, { Columns, Data } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement, useMemo, useState, useEffect } from 'react';
 import useSession from '@hooks/useSession';
-import useTable, { Columns, Data } from '@hooks/useTable';
 import {
   getStoneListUserColumns,
   makeStoneListTableColumns,
@@ -17,7 +17,7 @@ import StoneListTable from './StoneListTable';
 export interface Props {
   title: string;
   rows: StoneListTableType['rows'];
-  revalidate: () => Promise<boolean>;
+  swrKey: string;
 }
 
 export default function StoneList(props: Props): ReactElement {
@@ -93,7 +93,7 @@ export default function StoneList(props: Props): ReactElement {
       <StoneListEditModal
         settings={editModalSettings}
         setSettings={setEditModalSettings}
-        revalidate={props.revalidate}
+        swrKey={props.swrKey}
       />
 
       <StoneListTable headers={headers} rows={rows} />

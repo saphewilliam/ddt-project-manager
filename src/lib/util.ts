@@ -10,7 +10,7 @@ export function extractURLParam(name: string, query?: ParsedUrlQuery): string | 
 }
 
 export function generateSlug(raw: string): string {
-  return `${raw.toLowerCase().replace(/\s/g, '-').replace(/\./g, '')}-${nanoid(6)}`;
+  return `${raw.toLowerCase().replace(/[.'-]/g, '').replace(/\s+/g, '-')}-${nanoid(6)}`;
 }
 
 export async function promiseWithCatch<T>(

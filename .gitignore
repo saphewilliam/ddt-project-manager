@@ -1,4 +1,5 @@
 # Compiled output
+tsconfig.tsbuildinfo
 .next/
 node_modules/
 public/wasm/

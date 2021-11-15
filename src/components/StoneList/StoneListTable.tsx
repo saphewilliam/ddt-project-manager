@@ -1,7 +1,7 @@
+import { State as TableState } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
-import { State as TableState } from '@hooks/useTable';
 import { StoneListColumnTypes } from '@lib/stoneListHelpers';
 
 export interface Props {

@@ -7,7 +7,7 @@
     "prettier",
     "plugin:prettier/recommended",
     "plugin:import/recommended",
-    "plugin:import/typescript" 
+    "plugin:import/typescript"
   ],
   "rules": {
     "react-hooks/exhaustive-deps": "off",
@@ -23,6 +23,17 @@
         "caseInsensitive": true
       }
     }]
-    
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.graphql"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "plugins": ["@graphql-eslint"],
+      "extends": [
+        "plugin:@graphql-eslint/recommended",
+        "prettier",
+        "plugin:prettier/recommended"
+      ]
+    }
+  ]
 }

@@ -9,6 +9,7 @@ import useSession from './useSession';
 export default function useSafeQuery<T extends keyof SdkWithHooks>(
   useQuery: T,
   variables: Parameters<SdkWithHooks[T]>[1],
+  keyId?: string | null,
 ): ReturnType<SdkWithHooks[T]> {
   useEffect(() => {
     if (!useQuery.startsWith('use'))
@@ -27,7 +28,7 @@ export default function useSafeQuery<T extends keyof SdkWithHooks>(
 
   const { session } = useSession();
 
-  const key: string | null = !session ? null : useQuery;
+  const key: string | null = !session ? null : useQuery + keyId ?? '';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const response: ReturnType<SdkWithHooks[T]> = (sdk[useQuery] as any)(key, variables);

@@ -3,7 +3,7 @@ import { User } from 'nexus-prisma';
 import { authorizeSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
-export const userModel = nexusModel(User, { hideFields: ['password'] });
+export const userModel = nexusModel(User, { hide: ['password'] });
 
 export const userQuery = extendType({
   type: 'Query',

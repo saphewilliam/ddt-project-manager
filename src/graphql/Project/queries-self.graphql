@@ -1,11 +1,5 @@
-query getProject(
-  $projectSlug: String!
-  $eventSlug: String!
-) {
-  project(
-    projectSlug: $projectSlug
-    eventSlug: $eventSlug
-  ) {
+query getProject($projectSlug: String!, $eventSlug: String!) {
+  project(projectSlug: $projectSlug, eventSlug: $eventSlug) {
     id
     name
     description

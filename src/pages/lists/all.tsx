@@ -4,7 +4,7 @@ import useSafeQuery from '@hooks/useSafeQuery';
 import { makeStoneListsTableData } from '@lib/stoneListHelpers';
 
 export default function ListAllPage(): ReactElement {
-  const { data, revalidate } = useSafeQuery('useGetStoneLists', {});
+  const { data } = useSafeQuery('useGetStoneLists', {});
 
   const tableData = useMemo(() => makeStoneListsTableData(data), [data]);
 
@@ -12,7 +12,7 @@ export default function ListAllPage(): ReactElement {
     <ListTemplate
       loading={data === undefined}
       data={tableData}
-      revalidate={revalidate}
+      swrKey="useGetStoneLists"
       title="List All"
     />
   );

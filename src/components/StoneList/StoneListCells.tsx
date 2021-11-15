@@ -1,8 +1,8 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { RenderCellProps, RenderHeadProps, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import { RenderCellProps, RenderHeadProps, SortOrder } from '@hooks/useTable';
 import { fontColorFromBackground, formatNumber } from '@lib/stoneListHelpers';
 
 const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-5', 'text-black');
@@ -11,17 +11,17 @@ export function ColorCell(props: RenderCellProps): ReactElement {
   return (
     <td
       style={{
-        backgroundColor: props.value.hex,
-        color: fontColorFromBackground(props.value.hex),
+        backgroundColor: props.row.color.hex,
+        color: fontColorFromBackground(props.row.color.hex),
       }}
       className={cx(commonClassName, 'font-semibold')}
     >
       <div className={cx('flex', 'justify-between')}>
-        <span>{props.value.name}</span>
+        <span>{props.row.color.name}</span>
         <InformationCircleIcon
           className={cx('w-5', 'cursor-pointer', 'ml-3')}
           data-for="stoneListToolTip"
-          data-tip={props.value.alias}
+          data-tip={props.row.color.alias}
         />
       </div>
     </td>
@@ -44,7 +44,7 @@ export function EditCell(props: RenderCellProps): ReactElement {
           'hover:text-white',
           'hover:bg-primary',
         )}
-        onClick={() => props.value()}
+        onClick={() => props.row.edit()}
       >
         <PencilIcon className={cx('w-4')} />
       </button>

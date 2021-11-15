@@ -1,7 +1,8 @@
-import cx from 'clsx';
+// import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import Layout from '@components/Layout';
+import Tabs from '@components/Tabs';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
 
@@ -24,13 +25,15 @@ export default function ProjectPage(): ReactElement {
 
   return (
     <Layout title={title}>
-      <ul className={cx('flex')}>
-        <li>General</li>
-        <li>Stones</li>
-        <li>Attributes</li>
-        <li>Attachements</li>
-        <li>Edit History</li>
-      </ul>
+      <Tabs
+        tabData={[
+          { label: 'General', content: <span>General tab</span> },
+          { label: 'Stones', content: <span>Stones tab</span> },
+          { label: 'Attributes', content: <span>Attributes tab</span> },
+          { label: 'Attachments', content: <span>Attachments tab</span> },
+          { label: 'History', content: <span>History tab</span> },
+        ]}
+      />
       {data?.project?.description || 'No description available...'}
     </Layout>
   );

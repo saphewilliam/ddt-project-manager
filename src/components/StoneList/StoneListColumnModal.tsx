@@ -1,7 +1,7 @@
+import { RenderHeadProps } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import Modal from '@components/Modal';
-import { RenderHeadProps } from '@hooks/useTable';
 
 export interface Props {
   title: string;
@@ -19,7 +19,7 @@ export default function StoneListColumnModal(props: Props): ReactElement {
       body={
         <div className={cx('flex', 'flex-col')}>
           {props.originalHeaders
-            .filter((header) => header.toggleHide)
+            .filter((header) => header.toggleVisibility)
             .map((header, i) => (
               <div key={i} className={cx('flex', 'items-center', 'space-x-3')}>
                 <input
@@ -28,7 +28,7 @@ export default function StoneListColumnModal(props: Props): ReactElement {
                   type="checkbox"
                   id={`${props.title}-${header.name}`}
                   checked={!header.hidden}
-                  onChange={() => header.toggleHide!()}
+                  onChange={() => header.toggleVisibility!()}
                 />
                 <label htmlFor={`${props.title}-${header.name}`}>{header.label}</label>
               </div>
