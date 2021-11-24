@@ -16,7 +16,7 @@ import Canvas from '@components/Designer/Canvas';
 //   label: string;
 //   icon: () => ReactElement;
 //   shortCut: string;
-//   mouseMove: () => void;
+//   mouseMove: (mouseDown: boolean) => void;
 //   mouseDown: () => void;
 //   mouseUp: () => void;
 //   enterTool: () => void;
