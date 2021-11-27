@@ -99,6 +99,8 @@ model Event {
   name      String
   date      DateTime
   slug      String   @unique
+  theme     String?
+  img       String?
 
   subthemes Subtheme[]
 
