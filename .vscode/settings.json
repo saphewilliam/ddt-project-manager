@@ -3,5 +3,6 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "graphql"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "colorize.languages": ["javascript"]
 }

@@ -26,8 +26,8 @@ export default function MobileNavItem(props: NavItemProps): ReactElement {
             'p-2.5',
             'rounded-xl',
             'transition-colors',
-            'hover:bg-dark-selected',
-            isActive && cx('bg-dark-selected', 'border-t-4', 'border-primary'),
+            'hover:bg-gray-700',
+            isActive && cx('bg-gray-700', 'border-t-4', 'border-primary'),
           )}
         >
           {isActive ? <props.activeIcon {...iconProps} /> : <props.icon {...iconProps} />}

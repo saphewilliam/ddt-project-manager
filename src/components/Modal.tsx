@@ -18,7 +18,7 @@ export default function Modal(props: Props): ReactElement {
           'fixed',
           'z-40',
           'inset-0',
-          'bg-black',
+          'bg-gray-900',
           'transition-opacity',
           'duration-300',
           props.show ? cx('opacity-30', 'cursor-pointer') : cx('opacity-0', 'pointer-events-none'),
@@ -53,7 +53,7 @@ export default function Modal(props: Props): ReactElement {
             'duration-300',
             'divide-y',
             'divide-opacity-30',
-            'divide-dark',
+            'divide-gray-900',
             props.show ? cx('bg-white', 'pointer-events-auto') : cx('opacity-0', '-translate-y-10'),
           )}
         >

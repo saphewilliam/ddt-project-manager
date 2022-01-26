@@ -38,10 +38,10 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
     'w-full',
     'rounded-md',
     'cursor-pointer',
-    'text-light',
+    'text-gray-200',
     'transition-all',
-    'hover:bg-dark-selected',
-    (isActive || showTooltip) && 'bg-dark-selected',
+    'hover:bg-gray-700',
+    (isActive || showTooltip) && 'bg-gray-700',
   );
 
   const iconProps: ComponentProps<'svg'> = {
@@ -110,7 +110,7 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
             }}
           >
             {props.subItems.map((subItem, i) => (
-              <li className={cx('border-l-4', 'border-muted')} key={i}>
+              <li className={cx('border-l-4', 'border-gray')} key={i}>
                 <Link href={subItem.href}>
                   <a
                     tabIndex={navState.expandedItem === props.id && !navState.collapsed ? 0 : -1}
@@ -120,8 +120,8 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
                       'pr-3',
                       'py-1',
                       router.asPath.startsWith(subItem.href)
-                        ? 'bg-dark-selected'
-                        : cx('hover:bg-dark-selected', 'text-muted', 'hover:text-white'),
+                        ? 'bg-gray-700'
+                        : cx('hover:bg-gray-700', 'text-gray', 'hover:text-white'),
                       'transition-colors',
                       'whitespace-nowrap',
                       'truncate',

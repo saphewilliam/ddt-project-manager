@@ -20,7 +20,7 @@ export default function SocketFooter(): ReactElement {
         'px-8',
         'space-y-2',
         'md:space-y-0',
-        'bg-light',
+        'bg-gray-100',
       )}
     >
       <span className={cx('text-sm', 'text-center', 'w-48', 'sm:w-auto')}>
@@ -34,7 +34,7 @@ export default function SocketFooter(): ReactElement {
       </span>
 
       {/* Icons and brand colors from https://simpleicons.org/ */}
-      <div className={cx('flex', 'space-x-4', 'text-dark-highlight')}>
+      <div className={cx('flex', 'space-x-4', 'text-gray-700')}>
         <SMBtn color="#F00" href="https://youtube.com/dutchdominoteam" label="YouTube">
           <IconYouTube />
         </SMBtn>

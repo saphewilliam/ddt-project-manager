@@ -1,4 +1,4 @@
-query getSession($token: String!) {
+query Session($token: String!) {
   session(token: $token) {
     id
     expiresAt

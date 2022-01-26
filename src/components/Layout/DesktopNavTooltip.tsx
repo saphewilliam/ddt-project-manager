@@ -50,9 +50,9 @@ export default function DesktopNavTooltip(props: Props): ReactElement {
             'pb-2',
             'overflow-y-scroll',
             'scrollbar-thin',
-            'bg-dark',
-            'scrollbar-track-dark',
-            'scrollbar-thumb-dark-highlight',
+            'bg-gray-900',
+            'scrollbar-track-gray-900',
+            'scrollbar-thumb-gray-800',
             props.show && 'pointer-events-auto',
           )}
         >
@@ -66,8 +66,8 @@ export default function DesktopNavTooltip(props: Props): ReactElement {
                     'px-6',
                     'py-2',
                     subItem.href === router.asPath
-                      ? cx('bg-dark-selected', 'text-white')
-                      : cx('hover:bg-dark-selected', 'text-light', 'hover:text-white'),
+                      ? cx('bg-gray-700', 'text-white')
+                      : cx('hover:bg-gray-700', 'text-gray-200', 'hover:text-white'),
                     'transition-colors',
                     'whitespace-nowrap',
                     'truncate',

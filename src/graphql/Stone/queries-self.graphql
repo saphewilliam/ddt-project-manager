@@ -1,4 +1,4 @@
-query getStones {
+query Stones {
   stones {
     id
     name

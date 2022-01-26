@@ -25,15 +25,15 @@ export default function ProfileBox(): ReactElement {
           'py-4',
           'px-3.5',
           'mt-12',
-          'bg-dark-selected',
-          'hover:bg-dark-highlight',
+          'bg-gray-700',
+          'hover:bg-gray-800',
           'transition-colors',
         )}
       >
         <div
           className={cx(
             'overflow-hidden',
-            'bg-dark',
+            'bg-gray-900',
             'relative',
             'rounded-lg',
             'w-9',
@@ -64,7 +64,7 @@ export default function ProfileBox(): ReactElement {
             <p className={cx('font-bold')}>
               {session?.user.firstName} {session?.user.lastName}
             </p>
-            <p className={cx('text-muted', 'text-sm')}>
+            <p className={cx('text-gray', 'text-sm')}>
               {session?.team?.name} ({session.member?.role.toLowerCase()})
             </p>
           </div>

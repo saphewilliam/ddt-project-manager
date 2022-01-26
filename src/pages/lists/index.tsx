@@ -4,7 +4,7 @@ import Layout from '@components/Layout';
 import useSafeQuery from '@hooks/useSafeQuery';
 
 export default function ListsPage(): ReactElement {
-  const { data } = useSafeQuery('useGetStoneListUsers', {});
+  const { data } = useSafeQuery('useStoneListUsers', {});
 
   return (
     <Layout title="Lists">

@@ -1,10 +1,10 @@
 import { Columns } from '@saphe/react-table';
 import { ColorCell, EditCell } from '@components/StoneList/StoneListCells';
 import {
-  getStoneListsQuery,
-  getUserStoneListQuery,
+  StoneListsQuery,
+  UserStoneListQuery,
   Role,
-  getSessionQuery,
+  SessionQuery,
 } from '@graphql/__generated__/codegen-self';
 
 export function fontColorFromBackground(hex: string): string {
@@ -60,7 +60,7 @@ export type StoneListColumnTypes = {
 
 export function makeStoneListTableColumns(
   userColumns: StoneListUserColumns,
-  session: getSessionQuery['session'],
+  session: SessionQuery['session'],
 ): Columns<StoneListColumnTypes> {
   return {
     color: {
@@ -87,7 +87,7 @@ export function makeStoneListTableColumns(
 }
 
 export function makeStoneListTableData(
-  data: getUserStoneListQuery | undefined | null,
+  data: UserStoneListQuery | undefined | null,
 ): StoneListTableData {
   const result: StoneListTableData = [];
   if (data === undefined || data === null) return result;
@@ -120,7 +120,7 @@ export function makeStoneListTableData(
   }));
 }
 
-export function makeStoneListsTableData(data: getStoneListsQuery | undefined): StoneListTableData {
+export function makeStoneListsTableData(data: StoneListsQuery | undefined): StoneListTableData {
   const result: StoneListTableData = [];
   if (data === undefined) return result;
 

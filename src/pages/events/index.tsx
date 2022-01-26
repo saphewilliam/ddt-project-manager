@@ -7,11 +7,11 @@ import Layout from '@components/Layout';
 import useSafeQuery from '@hooks/useSafeQuery';
 
 export default function EventsPage(): ReactElement {
-  const { data } = useSafeQuery('useGetEvents', {});
+  const { data } = useSafeQuery('useEvents', {});
 
   return (
     <Layout title="Events">
-      <ul className={cx('grid', 'md:gap-4', 'md:grid-cols-2', 'lg:grid-cols-3')}>
+      <ul className={cx('grid', 'gap-5', 'md:grid-cols-2', 'lg:grid-cols-3')}>
         {data?.events.map((event) => (
           <li
             className={cx(
@@ -21,8 +21,8 @@ export default function EventsPage(): ReactElement {
               'shadow-lg',
               'hover:shadow-xl',
               'transition-all',
-              'border-dark/20',
-              'hover:border-dark/10',
+              'border-gray-900/20',
+              'hover:border-gray-900/10',
               'p-6',
             )}
             key={event.id}
@@ -34,7 +34,7 @@ export default function EventsPage(): ReactElement {
                 </div>
                 <div className={cx('space-y-2')}>
                   <h2 className={cx('text-2xl', 'font-bold')}>{event.name}</h2>
-                  <ul className={cx('text-dark/80')}>
+                  <ul className={cx('text-gray-700')}>
                     <li className={cx('flex')}>
                       <ChartBarIcon className={cx('w-5', 'mr-1')} />
                       <span>123456 stenen</span>
