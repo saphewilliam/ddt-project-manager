@@ -66,6 +66,7 @@ type Event {
   subthemes: [Subtheme!]!
   team: Team!
   teamId: String!
+  theme: String
   updatedAt: DateTime!
 }
 

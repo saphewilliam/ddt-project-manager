@@ -72,11 +72,13 @@ export type Event = {
   createdAt: Scalars['DateTime'];
   date: Scalars['DateTime'];
   id: Scalars['ID'];
+  img: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   subthemes: Array<Subtheme>;
   team: Team;
   teamId: Scalars['String'];
+  theme: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 

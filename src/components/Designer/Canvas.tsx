@@ -1,18 +1,27 @@
 import cx from 'clsx';
 import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
-// import ContextMenu from './ContextMenu';
 
 interface Point {
   x: number;
   y: number;
 }
 
+// interface CanvasOptions {
+//   stroke: {
+//     thickness: number;
+//     color: Color;
+//   }
+// }
+
 type ReactMouseEvent = React.MouseEvent<HTMLCanvasElement, MouseEvent>;
 
 export interface Props {
+  // grid: Grid;
   // offset: Point;
   // scale: number;
+  // selection: Point[];
+  // options: CanvasOptions
   onMouseDown?: (point: Point) => boolean;
   onMouseUp?: (point: Point) => boolean;
   onMouseMove?: (point: Point, mouseDown: boolean) => boolean;
@@ -115,7 +124,6 @@ export default function Canvas(props: Props): ReactElement {
   }, [canvasRef, instance, loaded, error]);
 
   return (
-    // <ContextMenu items={[]} header="Utilities">
     <canvas
       ref={canvasRef}
       style={{ imageRendering: 'pixelated' }}
@@ -124,6 +132,5 @@ export default function Canvas(props: Props): ReactElement {
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
     />
-    // </ContextMenu>
   );
 }

@@ -23,7 +23,3 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export default prisma;
-
-// TODO: Remove?
-// export const prisma = global.prisma ?? new PrismaClient();
-// if (environment.env === 'DEVELOP') global.prisma = prisma;

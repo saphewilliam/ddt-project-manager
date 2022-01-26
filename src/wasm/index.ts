@@ -52,11 +52,27 @@ export class Canvas {
   }
 }
 
+export class Stone {
+  color: Color;
+  size: Size;
+  angle: f32;
+
+  constructor(color: Color, size: Size, angle: f32 = 0) {
+    this.color = color;
+    this.size = size;
+    this.angle = angle;
+  }
+}
+
+export class Grid {
+  layers: Array<Array<Stone | null>>;
+}
+
 export function drawL2(width: u32, height: u32, r: u8, g: u8, b: u8): Array<u8> {
   const color: Color = new Color(r, g, b);
   const stone: Point = new Point(0, 0);
   const stoneSize: Size = new Size(2, 6);
-  const stoneGap: Size = new Size(4, 1);
+  const stoneGap: Size = new Size(4, 1); // L2
 
   const strokeWidth: u32 = 0;
   const strokeColor: Color = new Color(0, 0, 0);

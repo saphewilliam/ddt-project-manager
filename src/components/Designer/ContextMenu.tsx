@@ -2,7 +2,7 @@
 // https://github.com/vkbansal/react-contextmenu/blob/HEAD/docs/api.md
 // https://codepen.io/simeydotme/pen/EKRpam
 
-import React, { useState, useEffect, MouseEvent, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /** Enumerates upon the types of context menu items */
 export enum MenuItemKind {
@@ -164,7 +164,7 @@ export function ExecuteItem({ item }: { item: MenuItemExecute }): JSX.Element {
         }
       }}
     >
-      {item.icon && <img className="pre" src={item.icon} alt="Context Menu Icon" />}
+      {/* {item.icon && <img className="pre" src={item.icon} alt="Context Menu Icon" />} */}
 
       <span>{item.label}</span>
 
@@ -176,7 +176,7 @@ export function ExecuteItem({ item }: { item: MenuItemExecute }): JSX.Element {
 export function SubItem({ item }: { item: MenuItemSub }): JSX.Element {
   return (
     <li className={getMenuItemClassName(item.disabled)}>
-      {item.icon && <img className="pre" src={item.icon} alt="Context Menu Icon" />}
+      {/* {item.icon && <img className="pre" src={item.icon} alt="Context Menu Icon" />} */}
       <span>{item.label}</span>
       <ul className="context__menu context__menu--sub">
         {item.items.map((subItem, index) => {

@@ -1,12 +1,12 @@
 # Compiled output
-tsconfig.tsbuildinfo
 .next/
 node_modules/
 public/wasm/
 __generated__/
 
+# Logs
+tsconfig.tsbuildinfo
+*.log
+
 # Sensitive data
 .env
-
-# Logs
-*.log
