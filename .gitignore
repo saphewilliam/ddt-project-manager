@@ -3,6 +3,7 @@ tsconfig.tsbuildinfo
 .next/
 node_modules/
 public/wasm/
+__generated__/
 
 # Sensitive data
 .env

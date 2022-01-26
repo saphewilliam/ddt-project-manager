@@ -18,5 +18,6 @@ query getEvents {
     name
     slug
     date
+    img
   }
 }

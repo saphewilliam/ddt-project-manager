@@ -11,6 +11,7 @@ export default async function seedEvents(prisma: PrismaClient): Promise<void> {
         name: 'WDC 2021',
         slug: generateSlug('WDC 2021'),
         date: '2021-08-01T00:00:00.000Z',
+        img: '/img/projects/wdc_2021.jpg',
       },
       {
         id: idMap.events.DDT_2019,
@@ -18,6 +19,7 @@ export default async function seedEvents(prisma: PrismaClient): Promise<void> {
         name: 'DDT 2019',
         slug: generateSlug('DDT 2019'),
         date: '2019-08-25T00:00:00.000Z',
+        img: '/img/projects/ddt_2019.jpg',
       },
       {
         id: idMap.events.VEXX,
@@ -25,6 +27,7 @@ export default async function seedEvents(prisma: PrismaClient): Promise<void> {
         name: 'VEXX',
         slug: generateSlug('VEXX'),
         date: '2020-08-07T00:00:00.000Z',
+        img: '/img/projects/vexx.jpg',
       },
     ],
   });

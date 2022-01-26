@@ -63,7 +63,7 @@ export default function StoneList(props: Props): ReactElement {
   });
 
   return (
-    <section className={cx('mt-12', 'mb-24')}>
+    <section>
       <div
         className={cx(
           'flex',

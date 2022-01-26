@@ -1,7 +1,7 @@
 {
   "name": "ddt-project-manager",
-  "version": "1.0.0",
-  "description": "Dutch Domino Team Project Manager",
+  "version": "0.0.0",
+  "description": "The new Dutch Domino Team Project Manager",
   "main": "index.js",
   "repository": "git@github.com:saphewilliam/ddt-project-manager.git",
   "author": "William Ford <william@saphewebdesign.com>",
@@ -22,7 +22,7 @@
     "db:flush": "yarn tsn --files src/graphql/flush",
     "db:seed": "yarn tsn --files src/graphql/seed",
     "db:reset": "yarn db:flush && yarn db:seed",
-    "postinstall": "yarn generate:prisma && yarn generate:nexus",
+    "postinstall": "yarn generate",
     "tsn": "ts-node -T -r tsconfig-paths/register -r dotenv/config -O \"{\\\"module\\\":\\\"commonjs\\\"}\""
   },
   "prisma": {

@@ -1,5 +1,6 @@
 import * as AsBind from 'as-bind';
 import { useState, useEffect } from 'react';
+import { environment } from '@lib/environment';
 
 type Todo = any;
 
@@ -12,7 +13,7 @@ interface State {
 export default function useWasm(imports?: Todo): State {
   const [state, setState] = useState<State>({ instance: null, loaded: false, error: null });
 
-  const filePath = '/wasm/release.wasm';
+  const filePath = `/wasm/${environment.env === 'DEVELOP' ? 'debug' : 'release'}.wasm`;
 
   useEffect(() => {
     const abortController = new AbortController();

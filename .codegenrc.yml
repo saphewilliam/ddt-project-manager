@@ -1,7 +1,7 @@
 overwrite: true
 generates:
   ./src/graphql/__generated__/codegen-self.ts:
-    schema: ${API_ROOT_SELF}
+    schema: ./schema.graphql
     documents: ./src/graphql/*/{queries,mutations}-self.graphql
     plugins:
       - typescript
