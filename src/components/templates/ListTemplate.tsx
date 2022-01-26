@@ -1,3 +1,4 @@
+import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import ReactTooltip from 'react-tooltip';
 import Layout from '@components/Layout';
@@ -21,9 +22,11 @@ export default function ListTemplate(props: Props): ReactElement {
         <>
           <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
 
-          {props.data.map((table, index) => (
-            <StoneList key={index} title={table.title} rows={table.rows} swrKey={props.swrKey} />
-          ))}
+          <div className={cx('space-y-20')}>
+            {props.data.map((table, index) => (
+              <StoneList key={index} title={table.title} rows={table.rows} swrKey={props.swrKey} />
+            ))}
+          </div>
         </>
       )}
     </Layout>

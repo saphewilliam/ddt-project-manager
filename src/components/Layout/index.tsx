@@ -27,7 +27,7 @@ export default function Layout(props: Props): ReactElement {
           <>
             <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>
               {props.title && (
-                <h1 className={cx('font-bold', 'text-4xl', 'pb-4')}>{props.title}</h1>
+                <h1 className={cx('font-bold', 'text-4xl', 'mb-12')}>{props.title}</h1>
               )}
               {props.children}
             </div>

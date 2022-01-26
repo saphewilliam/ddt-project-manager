@@ -60,6 +60,7 @@ type Event {
   createdAt: DateTime!
   date: DateTime!
   id: ID!
+  img: String!
   name: String!
   slug: String!
   subthemes: [Subtheme!]!

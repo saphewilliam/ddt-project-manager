@@ -72,6 +72,7 @@ export type Event = {
   createdAt: Scalars['DateTime'];
   date: Scalars['DateTime'];
   id: Scalars['ID'];
+  img: Scalars['String'];
   name: Scalars['String'];
   slug: Scalars['String'];
   subthemes: Array<Subtheme>;
@@ -395,7 +396,7 @@ export type getUIQuery = { events: Array<{ id: string, name: string, slug: strin
 export type getEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string, date: any }> };
+export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string, date: any, img: string }> };
 
 export type getProjectQueryVariables = Exact<{
   projectSlug: Scalars['String'];
@@ -518,6 +519,7 @@ export const getEventsDocument = gql`
     name
     slug
     date
+    img
   }
 }
     `;
