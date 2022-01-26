@@ -1,4 +1,4 @@
-query getTeams {
+query Teams {
   teams {
     id
     name

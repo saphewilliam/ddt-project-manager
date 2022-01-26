@@ -11,7 +11,7 @@ export default function ProjectPage(): ReactElement {
   const eventSlug = extractURLParam('eventSlug', router.query) ?? '';
   const projectSlug = extractURLParam('projectSlug', router.query) ?? '';
 
-  const { data, error } = useSafeQuery('useGetProject', { eventSlug, projectSlug });
+  const { data, error } = useSafeQuery('useProject', { eventSlug, projectSlug });
 
   useEffect(() => {
     if (data?.project === null && !error) router.replace(`/events/${eventSlug}`);

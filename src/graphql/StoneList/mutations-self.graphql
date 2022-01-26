@@ -1,4 +1,4 @@
-mutation updateStoneList($stoneId: String!, $userId: String!, $amount: Int!) {
+mutation UpdateStoneList($stoneId: String!, $userId: String!, $amount: Int!) {
   updateStoneList(stoneId: $stoneId, userId: $userId, amount: $amount) {
     id
     user {

@@ -1,4 +1,4 @@
-query getProject($projectSlug: String!, $eventSlug: String!) {
+query Project($projectSlug: String!, $eventSlug: String!) {
   project(projectSlug: $projectSlug, eventSlug: $eventSlug) {
     id
     name

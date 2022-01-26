@@ -1,14 +1,14 @@
-mutation login($email: String!, $password: String!, $isPermanent: Boolean!) {
+mutation Login($email: String!, $password: String!, $isPermanent: Boolean!) {
   login(email: $email, password: $password, isPermanent: $isPermanent)
 }
 
-mutation setSessionTeam($teamId: String!) {
+mutation SetSessionTeam($teamId: String!) {
   setSessionTeam(teamId: $teamId) {
     id
   }
 }
 
-mutation logout {
+mutation Logout {
   logout {
     id
   }

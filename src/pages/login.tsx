@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import React, { FormEvent, ReactElement, useCallback, useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Button from '@components/Button';
-import { getSdk, getTeamsQuery } from '@graphql/__generated__/codegen-self';
+import { getSdk, TeamsQuery } from '@graphql/__generated__/codegen-self';
 import { displayError } from '@hooks/useDisplayError';
 import useSession from '@hooks/useSession';
 import { environment } from '@lib/environment';
@@ -27,7 +27,7 @@ const initialFormValues: FormValues = {
 export default function LoginPage(): ReactElement {
   const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
   const [showTeams, setShowTeams] = useState(false);
-  const [teams, setTeams] = useState<getTeamsQuery | null>(null);
+  const [teams, setTeams] = useState<TeamsQuery | null>(null);
   const [team, setTeam] = useState('');
   const [loading, setLoading] = useState(true);
   const [cookie, setCookie, removeCookie] = useCookies(['ddtauth']);
@@ -43,7 +43,7 @@ export default function LoginPage(): ReactElement {
 
       const sdk = getSdk(client);
 
-      const data = await promiseWithCatch(sdk.setSessionTeam({ teamId }), 'Could not select team');
+      const data = await promiseWithCatch(sdk.SetSessionTeam({ teamId }), 'Could not select team');
       if (!data) {
         setLoading(false);
         return;
@@ -58,7 +58,7 @@ export default function LoginPage(): ReactElement {
     async (token?: string) => {
       const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
       const data = await promiseWithCatch(
-        sdk.getTeams({}, { Authorization: `Bearer ${token ?? cookie.ddtauth}` }),
+        sdk.Teams({}, { Authorization: `Bearer ${token ?? cookie.ddtauth}` }),
         'Could not fetch teams',
       );
       if (!data) return;
@@ -83,7 +83,7 @@ export default function LoginPage(): ReactElement {
 
     setLoading(true);
     const sdk = getSdk(new GraphQLClient(environment.endpoints.self));
-    const data = await promiseWithCatch(sdk.login(formValues), 'Failed to log in');
+    const data = await promiseWithCatch(sdk.Login(formValues), 'Failed to log in');
     if (!data) {
       setLoading(false);
       return;

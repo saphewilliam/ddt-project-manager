@@ -10,7 +10,7 @@ import React, {
   SetStateAction,
 } from 'react';
 import { useCookies } from 'react-cookie';
-import { getSdk, getSessionQuery } from '@graphql/__generated__/codegen-self';
+import { getSdk, SessionQuery } from '@graphql/__generated__/codegen-self';
 import { environment } from '@lib/environment';
 import { promiseWithCatch } from '@lib/util';
 
@@ -19,8 +19,8 @@ export interface Props {
 }
 
 export const SessionContext = createContext<{
-  setSession: Dispatch<SetStateAction<getSessionQuery['session']>>;
-  session: getSessionQuery['session'];
+  setSession: Dispatch<SetStateAction<SessionQuery['session']>>;
+  session: SessionQuery['session'];
 }>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSession: () => {},
@@ -29,7 +29,7 @@ export const SessionContext = createContext<{
 
 export default function SessionProvider(props: Props): ReactElement {
   const router = useRouter();
-  const [session, setSession] = useState<getSessionQuery['session']>(null);
+  const [session, setSession] = useState<SessionQuery['session']>(null);
   const [cookie, , removeCookie] = useCookies(['ddtauth']);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function SessionProvider(props: Props): ReactElement {
         const client = new GraphQLClient(environment.endpoints.self);
         const sdk = getSdk(client);
         const data = await promiseWithCatch(
-          sdk.getSession({ token: cookie.ddtauth }),
+          sdk.Session({ token: cookie.ddtauth }),
           'Could not fetch session',
         );
         if (!data) return;

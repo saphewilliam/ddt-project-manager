@@ -38,7 +38,7 @@ export interface NavItemProps {
 export default function Navigation(): ReactElement {
   const device = useDeviceWidth();
   const { session } = useSession();
-  const { data } = useSafeQuery('useGetUi', {});
+  const { data } = useSafeQuery('useUi', {});
 
   const navItems: NavItemProps[] = useMemo<NavItemProps[]>(
     () => [

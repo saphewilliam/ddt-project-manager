@@ -1,4 +1,4 @@
-query getStoneListUsers {
+query StoneListUsers {
   stoneListUsers {
     id
     firstName
@@ -7,7 +7,7 @@ query getStoneListUsers {
   }
 }
 
-query getUsers {
+query Users {
   users {
     id
     firstName

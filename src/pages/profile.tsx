@@ -19,7 +19,7 @@ export default function ListsPage(): ReactElement {
     removeCookie('ddtauth');
     setSession(null);
 
-    const data = await promiseWithCatch(sdk.logout(), 'failed to log out');
+    const data = await promiseWithCatch(sdk.Logout(), 'failed to log out');
     if (data === null) {
       setLoading(false);
       return;

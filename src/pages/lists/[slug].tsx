@@ -9,7 +9,7 @@ export default function ListUserPage(): ReactElement {
   const router = useRouter();
   const slug = extractURLParam('slug', router.query);
 
-  const { data } = useSafeQuery(`useGetUserStoneList`, { userSlug: slug ?? '' }, slug);
+  const { data } = useSafeQuery(`useUserStoneList`, { userSlug: slug ?? '' }, slug);
 
   useEffect(() => {
     if (data !== undefined && data.user === null) {

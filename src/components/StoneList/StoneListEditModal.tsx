@@ -27,15 +27,15 @@ export default function StoneListEditModal(props: Props): ReactElement {
   const [amount, setAmount] = useState<number | null>(0);
   const [loading, setLoading] = useState(false);
 
-  const { data: stonesData } = useSafeQuery('useGetStones', {});
-  const { data: usersData } = useSafeQuery('useGetUsers', {});
-  const { getStoneList, updateStoneList } = useSdk();
+  const { data: stonesData } = useSafeQuery('useStones', {});
+  const { data: usersData } = useSafeQuery('useUsers', {});
+  const sdk = useSdk();
 
   const { mutate } = useSWRConfig();
 
   const updateAmount = useCallback(async () => {
     setLoading(true);
-    const { stoneList } = await getStoneList({ stoneId, userId });
+    const { stoneList } = await sdk.StoneList({ stoneId, userId });
     if (stoneList) setAmount(stoneList.amount);
     else setAmount(0);
     setLoading(false);
@@ -46,7 +46,7 @@ export default function StoneListEditModal(props: Props): ReactElement {
     if (stoneId === '' || userId === '' || amount === null) return;
     setLoading(true);
     const data = await promiseWithCatch(
-      updateStoneList({ stoneId, userId, amount: amount! }),
+      sdk.UpdateStoneList({ stoneId, userId, amount: amount! }),
       'Could not edit stonelist',
     );
     if (data?.updateStoneList) {

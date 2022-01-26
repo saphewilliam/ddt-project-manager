@@ -27,13 +27,15 @@
   "overrides": [
     {
       "files": ["*.graphql"],
-      "parser": "@graphql-eslint/eslint-plugin",
-      "plugins": ["@graphql-eslint"],
       "extends": [
-        "plugin:@graphql-eslint/recommended",
-        "prettier",
-        "plugin:prettier/recommended"
-      ]
+        "plugin:@graphql-eslint/operations-all",
+        "prettier"
+      ],
+      "rules": {
+        "prettier/prettier": "error",
+        "@graphql-eslint/alphabetize": "off",
+        "@graphql-eslint/match-document-filename": "off"
+      }
     }
   ]
 }

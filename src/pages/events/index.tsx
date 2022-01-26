@@ -7,7 +7,7 @@ import Layout from '@components/Layout';
 import useSafeQuery from '@hooks/useSafeQuery';
 
 export default function EventsPage(): ReactElement {
-  const { data } = useSafeQuery('useGetEvents', {});
+  const { data } = useSafeQuery('useEvents', {});
 
   return (
     <Layout title="Events">

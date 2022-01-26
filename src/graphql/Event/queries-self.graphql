@@ -1,4 +1,4 @@
-query getUI {
+query UI {
   events {
     id
     name
@@ -12,7 +12,7 @@ query getUI {
   }
 }
 
-query getEvents {
+query Events {
   events {
     id
     name

@@ -4,7 +4,7 @@ import useSafeQuery from '@hooks/useSafeQuery';
 import { makeStoneListsTableData } from '@lib/stoneListHelpers';
 
 export default function ListAllPage(): ReactElement {
-  const { data } = useSafeQuery('useGetStoneLists', {});
+  const { data } = useSafeQuery('useStoneLists', {});
 
   const tableData = useMemo(() => makeStoneListsTableData(data), [data]);
 
