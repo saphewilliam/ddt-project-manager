@@ -17,5 +17,6 @@ query getEvents {
     id
     name
     slug
+    date
   }
 }

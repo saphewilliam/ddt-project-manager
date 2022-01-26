@@ -26,7 +26,9 @@ export default function Layout(props: Props): ReactElement {
         {session !== null ? (
           <>
             <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>
-              {props.title && <h1 className={cx('font-bold', 'text-4xl')}>{props.title}</h1>}
+              {props.title && (
+                <h1 className={cx('font-bold', 'text-4xl', 'pb-4')}>{props.title}</h1>
+              )}
               {props.children}
             </div>
             <SocketFooter />

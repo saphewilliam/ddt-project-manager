@@ -56,7 +56,7 @@ export default function Button(props: Props): ReactElement {
       : type === ButtonType.SECONDARY
       ? cx(
           'bg-secondary',
-          'hover:bg-secondary-light',
+          'hover:bg-secondary-dark',
           'shadow',
           'hover:shadow-md',
           'text-white',

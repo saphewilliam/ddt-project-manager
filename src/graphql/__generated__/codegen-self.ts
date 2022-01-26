@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { ClientError } from 'graphql-request/dist/types';
 import useSWR, { SWRConfiguration as SWRConfigInterface, Key as SWRKeyInterface } from 'swr';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -394,7 +395,7 @@ export type getUIQuery = { events: Array<{ id: string, name: string, slug: strin
 export type getEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string }> };
+export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string, date: any }> };
 
 export type getProjectQueryVariables = Exact<{
   projectSlug: Scalars['String'];
@@ -516,6 +517,7 @@ export const getEventsDocument = gql`
     id
     name
     slug
+    date
   }
 }
     `;
