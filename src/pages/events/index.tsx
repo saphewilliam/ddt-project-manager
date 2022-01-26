@@ -1,7 +1,6 @@
 import { CalendarIcon, ChartBarIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Image from 'next/image';
-import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Button, { ButtonType } from '@components/Button';
 import Layout from '@components/Layout';
