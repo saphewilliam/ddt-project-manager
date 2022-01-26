@@ -29,10 +29,10 @@ export default function StoneListTable(props: Props): ReactElement {
             <tr
               key={i}
               className={cx(
-                'hover:bg-light',
+                'hover:bg-gray-100',
                 'transition-colors',
                 'border-b',
-                'border-dark',
+                'border-gray-900',
                 'border-opacity-20',
               )}
             >

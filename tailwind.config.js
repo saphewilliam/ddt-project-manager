@@ -1,30 +1,32 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const colors = require('tailwindcss/colors');
+
+const addKeys = (color) => ({ ...color, DEFAULT: color[400], light: color[300], dark: color[500] });
+
 module.exports = {
-  mode: 'jit',
-  purge: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{ts,tsx}'],
   darkMode: 'class',
   theme: {
     colors: {
-      primary: {
-        light: '#FF906B',
-        DEFAULT: '#FF855D',
+      inherit: colors.inherit,
+      current: colors.current,
+      transparent: colors.transparent,
+      black: colors.black,
+      white: colors.white,
+      gray: addKeys(colors.slate),
+      primary: addKeys(colors.amber),
+      ddt: {
+        purple: '#411F5E',
+        blue: '#171A75',
+        lightblue: '#2C8DDA',
+        green: '#0D774B',
+        lightgreen: '#3CA737',
+        yellow: '#DBDA45',
+        orange: '#FA9E34',
+        red: '#C6293F',
+        bordeaux: '#922352',
       },
-      secondary: {
-        dark: '#9E68B0',
-        DEFAULT: '#9E79AA',
-      },
-      dark: {
-        highlight: '#384152',
-        selected: '#2e344a',
-        DEFAULT: '#161B2E',
-      },
-      light: '#F0F0F0',
-      white: '#FFFFFF',
-      black: '#000000',
-      muted: '#989A9E',
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [
     require('@tailwindcss/forms'),

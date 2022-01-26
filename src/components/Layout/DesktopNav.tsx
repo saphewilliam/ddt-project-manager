@@ -25,10 +25,10 @@ export default function DesktopNav(props: Props): ReactElement {
         'overflow-y-scroll',
         'overflow-x-hidden',
         'scrollbar-thin',
-        'bg-dark',
-        'text-light',
-        'scrollbar-track-dark',
-        'scrollbar-thumb-dark-highlight',
+        'bg-gray-900',
+        'text-gray-200',
+        'scrollbar-track-gray-900',
+        'scrollbar-thumb-gray-800',
       )}
       style={{
         width: navWidth + 'px',
@@ -68,15 +68,15 @@ export default function DesktopNav(props: Props): ReactElement {
               'p-2',
               'rounded-full',
               'transition-colors',
-              'bg-dark-selected',
-              'hover:bg-dark-highlight',
+              'bg-gray-700',
+              'hover:bg-gray-800',
             )}
             onClick={() => navState.setCollapsed(!navState.collapsed)}
           >
             <ChevronDoubleRightIcon
               width={16}
               className={cx(
-                'text-light',
+                'text-gray-200',
                 !navState.collapsed && 'rotate-180',
                 'transition-transform',
                 'duration-500',

@@ -22,7 +22,16 @@ export default function Layout(props: Props): ReactElement {
         <title>DDT Project Manager{props.title ? ` - ${props.title}` : ''}</title>
       </Head>
       {session !== null && <Navigation />}
-      <main className={cx('flex', 'flex-col', 'justify-between', 'flex-grow', 'overflow-y-auto')}>
+      <main
+        className={cx(
+          'flex',
+          'flex-col',
+          'justify-between',
+          'flex-grow',
+          'overflow-y-auto',
+          'text-gray-900',
+        )}
+      >
         {session !== null ? (
           <>
             <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>

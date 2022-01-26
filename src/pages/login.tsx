@@ -115,7 +115,7 @@ export default function LoginPage(): ReactElement {
       <Head>
         <title>DDT Project Manager - Login</title>
       </Head>
-      <div className={cx('w-7/12', 'bg-dark')}>
+      <div className={cx('w-7/12', 'bg-gray-900')}>
         <div className={cx('w-full', 'h-full', 'relative')}>
           <Image src="/img/login_bg.jpg" alt="Login Background" layout="fill" objectFit="cover" />
         </div>
@@ -132,9 +132,9 @@ export default function LoginPage(): ReactElement {
       <div className={cx('flex-grow', 'flex', 'flex-col', 'justify-center', 'items-center')}>
         <div className={cx('w-7/12')}>
           <h1 className={cx('font-bold', 'text-4xl', 'mb-4')}>Sign in</h1>
-          <p className={cx('font-semibold', 'text-muted')}>Sign in to the DDT Project Manager</p>
+          <p className={cx('font-semibold', 'text-gray')}>Sign in to the DDT Project Manager</p>
 
-          <hr className={cx('my-8', 'text-muted')} />
+          <hr className={cx('my-8', 'text-gray')} />
 
           {showTeams ? (
             <form onSubmit={handleTeamSubmit} className={cx('flex', 'flex-col')}>

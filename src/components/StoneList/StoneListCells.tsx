@@ -5,7 +5,7 @@ import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import { fontColorFromBackground, formatNumber } from '@lib/stoneListHelpers';
 
-const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-5', 'text-black');
+const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-5', 'text-gray-900');
 
 export function ColorCell(props: RenderCellProps): ReactElement {
   return (
