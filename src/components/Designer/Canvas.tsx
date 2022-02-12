@@ -2,7 +2,7 @@ import cx from 'clsx';
 import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
@@ -116,7 +116,7 @@ export default function Canvas(props: Props): ReactElement {
         if (shouldUpdate) handleUpdate();
       }
     },
-    [canvasRef, instance, loaded, error],
+    [mouseDown, canvasRef, instance, loaded, error],
   );
 
   useEffect(() => {

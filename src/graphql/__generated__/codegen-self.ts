@@ -72,13 +72,12 @@ export type Event = {
   createdAt: Scalars['DateTime'];
   date: Scalars['DateTime'];
   id: Scalars['ID'];
-  img: Maybe<Scalars['String']>;
+  img: Scalars['String'];
   name: Scalars['String'];
   slug: Scalars['String'];
   subthemes: Array<Subtheme>;
   team: Team;
   teamId: Scalars['String'];
-  theme: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -389,106 +388,105 @@ export type User = {
   updatedAt: Scalars['DateTime'];
 };
 
-export type getUIQueryVariables = Exact<{ [key: string]: never; }>;
+export type UIQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getUIQuery = { events: Array<{ id: string, name: string, slug: string }>, stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
+export type UIQuery = { events: Array<{ id: string, name: string, slug: string }>, stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
 
-export type getEventsQueryVariables = Exact<{ [key: string]: never; }>;
+export type EventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getEventsQuery = { events: Array<{ id: string, name: string, slug: string }> };
+export type EventsQuery = { events: Array<{ id: string, name: string, slug: string, date: any, img: string }> };
 
-export type getProjectQueryVariables = Exact<{
+export type ProjectQueryVariables = Exact<{
   projectSlug: Scalars['String'];
   eventSlug: Scalars['String'];
 }>;
 
 
-export type getProjectQuery = { project: { id: string, name: string, description: string, status: ProjectStatus, number: number, subNumber: number, type: ProjectType, supervisor: { id: string, displayName: string } | null, stones: Array<{ id: string, amount: number, user: { id: string, displayName: string }, stone: { id: string, name: string } }>, stats: Array<{ id: string, value: string, stat: { id: string, name: string } }>, attributes: Array<{ id: string, amount: number, attribute: { id: string, name: string }, user: { id: string, displayName: string } }>, subtheme: { id: string, name: string, event: { id: string, name: string } } } | null };
+export type ProjectQuery = { project: { id: string, name: string, description: string, status: ProjectStatus, number: number, subNumber: number, type: ProjectType, supervisor: { id: string, displayName: string } | null | undefined, stones: Array<{ id: string, amount: number, user: { id: string, displayName: string }, stone: { id: string, name: string } }>, stats: Array<{ id: string, value: string, stat: { id: string, name: string } }>, attributes: Array<{ id: string, amount: number, attribute: { id: string, name: string }, user: { id: string, displayName: string } }>, subtheme: { id: string, name: string, event: { id: string, name: string } } } | null | undefined };
 
-export type loginMutationVariables = Exact<{
+export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
   isPermanent: Scalars['Boolean'];
 }>;
 
 
-export type loginMutation = { login: string };
+export type LoginMutation = { login: string };
 
-export type setSessionTeamMutationVariables = Exact<{
+export type SetSessionTeamMutationVariables = Exact<{
   teamId: Scalars['String'];
 }>;
 
 
-export type setSessionTeamMutation = { setSessionTeam: { id: string } };
+export type SetSessionTeamMutation = { setSessionTeam: { id: string } };
 
-export type logoutMutationVariables = Exact<{ [key: string]: never; }>;
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type logoutMutation = { logout: { id: string } };
+export type LogoutMutation = { logout: { id: string } };
 
-export type getSessionQueryVariables = Exact<{
+export type SessionQueryVariables = Exact<{
   token: Scalars['String'];
 }>;
 
 
-export type getSessionQuery = { session: { id: string, expiresAt: any | null, team: { id: string, name: string } | null, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: string | null, isAdmin: boolean }, member: { id: string, role: Role } | null } | null };
+export type SessionQuery = { session: { id: string, expiresAt: any | null | undefined, team: { id: string, name: string } | null | undefined, user: { id: string, displayName: string, firstName: string, lastName: string, avatar: string | null | undefined, isAdmin: boolean }, member: { id: string, role: Role } | null | undefined } | null | undefined };
 
-export type getStonesQueryVariables = Exact<{ [key: string]: never; }>;
+export type StonesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getStonesQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: string | null }> };
+export type StonesQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: string | null | undefined }> };
 
-export type updateStoneListMutationVariables = Exact<{
+export type UpdateStoneListMutationVariables = Exact<{
   stoneId: Scalars['String'];
   userId: Scalars['String'];
   amount: Scalars['Int'];
 }>;
 
 
-export type updateStoneListMutation = { updateStoneList: { id: string, amount: number, user: { id: string, firstName: string, lastName: string }, stone: { id: string, name: string } } | null };
+export type UpdateStoneListMutation = { updateStoneList: { id: string, amount: number, user: { id: string, firstName: string, lastName: string }, stone: { id: string, name: string } } | null | undefined };
 
-export type stoneListStoneFragment = { id: string, name: string, alias: string, alias2: string | null, hex: string, hex2: string | null, order: number, stoneTypeId: string };
+export type StoneListStoneFragment = { name: string, alias: string, alias2: string | null | undefined, hex: string, hex2: string | null | undefined, order: number, stoneTypeId: string };
 
-export type getStoneListQueryVariables = Exact<{
+export type StoneListQueryVariables = Exact<{
   userId: Scalars['String'];
   stoneId: Scalars['String'];
 }>;
 
 
-export type getStoneListQuery = { stoneList: { id: string, amount: number } | null };
+export type StoneListQuery = { stoneList: { id: string, amount: number } | null | undefined };
 
-export type getUserStoneListQueryVariables = Exact<{
+export type UserStoneListQueryVariables = Exact<{
   userSlug: Scalars['String'];
 }>;
 
 
-export type getUserStoneListQuery = { userStoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: string | null, hex: string, hex2: string | null, order: number, stoneTypeId: string } }>, user: { id: string, firstName: string, lastName: string } | null, stoneTypes: Array<{ id: string, name: string }> };
+export type UserStoneListQuery = { userStoneList: Array<{ id: string, amount: number, stone: { id: string, name: string, alias: string, alias2: string | null | undefined, hex: string, hex2: string | null | undefined, order: number, stoneTypeId: string } }>, user: { id: string, firstName: string, lastName: string } | null | undefined, stoneTypes: Array<{ id: string, name: string }> };
 
-export type getStoneListsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type getStoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: string | null, hex: string, hex2: string | null, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, userId: string }> }>, stoneTypes: Array<{ id: string, name: string }>, stoneListUsers: Array<{ id: string, displayName: string }> };
-
-export type getTeamsQueryVariables = Exact<{ [key: string]: never; }>;
+export type StoneListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getTeamsQuery = { teams: Array<{ id: string, name: string }> };
+export type StoneListsQuery = { stones: Array<{ id: string, name: string, alias: string, alias2: string | null | undefined, hex: string, hex2: string | null | undefined, order: number, stoneTypeId: string, stoneLists: Array<{ id: string, amount: number, userId: string }> }>, stoneTypes: Array<{ id: string, name: string }>, stoneListUsers: Array<{ id: string, displayName: string }> };
 
-export type getStoneListUsersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type getStoneListUsersQuery = { stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
-
-export type getUsersQueryVariables = Exact<{ [key: string]: never; }>;
+export type TeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getUsersQuery = { users: Array<{ id: string, firstName: string, lastName: string }> };
+export type TeamsQuery = { teams: Array<{ id: string, name: string }> };
 
-export const stoneListStoneFragmentDoc = gql`
-    fragment stoneListStone on Stone {
-  id
+export type StoneListUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StoneListUsersQuery = { stoneListUsers: Array<{ id: string, firstName: string, lastName: string, slug: string }> };
+
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UsersQuery = { users: Array<{ id: string, firstName: string, lastName: string }> };
+
+export const StoneListStoneFragmentDoc = gql`
+    fragment StoneListStone on Stone {
   name
   alias
   alias2
@@ -498,8 +496,8 @@ export const stoneListStoneFragmentDoc = gql`
   stoneTypeId
 }
     `;
-export const getUIDocument = gql`
-    query getUI {
+export const UIDocument = gql`
+    query UI {
   events {
     id
     name
@@ -513,17 +511,19 @@ export const getUIDocument = gql`
   }
 }
     `;
-export const getEventsDocument = gql`
-    query getEvents {
+export const EventsDocument = gql`
+    query Events {
   events {
     id
     name
     slug
+    date
+    img
   }
 }
     `;
-export const getProjectDocument = gql`
-    query getProject($projectSlug: String!, $eventSlug: String!) {
+export const ProjectDocument = gql`
+    query Project($projectSlug: String!, $eventSlug: String!) {
   project(projectSlug: $projectSlug, eventSlug: $eventSlug) {
     id
     name
@@ -579,27 +579,27 @@ export const getProjectDocument = gql`
   }
 }
     `;
-export const loginDocument = gql`
-    mutation login($email: String!, $password: String!, $isPermanent: Boolean!) {
+export const LoginDocument = gql`
+    mutation Login($email: String!, $password: String!, $isPermanent: Boolean!) {
   login(email: $email, password: $password, isPermanent: $isPermanent)
 }
     `;
-export const setSessionTeamDocument = gql`
-    mutation setSessionTeam($teamId: String!) {
+export const SetSessionTeamDocument = gql`
+    mutation SetSessionTeam($teamId: String!) {
   setSessionTeam(teamId: $teamId) {
     id
   }
 }
     `;
-export const logoutDocument = gql`
-    mutation logout {
+export const LogoutDocument = gql`
+    mutation Logout {
   logout {
     id
   }
 }
     `;
-export const getSessionDocument = gql`
-    query getSession($token: String!) {
+export const SessionDocument = gql`
+    query Session($token: String!) {
   session(token: $token) {
     id
     expiresAt
@@ -622,8 +622,8 @@ export const getSessionDocument = gql`
   }
 }
     `;
-export const getStonesDocument = gql`
-    query getStones {
+export const StonesDocument = gql`
+    query Stones {
   stones {
     id
     name
@@ -632,8 +632,8 @@ export const getStonesDocument = gql`
   }
 }
     `;
-export const updateStoneListDocument = gql`
-    mutation updateStoneList($stoneId: String!, $userId: String!, $amount: Int!) {
+export const UpdateStoneListDocument = gql`
+    mutation UpdateStoneList($stoneId: String!, $userId: String!, $amount: Int!) {
   updateStoneList(stoneId: $stoneId, userId: $userId, amount: $amount) {
     id
     user {
@@ -649,21 +649,22 @@ export const updateStoneListDocument = gql`
   }
 }
     `;
-export const getStoneListDocument = gql`
-    query getStoneList($userId: String!, $stoneId: String!) {
+export const StoneListDocument = gql`
+    query StoneList($userId: String!, $stoneId: String!) {
   stoneList(userId: $userId, stoneId: $stoneId) {
     id
     amount
   }
 }
     `;
-export const getUserStoneListDocument = gql`
-    query getUserStoneList($userSlug: String!) {
+export const UserStoneListDocument = gql`
+    query UserStoneList($userSlug: String!) {
   userStoneList(userSlug: $userSlug) {
     id
     amount
     stone {
-      ...stoneListStone
+      id
+      ...StoneListStone
     }
   }
   user(userSlug: $userSlug) {
@@ -676,11 +677,12 @@ export const getUserStoneListDocument = gql`
     name
   }
 }
-    ${stoneListStoneFragmentDoc}`;
-export const getStoneListsDocument = gql`
-    query getStoneLists {
+    ${StoneListStoneFragmentDoc}`;
+export const StoneListsDocument = gql`
+    query StoneLists {
   stones {
-    ...stoneListStone
+    id
+    ...StoneListStone
     stoneLists {
       id
       amount
@@ -696,17 +698,17 @@ export const getStoneListsDocument = gql`
     displayName
   }
 }
-    ${stoneListStoneFragmentDoc}`;
-export const getTeamsDocument = gql`
-    query getTeams {
+    ${StoneListStoneFragmentDoc}`;
+export const TeamsDocument = gql`
+    query Teams {
   teams {
     id
     name
   }
 }
     `;
-export const getStoneListUsersDocument = gql`
-    query getStoneListUsers {
+export const StoneListUsersDocument = gql`
+    query StoneListUsers {
   stoneListUsers {
     id
     firstName
@@ -715,8 +717,8 @@ export const getStoneListUsersDocument = gql`
   }
 }
     `;
-export const getUsersDocument = gql`
-    query getUsers {
+export const UsersDocument = gql`
+    query Users {
   users {
     id
     firstName
@@ -732,50 +734,50 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getUI(variables?: getUIQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUIQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getUIQuery>(getUIDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUI');
+    UI(variables?: UIQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UIQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UIQuery>(UIDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UI');
     },
-    getEvents(variables?: getEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getEventsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getEventsQuery>(getEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getEvents');
+    Events(variables?: EventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<EventsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<EventsQuery>(EventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Events');
     },
-    getProject(variables: getProjectQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getProjectQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getProjectQuery>(getProjectDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProject');
+    Project(variables: ProjectQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ProjectQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ProjectQuery>(ProjectDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Project');
     },
-    login(variables: loginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<loginMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<loginMutation>(loginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
+    Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login');
     },
-    setSessionTeam(variables: setSessionTeamMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<setSessionTeamMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<setSessionTeamMutation>(setSessionTeamDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'setSessionTeam');
+    SetSessionTeam(variables: SetSessionTeamMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SetSessionTeamMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SetSessionTeamMutation>(SetSessionTeamDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SetSessionTeam');
     },
-    logout(variables?: logoutMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<logoutMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<logoutMutation>(logoutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'logout');
+    Logout(variables?: LogoutMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LogoutMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LogoutMutation>(LogoutDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Logout');
     },
-    getSession(variables: getSessionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getSessionQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getSessionQuery>(getSessionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getSession');
+    Session(variables: SessionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SessionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SessionQuery>(SessionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Session');
     },
-    getStones(variables?: getStonesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStonesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getStonesQuery>(getStonesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStones');
+    Stones(variables?: StonesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<StonesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<StonesQuery>(StonesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Stones');
     },
-    updateStoneList(variables: updateStoneListMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<updateStoneListMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<updateStoneListMutation>(updateStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateStoneList');
+    UpdateStoneList(variables: UpdateStoneListMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateStoneListMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateStoneListMutation>(UpdateStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateStoneList');
     },
-    getStoneList(variables: getStoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getStoneListQuery>(getStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneList');
+    StoneList(variables: StoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<StoneListQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<StoneListQuery>(StoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'StoneList');
     },
-    getUserStoneList(variables: getUserStoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUserStoneListQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getUserStoneListQuery>(getUserStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserStoneList');
+    UserStoneList(variables: UserStoneListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UserStoneListQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UserStoneListQuery>(UserStoneListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UserStoneList');
     },
-    getStoneLists(variables?: getStoneListsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getStoneListsQuery>(getStoneListsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneLists');
+    StoneLists(variables?: StoneListsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<StoneListsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<StoneListsQuery>(StoneListsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'StoneLists');
     },
-    getTeams(variables?: getTeamsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getTeamsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getTeamsQuery>(getTeamsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTeams');
+    Teams(variables?: TeamsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<TeamsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<TeamsQuery>(TeamsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Teams');
     },
-    getStoneListUsers(variables?: getStoneListUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getStoneListUsersQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getStoneListUsersQuery>(getStoneListUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getStoneListUsers');
+    StoneListUsers(variables?: StoneListUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<StoneListUsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<StoneListUsersQuery>(StoneListUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'StoneListUsers');
     },
-    getUsers(variables?: getUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<getUsersQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<getUsersQuery>(getUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUsers');
+    Users(variables?: UsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UsersQuery>(UsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Users');
     }
   };
 }
@@ -784,38 +786,38 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
   const sdk = getSdk(client, withWrapper);
   return {
     ...sdk,
-    useGetUi(key: SWRKeyInterface, variables?: getUIQueryVariables, config?: SWRConfigInterface<getUIQuery, ClientError>) {
-      return useSWR<getUIQuery, ClientError>(key, () => sdk.getUI(variables), config);
+    useUi(key: SWRKeyInterface, variables?: UIQueryVariables, config?: SWRConfigInterface<UIQuery, ClientError>) {
+      return useSWR<UIQuery, ClientError>(key, () => sdk.UI(variables), config);
     },
-    useGetEvents(key: SWRKeyInterface, variables?: getEventsQueryVariables, config?: SWRConfigInterface<getEventsQuery, ClientError>) {
-      return useSWR<getEventsQuery, ClientError>(key, () => sdk.getEvents(variables), config);
+    useEvents(key: SWRKeyInterface, variables?: EventsQueryVariables, config?: SWRConfigInterface<EventsQuery, ClientError>) {
+      return useSWR<EventsQuery, ClientError>(key, () => sdk.Events(variables), config);
     },
-    useGetProject(key: SWRKeyInterface, variables: getProjectQueryVariables, config?: SWRConfigInterface<getProjectQuery, ClientError>) {
-      return useSWR<getProjectQuery, ClientError>(key, () => sdk.getProject(variables), config);
+    useProject(key: SWRKeyInterface, variables: ProjectQueryVariables, config?: SWRConfigInterface<ProjectQuery, ClientError>) {
+      return useSWR<ProjectQuery, ClientError>(key, () => sdk.Project(variables), config);
     },
-    useGetSession(key: SWRKeyInterface, variables: getSessionQueryVariables, config?: SWRConfigInterface<getSessionQuery, ClientError>) {
-      return useSWR<getSessionQuery, ClientError>(key, () => sdk.getSession(variables), config);
+    useSession(key: SWRKeyInterface, variables: SessionQueryVariables, config?: SWRConfigInterface<SessionQuery, ClientError>) {
+      return useSWR<SessionQuery, ClientError>(key, () => sdk.Session(variables), config);
     },
-    useGetStones(key: SWRKeyInterface, variables?: getStonesQueryVariables, config?: SWRConfigInterface<getStonesQuery, ClientError>) {
-      return useSWR<getStonesQuery, ClientError>(key, () => sdk.getStones(variables), config);
+    useStones(key: SWRKeyInterface, variables?: StonesQueryVariables, config?: SWRConfigInterface<StonesQuery, ClientError>) {
+      return useSWR<StonesQuery, ClientError>(key, () => sdk.Stones(variables), config);
     },
-    useGetStoneList(key: SWRKeyInterface, variables: getStoneListQueryVariables, config?: SWRConfigInterface<getStoneListQuery, ClientError>) {
-      return useSWR<getStoneListQuery, ClientError>(key, () => sdk.getStoneList(variables), config);
+    useStoneList(key: SWRKeyInterface, variables: StoneListQueryVariables, config?: SWRConfigInterface<StoneListQuery, ClientError>) {
+      return useSWR<StoneListQuery, ClientError>(key, () => sdk.StoneList(variables), config);
     },
-    useGetUserStoneList(key: SWRKeyInterface, variables: getUserStoneListQueryVariables, config?: SWRConfigInterface<getUserStoneListQuery, ClientError>) {
-      return useSWR<getUserStoneListQuery, ClientError>(key, () => sdk.getUserStoneList(variables), config);
+    useUserStoneList(key: SWRKeyInterface, variables: UserStoneListQueryVariables, config?: SWRConfigInterface<UserStoneListQuery, ClientError>) {
+      return useSWR<UserStoneListQuery, ClientError>(key, () => sdk.UserStoneList(variables), config);
     },
-    useGetStoneLists(key: SWRKeyInterface, variables?: getStoneListsQueryVariables, config?: SWRConfigInterface<getStoneListsQuery, ClientError>) {
-      return useSWR<getStoneListsQuery, ClientError>(key, () => sdk.getStoneLists(variables), config);
+    useStoneLists(key: SWRKeyInterface, variables?: StoneListsQueryVariables, config?: SWRConfigInterface<StoneListsQuery, ClientError>) {
+      return useSWR<StoneListsQuery, ClientError>(key, () => sdk.StoneLists(variables), config);
     },
-    useGetTeams(key: SWRKeyInterface, variables?: getTeamsQueryVariables, config?: SWRConfigInterface<getTeamsQuery, ClientError>) {
-      return useSWR<getTeamsQuery, ClientError>(key, () => sdk.getTeams(variables), config);
+    useTeams(key: SWRKeyInterface, variables?: TeamsQueryVariables, config?: SWRConfigInterface<TeamsQuery, ClientError>) {
+      return useSWR<TeamsQuery, ClientError>(key, () => sdk.Teams(variables), config);
     },
-    useGetStoneListUsers(key: SWRKeyInterface, variables?: getStoneListUsersQueryVariables, config?: SWRConfigInterface<getStoneListUsersQuery, ClientError>) {
-      return useSWR<getStoneListUsersQuery, ClientError>(key, () => sdk.getStoneListUsers(variables), config);
+    useStoneListUsers(key: SWRKeyInterface, variables?: StoneListUsersQueryVariables, config?: SWRConfigInterface<StoneListUsersQuery, ClientError>) {
+      return useSWR<StoneListUsersQuery, ClientError>(key, () => sdk.StoneListUsers(variables), config);
     },
-    useGetUsers(key: SWRKeyInterface, variables?: getUsersQueryVariables, config?: SWRConfigInterface<getUsersQuery, ClientError>) {
-      return useSWR<getUsersQuery, ClientError>(key, () => sdk.getUsers(variables), config);
+    useUsers(key: SWRKeyInterface, variables?: UsersQueryVariables, config?: SWRConfigInterface<UsersQuery, ClientError>) {
+      return useSWR<UsersQuery, ClientError>(key, () => sdk.Users(variables), config);
     }
   };
 }

@@ -64,9 +64,9 @@ export class Stone {
   }
 }
 
-export class Grid {
-  layers: Array<Array<Stone | null>>;
-}
+// export class Grid {
+//   layers: Array<Array<Stone | null>>;
+// }
 
 export function drawL2(width: u32, height: u32, r: u8, g: u8, b: u8): Array<u8> {
   const color: Color = new Color(r, g, b);
