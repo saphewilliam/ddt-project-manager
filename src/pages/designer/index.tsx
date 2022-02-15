@@ -19,6 +19,7 @@ import cx from 'clsx';
 import React, { ReactElement, SVGProps, useState } from 'react';
 import Canvas, { Point } from '@components/Designer/Canvas';
 import Layout from '@components/Layout';
+import useWasm from '@hooks/useWasm';
 
 // interface Tool {
 //   label: string;
@@ -73,42 +74,58 @@ interface Tool {
   onMouseMove?: (point: Point, mouseDown: boolean) => boolean;
 }
 
-const tools: { [P in keyof typeof ToolIndex]: Tool } = {
-  [ToolIndex.DRAW]: {
-    label: 'Draw',
-    icon: PencilIconOutline,
-    selectedIcon: PencilIconSolid,
-  },
-  [ToolIndex.ERASE]: {
-    label: 'Erase',
-    icon: XCircleIconOutline,
-    selectedIcon: XCircleIconSolid,
-  },
-  [ToolIndex.SELECT]: {
-    label: 'Select',
-    icon: CubeTransparentIconOutline,
-    selectedIcon: CubeTransparentIconSolid,
-  },
-  [ToolIndex.MOVE]: {
-    label: 'Move',
-    icon: HandIconOutline,
-    selectedIcon: HandIconSolid,
-  },
-  [ToolIndex.ZOOM_IN]: {
-    label: 'Zoom in',
-    icon: ZoomInIconOutline,
-    selectedIcon: ZoomInIconSolid,
-  },
-  [ToolIndex.ZOOM_OUT]: {
-    label: 'Zoom out',
-    icon: ZoomOutIconOutline,
-    selectedIcon: ZoomOutIconSolid,
-  },
-};
-
 export default function DesignerPage(): ReactElement {
   const [selectedColor, setSelectedColor] = useState<ColorIndex>(0);
   const [selectedTool, setSelectedTool] = useState<ToolIndex>(ToolIndex.DRAW);
+
+  const { instance, loaded, error } = useWasm();
+
+  const tools: { [P in keyof typeof ToolIndex]: Tool } = {
+    [ToolIndex.DRAW]: {
+      label: 'Draw',
+      icon: PencilIconOutline,
+      selectedIcon: PencilIconSolid,
+      onMouseDown(point) {
+        return instance?.exports.draw(point.x, point.y, 255, 0, 0);
+      },
+      onMouseMove(point, mouseDown) {
+        if (mouseDown) return instance?.exports.draw(point.x, point.y, 255, 0, 0);
+        return false;
+      },
+    },
+    [ToolIndex.ERASE]: {
+      label: 'Erase',
+      icon: XCircleIconOutline,
+      selectedIcon: XCircleIconSolid,
+      onMouseDown(point) {
+        return instance?.exports.erase(point.x, point.y);
+      },
+      onMouseMove(point, mouseDown) {
+        if (mouseDown) return instance?.exports.erase(point.x, point.y);
+        return false;
+      },
+    },
+    [ToolIndex.SELECT]: {
+      label: 'Select',
+      icon: CubeTransparentIconOutline,
+      selectedIcon: CubeTransparentIconSolid,
+    },
+    [ToolIndex.MOVE]: {
+      label: 'Move',
+      icon: HandIconOutline,
+      selectedIcon: HandIconSolid,
+    },
+    [ToolIndex.ZOOM_IN]: {
+      label: 'Zoom in',
+      icon: ZoomInIconOutline,
+      selectedIcon: ZoomInIconSolid,
+    },
+    [ToolIndex.ZOOM_OUT]: {
+      label: 'Zoom out',
+      icon: ZoomOutIconOutline,
+      selectedIcon: ZoomOutIconSolid,
+    },
+  };
 
   return (
     <Layout

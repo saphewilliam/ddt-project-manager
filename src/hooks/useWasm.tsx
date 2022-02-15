@@ -1,16 +1,29 @@
 import * as AsBind from 'as-bind';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode, ReactElement, createContext, useContext } from 'react';
 import { environment } from '@lib/environment';
 
+// TODO typing
 type Any = any;
 
 interface State {
   instance: Record<string, Any> | null;
+  // TODO loading instead of loaded?
   loaded: boolean;
   error: Error | null;
 }
 
-export default function useWasm(imports?: Any): State {
+export interface Props {
+  imports?: Any;
+  children: ReactNode;
+}
+
+const WasmContext = createContext<State>({
+  instance: null,
+  loaded: false,
+  error: new Error('Session context not found'),
+});
+
+export function WasmProvider(props: Props): ReactElement {
   const [state, setState] = useState<State>({ instance: null, loaded: false, error: null });
 
   const filePath = `/wasm/${environment.env === 'DEVELOP' ? 'debug' : 'release'}.wasm`;
@@ -27,7 +40,7 @@ export default function useWasm(imports?: Any): State {
             // eslint-disable-next-line no-console
             consoleLog: (message: string) => console.log(message),
           },
-          ...imports,
+          ...props.imports,
         });
 
         if (!abortController.signal.aborted) setState({ instance, loaded: true, error: null });
@@ -40,5 +53,9 @@ export default function useWasm(imports?: Any): State {
     return () => abortController.abort();
   }, [filePath]);
 
-  return state;
+  return <WasmContext.Provider value={state}>{props.children}</WasmContext.Provider>;
+}
+
+export default function useWasm(): State {
+  return useContext(WasmContext);
 }

@@ -22,6 +22,7 @@ export interface Props {
   // scale: number;
   // selection: Point[];
   // options: CanvasOptions
+  // TODO throw instance in the global context
   onMouseDown?: (point: Point) => boolean;
   onMouseUp?: (point: Point) => boolean;
   onMouseMove?: (point: Point, mouseDown: boolean) => boolean;
@@ -62,15 +63,18 @@ export default function Canvas(props: Props): ReactElement {
     canvas.height = height;
 
     // Create image data
-    const randomShade = () => Math.floor(Math.random() * 255);
+    // const randomShade = () => Math.floor(Math.random() * 255);
     const image = ctx.createImageData(width, height);
-    const imageData = instance?.exports.drawL2(
-      width,
-      height,
-      randomShade(),
-      randomShade(),
-      randomShade(),
-    );
+    instance?.exports.setCanvasSize(width, height);
+    const imageData = instance?.exports.updatePixelGrid();
+    console.log(imageData);
+    // const imageData = instance?.exports.drawL2(
+    //   width,
+    //   height,
+    //   randomShade(),
+    //   randomShade(),
+    //   randomShade(),
+    // );
     image.data.set(imageData);
 
     // Set image data
