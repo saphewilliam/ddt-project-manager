@@ -67,7 +67,6 @@ export default function Canvas(props: Props): ReactElement {
     const image = ctx.createImageData(width, height);
     instance?.exports.setCanvasSize(width, height);
     const imageData = instance?.exports.updatePixelGrid();
-    console.log(imageData);
     // const imageData = instance?.exports.drawL2(
     //   width,
     //   height,
@@ -93,7 +92,7 @@ export default function Canvas(props: Props): ReactElement {
         if (shouldUpdate) handleUpdate();
       }
     },
-    [canvasRef, instance, loaded, error],
+    [props.onMouseDown, canvasRef, instance, loaded, error],
   );
 
   const handleMouseUp = useCallback(
@@ -107,7 +106,7 @@ export default function Canvas(props: Props): ReactElement {
         if (shouldUpdate) handleUpdate();
       }
     },
-    [canvasRef, instance, loaded, error],
+    [props.onMouseUp, canvasRef, instance, loaded, error],
   );
 
   const handleMouseMove = useCallback(
@@ -120,7 +119,7 @@ export default function Canvas(props: Props): ReactElement {
         if (shouldUpdate) handleUpdate();
       }
     },
-    [mouseDown, canvasRef, instance, loaded, error],
+    [props.onMouseMove, mouseDown, canvasRef, instance, loaded, error],
   );
 
   useEffect(() => {

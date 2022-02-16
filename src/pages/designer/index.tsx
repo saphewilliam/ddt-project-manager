@@ -40,19 +40,23 @@ type ColorIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 interface Color {
   name: string;
   hex: string;
+  r: number;
+  g: number;
+  b: number;
 }
 
 const colors: { [P in ColorIndex]: Color } = {
-  [0]: { hex: '#000000', name: 'Black' },
-  [1]: { hex: '#7f7f7f', name: 'Gray' },
-  [2]: { hex: '#880015', name: 'Bordeaux' },
-  [3]: { hex: '#ed1c24', name: 'Red' },
-  [4]: { hex: '#ff7f27', name: 'Orange' },
-  [5]: { hex: '#fff200', name: 'Yellow' },
-  [6]: { hex: '#22b14c', name: 'Green' },
-  [7]: { hex: '#00a2e8', name: 'Light Blue' },
-  [8]: { hex: '#3f48cc', name: 'Dark Blue' },
-  [9]: { hex: '#a349a4', name: 'Lilac' },
+  [0]: { hex: '#000000', name: 'Black', r: 0, g: 0, b: 0 },
+  [1]: { hex: '#ffffff', name: 'White', r: 255, g: 255, b: 255 },
+  // [1]: { hex: '#7f7f7f', name: 'Gray', r: 127, g: 127, b: 127 },
+  [2]: { hex: '#880015', name: 'Bordeaux', r: 136, g: 0, b: 21 },
+  [3]: { hex: '#ed1c24', name: 'Red', r: 237, g: 28, b: 36 },
+  [4]: { hex: '#ff7f27', name: 'Orange', r: 255, g: 127, b: 39 },
+  [5]: { hex: '#fff200', name: 'Yellow', r: 255, g: 242, b: 0 },
+  [6]: { hex: '#22b14c', name: 'Green', r: 34, g: 177, b: 76 },
+  [7]: { hex: '#00a2e8', name: 'Light Blue', r: 0, g: 162, b: 232 },
+  [8]: { hex: '#3f48cc', name: 'Dark Blue', r: 63, g: 72, b: 204 },
+  [9]: { hex: '#a349a4', name: 'Lilac', r: 163, g: 73, b: 164 },
 };
 
 enum ToolIndex {
@@ -86,10 +90,23 @@ export default function DesignerPage(): ReactElement {
       icon: PencilIconOutline,
       selectedIcon: PencilIconSolid,
       onMouseDown(point) {
-        return instance?.exports.draw(point.x, point.y, 255, 0, 0);
+        return instance?.exports.draw(
+          point.x,
+          point.y,
+          colors[selectedColor].r,
+          colors[selectedColor].g,
+          colors[selectedColor].b,
+        );
       },
       onMouseMove(point, mouseDown) {
-        if (mouseDown) return instance?.exports.draw(point.x, point.y, 255, 0, 0);
+        if (mouseDown)
+          return instance?.exports.draw(
+            point.x,
+            point.y,
+            colors[selectedColor].r,
+            colors[selectedColor].g,
+            colors[selectedColor].b,
+          );
         return false;
       },
     },

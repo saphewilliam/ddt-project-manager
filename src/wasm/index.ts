@@ -55,7 +55,7 @@ export class PixelGridLayer {
       for (let y: u32 = 0; y < height; y++) {
         this.stones[width * y + x] = new Stone(
           new Point(x * stoneSize.width, y * stoneSize.height),
-          new Size(11, 11),
+          new Size(stoneSize.width + 1, stoneSize.height + 1),
           new Color(23, 104, 47),
         );
       }
@@ -64,7 +64,7 @@ export class PixelGridLayer {
 }
 
 // Initialize global state
-const layer: PixelGridLayer = new PixelGridLayer(100, 50);
+const layer: PixelGridLayer = new PixelGridLayer(21, 11);
 let canvas: Canvas;
 
 export function setCanvasSize(width: u32, height: u32): void {
@@ -99,7 +99,7 @@ export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
       y > stone.offset.y &&
       y < stone.offset.y + stone.size.height
     ) {
-      if (stone.erased || (stone.color.r !== r && stone.color.g !== g && stone.color.b !== b)) {
+      if (stone.erased || stone.color.r !== r || stone.color.g !== g || stone.color.b !== b) {
         stone.color = new Color(r, g, b);
         stone.erased = false;
         return true;
@@ -113,7 +113,7 @@ export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
 export function updatePixelGrid(): Array<u8> {
   const strokeWidth: u32 = 1;
   const strokeColor: Color = new Color(0, 0, 0);
-  // const bgColor: Color = new Color(255, 0, 0);
+  // const bgColor: Color = new Color(0, 255, 0);
 
   canvas.clear();
 
