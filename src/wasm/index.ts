@@ -1,18 +1,17 @@
 import { Color, Point, Size, Stone } from './structs';
-import { log } from './util';
 
 export class Canvas {
   width: u32;
   height: u32;
-  offset: Point;
+  origin: Point;
   scale: u32;
   pixels: Array<u8>;
 
   constructor(width: u32, height: u32) {
     this.width = width;
     this.height = height;
-    this.offset = new Point(0, 0);
-    this.scale = 10;
+    this.origin = new Point(0, 0);
+    this.scale = 7;
     this.pixels = new Array<u8>(this.width * this.height * 4);
   }
 
@@ -29,10 +28,10 @@ export class Canvas {
   setStone(stone: Stone, strokeColor: Color, strokeWidth: u32): void {
     if (stone.erased) return;
 
-    const xLow: i32 = this.offset.x + this.scale * stone.offset.x;
-    const xUp: i32 = this.offset.x + this.scale * (stone.offset.x + stone.size.width);
-    const yLow: i32 = this.offset.y + this.scale * stone.offset.y;
-    const yUp: i32 = this.offset.y + this.scale * (stone.offset.y + stone.size.height);
+    const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
+    const xUp: i32 = this.origin.x + this.scale * (stone.origin.x + stone.size.width);
+    const yLow: i32 = this.origin.y + this.scale * stone.origin.y;
+    const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height);
 
     for (let x: i32 = xLow; x < xUp; x++) {
       for (let y: i32 = yLow; y < yUp; y++) {
@@ -87,7 +86,7 @@ export function setCanvasSize(width: u32, height: u32): boolean {
 }
 
 export function saveOffset(): void {
-  savedOffset = canvas.offset;
+  savedOffset = canvas.origin;
 }
 
 export function setOffset(x: u32, y: u32, startX: u32, startY: u32): boolean {
@@ -96,29 +95,19 @@ export function setOffset(x: u32, y: u32, startX: u32, startY: u32): boolean {
   const newY = ((savedOffset.y - startY) as i32) + y;
 
   if (
-    Math.abs((canvas.offset.x - newX) as i32) > threshold ||
-    Math.abs((canvas.offset.y - newY) as i32) > threshold
+    Math.abs((canvas.origin.x - newX) as i32) > threshold ||
+    Math.abs((canvas.origin.y - newY) as i32) > threshold
   ) {
-    canvas.offset = new Point(newX, newY);
+    canvas.origin = new Point(newX, newY);
     return true;
   }
   return false;
 }
 
-// TODO make better
-function setScale(origin: Point, scale: u32): void {
-  const factor: f32 = (scale as f32) / (canvas.scale as f32);
-  const originOffset = new Point(
-    canvas.offset.x - (((origin.x as f32) * factor) as i32),
-    canvas.offset.y - (((origin.y as f32) * factor) as i32),
-  );
-
-  // log(
-  //   `{x: ${canvas.offset.x}, y: ${canvas.offset.y}}, {x: ${origin.x}, y: ${origin.y}} ${factor}, ${originOffset.x}, ${originOffset.y}`,
-  // );
-
-  canvas.offset = originOffset;
-  canvas.scale = scale;
+function setScale(origin: Point, scaleBy: f32): void {
+  canvas.scale = ((canvas.scale as f32) * scaleBy) as u32;
+  canvas.origin.x = origin.x - ((((origin.x - canvas.origin.x) as f32) * scaleBy) as i32);
+  canvas.origin.y = origin.y - ((((origin.y - canvas.origin.y) as f32) * scaleBy) as i32);
 }
 
 export function zoomIn(x: u32, y: u32): boolean {
@@ -126,7 +115,7 @@ export function zoomIn(x: u32, y: u32): boolean {
   const origin: Point = new Point(x, y);
 
   if (canvas.scale < maxZoom) {
-    setScale(origin, Math.min(canvas.scale * 1.5, maxZoom) as u32);
+    setScale(origin, 1.5);
     return true;
   }
   return false;
@@ -137,7 +126,7 @@ export function zoomOut(x: u32, y: u32): boolean {
   const origin: Point = new Point(x, y);
 
   if (canvas.scale > minZoom) {
-    setScale(origin, Math.max(canvas.scale / 1.5, minZoom) as u32);
+    setScale(origin, 1 / 1.5);
     return true;
   }
   return false;
@@ -147,10 +136,10 @@ export function erase(x: u32, y: u32): boolean {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
     if (
-      (x as i32) > canvas.offset.x + stone.offset.x * canvas.scale &&
-      (x as i32) < canvas.offset.x + (stone.offset.x + stone.size.width) * canvas.scale &&
-      (y as i32) > canvas.offset.y + stone.offset.y * canvas.scale &&
-      (y as i32) < canvas.offset.y + (stone.offset.y + stone.size.height) * canvas.scale
+      (x as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
+      (x as i32) < canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
+      (y as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
+      (y as i32) < canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
     ) {
       if (!stone.erased) {
         stone.erased = true;
@@ -166,10 +155,10 @@ export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
     if (
-      (x as i32) > canvas.offset.x + stone.offset.x * canvas.scale &&
-      (x as i32) < canvas.offset.x + (stone.offset.x + stone.size.width) * canvas.scale &&
-      (y as i32) > canvas.offset.y + stone.offset.y * canvas.scale &&
-      (y as i32) < canvas.offset.y + (stone.offset.y + stone.size.height) * canvas.scale
+      (x as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
+      (x as i32) < canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
+      (y as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
+      (y as i32) < canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
     ) {
       if (stone.erased || stone.color.r !== r || stone.color.g !== g || stone.color.b !== b) {
         stone.color = new Color(r, g, b);

@@ -33,14 +33,14 @@ export class Color {
 }
 
 export class Stone {
-  offset: Point;
+  origin: Point;
   size: Size;
   color: Color;
   angle: f32;
   erased: boolean;
 
   constructor(offset: Point, size: Size, color: Color, angle: f32 = 0) {
-    this.offset = offset;
+    this.origin = offset;
     this.size = size;
     this.color = color;
     this.angle = angle;

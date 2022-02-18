@@ -87,9 +87,7 @@ export default function Canvas(props: Props): ReactElement {
 
       setMouseDownStart(point);
       if (props.onMouseDown) {
-        console.time('mouseDown');
         const shouldUpdate = props.onMouseDown(point);
-        console.timeEnd('mouseDown');
         if (shouldUpdate) handleUpdate();
       }
     },
