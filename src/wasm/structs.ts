@@ -1,8 +1,8 @@
 export class Point {
-  x: u32;
-  y: u32;
+  x: i32;
+  y: i32;
 
-  constructor(x: u32, y: u32) {
+  constructor(x: i32, y: i32) {
     this.x = x;
     this.y = y;
   }

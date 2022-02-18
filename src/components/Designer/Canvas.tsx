@@ -25,12 +25,14 @@ export interface Props {
   // TODO throw instance in the global context
   onMouseDown?: (point: Point) => boolean;
   onMouseUp?: (point: Point) => boolean;
-  onMouseMove?: (point: Point, mouseDown: boolean) => boolean;
+  onMouseMove?: (point: Point, mouseDownStart: Point | null) => boolean;
 }
 
 export default function Canvas(props: Props): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mouseDown, setMouseDown] = useState(false);
+
+  const [mouseDownStart, setMouseDownStart] = useState<Point | null>(null);
+
   const { instance, loaded, error } = useWasm();
 
   const getMousePoint = (e: ReactMouseEvent): Point | null => {
@@ -59,26 +61,23 @@ export default function Canvas(props: Props): ReactElement {
 
     // Set default canvas width and height
     const { clientWidth: width, clientHeight: height } = canvas;
+    instance?.exports.setCanvasSize(width, height);
     canvas.width = width;
     canvas.height = height;
 
     // Create image data
-    // const randomShade = () => Math.floor(Math.random() * 255);
-    const image = ctx.createImageData(width, height);
-    instance?.exports.setCanvasSize(width, height);
-    const imageData = instance?.exports.updatePixelGrid();
-    // const imageData = instance?.exports.drawL2(
-    //   width,
-    //   height,
-    //   randomShade(),
-    //   randomShade(),
-    //   randomShade(),
-    // );
-    image.data.set(imageData);
+    console.time('updatePixelGrid');
+    const pixels = new Uint8ClampedArray(instance?.exports.updatePixelGrid());
+    const imageData = new ImageData(pixels, width, height);
+    console.timeEnd('updatePixelGrid');
 
     // Set image data
     ctx.clearRect(0, 0, width, height);
-    ctx.putImageData(image, 0, 0);
+    // TODO Performance increase: https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
+    // https://gist.github.com/biovisualize/5400576
+
+    // TODO For more performance, call putImageData with a bounding box to redraw only a subset of the pixels (i.e., only supply the canvas with pixels from the ImageData in the box [(x,y), (x+w,y+h)])
+    ctx.putImageData(imageData, 0, 0);
   }, [canvasRef, instance, loaded, error]);
 
   const handleMouseDown = useCallback(
@@ -86,9 +85,11 @@ export default function Canvas(props: Props): ReactElement {
       const point = getMousePoint(e);
       if (!point) return;
 
-      setMouseDown(true);
+      setMouseDownStart(point);
       if (props.onMouseDown) {
+        console.time('mouseDown');
         const shouldUpdate = props.onMouseDown(point);
+        console.timeEnd('mouseDown');
         if (shouldUpdate) handleUpdate();
       }
     },
@@ -100,7 +101,7 @@ export default function Canvas(props: Props): ReactElement {
       const point = getMousePoint(e);
       if (!point) return;
 
-      setMouseDown(false);
+      setMouseDownStart(null);
       if (props.onMouseUp) {
         const shouldUpdate = props.onMouseUp(point);
         if (shouldUpdate) handleUpdate();
@@ -115,11 +116,11 @@ export default function Canvas(props: Props): ReactElement {
       if (!point) return;
 
       if (props.onMouseMove) {
-        const shouldUpdate = props.onMouseMove(point, mouseDown);
+        const shouldUpdate = props.onMouseMove(point, mouseDownStart);
         if (shouldUpdate) handleUpdate();
       }
     },
-    [props.onMouseMove, mouseDown, canvasRef, instance, loaded, error],
+    [props.onMouseMove, mouseDownStart, canvasRef, instance, loaded, error],
   );
 
   useEffect(() => {

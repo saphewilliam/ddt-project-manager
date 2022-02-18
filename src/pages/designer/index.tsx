@@ -75,7 +75,7 @@ interface Tool {
 
   onMouseDown?: (point: Point) => boolean;
   onMouseUp?: (point: Point) => boolean;
-  onMouseMove?: (point: Point, mouseDown: boolean) => boolean;
+  onMouseMove?: (point: Point, mouseDownStart: Point | null) => boolean;
 }
 
 export default function DesignerPage(): ReactElement {
@@ -98,8 +98,8 @@ export default function DesignerPage(): ReactElement {
           colors[selectedColor].b,
         );
       },
-      onMouseMove(point, mouseDown) {
-        if (mouseDown)
+      onMouseMove(point, mouseDownStart) {
+        if (mouseDownStart)
           return instance?.exports.draw(
             point.x,
             point.y,
@@ -117,8 +117,8 @@ export default function DesignerPage(): ReactElement {
       onMouseDown(point) {
         return instance?.exports.erase(point.x, point.y);
       },
-      onMouseMove(point, mouseDown) {
-        if (mouseDown) return instance?.exports.erase(point.x, point.y);
+      onMouseMove(point, mouseDownStart) {
+        if (mouseDownStart) return instance?.exports.erase(point.x, point.y);
         return false;
       },
     },
@@ -131,16 +131,31 @@ export default function DesignerPage(): ReactElement {
       label: 'Move',
       icon: HandIconOutline,
       selectedIcon: HandIconSolid,
+      onMouseDown() {
+        instance?.exports.saveOffset();
+        return false;
+      },
+      onMouseMove(point, mouseDownStart) {
+        if (mouseDownStart)
+          return instance?.exports.setOffset(point.x, point.y, mouseDownStart.x, mouseDownStart.y);
+        return false;
+      },
     },
     [ToolIndex.ZOOM_IN]: {
       label: 'Zoom in',
       icon: ZoomInIconOutline,
       selectedIcon: ZoomInIconSolid,
+      onMouseDown(point) {
+        return instance?.exports.zoomIn(point.x, point.y);
+      },
     },
     [ToolIndex.ZOOM_OUT]: {
       label: 'Zoom out',
       icon: ZoomOutIconOutline,
       selectedIcon: ZoomOutIconSolid,
+      onMouseDown(point) {
+        return instance?.exports.zoomOut(point.x, point.y);
+      },
     },
   };
 
