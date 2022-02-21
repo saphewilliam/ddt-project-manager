@@ -1,5 +1,4 @@
 import { Tab } from '@headlessui/react';
-// import cx from 'clsx';
 import React, { ReactElement } from 'react';
 
 export interface TabData {

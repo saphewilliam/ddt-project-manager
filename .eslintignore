@@ -1,4 +1,4 @@
-.next
+.next/
 node_modules/
 __generated__/
 schema.graphql

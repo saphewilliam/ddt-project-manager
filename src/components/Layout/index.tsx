@@ -9,6 +9,8 @@ import SocketFooter from './SocketFooter';
 
 export interface Props {
   title?: string;
+  hideHeader?: boolean;
+  sidebar?: ReactNode;
   children?: ReactNode;
 }
 
@@ -35,7 +37,7 @@ export default function Layout(props: Props): ReactElement {
         {session !== null ? (
           <>
             <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>
-              {props.title && (
+              {props.title && !props.hideHeader && (
                 <h1 className={cx('font-bold', 'text-4xl', 'mb-12')}>{props.title}</h1>
               )}
               {props.children}
@@ -46,6 +48,8 @@ export default function Layout(props: Props): ReactElement {
           <Loading className={cx('mb-28')} />
         )}
       </main>
+
+      {session !== null && props.sidebar}
     </div>
   );
 }
