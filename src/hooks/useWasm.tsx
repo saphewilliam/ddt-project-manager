@@ -26,7 +26,7 @@ const WasmContext = createContext<State>({
 export function WasmProvider(props: Props): ReactElement {
   const [state, setState] = useState<State>({ instance: null, loaded: false, error: null });
 
-  const filePath = `/wasm/${environment.env === 'DEVELOP' ? 'debug' : 'release'}.wasm`;
+  const filePath = `/wasm/${environment.nodeEnv === 'development' ? 'debug' : 'release'}.wasm`;
 
   useEffect(() => {
     const abortController = new AbortController();
