@@ -13,13 +13,7 @@ export default function EventPage(): ReactElement {
 
   const eventSlug = extractURLParam('eventSlug', router.query);
 
-  const { data } = useSafeQuery(
-    'useEvent',
-    {
-      eventSlug: eventSlug ?? '',
-    },
-    eventSlug,
-  );
+  const { data } = useSafeQuery('useEvent', { eventSlug: eventSlug ?? '' }, eventSlug);
 
   return (
     <Layout title="Event" hideHeader>
@@ -62,7 +56,7 @@ export default function EventPage(): ReactElement {
         >
           <div>
             {data?.event?.subthemes.map((subtheme) => (
-              <SubthemeTable subtheme={subtheme} key={subtheme.id} />
+              <SubthemeTable subtheme={subtheme} eventSlug={eventSlug ?? ''} key={subtheme.id} />
             ))}
           </div>
         </section>

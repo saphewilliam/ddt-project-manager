@@ -36,6 +36,7 @@ query Event($eventSlug: String!) {
         id
         name
         number
+        slug
         subNumber
         supervisor {
           id
