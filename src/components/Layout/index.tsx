@@ -48,7 +48,8 @@ export default function Layout(props: Props): ReactElement {
           <Loading className={cx('mb-28')} />
         )}
       </main>
-      {props.sidebar}
+
+      {session !== null && props.sidebar}
     </div>
   );
 }

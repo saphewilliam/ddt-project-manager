@@ -132,12 +132,12 @@ export default function DesignerPage(): ReactElement {
       icon: HandIconOutline,
       selectedIcon: HandIconSolid,
       onMouseDown() {
-        instance?.exports.saveOffset();
+        instance?.exports.saveOrigin();
         return false;
       },
       onMouseMove(point, mouseDownStart) {
         if (mouseDownStart)
-          return instance?.exports.setOffset(point.x, point.y, mouseDownStart.x, mouseDownStart.y);
+          return instance?.exports.setOrigin(point.x, point.y, mouseDownStart.x, mouseDownStart.y);
         return false;
       },
     },

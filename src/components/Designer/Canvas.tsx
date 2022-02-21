@@ -17,12 +17,7 @@ export interface Point {
 type ReactMouseEvent = React.MouseEvent<HTMLCanvasElement, MouseEvent>;
 
 export interface Props {
-  // grid: Grid;
-  // offset: Point;
-  // scale: number;
-  // selection: Point[];
   // options: CanvasOptions
-  // TODO throw instance in the global context
   onMouseDown?: (point: Point) => boolean;
   onMouseUp?: (point: Point) => boolean;
   onMouseMove?: (point: Point, mouseDownStart: Point | null) => boolean;
@@ -72,7 +67,7 @@ export default function Canvas(props: Props): ReactElement {
     console.timeEnd('updatePixelGrid');
 
     // Set image data
-    ctx.clearRect(0, 0, width, height);
+    // ctx.clearRect(0, 0, width, height);
     // TODO Performance increase: https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
     // https://gist.github.com/biovisualize/5400576
 

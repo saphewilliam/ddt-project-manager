@@ -74,7 +74,7 @@ export class PixelGridLayer {
 
 // Initialize global state
 const layer: PixelGridLayer = new PixelGridLayer(20, 30);
-let savedOffset: Point;
+let savedOrigin: Point;
 let canvas: Canvas;
 
 export function setCanvasSize(width: u32, height: u32): boolean {
@@ -85,14 +85,14 @@ export function setCanvasSize(width: u32, height: u32): boolean {
   return false;
 }
 
-export function saveOffset(): void {
-  savedOffset = canvas.origin;
+export function saveOrigin(): void {
+  savedOrigin = canvas.origin;
 }
 
-export function setOffset(x: u32, y: u32, startX: u32, startY: u32): boolean {
+export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): boolean {
   const threshold = 10;
-  const newX = ((savedOffset.x - startX) as i32) + x;
-  const newY = ((savedOffset.y - startY) as i32) + y;
+  const newX = ((savedOrigin.x - startX) as i32) + x;
+  const newY = ((savedOrigin.y - startY) as i32) + y;
 
   if (
     Math.abs((canvas.origin.x - newX) as i32) > threshold ||
