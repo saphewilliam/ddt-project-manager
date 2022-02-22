@@ -29,9 +29,9 @@ export class Canvas {
     if (stone.erased) return;
 
     const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
-    const xUp: i32 = this.origin.x + this.scale * (stone.origin.x + stone.size.width);
+    const xUp: i32 = this.origin.x + this.scale * (stone.origin.x + stone.size.width) + 1;
     const yLow: i32 = this.origin.y + this.scale * stone.origin.y;
-    const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height);
+    const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height) + 1;
 
     for (let x: i32 = xLow; x < xUp; x++) {
       for (let y: i32 = yLow; y < yUp; y++) {
@@ -62,14 +62,14 @@ export class PixelGridLayer {
   constructor(width: u32, height: u32) {
     this.stones = new Array<Stone>(width * height);
 
+    const initColor = new Color(0, 162, 232);
     const stoneSize = new Size(3, 3);
     for (let x: u32 = 0; x < width; x++) {
       for (let y: u32 = 0; y < height; y++) {
         this.stones[width * y + x] = new Stone(
           new Point(x * stoneSize.width, y * stoneSize.height),
           new Size(stoneSize.width, stoneSize.height),
-          // TODO
-          new Color(0, 162, 232),
+          initColor,
         );
       }
     }
