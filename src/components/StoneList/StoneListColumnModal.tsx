@@ -1,6 +1,7 @@
-import { RenderHeadProps } from '@saphe/react-table';
+import { RenderHeadProps, VisibilityHelpers } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
+import Button from '@components/Button';
 import Modal from '@components/Modal';
 
 export interface Props {
@@ -8,6 +9,7 @@ export interface Props {
   show: boolean;
   setShow: (value: boolean) => void;
   originalHeaders: RenderHeadProps[];
+  visibilityHelpers: VisibilityHelpers;
 }
 
 export default function StoneListColumnModal(props: Props): ReactElement {
@@ -33,6 +35,10 @@ export default function StoneListColumnModal(props: Props): ReactElement {
                 <label htmlFor={`${props.title}-${header.name}`}>{header.label}</label>
               </div>
             ))}
+          <div className={cx('flex', 'mt-4', 'space-x-2')}>
+            <Button label="Hide all" onClick={props.visibilityHelpers.hideAll} />
+            <Button label="Show all" onClick={props.visibilityHelpers.showAll} />
+          </div>
         </div>
       }
     />

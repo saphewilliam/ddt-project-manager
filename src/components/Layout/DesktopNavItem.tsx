@@ -65,6 +65,10 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
   }, [tooltipTop, itemRef]);
 
   useEffect(() => {
+    updateTooltipTop();
+  }, []);
+
+  useEffect(() => {
     if (!navState.collapsed) setShowTooltip(false);
   }, [navState.collapsed]);
 
