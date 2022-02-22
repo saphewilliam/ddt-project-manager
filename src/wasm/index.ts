@@ -11,7 +11,7 @@ export class Canvas {
     this.width = width;
     this.height = height;
     this.origin = new Point(0, 0);
-    this.scale = 7;
+    this.scale = 5;
     this.pixels = new Array<u8>(this.width * this.height * 4);
   }
 
@@ -58,7 +58,7 @@ export class PixelGridLayer {
   constructor(width: u32, height: u32) {
     this.stones = new Array<Stone>(width * height);
 
-    const stoneSize = new Size(1, 1);
+    const stoneSize = new Size(3, 3);
     for (let x: u32 = 0; x < width; x++) {
       for (let y: u32 = 0; y < height; y++) {
         this.stones[width * y + x] = new Stone(
@@ -72,8 +72,40 @@ export class PixelGridLayer {
   }
 }
 
+// 4.8 cm hoog = 6
+// 2.4 cm breed = 3
+// 0.8 cm diep = 1
+
+export class WallLayer {
+  stones: Array<Stone>;
+
+  constructor(width: u32, height: u32) {
+    this.stones = new Array<Stone>(width);
+
+    const initColor = new Color(23, 104, 47);
+    for (let y: u32 = 0; y < height; y++) {
+      for (let x: u32 = 0; x < width; x++) {
+        if (y % 2 === 0)
+          this.stones[width * y + x] = new Stone(
+            new Point(x * 5, y * 3),
+            new Size(1, 3),
+            initColor,
+          );
+        else if (y % 2 === 1)
+          this.stones[width * y + x] = new Stone(
+            new Point(x * 5, y * 3),
+            new Size(6, 3),
+            initColor,
+          );
+      }
+    }
+  }
+}
+
 // Initialize global state
 const layer: PixelGridLayer = new PixelGridLayer(20, 30);
+// const layer: WallLayer = new WallLayer(20, 30);
+
 let savedOrigin: Point;
 let canvas: Canvas;
 
@@ -111,7 +143,7 @@ function setScale(origin: Point, scaleBy: f32): void {
 }
 
 export function zoomIn(x: u32, y: u32): boolean {
-  const maxZoom: u32 = 70;
+  const maxZoom: u32 = 40;
   const origin: Point = new Point(x, y);
 
   if (canvas.scale < maxZoom) {
