@@ -9,6 +9,7 @@ import React, {
   useEffect,
   useState,
   useContext,
+  useCallback,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { NavigationContext } from '@providers/NavigationProvider';
@@ -58,9 +59,10 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
     </div>
   );
 
-  useEffect(() => {
-    setTooltipTop(itemRef.current?.getBoundingClientRect().top);
-  }, [itemRef]);
+  const updateTooltipTop = useCallback(() => {
+    const newTop = itemRef.current?.getBoundingClientRect().top;
+    if (newTop !== tooltipTop) setTooltipTop(newTop);
+  }, [tooltipTop, itemRef]);
 
   useEffect(() => {
     if (!navState.collapsed) setShowTooltip(false);
@@ -72,6 +74,7 @@ export default function DesktopNavItem(props: NavItemProps): ReactElement {
       className={cx('my-1')}
       onMouseEnter={() => navState.collapsed && setShowTooltip(true)}
       onMouseLeave={() => navState.collapsed && setShowTooltip(false)}
+      onTransitionEnd={updateTooltipTop}
     >
       {props.subItems && props.subItems.length > 0 ? (
         <>
