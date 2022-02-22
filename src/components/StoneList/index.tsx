@@ -58,9 +58,11 @@ export default function StoneList(props: Props): ReactElement {
     [props.rows],
   );
 
-  const { headers, originalHeaders, rows } = useTable<StoneListColumnTypes>(columns, data, {
-    style: { renderCell: ValueCell, renderHead: HeadCell },
-  });
+  const { headers, originalHeaders, rows, visibilityHelpers } = useTable<StoneListColumnTypes>(
+    columns,
+    data,
+    { style: { renderCell: ValueCell, renderHead: HeadCell } },
+  );
 
   return (
     <section>
@@ -84,6 +86,7 @@ export default function StoneList(props: Props): ReactElement {
       </div>
 
       <StoneListColumnModal
+        visibilityHelpers={visibilityHelpers}
         originalHeaders={originalHeaders}
         setShow={setShowColumnModal}
         show={showColumnModal}

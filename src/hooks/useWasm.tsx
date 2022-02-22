@@ -39,6 +39,10 @@ export function WasmProvider(props: Props): ReactElement {
           util: {
             // eslint-disable-next-line no-console
             consoleLog: (message: string) => console.log(message),
+            // eslint-disable-next-line no-console
+            consoleTime: (label: string) => console.time(label),
+            // eslint-disable-next-line no-console
+            consoleTimeEnd: (label: string) => console.timeEnd(label),
           },
           ...props.imports,
         });
