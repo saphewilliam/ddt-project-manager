@@ -5,24 +5,19 @@ export class Canvas {
   height: u32;
   origin: Point;
   scale: u32;
-  pixels: Array<u8>;
+  pixels: Array<u32>;
 
   constructor(width: u32, height: u32) {
     this.width = width;
     this.height = height;
     this.origin = new Point(0, 0);
     this.scale = 5;
-    this.pixels = new Array<u8>(this.width * this.height * 4);
+    this.pixels = new Array<u32>(this.width * this.height);
   }
 
   setPixel(x: i32, y: i32, color: Color): void {
-    const i: i32 = (this.width * y + x) * 4;
-    if (x >= 0 && x < (this.width as i32) && y >= 0 && y < (this.height as i32)) {
-      this.pixels[i] = color.r;
-      this.pixels[i + 1] = color.g;
-      this.pixels[i + 2] = color.b;
-      this.pixels[i + 3] = 255;
-    }
+    if (x >= 0 && x < (this.width as i32) && y >= 0 && y < (this.height as i32))
+      this.pixels[this.width * y + x] = color.color;
   }
 
   setStone(stone: Stone, strokeColor: Color, selectedStrokeColor: Color, strokeWidth: u32): void {
@@ -50,6 +45,6 @@ export class Canvas {
   }
 
   clear(): void {
-    this.pixels = new Array<u8>(this.width * this.height * 4);
+    this.pixels = new Array<u32>(this.width * this.height);
   }
 }

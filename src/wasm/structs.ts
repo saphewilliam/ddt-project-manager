@@ -19,16 +19,30 @@ export class Size {
 }
 
 export class Color {
-  r: u8;
-  g: u8;
-  b: u8;
-  a: u8;
+  color: u32;
+  private _r: u8;
+  private _g: u8;
+  private _b: u8;
 
   constructor(r: u8, g: u8, b: u8, a: u8 = 255) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+    // TODO determine the endianness of the processor http://jsfiddle.net/andrewjbaker/Fnx2w/
+    // this.color = ((r as u32) << 24) | ((g as u32) << 16) | ((b as u16) << 8) | a;
+    this.color = ((a as u32) << 24) | ((b as u32) << 16) | ((g as u16) << 8) | r;
+    this._r = r;
+    this._g = g;
+    this._b = b;
+  }
+
+  get r(): u8 {
+    return this._r;
+  }
+
+  get g(): u8 {
+    return this._g;
+  }
+
+  get b(): u8 {
+    return this._b;
   }
 }
 

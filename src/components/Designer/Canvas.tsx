@@ -2,6 +2,7 @@ import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
 import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
+import { environment } from '@lib/environment';
 
 export interface Point {
   x: number;
@@ -62,18 +63,19 @@ export default function Canvas(props: Props): ReactElement {
     canvas.width = width;
     canvas.height = height;
 
+    // Create buffers
+    const buffer = new ArrayBuffer(width * height * 4);
+    const buffer8 = new Uint8ClampedArray(buffer);
+    const buffer32 = new Uint32Array(buffer);
+
     // Create image data
-    console.time('updatePixelGrid');
-    const pixels = new Uint8ClampedArray(instance?.exports.updatePixelGrid());
-    const imageData = new ImageData(pixels, width, height);
-    console.timeEnd('updatePixelGrid');
+    if (environment.nodeEnv === 'development') console.time('createImageData');
+    const pixels = instance?.exports.updatePixelGrid();
+    for (let i = 0; i < pixels.length; i++) buffer32[i] = pixels[i] ?? 0;
+    const imageData = new ImageData(buffer8, width, height);
+    if (environment.nodeEnv === 'development') console.timeEnd('createImageData');
 
-    // Set image data
-    // ctx.clearRect(0, 0, width, height);
-    // TODO Performance increase: https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
-    // https://gist.github.com/biovisualize/5400576
-
-    // TODO For more performance, call putImageData with a bounding box to redraw only a subset of the pixels (i.e., only supply the canvas with pixels from the ImageData in the box [(x,y), (x+w,y+h)])
+    // TODO Performance: call putImageData with a bounding box to redraw only a subset of the pixels (i.e., only supply the canvas with pixels from the ImageData in the box [(x,y), (x+w,y+h)])
     ctx.putImageData(imageData, 0, 0);
   }, [canvasRef, instance, loaded, error]);
 

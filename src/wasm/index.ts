@@ -1,11 +1,11 @@
 import { Canvas } from './canvas';
-import { PixelGridLayer, WallLayer } from './layers';
+import { PixelGridLayer } from './layers';
 import { Color, Point, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
 // const layer: PixelGridLayer = new PixelGridLayer(20, 30);
-const layer: WallLayer = new WallLayer(20, 30);
+const layer: PixelGridLayer = new PixelGridLayer(20, 30);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
@@ -189,7 +189,7 @@ export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
   return false;
 }
 
-export function updatePixelGrid(): Array<u8> {
+export function updatePixelGrid(): Array<u32> {
   const strokeWidth: u32 = 1;
   const strokeColor: Color = new Color(0, 0, 0);
   const selectedStrokeColor: Color = new Color(255, 0, 0);
