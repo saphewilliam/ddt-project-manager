@@ -61,4 +61,16 @@ export class WallLayer {
       }
     }
   }
+
+  // TODO abstract layer class
+  getStones(): Array<Stone> {
+    const stonesClone: Array<Stone> = new Array<Stone>();
+    for (let i = 0; i < this.stones.length; i++) {
+      const stone = this.stones[i];
+      stonesClone.push(
+        new Stone(stone.origin, stone.size, stone.color, stone.angle, stone.erased, stone.selected),
+      );
+    }
+    return stonesClone;
+  }
 }

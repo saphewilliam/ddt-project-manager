@@ -33,6 +33,8 @@ export class Canvas {
     const yLow: i32 = this.origin.y + this.scale * stone.origin.y;
     const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height) + 1;
 
+    if (xLow > (this.width as i32) || xUp < 0 || yLow > (this.height as i32) || yUp < 0) return;
+
     for (let x: i32 = xLow; x < xUp; x++) {
       for (let y: i32 = yLow; y < yUp; y++) {
         if (

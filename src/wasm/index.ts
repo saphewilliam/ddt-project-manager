@@ -1,14 +1,15 @@
 import { Canvas } from './canvas';
-import { PixelGridLayer } from './layers';
+import { PixelGridLayer, WallLayer } from './layers';
 import { Color, Point, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: PixelGridLayer = new PixelGridLayer(20, 30);
-// const layer: WallLayer = new WallLayer(20, 30);
+// const layer: PixelGridLayer = new PixelGridLayer(20, 30);
+const layer: WallLayer = new WallLayer(20, 30);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
+const clipboard: Array<Stone> = new Array<Stone>();
 let originStore: Point = new Point(0, 0);
 let selection: Array<Stone> = new Array<Stone>();
 
@@ -33,14 +34,25 @@ export function setCanvasSize(width: u32, height: u32): boolean {
   return false;
 }
 
-/** Checks if a stone is in bounds of a canvas x, y point */
-function isInBounds(x1: u32, x2: u32, y1: u32, y2: u32, stone: Stone): boolean {
+/** Checks if a stone is in bounds of a canvas (x1, y1), (x2, y2) area */
+function isInBounds(stone: Stone, x1: u32, y1: u32, x2: u32, y2: u32): boolean {
   return (
-    (x1 as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
-    (x2 as i32) < canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
-    (y1 as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
-    (y2 as i32) < canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
+    (Math.max(x1, x2) as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
+    (Math.min(x1, x2) as i32) <
+      canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
+    (Math.max(y1, y2) as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
+    (Math.min(y1, y2) as i32) <
+      canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
   );
+}
+
+export function clearSelection(): boolean {
+  if (selection.length === 0) return false;
+  for (let i = 0; i < selection.length; i++) {
+    selection[i].selected = false;
+  }
+  selection.length = 0;
+  return true;
 }
 
 export function select(x1: u32, y1: u32, x2: u32, y2: u32): boolean {
@@ -49,15 +61,7 @@ export function select(x1: u32, y1: u32, x2: u32, y2: u32): boolean {
 
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (
-      isInBounds(
-        Math.max(x1, x2) as u32,
-        Math.min(x1, x2) as u32,
-        Math.max(y1, y2) as u32,
-        Math.min(y1, y2) as u32,
-        stone,
-      )
-    ) {
+    if (isInBounds(stone, x1, y1, x2, y2)) {
       if (!stone.selected) {
         stone.selected = true;
         shouldUpdate = true;
@@ -71,6 +75,28 @@ export function select(x1: u32, y1: u32, x2: u32, y2: u32): boolean {
 
   selection = newSelection;
   return shouldUpdate;
+}
+
+export function cut(): boolean {
+  if (selection.length > 0) {
+    for (let i = 0; i < selection.length; i++) selection[i].erased = true;
+    return true;
+  }
+  return false;
+}
+
+export function copy(): boolean {
+  if (selection.length > 0) {
+    // TODO
+  }
+  return false;
+}
+
+export function paste(x: u32, y: u32): boolean {
+  if (selection.length > 0 && clipboard.length > 0) {
+    // TODO
+  }
+  return false;
 }
 
 export function undo(): boolean {
@@ -137,7 +163,7 @@ export function zoomOut(x: u32, y: u32): boolean {
 export function erase(x: u32, y: u32): boolean {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (isInBounds(x, x, y, y, stone)) {
+    if (isInBounds(stone, x, y, x, y)) {
       if (!stone.erased) {
         stone.erased = true;
         return true;
@@ -151,7 +177,7 @@ export function erase(x: u32, y: u32): boolean {
 export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (isInBounds(x, x, y, y, stone)) {
+    if (isInBounds(stone, x, y, x, y)) {
       if (stone.erased || stone.color.r !== r || stone.color.g !== g || stone.color.b !== b) {
         stone.color = new Color(r, g, b);
         stone.erased = false;

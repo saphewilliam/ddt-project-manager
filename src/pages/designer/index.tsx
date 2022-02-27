@@ -90,6 +90,7 @@ export default function DesignerPage(): ReactElement {
       icon: PencilIconOutline,
       selectedIcon: PencilIconSolid,
       onMouseDown(point) {
+        // TODO only save if canvas updated (check on mouse up)
         instance?.exports.saveUndo();
         return instance?.exports.draw(
           point.x,
@@ -116,6 +117,7 @@ export default function DesignerPage(): ReactElement {
       icon: XCircleIconOutline,
       selectedIcon: XCircleIconSolid,
       onMouseDown(point) {
+        // TODO only save if canvas updated (check on mouse up)
         instance?.exports.saveUndo();
         return instance?.exports.erase(point.x, point.y);
       },
@@ -128,8 +130,10 @@ export default function DesignerPage(): ReactElement {
       label: 'Select',
       icon: CubeTransparentIconOutline,
       selectedIcon: CubeTransparentIconSolid,
-      onMouseDown(point) {
-        return instance?.exports.select(point.x, point.y, point.x, point.y);
+      onMouseDown() {
+        // TODO only save if canvas updated (check on mouse up)
+        instance?.exports.saveUndo();
+        return instance?.exports.clearSelection();
       },
       onMouseMove(point, mouseDownStart) {
         if (mouseDownStart)
@@ -173,10 +177,29 @@ export default function DesignerPage(): ReactElement {
     if (e.repeat) return false;
 
     switch (e.key.toLowerCase()) {
+      case 'x':
+        if (e.ctrlKey) {
+          // TODO only save if canvas updated (if selection.length > 0)
+          instance?.exports.saveUndo();
+          return instance?.exports.cut();
+        }
+        break;
+      case 'c':
+        if (e.ctrlKey) {
+          return instance?.exports.copy();
+        }
+        break;
+      case 'v':
+        if (e.ctrlKey) {
+          // TODO only save if canvas updated (if clipboard.length > 0 && entire clipboard fits within canvas)
+          instance?.exports.saveUndo();
+          return instance?.exports.paste();
+        }
+        break;
       case 'z':
         if (e.ctrlKey && !e.shiftKey) return instance?.exports.undo();
         if (e.ctrlKey && e.shiftKey) return instance?.exports.redo();
-        return false;
+        break;
     }
 
     return false;
