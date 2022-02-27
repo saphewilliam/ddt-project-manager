@@ -39,10 +39,11 @@ export class Stone {
   angle: f32;
   erased: boolean;
 
-  constructor(origin: Point, size: Size, color: Color, angle: f32 = 0) {
+  constructor(origin: Point, size: Size, color: Color, angle: f32 = 0, erased: boolean = false) {
     this.origin = origin;
     this.size = size;
     this.color = color;
     this.angle = angle;
+    this.erased = erased;
   }
 }

@@ -90,6 +90,7 @@ export default function DesignerPage(): ReactElement {
       icon: PencilIconOutline,
       selectedIcon: PencilIconSolid,
       onMouseDown(point) {
+        instance?.exports.saveUndo();
         return instance?.exports.draw(
           point.x,
           point.y,
@@ -115,6 +116,7 @@ export default function DesignerPage(): ReactElement {
       icon: XCircleIconOutline,
       selectedIcon: XCircleIconSolid,
       onMouseDown(point) {
+        instance?.exports.saveUndo();
         return instance?.exports.erase(point.x, point.y);
       },
       onMouseMove(point, mouseDownStart) {
@@ -158,6 +160,19 @@ export default function DesignerPage(): ReactElement {
       },
     },
   };
+
+  function handleKeyDown(e: KeyboardEvent): boolean {
+    if (e.repeat) return false;
+
+    switch (e.key.toLowerCase()) {
+      case 'z':
+        if (e.ctrlKey && !e.shiftKey) return instance?.exports.undo();
+        if (e.ctrlKey && e.shiftKey) return instance?.exports.redo();
+        return false;
+    }
+
+    return false;
+  }
 
   return (
     <Layout
@@ -236,6 +251,7 @@ export default function DesignerPage(): ReactElement {
           onMouseDown={tools[selectedTool].onMouseDown}
           onMouseUp={tools[selectedTool].onMouseUp}
           onMouseMove={tools[selectedTool].onMouseMove}
+          onKeyDown={handleKeyDown}
         />
         {/* </ContextMenu> */}
       </div>

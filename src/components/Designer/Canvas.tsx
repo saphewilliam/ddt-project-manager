@@ -21,6 +21,7 @@ export interface Props {
   onMouseDown?: (point: Point) => boolean;
   onMouseUp?: (point: Point) => boolean;
   onMouseMove?: (point: Point, mouseDownStart: Point | null) => boolean;
+  onKeyDown?: (e: KeyboardEvent) => boolean;
 }
 
 export default function Canvas(props: Props): ReactElement {
@@ -115,6 +116,23 @@ export default function Canvas(props: Props): ReactElement {
     },
     [props.onMouseMove, mouseDownStart, canvasRef, instance, loaded, error],
   );
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (props.onKeyDown) {
+        const shouldUpdate = props.onKeyDown(e);
+        if (shouldUpdate) handleUpdate();
+      }
+    },
+    [props.onKeyDown],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [window, handleKeyDown]);
 
   useEffect(() => {
     handleUpdate();

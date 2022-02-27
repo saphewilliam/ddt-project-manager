@@ -1,132 +1,60 @@
-import { Color, Point, Size, Stone } from './structs';
-
-export class Canvas {
-  width: u32;
-  height: u32;
-  origin: Point;
-  scale: u32;
-  pixels: Array<u8>;
-
-  constructor(width: u32, height: u32) {
-    this.width = width;
-    this.height = height;
-    this.origin = new Point(0, 0);
-    this.scale = 5;
-    this.pixels = new Array<u8>(this.width * this.height * 4);
-  }
-
-  setPixel(x: i32, y: i32, color: Color): void {
-    const i: i32 = (this.width * y + x) * 4;
-    if (x >= 0 && x < (this.width as i32) && y >= 0 && y < (this.height as i32)) {
-      this.pixels[i] = color.r;
-      this.pixels[i + 1] = color.g;
-      this.pixels[i + 2] = color.b;
-      this.pixels[i + 3] = 255;
-    }
-  }
-
-  setStone(stone: Stone, strokeColor: Color, strokeWidth: u32): void {
-    if (stone.erased) return;
-
-    const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
-    const xUp: i32 = this.origin.x + this.scale * (stone.origin.x + stone.size.width) + 1;
-    const yLow: i32 = this.origin.y + this.scale * stone.origin.y;
-    const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height) + 1;
-
-    for (let x: i32 = xLow; x < xUp; x++) {
-      for (let y: i32 = yLow; y < yUp; y++) {
-        if (
-          x < xLow + strokeWidth ||
-          x >= xUp - strokeWidth ||
-          y < yLow + strokeWidth ||
-          y >= yUp - strokeWidth
-        )
-          this.setPixel(x, y, strokeColor);
-        else this.setPixel(x, y, stone.color);
-      }
-    }
-  }
-
-  clear(): void {
-    this.pixels = new Array<u8>(this.width * this.height * 4);
-  }
-}
-
-// 4.8 cm hoog = 6
-// 2.4 cm breed = 3
-// 0.8 cm diep = 1
-
-export class PixelGridLayer {
-  stones: Array<Stone>;
-
-  constructor(width: u32, height: u32) {
-    this.stones = new Array<Stone>(width * height);
-
-    const initColor = new Color(0, 162, 232);
-    const stoneSize = new Size(3, 3);
-    for (let x: u32 = 0; x < width; x++) {
-      for (let y: u32 = 0; y < height; y++) {
-        this.stones[width * y + x] = new Stone(
-          new Point(x * stoneSize.width, y * stoneSize.height),
-          new Size(stoneSize.width, stoneSize.height),
-          initColor,
-        );
-      }
-    }
-  }
-}
-
-export class WallLayer {
-  stones: Array<Stone>;
-
-  constructor(width: u32, height: u32) {
-    this.stones = new Array<Stone>();
-
-    const initColor = new Color(0, 162, 232);
-    for (let y: u32 = 0; y < height; y++) {
-      for (let x: u32 = 0; x < width; x++) {
-        // Short stone row
-        if ((y % 2 === 0 && height % 2 === 1) || (y % 2 === 1 && height % 2 === 0))
-          this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(1, 3), initColor));
-        // Long stone row
-        else {
-          if (x === width - 1) continue;
-          if ((x % 2 === 0 && y % 4 < 2) || (x % 2 === 1 && y % 4 > 1))
-            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(6, 3), initColor));
-          else if (x === 0)
-            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(5, 3), initColor));
-          else if (x === width - 2)
-            this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(5, 3), initColor));
-          else this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(4, 3), initColor));
-        }
-      }
-    }
-  }
-}
+import { Canvas } from './canvas';
+import { PixelGridLayer } from './layers';
+import { Color, Point, Stone } from './structs';
 
 // Initialize global state
+const canvas: Canvas = new Canvas(0, 0);
 const layer: PixelGridLayer = new PixelGridLayer(20, 30);
 // const layer: WallLayer = new WallLayer(20, 30);
 
-let savedOrigin: Point;
-let canvas: Canvas;
+const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
+const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
+const originStore: Point = new Point(0, 0);
 
 export function setCanvasSize(width: u32, height: u32): boolean {
   if (canvas.width !== width || canvas.height !== height) {
-    canvas = new Canvas(width, height);
+    canvas.width = width;
+    canvas.height = height;
+    return true;
+  }
+  return false;
+}
+
+export function saveUndo(): void {
+  const maxUndoLength = 20;
+
+  if (undoStore.length === maxUndoLength) undoStore.shift();
+  undoStore.push(layer.getStones());
+  redoStore.length = 0;
+}
+
+export function undo(): boolean {
+  if (undoStore.length > 0) {
+    redoStore.push(layer.getStones());
+    layer.stones = undoStore.pop();
+    return true;
+  }
+  return false;
+}
+
+export function redo(): boolean {
+  if (redoStore.length > 0) {
+    undoStore.push(layer.getStones());
+    layer.stones = redoStore.pop();
     return true;
   }
   return false;
 }
 
 export function saveOrigin(): void {
-  savedOrigin = canvas.origin;
+  originStore.x = canvas.origin.x;
+  originStore.y = canvas.origin.y;
 }
 
 export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): boolean {
   const threshold = 10;
-  const newX = ((savedOrigin.x - startX) as i32) + x;
-  const newY = ((savedOrigin.y - startY) as i32) + y;
+  const newX = ((originStore.x - startX) as i32) + x;
+  const newY = ((originStore.y - startY) as i32) + y;
 
   if (
     Math.abs((canvas.origin.x - newX) as i32) > threshold ||
