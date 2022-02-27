@@ -16,7 +16,7 @@ import {
 } from '@heroicons/react/solid';
 import cx from 'clsx';
 // import ContextMenu from './ContextMenu';
-import React, { ReactElement, SVGProps, useEffect, useState } from 'react';
+import React, { ReactElement, SVGProps, useState } from 'react';
 import Canvas, { Point } from '@components/Designer/Canvas';
 import Layout from '@components/Layout';
 import useWasm from '@hooks/useWasm';
