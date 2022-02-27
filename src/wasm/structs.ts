@@ -38,12 +38,21 @@ export class Stone {
   color: Color;
   angle: f32;
   erased: boolean;
+  selected: boolean;
 
-  constructor(origin: Point, size: Size, color: Color, angle: f32 = 0, erased: boolean = false) {
+  constructor(
+    origin: Point,
+    size: Size,
+    color: Color,
+    angle: f32 = 0,
+    erased: boolean = false,
+    selected: boolean = false,
+  ) {
     this.origin = origin;
     this.size = size;
     this.color = color;
     this.angle = angle;
     this.erased = erased;
+    this.selected = selected;
   }
 }

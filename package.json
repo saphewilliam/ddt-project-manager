@@ -35,6 +35,7 @@
     "@headlessui/react": "1.4.3",
     "@heroicons/react": "1.0.5",
     "@prisma/client": "3.8.1",
+    "@react-hook/resize-observer": "1.2.5",
     "@saphe/react-table": "0.5.1",
     "apollo-server-micro": "3.6.2",
     "as-bind": "0.8.2",

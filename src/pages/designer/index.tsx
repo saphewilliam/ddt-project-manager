@@ -128,6 +128,14 @@ export default function DesignerPage(): ReactElement {
       label: 'Select',
       icon: CubeTransparentIconOutline,
       selectedIcon: CubeTransparentIconSolid,
+      onMouseDown(point) {
+        return instance?.exports.select(point.x, point.y, point.x, point.y);
+      },
+      onMouseMove(point, mouseDownStart) {
+        if (mouseDownStart)
+          return instance?.exports.select(mouseDownStart.x, mouseDownStart.y, point.x, point.y);
+        return false;
+      },
     },
     [ToolIndex.MOVE]: {
       label: 'Move',

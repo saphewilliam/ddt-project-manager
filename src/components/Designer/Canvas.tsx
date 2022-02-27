@@ -1,3 +1,4 @@
+import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
 import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
@@ -134,9 +135,7 @@ export default function Canvas(props: Props): ReactElement {
     };
   }, [window, handleKeyDown]);
 
-  useEffect(() => {
-    handleUpdate();
-  }, [canvasRef, instance, loaded, error]);
+  useResizeObserver(canvasRef, handleUpdate);
 
   return (
     <canvas

@@ -9,7 +9,20 @@ const layer: PixelGridLayer = new PixelGridLayer(20, 30);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
-const originStore: Point = new Point(0, 0);
+let originStore: Point = new Point(0, 0);
+let selection: Array<Stone> = new Array<Stone>();
+
+export function saveOrigin(): void {
+  originStore = canvas.origin;
+}
+
+export function saveUndo(): void {
+  const maxUndoLength = 20;
+
+  if (undoStore.length === maxUndoLength) undoStore.shift();
+  undoStore.push(layer.getStones());
+  redoStore.length = 0;
+}
 
 export function setCanvasSize(width: u32, height: u32): boolean {
   if (canvas.width !== width || canvas.height !== height) {
@@ -20,12 +33,44 @@ export function setCanvasSize(width: u32, height: u32): boolean {
   return false;
 }
 
-export function saveUndo(): void {
-  const maxUndoLength = 20;
+/** Checks if a stone is in bounds of a canvas x, y point */
+function isInBounds(x1: u32, x2: u32, y1: u32, y2: u32, stone: Stone): boolean {
+  return (
+    (x1 as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
+    (x2 as i32) < canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
+    (y1 as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
+    (y2 as i32) < canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
+  );
+}
 
-  if (undoStore.length === maxUndoLength) undoStore.shift();
-  undoStore.push(layer.getStones());
-  redoStore.length = 0;
+export function select(x1: u32, y1: u32, x2: u32, y2: u32): boolean {
+  let shouldUpdate = false;
+  const newSelection = new Array<Stone>();
+
+  for (let i = 0; i < layer.stones.length; i++) {
+    const stone = layer.stones[i];
+    if (
+      isInBounds(
+        Math.max(x1, x2) as u32,
+        Math.min(x1, x2) as u32,
+        Math.max(y1, y2) as u32,
+        Math.min(y1, y2) as u32,
+        stone,
+      )
+    ) {
+      if (!stone.selected) {
+        stone.selected = true;
+        shouldUpdate = true;
+      }
+      newSelection.push(stone);
+    } else if (stone.selected) {
+      stone.selected = false;
+      shouldUpdate = true;
+    }
+  }
+
+  selection = newSelection;
+  return shouldUpdate;
 }
 
 export function undo(): boolean {
@@ -44,11 +89,6 @@ export function redo(): boolean {
     return true;
   }
   return false;
-}
-
-export function saveOrigin(): void {
-  originStore.x = canvas.origin.x;
-  originStore.y = canvas.origin.y;
 }
 
 export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): boolean {
@@ -97,12 +137,7 @@ export function zoomOut(x: u32, y: u32): boolean {
 export function erase(x: u32, y: u32): boolean {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (
-      (x as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
-      (x as i32) < canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
-      (y as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
-      (y as i32) < canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
-    ) {
+    if (isInBounds(x, x, y, y, stone)) {
       if (!stone.erased) {
         stone.erased = true;
         return true;
@@ -116,12 +151,7 @@ export function erase(x: u32, y: u32): boolean {
 export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (
-      (x as i32) > canvas.origin.x + stone.origin.x * canvas.scale &&
-      (x as i32) < canvas.origin.x + (stone.origin.x + stone.size.width) * canvas.scale &&
-      (y as i32) > canvas.origin.y + stone.origin.y * canvas.scale &&
-      (y as i32) < canvas.origin.y + (stone.origin.y + stone.size.height) * canvas.scale
-    ) {
+    if (isInBounds(x, x, y, y, stone)) {
       if (stone.erased || stone.color.r !== r || stone.color.g !== g || stone.color.b !== b) {
         stone.color = new Color(r, g, b);
         stone.erased = false;
@@ -136,11 +166,12 @@ export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): boolean {
 export function updatePixelGrid(): Array<u8> {
   const strokeWidth: u32 = 1;
   const strokeColor: Color = new Color(0, 0, 0);
+  const selectedStrokeColor: Color = new Color(255, 0, 0);
 
   canvas.clear();
 
   for (let i = 0; i < layer.stones.length; i++)
-    canvas.setStone(layer.stones[i], strokeColor, strokeWidth);
+    canvas.setStone(layer.stones[i], strokeColor, selectedStrokeColor, strokeWidth);
 
   return canvas.pixels;
 }

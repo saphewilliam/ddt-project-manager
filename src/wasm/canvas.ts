@@ -25,7 +25,7 @@ export class Canvas {
     }
   }
 
-  setStone(stone: Stone, strokeColor: Color, strokeWidth: u32): void {
+  setStone(stone: Stone, strokeColor: Color, selectedStrokeColor: Color, strokeWidth: u32): void {
     if (stone.erased) return;
 
     const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
@@ -41,7 +41,7 @@ export class Canvas {
           y < yLow + strokeWidth ||
           y >= yUp - strokeWidth
         )
-          this.setPixel(x, y, strokeColor);
+          this.setPixel(x, y, stone.selected ? selectedStrokeColor : strokeColor);
         else this.setPixel(x, y, stone.color);
       }
     }
