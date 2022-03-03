@@ -4,8 +4,7 @@ import { Color, Point, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-// const layer: PixelGridLayer = new PixelGridLayer(20, 30);
-const layer: PixelGridLayer = new PixelGridLayer(20, 30);
+const layer: PixelGridLayer = new PixelGridLayer(50, 50);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
@@ -29,6 +28,7 @@ export function setCanvasSize(width: u32, height: u32): boolean {
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width;
     canvas.height = height;
+    canvas.size = width * height;
     return true;
   }
   return false;
@@ -118,7 +118,7 @@ export function redo(): boolean {
 }
 
 export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): boolean {
-  const threshold = 10;
+  const threshold = 5;
   const newX = ((originStore.x - startX) as i32) + x;
   const newY = ((originStore.y - startY) as i32) + y;
 
@@ -194,6 +194,7 @@ export function updatePixelGrid(): Array<u32> {
   const strokeColor: Color = new Color(0, 0, 0);
   const selectedStrokeColor: Color = new Color(255, 0, 0);
 
+  // 16 - 20 ms
   canvas.clear();
 
   for (let i = 0; i < layer.stones.length; i++)

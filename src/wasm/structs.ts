@@ -51,6 +51,7 @@ export class Stone {
   size: Size;
   color: Color;
   angle: f32;
+  type: u8;
   erased: boolean;
   selected: boolean;
 
@@ -58,6 +59,7 @@ export class Stone {
     origin: Point,
     size: Size,
     color: Color,
+    type: u8 = 0,
     angle: f32 = 0,
     erased: boolean = false,
     selected: boolean = false,
@@ -65,6 +67,7 @@ export class Stone {
     this.origin = origin;
     this.size = size;
     this.color = color;
+    this.type = type;
     this.angle = angle;
     this.erased = erased;
     this.selected = selected;
