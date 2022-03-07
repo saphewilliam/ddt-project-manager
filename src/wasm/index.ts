@@ -27,7 +27,6 @@ export function saveUndo(): void {
 export function setCanvasSize(width: u32, height: u32): Array<u32> {
   if (canvas.size.width !== width || canvas.size.height !== height) {
     canvas.size = new Size(width, height);
-    canvas.clear();
     return canvas.setStones(layer.stones).toArray();
   }
   return new CanvasUpdateInfo().toArray();

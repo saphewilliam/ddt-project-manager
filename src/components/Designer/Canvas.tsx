@@ -100,6 +100,7 @@ export default function Canvas(props: Props): ReactElement {
     canvas.height = height;
 
     const updateInfo = instance?.exports.setCanvasSize(width, height);
+    console.log(updateInfo);
     if (updateInfo[0] !== 0) updateCanvas(updateInfo);
   }, [instance, loaded, error, canvasRef]);
 
