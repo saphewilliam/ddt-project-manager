@@ -45,6 +45,19 @@ query Event($eventSlug: String!) {
         type
         status
       }
+      stones {
+        id
+        amount
+        user {
+          id
+          displayName
+        }
+        stone {
+          id
+          name
+          hex
+        }
+      }
     }
   }
 }

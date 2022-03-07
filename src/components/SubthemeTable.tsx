@@ -46,7 +46,7 @@ export default function SubthemeTable(props: Props): ReactElement {
                   <PlusSmIcon className={cx('w-4')} />
                 )}
               </button>
-              Subthema: {props.subtheme.name}
+              Subtheme: {props.subtheme.name}
             </div>
           </td>
         </tr>
@@ -67,7 +67,7 @@ export default function SubthemeTable(props: Props): ReactElement {
                   <a>{project.name}</a>
                 </Link>
                 <span className={cx('flex')}>{project.type}</span>
-                <span className={cx('flex')}> 123456 stenen</span>
+                <span className={cx('flex')}> 123456 stones</span>
                 <span className={cx('flex')}>Supervisor: {project.supervisor?.displayName}</span>
                 <span className={cx('flex')}>{project.status}</span>
               </td>

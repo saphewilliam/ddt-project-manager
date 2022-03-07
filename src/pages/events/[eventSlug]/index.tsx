@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import Button from '@components/Button';
 import Layout from '@components/Layout';
+import StonesOnSubthemeTable from '@components/StonesOnSubthemeTable';
 import SubthemeTable from '@components/SubthemeTable';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
@@ -32,14 +33,9 @@ export default function EventPage(): ReactElement {
             'p-6',
           )}
         >
-          <h2 className={cx('font-bold', 'text-3xl')}>Projecten van {data?.event?.name} </h2>
+          <h2 className={cx('font-bold', 'text-3xl')}>Projects in {data?.event?.name} </h2>
           <span className={cx()}>
-            <Button
-              className={cx('flex')}
-              icon={PlusSmIcon}
-              label="Nieuw project"
-              href="/"
-            ></Button>
+            <Button className={cx('flex')} icon={PlusSmIcon} label="New project" href="/"></Button>
           </span>
         </section>
 
@@ -74,7 +70,7 @@ export default function EventPage(): ReactElement {
           )}
         >
           <div>
-            <p className={cx('text-2xl', 'font-semibold	')}>Lijnen</p>
+            <p className={cx('text-2xl', 'font-semibold	')}>Lines</p>
           </div>
         </section>
         <section
@@ -90,7 +86,7 @@ export default function EventPage(): ReactElement {
           )}
         >
           <div>
-            <p className={cx('text-2xl', 'font-semibold	')}>Totaal attributen</p>
+            <p className={cx('text-2xl', 'font-semibold	')}>Total attributes</p>
           </div>
         </section>
 
@@ -106,8 +102,13 @@ export default function EventPage(): ReactElement {
             'p-6',
           )}
         >
-          <div>
-            <p>[lijnenlijst]</p>
+          <div className={cx('space-y-6')}>
+            {data?.event?.subthemes.map(
+              (subtheme) =>
+                subtheme.stones.length > 0 && (
+                  <StonesOnSubthemeTable subtheme={subtheme} key={subtheme.id} />
+                ),
+            )}
           </div>
         </section>
         <section
@@ -137,19 +138,19 @@ export default function EventPage(): ReactElement {
                 <td>100</td>
               </tr>
               <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                <td>Vlakstarters (8 stenen)</td>
+                <td>Vlakstarters (8 stones)</td>
                 <td>3</td>
               </tr>
               <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                <td>Vlakstarters (10 stenen)</td>
+                <td>Vlakstarters (10 stones)</td>
                 <td>9</td>
               </tr>
               <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                <td>Vlakstarters (11 stenen)</td>
+                <td>Vlakstarters (11 stones)</td>
                 <td>37</td>
               </tr>
               <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                <td>Vlakstarters (12 stenen)</td>
+                <td>Vlakstarters (12 stones)</td>
                 <td>1</td>
               </tr>
             </tbody>
