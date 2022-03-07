@@ -109,7 +109,7 @@ export default function DesignerPage(): ReactElement {
             colors[selectedColor].g,
             colors[selectedColor].b,
           );
-        return false;
+        return [0];
       },
     },
     [ToolIndex.ERASE]: {
@@ -123,7 +123,7 @@ export default function DesignerPage(): ReactElement {
       },
       onMouseMove(point, mouseDownStart) {
         if (mouseDownStart) return instance?.exports.erase(point.x, point.y);
-        return false;
+        return [0];
       },
     },
     [ToolIndex.SELECT]: {
@@ -138,7 +138,7 @@ export default function DesignerPage(): ReactElement {
       onMouseMove(point, mouseDownStart) {
         if (mouseDownStart)
           return instance?.exports.select(mouseDownStart.x, mouseDownStart.y, point.x, point.y);
-        return false;
+        return [0];
       },
     },
     [ToolIndex.MOVE]: {

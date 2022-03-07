@@ -1,4 +1,5 @@
 import { Color, Point, Size, Stone } from './structs';
+import { log } from './util';
 
 export class CanvasUpdateInfo {
   shouldUpdate: boolean;
@@ -8,7 +9,7 @@ export class CanvasUpdateInfo {
 
   constructor(
     shouldUpdate: boolean = false,
-    origin: Point = new Point(0, 0),
+    origin: Point = new Point(-1, -1),
     size: Size = new Size(0, 0),
     pixels: Array<u32> = new Array<u32>(),
   ) {
@@ -19,13 +20,11 @@ export class CanvasUpdateInfo {
   }
 
   toArray(): Array<u32> {
-    return [
-      this.shouldUpdate ? (1 as u32) : (0 as u32),
-      this.origin.x,
-      this.origin.y,
-      this.size.width,
-      this.size.height,
-    ].concat(this.pixels);
+    if (!this.shouldUpdate) return [0];
+    else
+      return [1 as u32, this.origin.x, this.origin.y, this.size.width, this.size.height].concat(
+        this.pixels,
+      );
   }
 }
 
@@ -41,76 +40,7 @@ export class Canvas {
   }
 
   setStone(stone: Stone): CanvasUpdateInfo {
-    const info = new CanvasUpdateInfo();
-    // if (stone.erased) return info;
-    // const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
-    // if (xLow > (this.size.width as i32)) return info;
-    // const xUp: i32 = this.origin.x + this.scale * (stone.origin.x + stone.size.width) + 1;
-    // if (xUp < 0) return info;
-    // const yLow: i32 = this.origin.y + this.scale * stone.origin.y;
-    // if (yLow > (this.size.height as i32)) return info;
-    // const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height) + 1;
-    // if (yUp < 0) return info;
-    // const xLowClamped: i32 = Math.max(xLow, 0) as i32;
-    // const xUpClamped: i32 = Math.min(xUp, this.size.width) as i32;
-    // const yLowClamped: i32 = Math.max(yLow, 0) as i32;
-    // const yUpClamped: i32 = Math.min(yUp, this.size.height) as i32;
-    // info.size.width = xUpClamped - xLowClamped;
-    // info.size.height = yUpClamped - yLowClamped;
-    // info.pixels = new Array<u32>(info.size.width * info.size.height);
-    // // TODO move these somewhere globally?
-    // const strokeWidth: u32 = 1;
-    // const strokeColor: Color = new Color(0, 0, 0);
-    // const selectedStrokeColor: Color = new Color(255, 0, 0);
-    // const stoneStrokeColor: u32 = stone.selected ? selectedStrokeColor.color : strokeColor.color;
-    // for (let y: i32 = yLowClamped; y < yUpClamped; y++) {
-    //   const rowIndex = this.size.width * y;
-    //   const bufferRowIndex = info.size.width * y;
-    //   if (y < yLow + strokeWidth || y >= yUp - strokeWidth) {
-    //     // TODO do only one of the two?
-    //     info.pixels.fill(
-    //       stoneStrokeColor,
-    //       bufferRowIndex,
-    //       bufferRowIndex + xUpClamped - xLowClamped,
-    //     );
-    //     this.pixels.fill(stoneStrokeColor, rowIndex + xLowClamped, rowIndex + xUpClamped);
-    //   } else {
-    //     // Color fill
-    //     info.pixels.fill(
-    //       stone.color.color,
-    //       bufferRowIndex,
-    //       bufferRowIndex + xUpClamped - xLowClamped,
-    //     );
-    //     this.pixels.fill(stone.color.color, rowIndex + xLowClamped, rowIndex + xUpClamped);
-    //     // Left stroke
-    //     this.pixels.fill(
-    //       stoneStrokeColor,
-    //       rowIndex + xLowClamped,
-    //       rowIndex + (Math.max(Math.min(xLow + strokeWidth, this.size.width), 0) as i32),
-    //     );
-    //     info.pixels.fill(
-    //       stoneStrokeColor,
-    //       bufferRowIndex,
-    //       bufferRowIndex +
-    //         (Math.max(Math.min(xLow + strokeWidth, this.size.width), 0) as i32) -
-    //         xLowClamped,
-    //     );
-    //     // Right stroke
-    //     this.pixels.fill(
-    //       stoneStrokeColor,
-    //       rowIndex + (Math.max(Math.min(xUp - strokeWidth, this.size.width), 0) as i32),
-    //       rowIndex + xUpClamped,
-    //     );
-    //     info.pixels.fill(
-    //       stoneStrokeColor,
-    //       bufferRowIndex +
-    //         (Math.max(Math.min(xUp - strokeWidth, this.size.width), 0) as i32) -
-    //         xLowClamped,
-    //       bufferRowIndex + xUpClamped - xLowClamped,
-    //     );
-    //   }
-    // }
-    return info;
+    return this.setStones([stone]);
   }
 
   setStones(stones: Array<Stone>): CanvasUpdateInfo {
@@ -119,7 +49,6 @@ export class Canvas {
     // Calculate bounding box for stones to be updated
     for (let i: i32 = 0; i < stones.length; i++) {
       const stone = stones[i];
-      if (stone.erased) continue;
 
       const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
       if (xLow > (this.size.width as i32)) continue;
@@ -138,19 +67,38 @@ export class Canvas {
       const yLowClamped: i32 = Math.max(yLow, 0) as i32;
       const yUpClamped: i32 = Math.min(yUp, this.size.height) as i32;
 
-      if (xLowClamped < info.origin.x) {
-        info.size.width += info.origin.x - xLowClamped;
-        info.origin.x = xLowClamped;
+      if (
+        info.origin.x === -1 ||
+        info.origin.y === -1 ||
+        info.size.width === 0 ||
+        info.size.height === 0
+      ) {
+        info.origin = new Point(xLowClamped, yLowClamped);
+        info.size = new Size(xUpClamped - xLowClamped, yUpClamped - yLowClamped);
+      } else {
+        if (xLowClamped < info.origin.x) {
+          info.size.width += info.origin.x - xLowClamped;
+          info.origin.x = xLowClamped;
+        }
+        if (yLowClamped < info.origin.y) {
+          info.size.height += info.origin.y - yLowClamped;
+          info.origin.y = yLowClamped;
+        }
+        if (xUpClamped > info.origin.x + info.size.width)
+          info.size.width = xUpClamped - info.origin.x;
+        if (yUpClamped > info.origin.y + info.size.height)
+          info.size.height = yUpClamped - info.origin.y;
       }
-      if (yLowClamped < info.origin.y) {
-        info.size.height += info.origin.y - yLowClamped;
-        info.origin.y = yLowClamped;
-      }
-      if (xUpClamped > info.origin.x + info.size.width)
-        info.size.width = xUpClamped - info.origin.x;
-      if (yUpClamped > info.origin.y + info.size.height)
-        info.size.height = yUpClamped - info.origin.y;
     }
+
+    if (
+      info.origin.x === -1 ||
+      info.origin.y === -1 ||
+      info.size.width === 0 ||
+      info.size.height === 0
+    )
+      return info;
+    info.shouldUpdate = true;
 
     // Create pixels array
     // TODO staticarray?
@@ -160,26 +108,23 @@ export class Canvas {
       const stone = stones[i];
       if (stone.erased) continue;
 
-      const xLow: i32 = this.origin.x + this.scale * stone.origin.x - info.size.width;
-      if (xLow > (info.size.width as i32)) continue;
+      // TODO memoize all this shit
+      const xLow: i32 = this.origin.x + this.scale * stone.origin.x;
+      if (xLow > (this.size.width as i32)) continue;
 
-      const xUp: i32 =
-        this.origin.x + this.scale * (stone.origin.x + stone.size.width) + 1 - info.size.width;
+      const xUp: i32 = this.origin.x + this.scale * (stone.origin.x + stone.size.width) + 1;
       if (xUp < 0) continue;
 
-      const yLow: i32 = this.origin.y + this.scale * stone.origin.y - info.size.height;
-      if (yLow > (info.size.height as i32)) continue;
+      const yLow: i32 = this.origin.y + this.scale * stone.origin.y;
+      if (yLow > (this.size.height as i32)) continue;
 
-      const yUp: i32 =
-        this.origin.y + this.scale * (stone.origin.y + stone.size.height) + 1 - info.size.height;
+      const yUp: i32 = this.origin.y + this.scale * (stone.origin.y + stone.size.height) + 1;
       if (yUp < 0) continue;
 
-      info.shouldUpdate = true;
-
       const xLowClamped: i32 = Math.max(xLow, 0) as i32;
-      const xUpClamped: i32 = Math.min(xUp, info.size.width) as i32;
+      const xUpClamped: i32 = Math.min(xUp, this.size.width) as i32;
       const yLowClamped: i32 = Math.max(yLow, 0) as i32;
-      const yUpClamped: i32 = Math.min(yUp, info.size.height) as i32;
+      const yUpClamped: i32 = Math.min(yUp, this.size.height) as i32;
 
       // TODO move these somewhere globally?
       const strokeWidth: u32 = 1;
@@ -188,53 +133,42 @@ export class Canvas {
 
       const stoneStrokeColor: u32 = stone.selected ? selectedStrokeColor.color : strokeColor.color;
 
-      for (let y: i32 = yLowClamped; y < yUpClamped; y++) {
+      for (let y: i32 = yLowClamped - info.origin.y; y < yUpClamped - info.origin.y; y++) {
         const rowIndex = info.size.width * y;
-        if (y < yLow + strokeWidth || y >= yUp - strokeWidth) {
+        if (
+          y < yLowClamped - info.origin.y + strokeWidth ||
+          y >= yUpClamped - info.origin.y - strokeWidth
+        ) {
           info.pixels.fill(
             stoneStrokeColor,
-            rowIndex + xLowClamped,
-            rowIndex + xUpClamped - xLowClamped,
+            rowIndex + xLowClamped - info.origin.x,
+            rowIndex + xUpClamped - info.origin.x,
           );
         } else {
-          /*
           // Color fill
-
           info.pixels.fill(
             stone.color.color,
-            bufferRowIndex,
-            bufferRowIndex + xUpClamped - xLowClamped,
+            rowIndex + xLowClamped - info.origin.x,
+            rowIndex + xUpClamped - info.origin.x,
           );
-          this.pixels.fill(stone.color.color, rowIndex + xLowClamped, rowIndex + xUpClamped);
 
           // Left stroke
-          this.pixels.fill(
-            stoneStrokeColor,
-            rowIndex + xLowClamped,
-            rowIndex + (Math.max(Math.min(xLow + strokeWidth, this.size.width), 0) as i32),
-          );
           info.pixels.fill(
             stoneStrokeColor,
-            bufferRowIndex,
-            bufferRowIndex +
+            rowIndex + xLowClamped - info.origin.x,
+            rowIndex +
               (Math.max(Math.min(xLow + strokeWidth, this.size.width), 0) as i32) -
-              xLowClamped,
+              info.origin.x,
           );
 
           // Right stroke
-          this.pixels.fill(
-            stoneStrokeColor,
-            rowIndex + (Math.max(Math.min(xUp - strokeWidth, this.size.width), 0) as i32),
-            rowIndex + xUpClamped,
-          );
           info.pixels.fill(
             stoneStrokeColor,
-            bufferRowIndex +
+            rowIndex +
               (Math.max(Math.min(xUp - strokeWidth, this.size.width), 0) as i32) -
-              xLowClamped,
-            bufferRowIndex + xUpClamped - xLowClamped,
+              info.origin.x,
+            rowIndex + xUpClamped - info.origin.x,
           );
-          */
         }
       }
     }

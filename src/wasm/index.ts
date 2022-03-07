@@ -168,33 +168,33 @@ export function zoomOut(x: u32, y: u32): CanvasUpdateInfo {
   return new CanvasUpdateInfo();
 }
 
-export function erase(x: u32, y: u32): CanvasUpdateInfo {
+export function erase(x: u32, y: u32): Array<u32> {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
     if (isInBounds(stone, x, y, x, y)) {
       if (!stone.erased) {
         stone.erased = true;
-        return canvas.setStone(stone);
+        return canvas.setStone(stone).toArray();
       }
-      return new CanvasUpdateInfo();
+      return new CanvasUpdateInfo().toArray();
     }
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): CanvasUpdateInfo {
+export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): Array<u32> {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
     if (isInBounds(stone, x, y, x, y)) {
       if (stone.erased || stone.color.r !== r || stone.color.g !== g || stone.color.b !== b) {
         stone.color = new Color(r, g, b);
         stone.erased = false;
-        return canvas.setStone(stone);
+        return canvas.setStone(stone).toArray();
       }
-      return new CanvasUpdateInfo();
+      return new CanvasUpdateInfo().toArray();
     }
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
 // export function updatePixelGrid(): Array<u32> {

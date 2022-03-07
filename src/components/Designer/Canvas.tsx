@@ -73,11 +73,8 @@ export default function Canvas(props: Props): ReactElement {
       const buffer8 = new Uint8ClampedArray(buffer);
       const buffer32 = new Uint32Array(buffer);
 
-      // if (environment.nodeEnv === 'development') console.time('createImageData');
-      // if (environment.nodeEnv === 'development') console.timeEnd('createImageData');
-
       // Put the image data on the canvas
-      // TODO better way to do this for loop?
+      // TODO faster way to do this for loop?
       for (let i = 0; i < pixels.length; i++) buffer32[i] = pixels[i] ?? 0;
       const imageData = new ImageData(buffer8, width, height);
       ctx.putImageData(imageData, dx, dy, 0, 0, width, height);
@@ -96,12 +93,16 @@ export default function Canvas(props: Props): ReactElement {
     if (!canvas) return;
 
     const { clientWidth: width, clientHeight: height } = canvas;
-    canvas.width = width;
-    canvas.height = height;
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
 
-    const updateInfo = instance?.exports.setCanvasSize(width, height);
-    console.log(updateInfo);
-    if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+      if (environment.nodeEnv === 'development') console.time('resize');
+      const updateInfo = instance?.exports.setCanvasSize(width, height);
+      if (environment.nodeEnv === 'development') console.timeEnd('resize');
+
+      if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+    }
   }, [instance, loaded, error, canvasRef]);
 
   const handleMouseDown = useCallback(
