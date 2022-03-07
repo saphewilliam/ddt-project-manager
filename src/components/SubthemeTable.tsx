@@ -62,13 +62,7 @@ export default function SubthemeTable(props: Props): ReactElement {
                   backgroundColor: props.subtheme.color,
                 }}
               ></td>
-              <td
-                className={cx('border-t-solid', 'border', 'border-gray-300')}
-                style={{
-                  padding: '0.75rem 2rem',
-                  fontSize: '14px',
-                }}
-              >
+              <td className={cx('border', 'border-gray-300', 'px-4', 'py-2', 'text-sm')}>
                 <Link href={`/events/${props.eventSlug}/${project.slug}`}>
                   <a>{project.name}</a>
                 </Link>

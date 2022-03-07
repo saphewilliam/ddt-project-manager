@@ -74,7 +74,7 @@ export default function EventPage(): ReactElement {
           )}
         >
           <div>
-            <p>Lijnen</p>
+            <p className={cx('text-2xl', 'font-semibold	')}>Lijnen</p>
           </div>
         </section>
         <section
@@ -90,7 +90,7 @@ export default function EventPage(): ReactElement {
           )}
         >
           <div>
-            <p>Totaal attributen</p>
+            <p className={cx('text-2xl', 'font-semibold	')}>Totaal attributen</p>
           </div>
         </section>
 
@@ -124,32 +124,32 @@ export default function EventPage(): ReactElement {
         >
           <table className={cx('table-auto', 'w-full')}>
             <tbody>
-              <tr>
-                <th>Muizenvallen</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Muizenvallen</td>
                 <td>7</td>
               </tr>
-              <tr>
-                <th>Muurhaakjes</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Muurhaakjes</td>
                 <td>7</td>
               </tr>
-              <tr>
-                <th>Diodes/Vlakstarterhouders</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Diodes/Vlakstarterhouders</td>
                 <td>100</td>
               </tr>
-              <tr>
-                <th>Vlakstarters (8 stenen)</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Vlakstarters (8 stenen)</td>
                 <td>3</td>
               </tr>
-              <tr>
-                <th>Vlakstarters (10 stenen)</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Vlakstarters (10 stenen)</td>
                 <td>9</td>
               </tr>
-              <tr>
-                <th>Vlakstarters (11 stenen)</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Vlakstarters (11 stenen)</td>
                 <td>37</td>
               </tr>
-              <tr>
-                <th>Vlakstarters (12 stenen)</th>
+              <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
+                <td>Vlakstarters (12 stenen)</td>
                 <td>1</td>
               </tr>
             </tbody>
