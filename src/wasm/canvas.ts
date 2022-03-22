@@ -1,19 +1,21 @@
 import { Color, Point, Size, Stone } from './structs';
-import { log } from './util';
 
 export class CanvasUpdateInfo {
   shouldUpdate: boolean;
+  shouldClear: boolean;
   origin: Point;
   size: Size;
   pixels: Array<u32>;
 
   constructor(
     shouldUpdate: boolean = false,
+    shouldClear: boolean = false,
     origin: Point = new Point(-1, -1),
     size: Size = new Size(0, 0),
     pixels: Array<u32> = new Array<u32>(),
   ) {
     this.shouldUpdate = shouldUpdate;
+    this.shouldClear = shouldClear;
     this.origin = origin;
     this.size = size;
     this.pixels = pixels;
@@ -22,9 +24,14 @@ export class CanvasUpdateInfo {
   toArray(): Array<u32> {
     if (!this.shouldUpdate) return [0];
     else
-      return [1 as u32, this.origin.x, this.origin.y, this.size.width, this.size.height].concat(
-        this.pixels,
-      );
+      return [
+        1 as u32,
+        this.shouldClear ? 1 : 0,
+        this.origin.x,
+        this.origin.y,
+        this.size.width,
+        this.size.height,
+      ].concat(this.pixels);
   }
 }
 
@@ -41,6 +48,13 @@ export class Canvas {
 
   setStone(stone: Stone): CanvasUpdateInfo {
     return this.setStones([stone]);
+  }
+
+  /** Adds an instruction to clear the canvas before placing the stones on it */
+  clearStones(stones: Array<Stone>): CanvasUpdateInfo {
+    const info = this.setStones(stones);
+    info.shouldClear = true;
+    return info;
   }
 
   setStones(stones: Array<Stone>): CanvasUpdateInfo {
@@ -135,10 +149,8 @@ export class Canvas {
 
       for (let y: i32 = yLowClamped - info.origin.y; y < yUpClamped - info.origin.y; y++) {
         const rowIndex = info.size.width * y;
-        if (
-          y < yLowClamped - info.origin.y + strokeWidth ||
-          y >= yUpClamped - info.origin.y - strokeWidth
-        ) {
+        if (y < yLow - info.origin.y + strokeWidth || y >= yUp - info.origin.y - strokeWidth) {
+          // Top stroke
           info.pixels.fill(
             stoneStrokeColor,
             rowIndex + xLowClamped - info.origin.x,

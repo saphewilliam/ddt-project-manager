@@ -1,16 +1,19 @@
 import { Canvas, CanvasUpdateInfo } from './canvas';
-import { PixelGridLayer } from './layers';
+import { WallLayer } from './layers';
 import { Color, Point, Size, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: PixelGridLayer = new PixelGridLayer(50, 50);
+const layer: WallLayer = new WallLayer(50, 50);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const clipboard: Array<Stone> = new Array<Stone>();
 let originStore: Point = new Point(0, 0);
 let selection: Array<Stone> = new Array<Stone>();
+
+const minZoom: u32 = 2;
+const maxZoom: u32 = 40;
 
 export function saveOrigin(): void {
   originStore = canvas.origin;
@@ -44,18 +47,16 @@ function isInBounds(stone: Stone, x1: u32, y1: u32, x2: u32, y2: u32): boolean {
   );
 }
 
-export function clearSelection(): CanvasUpdateInfo {
-  if (selection.length === 0) return new CanvasUpdateInfo();
+export function clearSelection(): Array<u32> {
+  if (selection.length === 0) return new CanvasUpdateInfo().toArray();
   for (let i = 0; i < selection.length; i++) {
     selection[i].selected = false;
   }
   selection.length = 0;
-  // TODO
-  // return true;
-  return new CanvasUpdateInfo();
+  return canvas.clearStones(layer.stones).toArray();
 }
 
-export function select(x1: u32, y1: u32, x2: u32, y2: u32): CanvasUpdateInfo {
+export function select(x1: u32, y1: u32, x2: u32, y2: u32): Array<u32> {
   let shouldUpdate = false;
   const newSelection = new Array<Stone>();
 
@@ -73,56 +74,55 @@ export function select(x1: u32, y1: u32, x2: u32, y2: u32): CanvasUpdateInfo {
     }
   }
 
-  selection = newSelection;
-  // TODO
-  // return shouldUpdate;
-  return new CanvasUpdateInfo();
+  if (!shouldUpdate) return new CanvasUpdateInfo().toArray();
+  else {
+    selection = newSelection;
+
+    return canvas.clearStones(layer.stones).toArray();
+  }
 }
 
-export function cut(): CanvasUpdateInfo {
+export function cut(): Array<u32> {
   if (selection.length > 0) {
     for (let i = 0; i < selection.length; i++) selection[i].erased = true;
-    // TODO
-    // return true;
+    return canvas.clearStones(layer.stones).toArray();
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function copy(): CanvasUpdateInfo {
+export function copy(): Array<u32> {
   if (selection.length > 0) {
     // TODO
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function paste(x: u32, y: u32): CanvasUpdateInfo {
+export function paste(x: u32, y: u32): Array<u32> {
   if (selection.length > 0 && clipboard.length > 0) {
     // TODO
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function undo(): CanvasUpdateInfo {
+export function undo(): Array<u32> {
   if (undoStore.length > 0) {
     redoStore.push(layer.getStones());
     layer.stones = undoStore.pop();
-    // TODO
-    // return true;
+    return canvas.clearStones(layer.stones).toArray();
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function redo(): CanvasUpdateInfo {
+export function redo(): Array<u32> {
   if (redoStore.length > 0) {
     undoStore.push(layer.getStones());
     layer.stones = redoStore.pop();
-    // TODO
-    // return true;
+    return canvas.clearStones(layer.stones).toArray();
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): CanvasUpdateInfo {
+export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): Array<u32> {
   const threshold = 5;
   const newX = ((originStore.x - startX) as i32) + x;
   const newY = ((originStore.y - startY) as i32) + y;
@@ -132,40 +132,31 @@ export function setOrigin(x: u32, y: u32, startX: u32, startY: u32): CanvasUpdat
     Math.abs((canvas.origin.y - newY) as i32) > threshold
   ) {
     canvas.origin = new Point(newX, newY);
-    // TODO
-    // return true;
+    return canvas.clearStones(layer.stones).toArray();
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-function setScale(origin: Point, scaleBy: f32): void {
+function setScale(originX: i32, originY: i32, scaleBy: f32): void {
   canvas.scale = ((canvas.scale as f32) * scaleBy) as u32;
-  canvas.origin.x = origin.x - ((((origin.x - canvas.origin.x) as f32) * scaleBy) as i32);
-  canvas.origin.y = origin.y - ((((origin.y - canvas.origin.y) as f32) * scaleBy) as i32);
+  canvas.origin.x = originX - ((((originX - canvas.origin.x) as f32) * scaleBy) as i32);
+  canvas.origin.y = originY - ((((originY - canvas.origin.y) as f32) * scaleBy) as i32);
 }
 
-export function zoomIn(x: u32, y: u32): CanvasUpdateInfo {
-  const maxZoom: u32 = 40;
-  const origin: Point = new Point(x, y);
-
+export function zoomIn(x: u32, y: u32): Array<u32> {
   if (canvas.scale < maxZoom) {
-    setScale(origin, 1.5);
-    // TODO
-    // return true;
+    setScale(x, y, 1.5);
+    return canvas.clearStones(layer.stones).toArray();
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
-export function zoomOut(x: u32, y: u32): CanvasUpdateInfo {
-  const minZoom: u32 = 2;
-  const origin: Point = new Point(x, y);
-
+export function zoomOut(x: u32, y: u32): Array<u32> {
   if (canvas.scale > minZoom) {
-    setScale(origin, 1 / 1.5);
-    // TODO
-    // return true;
+    setScale(x, y, 1 / 1.5);
+    return canvas.clearStones(layer.stones).toArray();
   }
-  return new CanvasUpdateInfo();
+  return new CanvasUpdateInfo().toArray();
 }
 
 export function erase(x: u32, y: u32): Array<u32> {

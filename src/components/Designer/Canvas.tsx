@@ -2,7 +2,6 @@ import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
 import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
-import { environment } from '@lib/environment';
 
 export interface Point {
   x: number;
@@ -16,7 +15,7 @@ export interface Point {
 //   }
 // }
 
-/** [shouldUpdate, dx, dy, width, height, ...pixels] */
+/** [shouldUpdate, shouldClear dx, dy, width, height, ...pixels] */
 export type CanvasUpdateInfo = number[];
 
 type ReactMouseEvent = React.MouseEvent<HTMLCanvasElement, MouseEvent>;
@@ -54,11 +53,12 @@ export default function Canvas(props: Props): ReactElement {
   const updateCanvas = useCallback(
     (updateInfo: CanvasUpdateInfo) => {
       // Extract canvas ref and update information
-      const [shouldUpdate, dx, dy, width, height, ...pixels] = updateInfo;
+      const [shouldUpdate, shouldClear, dx, dy, width, height, ...pixels] = updateInfo;
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext('2d');
       if (
         shouldUpdate === 0 ||
+        shouldClear === undefined ||
         dx === undefined ||
         dy === undefined ||
         !width ||
@@ -77,6 +77,7 @@ export default function Canvas(props: Props): ReactElement {
       // TODO faster way to do this for loop?
       for (let i = 0; i < pixels.length; i++) buffer32[i] = pixels[i] ?? 0;
       const imageData = new ImageData(buffer8, width, height);
+      if (shouldClear === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.putImageData(imageData, dx, dy, 0, 0, width, height);
     },
     [canvasRef],
@@ -97,10 +98,7 @@ export default function Canvas(props: Props): ReactElement {
       canvas.width = width;
       canvas.height = height;
 
-      if (environment.nodeEnv === 'development') console.time('resize');
       const updateInfo = instance?.exports.setCanvasSize(width, height);
-      if (environment.nodeEnv === 'development') console.timeEnd('resize');
-
       if (updateInfo[0] !== 0) updateCanvas(updateInfo);
     }
   }, [instance, loaded, error, canvasRef]);

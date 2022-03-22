@@ -17,7 +17,7 @@ import {
 import cx from 'clsx';
 // import ContextMenu from './ContextMenu';
 import React, { ReactElement, SVGProps, useCallback, useState } from 'react';
-import Canvas, { Props as CanvasProps } from '@components/Designer/Canvas';
+import Canvas, { Props as CanvasProps, CanvasUpdateInfo } from '@components/Designer/Canvas';
 import Layout from '@components/Layout';
 import useWasm from '@hooks/useWasm';
 
@@ -174,14 +174,14 @@ export default function DesignerPage(): ReactElement {
   };
 
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!loaded) return;
+    (e: KeyboardEvent): CanvasUpdateInfo => {
+      if (!loaded) return [0];
       if (error) {
         console.error(error);
-        return;
+        return [0];
       }
 
-      if (e.repeat) return false;
+      if (e.repeat) return [0];
 
       switch (e.key.toLowerCase()) {
         case 'x':
@@ -209,7 +209,7 @@ export default function DesignerPage(): ReactElement {
           break;
       }
 
-      return false;
+      return [0];
     },
     [instance, loaded, error],
   );
