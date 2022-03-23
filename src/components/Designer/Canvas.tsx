@@ -1,3 +1,4 @@
+import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
 import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
@@ -14,14 +15,17 @@ export interface Point {
 //   }
 // }
 
+/** [shouldUpdate, shouldClear dx, dy, width, height, ...pixels] */
+export type CanvasUpdateInfo = number[];
+
 type ReactMouseEvent = React.MouseEvent<HTMLCanvasElement, MouseEvent>;
 
 export interface Props {
   // options: CanvasOptions
-  onMouseDown?: (point: Point) => boolean;
-  onMouseUp?: (point: Point) => boolean;
-  onMouseMove?: (point: Point, mouseDownStart: Point | null) => boolean;
-  onKeyDown?: (e: KeyboardEvent) => boolean;
+  onMouseDown?: (point: Point) => CanvasUpdateInfo;
+  onMouseUp?: (point: Point) => CanvasUpdateInfo;
+  onMouseMove?: (point: Point, mouseDownStart: Point | null) => CanvasUpdateInfo;
+  onKeyDown?: (e: KeyboardEvent) => CanvasUpdateInfo;
 }
 
 export default function Canvas(props: Props): ReactElement {
@@ -31,50 +35,73 @@ export default function Canvas(props: Props): ReactElement {
 
   const { instance, loaded, error } = useWasm();
 
-  const getMousePoint = (e: ReactMouseEvent): Point | null => {
-    if (e.button !== 0) return null;
+  const getMousePoint = useCallback(
+    (e: ReactMouseEvent): Point | null => {
+      if (e.button !== 0) return null;
 
-    const canvasRect = canvasRef?.current?.getBoundingClientRect();
-    if (!canvasRect) return null;
+      const canvasRect = canvasRef?.current?.getBoundingClientRect();
+      if (!canvasRect) return null;
 
-    const x = e.clientX - canvasRect.left;
-    const y = e.clientY - canvasRect.top;
+      const x = e.clientX - canvasRect.left;
+      const y = e.clientY - canvasRect.top;
 
-    return { x, y };
-  };
+      return { x, y };
+    },
+    [canvasRef],
+  );
 
-  const handleUpdate = useCallback(() => {
+  const updateCanvas = useCallback(
+    (updateInfo: CanvasUpdateInfo) => {
+      // Extract canvas ref and update information
+      const [shouldUpdate, shouldClear, dx, dy, width, height, ...pixels] = updateInfo;
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext('2d');
+      if (
+        shouldUpdate === 0 ||
+        shouldClear === undefined ||
+        dx === undefined ||
+        dy === undefined ||
+        !width ||
+        !height ||
+        !canvas ||
+        !ctx
+      )
+        return;
+
+      // Create buffers
+      const buffer = new ArrayBuffer(width * height * 4);
+      const buffer8 = new Uint8ClampedArray(buffer);
+      const buffer32 = new Uint32Array(buffer);
+
+      // Put the image data on the canvas
+      // TODO faster way to do this for loop?
+      for (let i = 0; i < pixels.length; i++) buffer32[i] = pixels[i] ?? 0;
+      const imageData = new ImageData(buffer8, width, height);
+      if (shouldClear === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.putImageData(imageData, dx, dy, 0, 0, width, height);
+    },
+    [canvasRef],
+  );
+
+  const handleResize = useCallback(() => {
     if (!loaded) return;
     if (error) {
       console.error(error);
       return;
     }
 
-    // Extract ref to canvas element
     const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !ctx) return;
+    if (!canvas) return;
 
-    // Set default canvas width and height
     const { clientWidth: width, clientHeight: height } = canvas;
-    instance?.exports.setCanvasSize(width, height);
-    canvas.width = width;
-    canvas.height = height;
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
 
-    // Create image data
-    console.time('updatePixelGrid');
-    const pixels = new Uint8ClampedArray(instance?.exports.updatePixelGrid());
-    const imageData = new ImageData(pixels, width, height);
-    console.timeEnd('updatePixelGrid');
-
-    // Set image data
-    // ctx.clearRect(0, 0, width, height);
-    // TODO Performance increase: https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
-    // https://gist.github.com/biovisualize/5400576
-
-    // TODO For more performance, call putImageData with a bounding box to redraw only a subset of the pixels (i.e., only supply the canvas with pixels from the ImageData in the box [(x,y), (x+w,y+h)])
-    ctx.putImageData(imageData, 0, 0);
-  }, [canvasRef, instance, loaded, error]);
+      const updateInfo = instance?.exports.setCanvasSize(width, height);
+      if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+    }
+  }, [instance, loaded, error, canvasRef]);
 
   const handleMouseDown = useCallback(
     (e: ReactMouseEvent) => {
@@ -83,8 +110,8 @@ export default function Canvas(props: Props): ReactElement {
 
       setMouseDownStart(point);
       if (props.onMouseDown) {
-        const shouldUpdate = props.onMouseDown(point);
-        if (shouldUpdate) handleUpdate();
+        const updateInfo = props.onMouseDown(point);
+        if (updateInfo[0] !== 0) updateCanvas(updateInfo);
       }
     },
     [props.onMouseDown, canvasRef, instance, loaded, error],
@@ -97,8 +124,8 @@ export default function Canvas(props: Props): ReactElement {
 
       setMouseDownStart(null);
       if (props.onMouseUp) {
-        const shouldUpdate = props.onMouseUp(point);
-        if (shouldUpdate) handleUpdate();
+        const updateInfo = props.onMouseUp(point);
+        if (updateInfo[0] !== 0) updateCanvas(updateInfo);
       }
     },
     [props.onMouseUp, canvasRef, instance, loaded, error],
@@ -110,8 +137,8 @@ export default function Canvas(props: Props): ReactElement {
       if (!point) return;
 
       if (props.onMouseMove) {
-        const shouldUpdate = props.onMouseMove(point, mouseDownStart);
-        if (shouldUpdate) handleUpdate();
+        const updateInfo = props.onMouseMove(point, mouseDownStart);
+        if (updateInfo[0] !== 0) updateCanvas(updateInfo);
       }
     },
     [props.onMouseMove, mouseDownStart, canvasRef, instance, loaded, error],
@@ -120,8 +147,8 @@ export default function Canvas(props: Props): ReactElement {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (props.onKeyDown) {
-        const shouldUpdate = props.onKeyDown(e);
-        if (shouldUpdate) handleUpdate();
+        const updateInfo = props.onKeyDown(e);
+        if (updateInfo[0] !== 0) updateCanvas(updateInfo);
       }
     },
     [props.onKeyDown],
@@ -134,9 +161,7 @@ export default function Canvas(props: Props): ReactElement {
     };
   }, [window, handleKeyDown]);
 
-  useEffect(() => {
-    handleUpdate();
-  }, [canvasRef, instance, loaded, error]);
+  useResizeObserver(canvasRef, handleResize);
 
   return (
     <canvas

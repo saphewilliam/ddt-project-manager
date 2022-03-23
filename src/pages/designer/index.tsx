@@ -16,8 +16,8 @@ import {
 } from '@heroicons/react/solid';
 import cx from 'clsx';
 // import ContextMenu from './ContextMenu';
-import React, { ReactElement, SVGProps, useState } from 'react';
-import Canvas, { Point } from '@components/Designer/Canvas';
+import React, { ReactElement, SVGProps, useCallback, useState } from 'react';
+import Canvas, { Props as CanvasProps, CanvasUpdateInfo } from '@components/Designer/Canvas';
 import Layout from '@components/Layout';
 import useWasm from '@hooks/useWasm';
 
@@ -73,9 +73,9 @@ interface Tool {
   icon: (props: SVGProps<SVGSVGElement>) => ReactElement;
   selectedIcon: (props: SVGProps<SVGSVGElement>) => ReactElement;
 
-  onMouseDown?: (point: Point) => boolean;
-  onMouseUp?: (point: Point) => boolean;
-  onMouseMove?: (point: Point, mouseDownStart: Point | null) => boolean;
+  onMouseDown?: CanvasProps['onMouseDown'];
+  onMouseUp?: CanvasProps['onMouseUp'];
+  onMouseMove?: CanvasProps['onMouseMove'];
 }
 
 export default function DesignerPage(): ReactElement {
@@ -90,6 +90,7 @@ export default function DesignerPage(): ReactElement {
       icon: PencilIconOutline,
       selectedIcon: PencilIconSolid,
       onMouseDown(point) {
+        // TODO only save if canvas updated (check on mouse up)
         instance?.exports.saveUndo();
         return instance?.exports.draw(
           point.x,
@@ -108,7 +109,7 @@ export default function DesignerPage(): ReactElement {
             colors[selectedColor].g,
             colors[selectedColor].b,
           );
-        return false;
+        return [0];
       },
     },
     [ToolIndex.ERASE]: {
@@ -116,18 +117,29 @@ export default function DesignerPage(): ReactElement {
       icon: XCircleIconOutline,
       selectedIcon: XCircleIconSolid,
       onMouseDown(point) {
+        // TODO only save if canvas updated (check on mouse up)
         instance?.exports.saveUndo();
         return instance?.exports.erase(point.x, point.y);
       },
       onMouseMove(point, mouseDownStart) {
         if (mouseDownStart) return instance?.exports.erase(point.x, point.y);
-        return false;
+        return [0];
       },
     },
     [ToolIndex.SELECT]: {
       label: 'Select',
       icon: CubeTransparentIconOutline,
       selectedIcon: CubeTransparentIconSolid,
+      onMouseDown() {
+        // TODO only save if canvas updated (check on mouse up)
+        instance?.exports.saveUndo();
+        return instance?.exports.clearSelection();
+      },
+      onMouseMove(point, mouseDownStart) {
+        if (mouseDownStart)
+          return instance?.exports.select(mouseDownStart.x, mouseDownStart.y, point.x, point.y);
+        return [0];
+      },
     },
     [ToolIndex.MOVE]: {
       label: 'Move',
@@ -135,12 +147,12 @@ export default function DesignerPage(): ReactElement {
       selectedIcon: HandIconSolid,
       onMouseDown() {
         instance?.exports.saveOrigin();
-        return false;
+        return [0];
       },
       onMouseMove(point, mouseDownStart) {
         if (mouseDownStart)
           return instance?.exports.setOrigin(point.x, point.y, mouseDownStart.x, mouseDownStart.y);
-        return false;
+        return [0];
       },
     },
     [ToolIndex.ZOOM_IN]: {
@@ -161,18 +173,44 @@ export default function DesignerPage(): ReactElement {
     },
   };
 
-  function handleKeyDown(e: KeyboardEvent): boolean {
-    if (e.repeat) return false;
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent): CanvasUpdateInfo => {
+      if (!loaded) return [0];
+      if (error) {
+        console.error(error);
+        return [0];
+      }
 
-    switch (e.key.toLowerCase()) {
-      case 'z':
-        if (e.ctrlKey && !e.shiftKey) return instance?.exports.undo();
-        if (e.ctrlKey && e.shiftKey) return instance?.exports.redo();
-        return false;
-    }
+      if (e.repeat) return [0];
 
-    return false;
-  }
+      switch (e.key.toLowerCase()) {
+        case 'x':
+          if (e.ctrlKey) {
+            // TODO only save if canvas updated (if selection.length > 0)
+            instance?.exports.saveUndo();
+            return instance?.exports.cut();
+          }
+          break;
+        case 'c':
+          if (e.ctrlKey) return instance?.exports.copy();
+          break;
+        case 'v':
+          if (e.ctrlKey) {
+            // TODO only save if canvas updated (if clipboard.length > 0 && entire clipboard fits within canvas)
+            instance?.exports.saveUndo();
+            return instance?.exports.paste();
+          }
+          break;
+        case 'z':
+          if (e.ctrlKey && !e.shiftKey) return instance?.exports.undo();
+          if (e.ctrlKey && e.shiftKey) return instance?.exports.redo();
+          break;
+      }
+
+      return [0];
+    },
+    [instance, loaded, error],
+  );
 
   return (
     <Layout
