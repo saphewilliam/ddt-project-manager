@@ -192,9 +192,7 @@ export default function DesignerPage(): ReactElement {
           }
           break;
         case 'c':
-          if (e.ctrlKey) {
-            return instance?.exports.copy();
-          }
+          if (e.ctrlKey) return instance?.exports.copy();
           break;
         case 'v':
           if (e.ctrlKey) {
