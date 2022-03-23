@@ -15,17 +15,7 @@ abstract class Layer {
     const stonesClone: Array<Stone> = new Array<Stone>();
     for (let i = 0; i < this.stones.length; i++) {
       const stone = this.stones[i];
-      stonesClone.push(
-        new Stone(
-          stone.origin,
-          stone.size,
-          stone.color,
-          stone.type,
-          stone.angle,
-          stone.erased,
-          stone.selected,
-        ),
-      );
+      stonesClone.push(stone.clone());
     }
     return stonesClone;
   }
@@ -60,16 +50,23 @@ export class WallLayer extends Layer {
       for (let x: u32 = 0; x < width; x++) {
         // Short stone row
         if ((y % 2 === 0 && height % 2 === 1) || (y % 2 === 1 && height % 2 === 0))
-          this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(1, 3), initColor, 0));
+          this.stones.push(
+            new Stone(
+              new Point(x * 5, y * 3),
+              new Size(1, 3),
+              initColor,
+              y % 4 === 0 || y % 4 === 1 ? (x % 2 === 0 ? 0 : 1) : x % 2 === 0 ? 1 : 0,
+            ),
+          );
         // Long stone row
         else {
           if (x === width - 1) continue;
           if ((x % 2 === 0 && y % 4 < 2) || (x % 2 === 1 && y % 4 > 1))
-            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(6, 3), initColor, 1));
+            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(6, 3), initColor, 2));
           else if (x === 0)
-            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(5, 3), initColor, 1));
+            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(5, 3), initColor, 3));
           else if (x === width - 2)
-            this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(5, 3), initColor, 2));
+            this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(5, 3), initColor, 3));
           else
             this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(4, 3), initColor, 3));
         }

@@ -46,12 +46,30 @@ export class Canvas {
     this.scale = 5;
   }
 
+  /** Checks if a stone is in bounds of a canvas (x1, y1), (x2, y2) area */
+  stoneIsInBounds(stone: Stone, x1: i32, y1: i32, x2: i32, y2: i32): boolean {
+    return (
+      (Math.max(x1, x2) as i32) > this.origin.x + stone.origin.x * this.scale &&
+      (Math.min(x1, x2) as i32) <
+        this.origin.x + (stone.origin.x + stone.size.width) * this.scale &&
+      (Math.max(y1, y2) as i32) > this.origin.y + stone.origin.y * this.scale &&
+      (Math.min(y1, y2) as i32) < this.origin.y + (stone.origin.y + stone.size.height) * this.scale
+    );
+  }
+
+  /** Update the scale of the canvas */
+  setScale(originX: i32, originY: i32, scaleBy: f32): void {
+    this.scale = ((this.scale as f32) * scaleBy) as u32;
+    this.origin.x = originX - ((((originX - this.origin.x) as f32) * scaleBy) as i32);
+    this.origin.y = originY - ((((originY - this.origin.y) as f32) * scaleBy) as i32);
+  }
+
   setStone(stone: Stone): CanvasUpdateInfo {
     return this.setStones([stone]);
   }
 
   /** Adds an instruction to clear the canvas before placing the stones on it */
-  clearStones(stones: Array<Stone>): CanvasUpdateInfo {
+  clearSetStones(stones: Array<Stone>): CanvasUpdateInfo {
     const info = this.setStones(stones);
     info.shouldClear = true;
     return info;
@@ -159,6 +177,7 @@ export class Canvas {
         } else {
           // Color fill
           info.pixels.fill(
+            // stone.type === 0 ? new Color(255, 0, 0).color : new Color(0, 255, 0).color,
             stone.color.color,
             rowIndex + xLowClamped - info.origin.x,
             rowIndex + xUpClamped - info.origin.x,

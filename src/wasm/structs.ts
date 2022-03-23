@@ -72,4 +72,16 @@ export class Stone {
     this.erased = erased;
     this.selected = selected;
   }
+
+  clone(): Stone {
+    return new Stone(
+      new Point(this.origin.x, this.origin.y),
+      new Size(this.size.width, this.size.height),
+      new Color(this.color.r, this.color.g, this.color.b),
+      this.type,
+      this.angle,
+      this.erased,
+      this.selected,
+    );
+  }
 }
