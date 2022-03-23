@@ -1235,10 +1235,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@saphe/react-table@0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@saphe/react-table/-/react-table-0.5.1.tgz#3d5943ffef1890d481fce8914aec1be5beaaac1c"
-  integrity sha512-BMlOsOb/MVYKgLvGK1PrMTqiTYEnbom7ZjhW+YEuMTcFnkOu7Uf0fOlGFEYG+ofYQ9oTLmJp8nagAWIpGJU+2w==
+"@saphe/react-table@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@saphe/react-table/-/react-table-0.6.0.tgz#25fa59158dcdb30b82415501da1fc2aece9c5668"
+  integrity sha512-TD9UJVOtpwS07gn7PxjBATDI5omu7a4bEvpTZKpklsISoMYTf9ZehTHqyh1wFY8MC5BxaSPUfbMOVL1hcAIkFg==
   dependencies:
     fuzzysort "1.1.4"
     tslib "2.3.1"

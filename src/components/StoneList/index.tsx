@@ -85,13 +85,15 @@ export default function StoneList(props: Props): ReactElement {
         )}
       </div>
 
-      <StoneListColumnModal
-        visibilityHelpers={visibilityHelpers}
-        originalHeaders={originalHeaders}
-        setShow={setShowColumnModal}
-        show={showColumnModal}
-        title={props.title}
-      />
+      {userColumns.length > 1 && (
+        <StoneListColumnModal
+          visibilityHelpers={visibilityHelpers}
+          originalHeaders={originalHeaders}
+          setShow={setShowColumnModal}
+          show={showColumnModal}
+          title={props.title}
+        />
+      )}
 
       <StoneListEditModal
         settings={editModalSettings}

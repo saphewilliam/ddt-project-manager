@@ -56,6 +56,10 @@ query Event($eventSlug: String!) {
           id
           name
           hex
+          hex2
+          alias
+          alias2
+          order
         }
       }
     }

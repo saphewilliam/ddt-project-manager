@@ -3,8 +3,9 @@ import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import Button from '@components/Button';
+import Card from '@components/Card';
 import Layout from '@components/Layout';
-import StonesOnSubthemeTable from '@components/StonesOnSubthemeTable';
+import ProjectStoneList from '@components/StoneList/ProjectStoneList';
 import SubthemeTable from '@components/SubthemeTable';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
@@ -17,112 +18,47 @@ export default function EventPage(): ReactElement {
   const { data } = useSafeQuery('useEvent', { eventSlug: eventSlug ?? '' }, eventSlug);
 
   return (
-    <Layout title="Event" hideHeader>
+    <Layout title={data?.event?.name ?? 'Event'} hideHeader>
       <div className={cx('grid', 'md:grid-cols-2', 'gap-4', 'sm:grid-cols-none')}>
-        <section
-          className={cx(
-            'flex',
-            'justify-between',
-            'col-span-2',
-
-            'rounded-xl',
-            'transition-all',
-            'border-solid',
-            'border',
-            'border-gray-900/20',
-            'p-6',
-          )}
-        >
+        <Card className={cx('col-span-2')}>
           <h2 className={cx('font-bold', 'text-3xl')}>Projects in {data?.event?.name} </h2>
           <span className={cx()}>
             <Button className={cx('flex')} icon={PlusSmIcon} label="New project" href="/"></Button>
           </span>
-        </section>
+        </Card>
 
-        <section
-          className={cx(
-            'col-span-2',
-            'border-solid',
-            'border',
-            'rounded-xl',
-            'transition-all',
-            'border-gray-900/20',
-            'p-6',
-          )}
-        >
-          <div>
+        <Card className={cx('col-span-2')}>
+          <div className={cx('w-full')}>
             {data?.event?.subthemes.map((subtheme) => (
               <SubthemeTable subtheme={subtheme} eventSlug={eventSlug ?? ''} key={subtheme.id} />
             ))}
           </div>
-        </section>
+        </Card>
 
-        <section
-          className={cx(
-            'col-span-2',
-            'lg:col-span-1',
-            'border-solid',
-            'border',
-            'rounded-xl',
-            'transition-all',
-            'border-gray-900/20',
-            'p-6',
-          )}
-        >
-          <div>
-            <p className={cx('text-2xl', 'font-semibold	')}>Lines</p>
-          </div>
-        </section>
-        <section
-          className={cx(
-            'col-span-2',
-            'lg:col-span-1',
-            'border-solid',
-            'border',
-            'rounded-xl',
-            'transition-all',
-            'border-gray-900/20',
-            'p-6',
-          )}
-        >
-          <div>
-            <p className={cx('text-2xl', 'font-semibold	')}>Total attributes</p>
-          </div>
-        </section>
+        <Card className={cx('col-span-2', 'lg:col-span-1')}>
+          <p className={cx('text-2xl', 'font-semibold')}>Lines</p>
+        </Card>
 
-        <section
-          className={cx(
-            'col-span-2',
-            'lg:col-span-1',
-            'border-solid',
-            'border',
-            'rounded-xl',
-            'transition-all',
-            'border-gray-900/20',
-            'p-6',
-          )}
-        >
-          <div className={cx('space-y-6')}>
+        <Card className={cx('col-span-2', 'lg:col-span-1')}>
+          <p className={cx('text-2xl', 'font-semibold')}>Total attributes</p>
+        </Card>
+
+        <Card className={cx('col-span-2', 'lg:col-span-1')}>
+          <div className={cx('space-y-9', 'w-full')}>
             {data?.event?.subthemes.map(
               (subtheme) =>
                 subtheme.stones.length > 0 && (
-                  <StonesOnSubthemeTable subtheme={subtheme} key={subtheme.id} />
+                  <ProjectStoneList
+                    title={subtheme.name}
+                    rows={subtheme.stones}
+                    key={subtheme.id}
+                  />
                 ),
             )}
           </div>
-        </section>
-        <section
-          className={cx(
-            'col-span-2',
-            'lg:col-span-1',
-            'border-solid',
-            'border',
-            'rounded-xl',
-            'transition-all',
-            'border-gray-900/20',
-            'p-6',
-          )}
-        >
+        </Card>
+
+        <Card className={cx('col-span-2', 'lg:col-span-1')}>
           <table className={cx('table-auto', 'w-full')}>
             <tbody>
               <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
@@ -155,7 +91,7 @@ export default function EventPage(): ReactElement {
               </tr>
             </tbody>
           </table>
-        </section>
+        </Card>
       </div>
     </Layout>
   );

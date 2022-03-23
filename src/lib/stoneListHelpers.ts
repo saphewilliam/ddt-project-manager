@@ -8,9 +8,9 @@ import {
 } from '@graphql/__generated__/codegen-self';
 
 export function fontColorFromBackground(hex: string): string {
-  const r = parseInt(hex.substr(1, 2), 16);
-  const g = parseInt(hex.substr(3, 2), 16);
-  const b = parseInt(hex.substr(5, 2), 16);
+  const r = parseInt(hex.substring(1, 3), 16);
+  const g = parseInt(hex.substring(3, 5), 16);
+  const b = parseInt(hex.substring(5, 7), 16);
 
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
@@ -56,6 +56,20 @@ export type StoneListColumnTypes = {
   };
   total: number;
   edit: () => void;
+};
+
+export type ProjectStoneListColumnTypes = {
+  color: {
+    id: string;
+    name: string;
+    alias: string;
+    alias2?: string | null;
+    hex: string;
+    hex2?: string | null;
+    order: number;
+  };
+  person: string;
+  amount: number;
 };
 
 export function makeStoneListTableColumns(

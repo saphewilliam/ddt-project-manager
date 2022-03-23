@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { idMap } from '@graphql/idMap';
-import { generateSlug } from '@lib/util';
 
 export default async function seedStonesOnSubthemes(prisma: PrismaClient): Promise<void> {
   await prisma.stonesOnSubtheme.createMany({
