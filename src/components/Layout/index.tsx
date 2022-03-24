@@ -1,6 +1,7 @@
 import cx from 'clsx';
 import Head from 'next/head';
 import React, { ReactElement, ReactNode } from 'react';
+import ReactTooltip from 'react-tooltip';
 import Loading from '@components/Loading';
 import useDeviceWidth from '@hooks/useDeviceWidth';
 import useSession from '@hooks/useSession';
@@ -23,7 +24,11 @@ export default function Layout(props: Props): ReactElement {
       <Head>
         <title>DDT Project Manager{props.title ? ` - ${props.title}` : ''}</title>
       </Head>
+
       {session !== null && <Navigation />}
+
+      <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
+
       <main
         className={cx(
           'flex',

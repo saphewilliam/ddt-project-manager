@@ -21,3 +21,47 @@ query Events {
     img
   }
 }
+
+query Event($eventSlug: String!) {
+  event(eventSlug: $eventSlug) {
+    id
+    name
+    subthemes {
+      id
+      name
+      order
+      slug
+      color
+      projects {
+        id
+        name
+        number
+        slug
+        subNumber
+        supervisor {
+          id
+          displayName
+        }
+        type
+        status
+      }
+      stones {
+        id
+        amount
+        user {
+          id
+          displayName
+        }
+        stone {
+          id
+          name
+          hex
+          hex2
+          alias
+          alias2
+          order
+        }
+      }
+    }
+  }
+}

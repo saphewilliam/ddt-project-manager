@@ -1,15 +1,14 @@
-import { State as TableState } from '@saphe/react-table';
+import { Header, Row, ColumnTypes } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
-import { StoneListColumnTypes } from '@lib/stoneListHelpers';
 
-export interface Props {
-  headers: TableState<StoneListColumnTypes>['headers'];
-  rows: TableState<StoneListColumnTypes>['rows'];
+export interface Props<T extends ColumnTypes> {
+  headers: Header[];
+  rows: Row<T>[];
 }
 
-export default function StoneListTable(props: Props): ReactElement {
+export default function StoneListTable<T extends ColumnTypes>(props: Props<T>): ReactElement {
   useEffect(() => {
     ReactTooltip.rebuild();
   }, [props.rows]);

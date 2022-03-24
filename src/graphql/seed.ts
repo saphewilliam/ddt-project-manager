@@ -7,6 +7,7 @@ import seedProjects from './Project/seed';
 import seedSessions from './Session/seed';
 import seedStones from './Stone/seed';
 import seedStoneLists from './StoneList/seed';
+import seedStonesOnSubthemes from './StonesOnSubtheme/seed';
 import seedStoneTypes from './StoneType/seed';
 import seedSubthemes from './Subtheme/seed';
 import seedTeams from './Team/seed';
@@ -41,6 +42,9 @@ async function seed(prisma: PrismaClient): Promise<void> {
 
   console.log('Seeding Subthemes...');
   await seedSubthemes(prisma);
+
+  console.log('Seeding StonesOnSubthemes...');
+  await seedStonesOnSubthemes(prisma);
 
   console.log('Seeding Projects...');
   await seedProjects(prisma);

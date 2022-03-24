@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import Link from 'next/link';
-import React, { ReactElement, MouseEvent, useCallback } from 'react';
+import React, { ReactElement, MouseEvent, useCallback, SVGProps } from 'react';
 import ReactLoading from 'react-loading';
 
 export enum ButtonType {
@@ -10,6 +10,7 @@ export enum ButtonType {
 
 interface PropsBase {
   label: string;
+  icon?: (props: SVGProps<SVGSVGElement>) => ReactElement;
   type?: ButtonType;
   loading?: boolean;
   disabled?: boolean;
@@ -65,7 +66,10 @@ export default function Button(props: Props): ReactElement {
       <ReactLoading color="#fff" type="bubbles" className={cx('-my-5')} />
     </div>
   ) : (
-    <span>{props.label}</span>
+    <>
+      {props.icon && <props.icon width={20} />}
+      <span>{props.label}</span>
+    </>
   );
 
   return 'href' in props ? (
