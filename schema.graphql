@@ -63,6 +63,9 @@ type Event {
   img: String!
   name: String!
   slug: String!
+
+  """The number of dominoes assigned to this event"""
+  stoneAmount: Int!
   subthemes: [Subtheme!]!
   team: Team!
   teamId: String!
@@ -330,6 +333,9 @@ type User {
   projects: [Project!]!
   sessions: [Session!]!
   slug: String!
+
+  """The number of dominoes this user posesses"""
+  stoneAmount: Int!
   stoneLists: [StoneList!]!
   stonesOnProjects: [StonesOnProject!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!

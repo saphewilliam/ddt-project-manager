@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Layout from '@components/Layout';
 import useSafeQuery from '@hooks/useSafeQuery';
+import { formatNumber } from '@lib/stoneListHelpers';
 
 export default function EventsPage(): ReactElement {
   const { data } = useSafeQuery('useEvents', {});
@@ -37,7 +38,7 @@ export default function EventsPage(): ReactElement {
                   <ul className={cx('text-gray-700')}>
                     <li className={cx('flex')}>
                       <ChartBarIcon className={cx('w-5', 'mr-1')} />
-                      <span>123456 stenen</span>
+                      <span>{formatNumber(event.stoneAmount)} stones</span>
                     </li>
                     <li className={cx('flex')}>
                       <CalendarIcon className={cx('w-5', 'mr-1')} />

@@ -4,6 +4,7 @@ query StoneListUsers {
     firstName
     lastName
     slug
+    stoneAmount
   }
 }
 
