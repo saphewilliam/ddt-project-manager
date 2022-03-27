@@ -25,7 +25,7 @@ export class PixelGridLayer extends Layer {
   constructor(width: u32, height: u32) {
     super();
 
-    const initColor = new Color(0, 162, 232);
+    const initColor = new Color(51, 171, 242);
     const stoneSize = new Size(3, 3);
     for (let x: u32 = 0; x < width; x++) {
       for (let y: u32 = 0; y < height; y++) {
@@ -45,7 +45,7 @@ export class WallLayer extends Layer {
   constructor(width: u32, height: u32) {
     super();
 
-    const initColor = new Color(0, 162, 232);
+    const initColor = new Color(51, 171, 242);
     for (let y: u32 = 0; y < height; y++) {
       for (let x: u32 = 0; x < width; x++) {
         // Short stone row
