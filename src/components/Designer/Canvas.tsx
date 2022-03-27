@@ -166,7 +166,6 @@ export default function Canvas(props: Props): ReactElement {
   return (
     <canvas
       ref={canvasRef}
-      style={{ imageRendering: 'pixelated' }}
       className={cx('w-full', 'h-full', 'block', 'bg-white')}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}

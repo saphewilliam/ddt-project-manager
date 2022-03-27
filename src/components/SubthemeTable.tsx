@@ -2,7 +2,7 @@ import { PlusSmIcon, MinusSmIcon, PencilIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { fontColorFromBackground } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex } from '@lib/stoneListHelpers';
 
 export interface Props {
   eventSlug: string;
@@ -31,7 +31,7 @@ export default function SubthemeTable(props: Props): ReactElement {
             colSpan={3}
             style={{
               backgroundColor: props.subtheme.color,
-              color: fontColorFromBackground(props.subtheme.color),
+              color: fontColorFromBackgroundHex(props.subtheme.color),
             }}
             className={cx('px-4', 'py-2')}
           >

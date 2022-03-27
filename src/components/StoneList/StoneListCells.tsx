@@ -3,7 +3,7 @@ import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicon
 import { RenderCellProps, RenderHeadProps, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import { fontColorFromBackground, formatNumber } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
 
 const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-5', 'text-gray-900');
 
@@ -12,7 +12,7 @@ export function ColorCell(props: RenderCellProps): ReactElement {
     <td
       style={{
         backgroundColor: props.row.color.hex,
-        color: fontColorFromBackground(props.row.color.hex),
+        color: fontColorFromBackgroundHex(props.row.color.hex),
       }}
       className={cx(commonClassName, 'font-semibold')}
     >
