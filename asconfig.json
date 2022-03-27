@@ -2,13 +2,13 @@
   "entries": ["./src/wasm/index.ts"],
   "targets": {
     "debug": {
-      "binaryFile": "public/wasm/debug.wasm",
+      "outFile": "public/wasm/debug.wasm",
       "textFile": "public/wasm/debug.wat",
       "sourceMap": true,
       "debug": true
     },
     "release": {
-      "binaryFile": "public/wasm/release.wasm",
+      "outFile": "public/wasm/release.wasm",
       "textFile": "public/wasm/release.wat",
       "sourceMap": true,
       "optimizeLevel": 3,
