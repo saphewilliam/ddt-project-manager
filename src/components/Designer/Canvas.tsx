@@ -1,6 +1,6 @@
 import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
-import React, { ReactElement, useRef, useEffect, useCallback, useState, useMemo } from 'react';
+import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
 import useWasm from '@hooks/useWasm';
 import ContextMenu, { MenuItem, MenuItemDivide, MenuItemExecute, MenuItemSub } from './ContextMenu';
 
