@@ -219,8 +219,7 @@ export default function DesignerPage(): ReactElement {
       label: 'Cut',
       icon: ScissorsIcon,
       shortcut: 'Ctrl + X',
-      // TODO
-      // disabled: selection.length === 0,
+      disabled: () => !instance?.exports.canCut(),
       onClick() {
         // TODO only save if canvas updated (if selection.length > 0)
         instance?.exports.saveUndo();
@@ -232,9 +231,7 @@ export default function DesignerPage(): ReactElement {
       label: 'Copy',
       icon: ClipboardCopyIcon,
       shortcut: 'Ctrl + C',
-      // TODO
-      // disabled: selection.length === 0,
-      disabled: true,
+      disabled: () => !instance?.exports.canCopy(),
       onClick() {
         return instance?.exports.copy();
       },
@@ -244,8 +241,7 @@ export default function DesignerPage(): ReactElement {
       label: 'Paste',
       icon: ClipboardIcon,
       shortcut: 'Ctrl + V',
-      // TODO
-      // disabled: selection.length === 0 || clipboard.length === 0,
+      disabled: () => !instance?.exports.canPaste(),
       onClick() {
         // TODO only save if canvas updated (if clipboard.length > 0 && entire clipboard fits within canvas)
         instance?.exports.saveUndo();
@@ -258,8 +254,7 @@ export default function DesignerPage(): ReactElement {
     {
       kind: MenuItemKind.EXECUTE,
       label: 'Undo',
-      // TODO
-      // disabled: undoStore.length === 0,
+      disabled: () => !instance?.exports.canUndo(),
       icon: RewindIcon,
       shortcut: 'Ctrl + Z',
       onClick() {
@@ -269,8 +264,7 @@ export default function DesignerPage(): ReactElement {
     {
       kind: MenuItemKind.EXECUTE,
       label: 'Redo',
-      // TODO
-      // disabled: redoStore.length === 0,
+      disabled: () => !instance?.exports.canRedo(),
       icon: FastForwardIcon,
       shortcut: 'Ctrl + Shift + Z',
       onClick() {
@@ -302,6 +296,7 @@ export default function DesignerPage(): ReactElement {
         {
           kind: MenuItemKind.EXECUTE,
           label: 'Color all cells in selection',
+          disabled: () => !instance?.exports.canCopy(),
           onClick: () => {
             // TODO
             return [0];
@@ -328,24 +323,33 @@ export default function DesignerPage(): ReactElement {
       switch (e.key.toLowerCase()) {
         case 'x':
           if (e.ctrlKey) {
-            // TODO only save if canvas updated (if selection.length > 0)
-            instance?.exports.saveUndo();
-            return instance?.exports.cut();
+            if (instance?.exports.canCut()) {
+              instance?.exports.saveUndo();
+              return instance?.exports.cut();
+            }
+            return [0];
           }
           break;
         case 'c':
-          if (e.ctrlKey) return instance?.exports.copy();
+          if (e.ctrlKey) {
+            if (instance?.exports.canCopy()) return instance?.exports.copy();
+            return [0];
+          }
           break;
         case 'v':
           if (e.ctrlKey) {
-            // TODO only save if canvas updated (if clipboard.length > 0 && entire clipboard fits within canvas)
-            instance?.exports.saveUndo();
-            return instance?.exports.paste();
+            if (instance?.exports.canPaste()) {
+              instance?.exports.saveUndo();
+              return instance?.exports.paste();
+            }
+            return [0];
           }
           break;
         case 'z':
-          if (e.ctrlKey && !e.shiftKey) return instance?.exports.undo();
-          if (e.ctrlKey && e.shiftKey) return instance?.exports.redo();
+          if (e.ctrlKey && !e.shiftKey)
+            if (instance?.exports.canUndo()) return instance?.exports.undo();
+          if (e.ctrlKey && e.shiftKey)
+            if (instance?.exports.canRedo()) return instance?.exports.redo();
           break;
       }
 

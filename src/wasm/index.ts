@@ -15,6 +15,26 @@ let originStore: Point = new Point(0, 0);
 const minZoom: u32 = 2;
 const maxZoom: u32 = 40;
 
+export function canCut(): boolean {
+  return selection.length > 0;
+}
+
+export function canCopy(): boolean {
+  return selection.length > 0;
+}
+
+export function canPaste(): boolean {
+  return selection.length > 0 && clipboard.length > 0;
+}
+
+export function canUndo(): boolean {
+  return undoStore.length > 0;
+}
+
+export function canRedo(): boolean {
+  return redoStore.length > 0;
+}
+
 export function saveOrigin(): void {
   originStore = canvas.origin;
 }

@@ -21,12 +21,15 @@ export type CanvasUpdateInfo = number[];
 
 type ReactMouseEvent = React.MouseEvent<HTMLCanvasElement, MouseEvent>;
 
-type OnClickProxy = Omit<MenuItemExecute, 'onClick'> & { onClick: () => CanvasUpdateInfo };
-type SubOnClickProxy = Omit<MenuItemSub, 'items'> & { items: (OnClickProxy | MenuItemDivide)[] };
+type MenuItemProxy = Omit<MenuItemExecute, 'onClick' | 'disabled'> & {
+  onClick: () => CanvasUpdateInfo;
+  disabled?: () => boolean;
+};
+type SubMenuItemProxy = Omit<MenuItemSub, 'items'> & { items: (MenuItemProxy | MenuItemDivide)[] };
 
 export interface Props {
   // options: CanvasOptions
-  contextMenuItems?: (OnClickProxy | SubOnClickProxy | MenuItemDivide)[];
+  contextMenuItems?: (MenuItemProxy | SubMenuItemProxy | MenuItemDivide)[];
   onMouseDown?: (point: Point) => CanvasUpdateInfo;
   onMouseUp?: (point: Point) => CanvasUpdateInfo;
   onMouseMove?: (point: Point, mouseDownStart: Point | null) => CanvasUpdateInfo;
@@ -37,6 +40,7 @@ export default function Canvas(props: Props): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [mouseDownStart, setMouseDownStart] = useState<Point | null>(null);
+  const [contextMenuItems, setContextMenuItems] = useState<MenuItem[]>([]);
 
   const { instance, loaded, error } = useWasm();
 
@@ -53,6 +57,39 @@ export default function Canvas(props: Props): ReactElement {
       return { x, y };
     },
     [canvasRef],
+  );
+
+  const getContextMenuItems: () => MenuItem[] = useCallback(
+    () =>
+      props.contextMenuItems?.map<MenuItem>((item) => {
+        if ('onClick' in item && item.onClick)
+          return {
+            ...item,
+            disabled: item.disabled && item.disabled(),
+            onClick: () => {
+              const updateInfo = item.onClick();
+              if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+            },
+          } as MenuItem;
+        if ('items' in item && item.items)
+          return {
+            ...item,
+            items: item.items.map((subItem) => {
+              if ('onClick' in subItem && subItem.onClick)
+                return {
+                  ...subItem,
+                  disabled: subItem.disabled && subItem.disabled(),
+                  onClick: () => {
+                    const updateInfo = subItem.onClick();
+                    if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+                  },
+                };
+              return subItem;
+            }),
+          } as MenuItem;
+        return item as MenuItem;
+      }) ?? [],
+    [props.contextMenuItems],
   );
 
   const updateCanvas = useCallback(
@@ -84,6 +121,8 @@ export default function Canvas(props: Props): ReactElement {
       const imageData = new ImageData(buffer8, width, height);
       if (shouldClear === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.putImageData(imageData, dx, dy, 0, 0, width, height);
+
+      setContextMenuItems(getContextMenuItems());
     },
     [canvasRef],
   );
@@ -157,37 +196,6 @@ export default function Canvas(props: Props): ReactElement {
       }
     },
     [props.onKeyDown],
-  );
-
-  const contextMenuItems = useMemo<MenuItem[]>(
-    () =>
-      props.contextMenuItems?.map<MenuItem>((item) => {
-        if ('onClick' in item && item.onClick)
-          return {
-            ...item,
-            onClick: () => {
-              const updateInfo = item.onClick();
-              if (updateInfo[0] !== 0) updateCanvas(updateInfo);
-            },
-          } as MenuItem;
-        if ('items' in item && item.items)
-          return {
-            ...item,
-            items: item.items.map((subItem) => {
-              if ('onClick' in subItem && subItem.onClick)
-                return {
-                  ...subItem,
-                  onClick: () => {
-                    const updateInfo = subItem.onClick();
-                    if (updateInfo[0] !== 0) updateCanvas(updateInfo);
-                  },
-                };
-              return subItem;
-            }),
-          } as MenuItem;
-        return item as MenuItem;
-      }) ?? [],
-    [props.contextMenuItems],
   );
 
   useEffect(() => {
