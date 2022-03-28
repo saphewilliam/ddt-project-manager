@@ -140,6 +140,8 @@ const Menu = forwardRef<
       'rounded-md',
       'shadow-lg',
       'z-50',
+      'transition-opacity',
+      'duration-150',
       !props.isOpen && cx('invisible', 'opacity-0', 'pointer-events-none'),
       props.className,
     )}

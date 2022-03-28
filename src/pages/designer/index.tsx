@@ -21,7 +21,7 @@ import {
 } from '@heroicons/react/solid';
 import React, { ReactElement, SVGProps, useCallback, useState } from 'react';
 import Canvas, { Props as CanvasProps, CanvasUpdateInfo } from '@components/Designer/Canvas';
-import ContextMenu, { MenuItem, MenuItemKind } from '@components/Designer/ContextMenu';
+import { MenuItemKind } from '@components/Designer/ContextMenu';
 import DesignerSideBar from '@components/Designer/DesignerSideBar';
 import Layout from '@components/Layout';
 import useWasm from '@hooks/useWasm';
@@ -213,7 +213,7 @@ export default function DesignerPage(): ReactElement {
     },
   };
 
-  const contextMenuItems: MenuItem[] = [
+  const contextMenuItems: CanvasProps['contextMenuItems'] = [
     {
       kind: MenuItemKind.EXECUTE,
       label: 'Cut',
@@ -286,9 +286,10 @@ export default function DesignerPage(): ReactElement {
       items: [
         {
           kind: MenuItemKind.EXECUTE,
-          label: 'Select all cells of color',
+          label: 'Select all cells of current color',
           onClick: () => {
             // TODO
+            return [0];
             // const s: Point[] = [];
             // props.grid.forEach((gridRow) => {
             //   gridRow.forEach((cell) => {
@@ -303,6 +304,7 @@ export default function DesignerPage(): ReactElement {
           label: 'Color all cells in selection',
           onClick: () => {
             // TODO
+            return [0];
             // saveUndo();
             // const g: Grid = deepClone(props.grid);
             // selection.forEach((cell) => (g[cell.x][cell.y].colorId = colorId));
@@ -368,16 +370,13 @@ export default function DesignerPage(): ReactElement {
         />
       }
     >
-      <ContextMenu items={contextMenuItems}>
-        <div style={{ height: 'calc(100vh - 144px)' }}>
-          <Canvas
-            onMouseDown={tools[selectedTool].onMouseDown}
-            onMouseUp={tools[selectedTool].onMouseUp}
-            onMouseMove={tools[selectedTool].onMouseMove}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-      </ContextMenu>
+      <Canvas
+        contextMenuItems={contextMenuItems}
+        onMouseDown={tools[selectedTool].onMouseDown}
+        onMouseUp={tools[selectedTool].onMouseUp}
+        onMouseMove={tools[selectedTool].onMouseMove}
+        onKeyDown={handleKeyDown}
+      />
     </Layout>
   );
 }
