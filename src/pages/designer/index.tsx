@@ -1,4 +1,9 @@
 import {
+  ClipboardIcon,
+  FastForwardIcon,
+  RewindIcon,
+  ScissorsIcon,
+  ClipboardCopyIcon,
   CubeTransparentIcon as CubeTransparentIconOutline,
   HandIcon as HandIconOutline,
   PencilIcon as PencilIconOutline,
@@ -14,40 +19,23 @@ import {
   ZoomInIcon as ZoomInIconSolid,
   ZoomOutIcon as ZoomOutIconSolid,
 } from '@heroicons/react/solid';
-import cx from 'clsx';
-// import ContextMenu from './ContextMenu';
 import React, { ReactElement, SVGProps, useCallback, useState } from 'react';
 import Canvas, { Props as CanvasProps, CanvasUpdateInfo } from '@components/Designer/Canvas';
-import SideBarSection from '@components/Designer/SideBarSection';
+import { MenuItemKind } from '@components/Designer/ContextMenu';
+import DesignerSideBar from '@components/Designer/DesignerSideBar';
 import Layout from '@components/Layout';
-import Modal from '@components/Modal';
 import useWasm from '@hooks/useWasm';
-import { fontColorFromBackgroundRgb } from '@lib/stoneListHelpers';
 
-// interface Tool {
-//   label: string;
-//   description: string;
-//   icon: () => ReactElement;
-//   shortCut: string;
-//   mouseMove?: (mouseDown: boolean) => void;
-//   mouseDown?: () => void;
-//   mouseUp?: () => void;
-//   mouseWheel?: () => void;
-//   keyPressed?: () => void;
-//   enterTool?: () => void;
-//   leaveTool?: () => void;
-// }
+export type ColorIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
-type ColorIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-
-interface Color {
+export interface Color {
   name: string;
   r: number;
   g: number;
   b: number;
 }
 
-const colors: Color[] = [
+export const colors: Color[] = [
   { name: 'Bordeaux', r: 154, g: 0, b: 0 },
   { name: 'Red', r: 255, g: 0, b: 0 },
   { name: 'Orange', r: 233, g: 98, b: 29 },
@@ -83,7 +71,7 @@ const colors: Color[] = [
   { name: 'Transparent', r: 217, g: 217, b: 217 },
 ];
 
-enum ToolIndex {
+export enum ToolIndex {
   DRAW = 'DRAW',
   ERASE = 'ERASE',
   SELECT = 'SELECT',
@@ -92,8 +80,18 @@ enum ToolIndex {
   ZOOM_OUT = 'ZOOM_OUT',
 }
 
-interface Tool {
+// TODO?
+// interface Tool {
+//   shortCut: string;
+//   mouseWheel?: () => void;
+//   keyPressed?: () => void;
+//   enterTool?: () => void;
+//   leaveTool?: () => void;
+// }
+
+export interface Tool {
   label: string;
+  description: string;
   icon: (props: SVGProps<SVGSVGElement>) => ReactElement;
   selectedIcon: (props: SVGProps<SVGSVGElement>) => ReactElement;
 
@@ -103,9 +101,8 @@ interface Tool {
 }
 
 export default function DesignerPage(): ReactElement {
-  const [selectedColor, setSelectedColor] = useState<ColorIndex>(0);
   const [selectedTool, setSelectedTool] = useState<ToolIndex>(ToolIndex.DRAW);
-  const [showColorsModal, setShowColorsModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<ColorIndex>(0);
   const [palette, setPalette] = useState<{ [P in ColorIndex]: Color }>({
     [0]: colors[30]!,
     [1]: colors[31]!,
@@ -124,6 +121,7 @@ export default function DesignerPage(): ReactElement {
   const tools: { [P in keyof typeof ToolIndex]: Tool } = {
     [ToolIndex.DRAW]: {
       label: 'Draw',
+      description: 'Click and drag your mouse to color dominoes in the selected color',
       icon: PencilIconOutline,
       selectedIcon: PencilIconSolid,
       onMouseDown(point) {
@@ -151,6 +149,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.ERASE]: {
       label: 'Erase',
+      description: 'Click and drag your mouse to remove dominoes from the design',
       icon: XCircleIconOutline,
       selectedIcon: XCircleIconSolid,
       onMouseDown(point) {
@@ -165,6 +164,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.SELECT]: {
       label: 'Select',
+      description: 'Click and drag your mouse to select dominoes in a square',
       icon: CubeTransparentIconOutline,
       selectedIcon: CubeTransparentIconSolid,
       onMouseDown() {
@@ -180,6 +180,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.MOVE]: {
       label: 'Move',
+      description: 'Click and drag your mouse to move around on the canvas',
       icon: HandIconOutline,
       selectedIcon: HandIconSolid,
       onMouseDown() {
@@ -194,6 +195,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.ZOOM_IN]: {
       label: 'Zoom in',
+      description: 'Click on the canvas to zoom in on that position',
       icon: ZoomInIconOutline,
       selectedIcon: ZoomInIconSolid,
       onMouseDown(point) {
@@ -202,6 +204,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.ZOOM_OUT]: {
       label: 'Zoom out',
+      description: 'Click on the canvas to zoom out from that position',
       icon: ZoomOutIconOutline,
       selectedIcon: ZoomOutIconSolid,
       onMouseDown(point) {
@@ -209,6 +212,107 @@ export default function DesignerPage(): ReactElement {
       },
     },
   };
+
+  const contextMenuItems: CanvasProps['contextMenuItems'] = [
+    {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Cut',
+      icon: ScissorsIcon,
+      shortcut: 'Ctrl + X',
+      disabled: () => !instance?.exports.canCut(),
+      onClick() {
+        instance?.exports.saveUndo();
+        return instance?.exports.cut();
+      },
+    },
+    {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Copy',
+      icon: ClipboardCopyIcon,
+      shortcut: 'Ctrl + C',
+      disabled: () => !instance?.exports.canCopy(),
+      onClick() {
+        return instance?.exports.copy();
+      },
+    },
+    {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Paste',
+      icon: ClipboardIcon,
+      shortcut: 'Ctrl + V',
+      disabled: () => !instance?.exports.canPaste(),
+      onClick() {
+        instance?.exports.saveUndo();
+        return instance?.exports.paste();
+      },
+    },
+    {
+      kind: MenuItemKind.DIVIDE,
+    },
+    {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Undo',
+      disabled: () => !instance?.exports.canUndo(),
+      icon: RewindIcon,
+      shortcut: 'Ctrl + Z',
+      onClick() {
+        return instance?.exports.undo();
+      },
+    },
+    {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Redo',
+      disabled: () => !instance?.exports.canRedo(),
+      icon: FastForwardIcon,
+      shortcut: 'Ctrl + Shift + Z',
+      onClick() {
+        return instance?.exports.redo();
+      },
+    },
+    {
+      kind: MenuItemKind.DIVIDE,
+    },
+    {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Select all',
+      shortcut: 'Ctrl + A',
+      onClick: () => {
+        instance?.exports.saveUndo();
+        return instance?.exports.selectAll();
+      },
+    },
+    {
+      kind: MenuItemKind.SUB,
+      label: 'Actions',
+      items: [
+        {
+          kind: MenuItemKind.EXECUTE,
+          label: `Select all ${palette[selectedColor].name.toLowerCase()} stones`,
+          onClick: () => {
+            instance?.exports.saveUndo();
+            return instance?.exports.selectAllOfColor(
+              palette[selectedColor].r,
+              palette[selectedColor].g,
+              palette[selectedColor].b,
+            );
+          },
+        },
+        {
+          kind: MenuItemKind.EXECUTE,
+          label: `Fill selection with ${palette[selectedColor].name.toLowerCase()} stones`,
+          disabled: () => !instance?.exports.canCopy(),
+          onClick: () => {
+            instance?.exports.saveUndo();
+            return instance?.exports.fillSelection(
+              palette[selectedColor].r,
+              palette[selectedColor].g,
+              palette[selectedColor].b,
+            );
+          },
+        },
+      ],
+    },
+  ];
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent): CanvasUpdateInfo => {
@@ -221,26 +325,53 @@ export default function DesignerPage(): ReactElement {
       if (e.repeat) return [0];
 
       switch (e.key.toLowerCase()) {
+        case 'a':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            instance?.exports.saveUndo();
+            return instance?.exports.selectAll();
+          }
+          break;
         case 'x':
           if (e.ctrlKey) {
-            // TODO only save if canvas updated (if selection.length > 0)
-            instance?.exports.saveUndo();
-            return instance?.exports.cut();
+            if (instance?.exports.canCut()) {
+              e.preventDefault();
+              instance?.exports.saveUndo();
+              return instance?.exports.cut();
+            }
+            return [0];
           }
           break;
         case 'c':
-          if (e.ctrlKey) return instance?.exports.copy();
+          if (e.ctrlKey) {
+            if (instance?.exports.canCopy()) {
+              e.preventDefault();
+              return instance?.exports.copy();
+            }
+            return [0];
+          }
           break;
         case 'v':
           if (e.ctrlKey) {
-            // TODO only save if canvas updated (if clipboard.length > 0 && entire clipboard fits within canvas)
-            instance?.exports.saveUndo();
-            return instance?.exports.paste();
+            if (instance?.exports.canPaste()) {
+              e.preventDefault();
+              instance?.exports.saveUndo();
+              return instance?.exports.paste();
+            }
+            return [0];
           }
           break;
         case 'z':
-          if (e.ctrlKey && !e.shiftKey) return instance?.exports.undo();
-          if (e.ctrlKey && e.shiftKey) return instance?.exports.redo();
+          if (e.ctrlKey && !e.shiftKey)
+            if (instance?.exports.canUndo()) {
+              e.preventDefault();
+              return instance?.exports.undo();
+            }
+          if (e.ctrlKey && e.shiftKey)
+            if (instance?.exports.canRedo()) {
+              e.preventDefault();
+              return instance?.exports.redo();
+            }
           break;
       }
 
@@ -254,134 +385,24 @@ export default function DesignerPage(): ReactElement {
       title="Designer"
       hideHeader
       sidebar={
-        <div className={cx('bg-gray-900', 'text-gray-200', 'w-80', 'min-w-[20rem]')}>
-          <SideBarSection title="Options">
-            <div>
-              <p>TODO</p>
-              <ul>
-                <li>Design size</li>
-                <li>Stroke width, color</li>
-                <li>Canvas background color</li>
-              </ul>
-            </div>
-          </SideBarSection>
-
-          <SideBarSection title="Tools" className={cx('flex-wrap')}>
-            {Object.entries(tools).map(([toolIndex, tool]) => (
-              <button
-                key={toolIndex}
-                onClick={() => setSelectedTool(toolIndex as ToolIndex)}
-                className={cx(
-                  'flex',
-                  'flex-col',
-                  'items-center',
-                  'justify-center',
-                  selectedTool === toolIndex
-                    ? 'bg-primary-200'
-                    : cx('bg-primary', 'hover:bg-primary-light'),
-                  'transition-colors',
-                  'text-gray-900',
-                  'w-[5.5rem]',
-                  'h-14',
-                  'rounded-md',
-                )}
-              >
-                {selectedTool === toolIndex ? (
-                  <tool.selectedIcon width={20} />
-                ) : (
-                  <tool.icon width={20} />
-                )}
-
-                <span className={cx('font-bold', 'text-sm')}>{tool.label}</span>
-              </button>
-            ))}
-          </SideBarSection>
-
-          <SideBarSection title="Colors" moreButtonOnClick={() => setShowColorsModal(true)}>
-            <div
-              className={cx('w-16', 'rounded-md', 'transition-colors')}
-              style={{
-                background: `rgb(${palette[selectedColor].r}, ${palette[selectedColor].g}, ${palette[selectedColor].b})`,
-              }}
-            />
-            <div className={cx('grid', 'grid-cols-5', 'grid-rows-2', 'gap-x-2', 'gap-y-1')}>
-              {Object.entries(palette).map(([colorIndex, color], index) => (
-                <button
-                  key={index}
-                  className={cx(
-                    'w-9',
-                    'h-9',
-                    'rounded-md',
-                    'hover:border-gray-400',
-                    'border-2',
-                    'border-gray-900',
-                  )}
-                  style={{ background: `rgb(${color.r}, ${color.g}, ${color.b})` }}
-                  onClick={() => {
-                    setSelectedColor(parseInt(colorIndex) as ColorIndex);
-                  }}
-                />
-              ))}
-            </div>
-          </SideBarSection>
-
-          <SideBarSection title="Layers">TODO layers</SideBarSection>
-        </div>
+        <DesignerSideBar
+          tools={tools}
+          selectedTool={selectedTool}
+          setSelectedTool={setSelectedTool}
+          palette={palette}
+          setPalette={setPalette}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+        />
       }
     >
-      <Modal
-        show={showColorsModal}
-        setShow={setShowColorsModal}
-        title="Color Palette"
-        body={
-          <div className={cx('space-y-2')}>
-            {Object.values(palette).map((color, i) => (
-              <div className={cx('flex', 'space-x-3', 'items-center')} key={i}>
-                <div
-                  className={cx('border', 'border-gray-300', 'rounded-md', 'w-7', 'h-7')}
-                  style={{ background: `rgb(${color.r}, ${color.g}, ${color.b})` }}
-                />
-                <select
-                  value={color.name}
-                  className={cx('flex-grow', 'py-1')}
-                  name={`colorPicker${i}`}
-                  id={`colorPicker${i}`}
-                  onChange={(e) =>
-                    setPalette({ ...palette, [i]: colors.find((c) => c.name === e.target.value) })
-                  }
-                >
-                  {colors.map((colorOption, j) => (
-                    <option
-                      key={j}
-                      value={colorOption.name}
-                      style={{
-                        background: `rgb(${colorOption.r}, ${colorOption.g}, ${colorOption.b})`,
-                        color: fontColorFromBackgroundRgb(
-                          colorOption.r,
-                          colorOption.g,
-                          colorOption.b,
-                        ),
-                      }}
-                    >
-                      {colorOption.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
-          </div>
-        }
+      <Canvas
+        contextMenuItems={contextMenuItems}
+        onMouseDown={tools[selectedTool].onMouseDown}
+        onMouseUp={tools[selectedTool].onMouseUp}
+        onMouseMove={tools[selectedTool].onMouseMove}
+        onKeyDown={handleKeyDown}
       />
-      <div style={{ height: 'calc(100vh - 144px)' }}>
-        {/* <ContextMenu items={[]} header="Utilities"> */}
-        <Canvas
-          onMouseDown={tools[selectedTool].onMouseDown}
-          onMouseUp={tools[selectedTool].onMouseUp}
-          onMouseMove={tools[selectedTool].onMouseMove}
-          onKeyDown={handleKeyDown}
-        />
-        {/* </ContextMenu> */}
-      </div>
     </Layout>
   );
 }

@@ -39,6 +39,7 @@ export default function Modal(props: Props): ReactElement {
       >
         <div
           className={cx(
+            'text-gray-800',
             'flex',
             'flex-col',
             'w-full',

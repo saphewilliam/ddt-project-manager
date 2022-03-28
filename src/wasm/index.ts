@@ -15,6 +15,26 @@ let originStore: Point = new Point(0, 0);
 const minZoom: u32 = 2;
 const maxZoom: u32 = 40;
 
+export function canCut(): boolean {
+  return selection.length > 0;
+}
+
+export function canCopy(): boolean {
+  return selection.length > 0;
+}
+
+export function canPaste(): boolean {
+  return selection.length > 0 && clipboard.length > 0;
+}
+
+export function canUndo(): boolean {
+  return undoStore.length > 0;
+}
+
+export function canRedo(): boolean {
+  return redoStore.length > 0;
+}
+
 export function saveOrigin(): void {
   originStore = canvas.origin;
 }
@@ -37,10 +57,50 @@ export function setCanvasSize(width: u32, height: u32): Array<u32> {
 
 export function clearSelection(): Array<u32> {
   if (selection.length === 0) return new CanvasUpdateInfo().toArray();
-  for (let i = 0; i < selection.length; i++) {
-    selection[i].selected = false;
-  }
+  for (let i = 0; i < selection.length; i++) selection[i].selected = false;
   selection.length = 0;
+  return canvas.clearSetStones(layer.stones).toArray();
+}
+
+export function fillSelection(r: u8, g: u8, b: u8): Array<u32> {
+  let shouldUpdate = false;
+
+  for (let i = 0; i < selection.length; i++) {
+    const stone = selection[i];
+    if (stone.erased || stone.color.color !== new Color(r, g, b).color) {
+      stone.color = new Color(r, g, b);
+      stone.erased = false;
+      shouldUpdate = true;
+    }
+  }
+
+  if (shouldUpdate) return canvas.clearSetStones(layer.stones).toArray();
+  else return new CanvasUpdateInfo().toArray();
+}
+
+export function selectAllOfColor(r: u8, g: u8, b: u8): Array<u32> {
+  clearSelection();
+
+  for (let i = 0; i < layer.stones.length; i++) {
+    const stone = layer.stones[i];
+    if (stone.color.color === new Color(r, g, b).color) {
+      stone.selected = true;
+      selection.push(stone);
+    }
+  }
+
+  return canvas.clearSetStones(layer.stones).toArray();
+}
+
+export function selectAll(): Array<u32> {
+  clearSelection();
+
+  for (let i = 0; i < layer.stones.length; i++) {
+    const stone = layer.stones[i];
+    stone.selected = true;
+    selection.push(stone);
+  }
+
   return canvas.clearSetStones(layer.stones).toArray();
 }
 
@@ -217,7 +277,7 @@ export function draw(x: u32, y: u32, r: u8, g: u8, b: u8): Array<u32> {
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
     if (canvas.stoneIsInBounds(stone, x, y, x, y)) {
-      if (stone.erased || stone.color.r !== r || stone.color.g !== g || stone.color.b !== b) {
+      if (stone.erased || stone.color.color !== new Color(r, g, b).color) {
         stone.color = new Color(r, g, b);
         stone.erased = false;
         return canvas.setStone(stone).toArray();
