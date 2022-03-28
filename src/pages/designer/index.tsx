@@ -221,7 +221,6 @@ export default function DesignerPage(): ReactElement {
       shortcut: 'Ctrl + X',
       disabled: () => !instance?.exports.canCut(),
       onClick() {
-        // TODO only save if canvas updated (if selection.length > 0)
         instance?.exports.saveUndo();
         return instance?.exports.cut();
       },
@@ -243,7 +242,6 @@ export default function DesignerPage(): ReactElement {
       shortcut: 'Ctrl + V',
       disabled: () => !instance?.exports.canPaste(),
       onClick() {
-        // TODO only save if canvas updated (if clipboard.length > 0 && entire clipboard fits within canvas)
         instance?.exports.saveUndo();
         return instance?.exports.paste();
       },
@@ -275,35 +273,41 @@ export default function DesignerPage(): ReactElement {
       kind: MenuItemKind.DIVIDE,
     },
     {
+      kind: MenuItemKind.EXECUTE,
+      label: 'Select all',
+      shortcut: 'Ctrl + A',
+      onClick: () => {
+        instance?.exports.saveUndo();
+        return instance?.exports.selectAll();
+      },
+    },
+    {
       kind: MenuItemKind.SUB,
       label: 'Actions',
       items: [
         {
           kind: MenuItemKind.EXECUTE,
-          label: 'Select all cells of current color',
+          label: `Select all ${palette[selectedColor].name.toLowerCase()} stones`,
           onClick: () => {
-            // TODO
-            return [0];
-            // const s: Point[] = [];
-            // props.grid.forEach((gridRow) => {
-            //   gridRow.forEach((cell) => {
-            //     if (cell.colorId === colorId) s.push({ x: cell.x, y: cell.y });
-            //   });
-            // });
-            // setSelection(s);
+            instance?.exports.saveUndo();
+            return instance?.exports.selectAllOfColor(
+              palette[selectedColor].r,
+              palette[selectedColor].g,
+              palette[selectedColor].b,
+            );
           },
         },
         {
           kind: MenuItemKind.EXECUTE,
-          label: 'Color all cells in selection',
+          label: `Fill selection with ${palette[selectedColor].name.toLowerCase()} stones`,
           disabled: () => !instance?.exports.canCopy(),
           onClick: () => {
-            // TODO
-            return [0];
-            // saveUndo();
-            // const g: Grid = deepClone(props.grid);
-            // selection.forEach((cell) => (g[cell.x][cell.y].colorId = colorId));
-            // props.setGrid(g);
+            instance?.exports.saveUndo();
+            return instance?.exports.fillSelection(
+              palette[selectedColor].r,
+              palette[selectedColor].g,
+              palette[selectedColor].b,
+            );
           },
         },
       ],
@@ -321,9 +325,17 @@ export default function DesignerPage(): ReactElement {
       if (e.repeat) return [0];
 
       switch (e.key.toLowerCase()) {
+        case 'a':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            instance?.exports.saveUndo();
+            return instance?.exports.selectAll();
+          }
+          break;
         case 'x':
           if (e.ctrlKey) {
             if (instance?.exports.canCut()) {
+              e.preventDefault();
               instance?.exports.saveUndo();
               return instance?.exports.cut();
             }
@@ -332,13 +344,17 @@ export default function DesignerPage(): ReactElement {
           break;
         case 'c':
           if (e.ctrlKey) {
-            if (instance?.exports.canCopy()) return instance?.exports.copy();
+            if (instance?.exports.canCopy()) {
+              e.preventDefault();
+              return instance?.exports.copy();
+            }
             return [0];
           }
           break;
         case 'v':
           if (e.ctrlKey) {
             if (instance?.exports.canPaste()) {
+              e.preventDefault();
               instance?.exports.saveUndo();
               return instance?.exports.paste();
             }
@@ -347,9 +363,15 @@ export default function DesignerPage(): ReactElement {
           break;
         case 'z':
           if (e.ctrlKey && !e.shiftKey)
-            if (instance?.exports.canUndo()) return instance?.exports.undo();
+            if (instance?.exports.canUndo()) {
+              e.preventDefault();
+              return instance?.exports.undo();
+            }
           if (e.ctrlKey && e.shiftKey)
-            if (instance?.exports.canRedo()) return instance?.exports.redo();
+            if (instance?.exports.canRedo()) {
+              e.preventDefault();
+              return instance?.exports.redo();
+            }
           break;
       }
 

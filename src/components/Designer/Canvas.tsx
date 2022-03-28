@@ -92,6 +92,10 @@ export default function Canvas(props: Props): ReactElement {
     [props.contextMenuItems],
   );
 
+  useEffect(() => {
+    setContextMenuItems(getContextMenuItems());
+  });
+
   const updateCanvas = useCallback(
     (updateInfo: CanvasUpdateInfo) => {
       // Extract canvas ref and update information
