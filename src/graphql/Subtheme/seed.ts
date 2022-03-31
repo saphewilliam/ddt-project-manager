@@ -46,6 +46,14 @@ export default async function seedSubthemes(prisma: PrismaClient): Promise<void>
         order: 0,
       },
       {
+        id: idMap.subthemes.DDT_10_YEARS_PROJECT,
+        name: 'Project',
+        slug: generateSlug('Project'),
+        color: '#FF9E54',
+        eventId: idMap.events.DDT_10_YEARS,
+        order: 0,
+      },
+      {
         id: idMap.subthemes.DISCOVERY,
         name: 'Discovery',
         slug: generateSlug('Discovery'),

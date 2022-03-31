@@ -35,7 +35,7 @@ export const eventQuery = extendType({
       resolve: (_, __, ctx) =>
         ctx.prisma.event.findMany({
           where: { teamId: ctx.session?.teamId ?? '' },
-          orderBy: { date: Prisma.SortOrder.asc },
+          orderBy: { date: Prisma.SortOrder.desc },
         }),
     });
     t.nullable.field('event', {

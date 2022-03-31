@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { PrismaClient } from '@prisma/client';
+import seedAttributes from './Attribute/seed';
 import seedEvents from './Event/seed';
 import seedMembers from './Member/seed';
 import seedProjects from './Project/seed';
@@ -27,6 +28,9 @@ async function seed(prisma: PrismaClient): Promise<void> {
 
   console.log('Seeding Members...');
   await seedMembers(prisma);
+
+  console.log('Seeding Attributes...');
+  await seedAttributes(prisma);
 
   console.log('Seeding StoneTypes...');
   await seedStoneTypes(prisma);
