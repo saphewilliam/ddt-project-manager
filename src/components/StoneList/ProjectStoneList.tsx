@@ -1,4 +1,4 @@
-import useTable, { Columns, Data } from '@saphe/react-table';
+import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import { ReactElement } from 'react';
 import { ProjectStoneListColumnTypes } from '@lib/stoneListHelpers';
@@ -26,7 +26,7 @@ export default function ProjectStoneList(props: Props): ReactElement {
   const columns: Columns<ProjectStoneListColumnTypes> = {
     color: {
       renderCell: ColorCell,
-      sort: (a, b) => a.order - b.order,
+      sort: (a, b) => b.order - a.order,
     },
     person: {},
     amount: {},
@@ -39,12 +39,16 @@ export default function ProjectStoneList(props: Props): ReactElement {
   }));
 
   const { headers, rows } = useTable<ProjectStoneListColumnTypes>(columns, data, {
+    sort: {
+      initial: { column: 'color', order: SortOrder.DESC },
+      order: [SortOrder.DESC, SortOrder.ASC],
+    },
     style: { renderCell: ValueCell, renderHead: HeadCell },
   });
 
   return (
     <div>
-      <span className={cx('text-xl', 'mb-3', 'block', 'font-bold')}>{props.title}</span>
+      <span className={cx('text-xl', 'mb-3', 'block', 'font-semibold')}>{props.title}</span>
       <StoneListTable headers={headers} rows={rows} />
     </div>
   );

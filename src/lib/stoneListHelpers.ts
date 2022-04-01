@@ -82,7 +82,7 @@ export function makeStoneListTableColumns(
     color: {
       renderCell: ColorCell,
       unhideable: true,
-      sort: (a, b) => a.order - b.order,
+      sort: (a, b) => b.order - a.order,
     },
     ...userColumns.reduce(
       (prev, curr) => ({ ...prev, [curr.userId]: { label: curr.displayname, defaultValue: 0 } }),

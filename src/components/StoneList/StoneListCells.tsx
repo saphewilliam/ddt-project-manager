@@ -1,4 +1,4 @@
-import { PencilIcon } from '@heroicons/react/outline';
+import { PencilIcon, SelectorIcon } from '@heroicons/react/outline';
 import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { RenderCellProps, RenderHeadProps, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
@@ -67,13 +67,16 @@ export function HeadCell(props: RenderHeadProps): ReactElement {
       }}
       onClick={() => props.toggleSort && props.toggleSort()}
     >
-      <div className={cx('flex', 'items-center', 'space-x-1')}>
+      <div className={cx('flex', 'justify-between', 'items-center', 'space-x-1')}>
         <span>{props.label}</span>
-        {props.sortOrder === SortOrder.ASC ? (
-          <ChevronUpIcon className={cx('w-5')} />
-        ) : props.sortOrder === SortOrder.DESC ? (
-          <ChevronDownIcon className={cx('w-5')} />
-        ) : null}
+        {props.toggleSort &&
+          (props.sortOrder === SortOrder.ASC ? (
+            <ChevronUpIcon className={cx('w-5')} />
+          ) : props.sortOrder === SortOrder.DESC ? (
+            <ChevronDownIcon className={cx('w-5')} />
+          ) : (
+            <SelectorIcon className={cx('w-5', 'text-gray-400')} />
+          ))}
       </div>
     </th>
   );
