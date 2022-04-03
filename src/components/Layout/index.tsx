@@ -45,7 +45,7 @@ export default function Layout(props: Props): ReactElement {
               {props.title && !props.hideHeader && (
                 <Card className={cx('mb-7')}>
                   <div className={cx('flex', 'justify-between', 'items-center')}>
-                    <h2 className={cx('font-bold', 'text-4xl')}>{props.title}</h2>
+                    <h2 className={cx('font-bold', 'text-3xl')}>{props.title}</h2>
                     <div>{props.headerChildren}</div>
                   </div>
                 </Card>

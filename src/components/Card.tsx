@@ -15,7 +15,7 @@ export default function Card(props: Props): ReactElement {
       className={cx(
         'flex',
         'flex-col',
-        'rounded-md',
+        'rounded-lg',
         'border-solid',
         'border',
         'border-gray-200',

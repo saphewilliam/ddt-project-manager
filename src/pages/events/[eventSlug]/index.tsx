@@ -17,27 +17,23 @@ export default function EventPage(): ReactElement {
 
   const eventSlug = extractURLParam('eventSlug', router.query);
 
-  const { data, isValidating } = useSafeQuery(
-    'useEvent',
-    { eventSlug: eventSlug ?? '' },
-    eventSlug,
-  );
+  const { data } = useSafeQuery('useEvent', { eventSlug: eventSlug ?? '' }, eventSlug);
 
   return (
     <Layout
       title={data?.event?.name ?? 'Event'}
-      hideHeader={isValidating}
+      hideHeader={!data}
       headerChildren={
         <Button className={cx('flex')} icon={PlusSmIcon} label="New project" href="/" />
       }
     >
-      {isValidating ? (
+      {!data ? (
         <Loading />
       ) : (
         <div className={cx('grid', 'md:grid-cols-2', 'gap-7', 'sm:grid-cols-none')}>
           <Card className={cx('col-span-2')} title="Projects">
             <div className={cx('w-full')}>
-              {data?.event?.subthemes.map((subtheme) => (
+              {data.event?.subthemes.map((subtheme) => (
                 <SubthemeTable subtheme={subtheme} eventSlug={eventSlug ?? ''} key={subtheme.id} />
               ))}
             </div>
@@ -46,7 +42,7 @@ export default function EventPage(): ReactElement {
           <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
           <Card className={cx('col-span-2', 'lg:col-span-1')} title="Lines">
             <div className={cx('space-y-12', 'w-full')}>
-              {data?.event?.subthemes.map(
+              {data.event?.subthemes.map(
                 (subtheme) =>
                   subtheme.stones.length > 0 && (
                     <ProjectStoneList

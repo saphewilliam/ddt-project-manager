@@ -68,7 +68,7 @@ export default async function seedAttributes(prisma: PrismaClient): Promise<void
         id: idMap.attributes.CROSSING,
         teamId: idMap.teams.DUTCH_DOMINO_TEAM,
         name: 'Crossing',
-        namePlural: 'Crossing',
+        namePlural: 'Crossings',
       },
       {
         id: idMap.attributes.FIELDSTARTER_5,
