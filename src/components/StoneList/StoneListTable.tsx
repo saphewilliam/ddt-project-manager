@@ -14,8 +14,19 @@ export default function StoneListTable<T extends ColumnTypes>(props: Props<T>): 
   }, [props.rows]);
 
   return (
-    <div className={cx('relative', 'w-full')}>
-      <table className={cx('text-left', 'w-full')}>
+    <div
+      className={cx(
+        'relative',
+        'w-full',
+        'pb-4',
+        'overflow-x-auto',
+        'scrollbar-thin',
+        'scrollbar-track-gray-200',
+        'scrollbar-thumb-gray-800',
+        'scrollbar-rounded',
+      )}
+    >
+      <table className={cx('w-full')}>
         <thead>
           <tr>
             {props.headers.map((header, i) => (

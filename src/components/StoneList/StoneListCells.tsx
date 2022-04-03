@@ -5,7 +5,7 @@ import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
 
-const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-5', 'text-gray-900');
+const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-4', 'text-gray-900');
 
 export function ColorCell(props: RenderCellProps): ReactElement {
   return (
@@ -57,8 +57,9 @@ export function HeadCell(props: RenderHeadProps): ReactElement {
     <th
       className={cx(
         commonClassName,
-        'sticky',
-        'top-0',
+        // TODO sticky header
+        // 'sticky',
+        // 'top-0',
         'bg-white',
         props.toggleSort && cx('cursor-pointer'),
       )}
