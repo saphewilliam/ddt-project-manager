@@ -106,6 +106,9 @@ type Project {
   slug: String!
   stats: [StatsOnProject!]!
   status: ProjectStatus!
+
+  """The number of dominoes assigned to this project"""
+  stoneAmount: Int!
   stones: [StonesOnProject!]!
   subNumber: Int!
   subtheme: Subtheme!

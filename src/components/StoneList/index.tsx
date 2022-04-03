@@ -1,5 +1,4 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
-import cx from 'clsx';
 import React, { ReactElement, useMemo, useState, useEffect } from 'react';
 import Card from '@components/Card';
 import useSession from '@hooks/useSession';

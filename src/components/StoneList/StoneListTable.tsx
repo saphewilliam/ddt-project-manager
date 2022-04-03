@@ -21,8 +21,8 @@ export default function StoneListTable<T extends ColumnTypes>(props: Props<T>): 
         'pb-4',
         'overflow-x-auto',
         'scrollbar-thin',
-        'scrollbar-track-gray-200',
-        'scrollbar-thumb-gray-800',
+        'scrollbar-track-gray-100',
+        'scrollbar-thumb-gray-400',
         'scrollbar-rounded',
       )}
     >

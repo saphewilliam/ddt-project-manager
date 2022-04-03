@@ -45,6 +45,7 @@ query Event($eventSlug: String!) {
         }
         type
         status
+        stoneAmount
       }
       stones {
         id

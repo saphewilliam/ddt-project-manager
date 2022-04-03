@@ -5,6 +5,44 @@ export default async function seedStonesOnProjects(prisma: PrismaClient): Promis
   await prisma.stonesOnProject.createMany({
     data: [
       {
+        projectId: idMap.projects.WDC_2021_DON_DOMINO,
+        stoneId: idMap.stones.ROOD_DO_A,
+        userId: idMap.users.DON_DOMINO,
+        amount: 1766,
+      },
+      {
+        projectId: idMap.projects.WDC_2021_DON_DOMINO,
+        stoneId: idMap.stones.GEEL_DO_A,
+        userId: idMap.users.DON_DOMINO,
+        amount: 1517,
+      },
+      {
+        projectId: idMap.projects.WDC_2021_DON_DOMINO,
+        stoneId: idMap.stones.ZWART_DO_A,
+        userId: idMap.users.DON_DOMINO,
+        amount: 729,
+      },
+      {
+        projectId: idMap.projects.WDC_2021_DON_DOMINO,
+        stoneId: idMap.stones.WIT_DO_A,
+        userId: idMap.users.DON_DOMINO,
+        amount: 638,
+      },
+
+      {
+        projectId: idMap.projects.WDC_2021_SINNERS,
+        stoneId: idMap.stones.ZWART_LP_A,
+        userId: idMap.users.WIM_VAN_OTTERDIJK,
+        amount: 1915,
+      },
+      {
+        projectId: idMap.projects.WDC_2021_SINNERS,
+        stoneId: idMap.stones.WIT_LP_A,
+        userId: idMap.users.DDT_ADMIN,
+        amount: 710,
+      },
+
+      {
         projectId: idMap.projects.WDC_2021_PP_INTRO,
         stoneId: idMap.stones.GROEN_LP_A,
         userId: idMap.users.DDT_ADMIN,
