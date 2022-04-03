@@ -7,6 +7,7 @@ type Attribute {
   createdAt: DateTime!
   id: ID!
   name: String!
+  namePlural: String!
   projects: [AttributesOnProject!]!
   subthemes: [AttributesOnSubtheme!]!
   team: Team!
@@ -105,6 +106,9 @@ type Project {
   slug: String!
   stats: [StatsOnProject!]!
   status: ProjectStatus!
+
+  """The number of dominoes assigned to this project"""
+  stoneAmount: Int!
   stones: [StonesOnProject!]!
   subNumber: Int!
   subtheme: Subtheme!

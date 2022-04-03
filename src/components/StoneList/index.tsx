@@ -1,6 +1,6 @@
-import useTable, { Columns, Data } from '@saphe/react-table';
-import cx from 'clsx';
+import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
 import React, { ReactElement, useMemo, useState, useEffect } from 'react';
+import Card from '@components/Card';
 import useSession from '@hooks/useSession';
 import {
   getStoneListUserColumns,
@@ -61,30 +61,26 @@ export default function StoneList(props: Props): ReactElement {
   const { headers, originalHeaders, rows, visibilityHelpers } = useTable<StoneListColumnTypes>(
     columns,
     data,
-    { style: { renderCell: ValueCell, renderHead: HeadCell } },
+    {
+      style: { renderCell: ValueCell, renderHead: HeadCell },
+      sort: {
+        initial: { column: 'color', order: SortOrder.DESC },
+        order: [SortOrder.DESC, SortOrder.ASC],
+      },
+    },
   );
 
   return (
-    <section>
-      <div
-        className={cx(
-          'flex',
-          'flex-col',
-          'md:flex-row',
-          'mb-8',
-          'justify-between',
-          'items-start',
-          'md:items-starts',
-          'space-y-5',
-          'md:space-y-0',
-        )}
-      >
-        <h2 className={cx('font-semibold', 'text-2xl')}>{props.title}</h2>
-        {userColumns.length > 1 && (
-          <Button label="Show / hide columns" onClick={() => setShowColumnModal(true)} />
-        )}
-      </div>
-
+    <Card
+      title={props.title}
+      headerChildren={
+        <div>
+          {userColumns.length > 1 && (
+            <Button label="Show / hide columns" onClick={() => setShowColumnModal(true)} />
+          )}
+        </div>
+      }
+    >
       {userColumns.length > 1 && (
         <StoneListColumnModal
           visibilityHelpers={visibilityHelpers}
@@ -102,6 +98,6 @@ export default function StoneList(props: Props): ReactElement {
       />
 
       <StoneListTable headers={headers} rows={rows} />
-    </section>
+    </Card>
   );
 }

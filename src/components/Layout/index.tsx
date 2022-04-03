@@ -1,7 +1,7 @@
 import cx from 'clsx';
 import Head from 'next/head';
 import React, { ReactElement, ReactNode } from 'react';
-import ReactTooltip from 'react-tooltip';
+import Card from '@components/Card';
 import Loading from '@components/Loading';
 import useDeviceWidth from '@hooks/useDeviceWidth';
 import useSession from '@hooks/useSession';
@@ -13,6 +13,7 @@ export interface Props {
   hideHeader?: boolean;
   sidebar?: ReactNode;
   children?: ReactNode;
+  headerChildren?: ReactNode;
 }
 
 export default function Layout(props: Props): ReactElement {
@@ -27,8 +28,6 @@ export default function Layout(props: Props): ReactElement {
 
       {session !== null && <Navigation />}
 
-      <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
-
       <main
         className={cx(
           'flex',
@@ -37,13 +36,19 @@ export default function Layout(props: Props): ReactElement {
           'flex-grow',
           'overflow-y-auto',
           'text-gray-900',
+          'bg-gray-50',
         )}
       >
         {session !== null ? (
           <>
             <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>
               {props.title && !props.hideHeader && (
-                <h1 className={cx('font-bold', 'text-4xl', 'mb-12')}>{props.title}</h1>
+                <Card className={cx('mb-7')}>
+                  <div className={cx('flex', 'justify-between', 'items-center')}>
+                    <h2 className={cx('font-bold', 'text-3xl')}>{props.title}</h2>
+                    <div>{props.headerChildren}</div>
+                  </div>
+                </Card>
               )}
               {props.children}
             </div>

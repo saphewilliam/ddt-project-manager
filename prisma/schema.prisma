@@ -283,6 +283,7 @@ model Attribute {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
+  namePlural String
 
   attributeLists AttributeList[]
   projects       AttributesOnProject[]

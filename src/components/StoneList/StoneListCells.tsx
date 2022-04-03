@@ -1,11 +1,11 @@
-import { PencilIcon } from '@heroicons/react/outline';
+import { PencilIcon, SelectorIcon } from '@heroicons/react/outline';
 import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { RenderCellProps, RenderHeadProps, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
 
-const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-5', 'text-gray-900');
+const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-4', 'text-gray-900');
 
 export function ColorCell(props: RenderCellProps): ReactElement {
   return (
@@ -57,8 +57,9 @@ export function HeadCell(props: RenderHeadProps): ReactElement {
     <th
       className={cx(
         commonClassName,
-        'sticky',
-        'top-0',
+        // TODO sticky header
+        // 'sticky',
+        // 'top-0',
         'bg-white',
         props.toggleSort && cx('cursor-pointer'),
       )}
@@ -67,13 +68,16 @@ export function HeadCell(props: RenderHeadProps): ReactElement {
       }}
       onClick={() => props.toggleSort && props.toggleSort()}
     >
-      <div className={cx('flex', 'items-center', 'space-x-1')}>
+      <div className={cx('flex', 'justify-between', 'items-center', 'space-x-1')}>
         <span>{props.label}</span>
-        {props.sortOrder === SortOrder.ASC ? (
-          <ChevronUpIcon className={cx('w-5')} />
-        ) : props.sortOrder === SortOrder.DESC ? (
-          <ChevronDownIcon className={cx('w-5')} />
-        ) : null}
+        {props.toggleSort &&
+          (props.sortOrder === SortOrder.ASC ? (
+            <ChevronUpIcon className={cx('w-5')} />
+          ) : props.sortOrder === SortOrder.DESC ? (
+            <ChevronDownIcon className={cx('w-5')} />
+          ) : (
+            <SelectorIcon className={cx('w-5', 'text-gray-400')} />
+          ))}
       </div>
     </th>
   );

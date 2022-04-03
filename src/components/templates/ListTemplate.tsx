@@ -1,5 +1,6 @@
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
+import ReactTooltip from 'react-tooltip';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import StoneList from '@components/StoneList';
@@ -14,15 +15,18 @@ export interface Props {
 
 export default function ListTemplate(props: Props): ReactElement {
   return (
-    <Layout title={!props.loading ? props.title : undefined}>
+    <Layout title={props.title} hideHeader={props.loading}>
       {props.loading ? (
         <Loading />
       ) : (
-        <div className={cx('space-y-20')}>
-          {props.data.map((table, index) => (
-            <StoneList key={index} title={table.title} rows={table.rows} swrKey={props.swrKey} />
-          ))}
-        </div>
+        <>
+          <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
+          <div className={cx('space-y-20')}>
+            {props.data.map((table, index) => (
+              <StoneList key={index} title={table.title} rows={table.rows} swrKey={props.swrKey} />
+            ))}
+          </div>
+        </>
       )}
     </Layout>
   );

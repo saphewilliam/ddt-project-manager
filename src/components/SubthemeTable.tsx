@@ -1,8 +1,8 @@
-import { PlusSmIcon, MinusSmIcon, PencilIcon } from '@heroicons/react/outline';
+import { PlusSmIcon, MinusSmIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { fontColorFromBackgroundHex } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
 
 export interface Props {
   eventSlug: string;
@@ -15,6 +15,7 @@ export interface Props {
       slug: string;
       type: string;
       status: string;
+      stoneAmount: number;
       supervisor?: { displayName: string } | null;
     }[];
   };
@@ -33,57 +34,43 @@ export default function SubthemeTable(props: Props): ReactElement {
               backgroundColor: props.subtheme.color,
               color: fontColorFromBackgroundHex(props.subtheme.color),
             }}
-            className={cx('px-4', 'py-2')}
+            className={cx('px-2', 'py-2', 'cursor-pointer')}
+            onClick={() => setOpen(!open)}
           >
-            <div className={cx('flex', 'items-center')}>
-              <button
-                className={cx('py-1', 'px-1', 'rounded', 'transition-colors')}
-                onClick={() => setOpen(!open)}
-              >
+            <div className={cx('flex', 'items-center', 'space-x-2')}>
+              <button className={cx('py-1', 'px-1')}>
                 {open ? (
                   <MinusSmIcon className={cx('w-4')} />
                 ) : (
                   <PlusSmIcon className={cx('w-4')} />
                 )}
               </button>
-              Subtheme: {props.subtheme.name}
+              <span>{props.subtheme.name}</span>
             </div>
           </td>
         </tr>
       </thead>
-      <tbody>
-        {open &&
-          props.subtheme.projects.map((project) => (
+
+      {open && (
+        <tbody>
+          {props.subtheme.projects.map((project) => (
             <tr key={project.id}>
-              <td
-                style={{
-                  width: '20px',
-                  padding: '8px',
-                  backgroundColor: props.subtheme.color,
-                }}
-              ></td>
+              <td className={cx('w-4')} style={{ backgroundColor: props.subtheme.color }}></td>
               <td className={cx('border', 'border-gray-300', 'px-4', 'py-2', 'text-sm')}>
-                <Link href={`/events/${props.eventSlug}/${project.slug}`}>
-                  <a>{project.name}</a>
-                </Link>
-                <span className={cx('flex')}>{project.type}</span>
-                <span className={cx('flex')}>123456 stones</span>
-                <span className={cx('flex')}>Supervisor: {project.supervisor?.displayName}</span>
-                <span className={cx('flex')}>{project.status}</span>
-              </td>
-              <td className={cx('border', 'border-gray-300')} style={{ width: '90px' }}>
-                {/* TODO */}
-                <div className={cx('flex', 'justify-center')}>
-                  <Link href="/edit/TODO">
-                    <a className={cx('hover:bg-primary', 'p-2', 'rounded-md', 'transition-colors')}>
-                      <PencilIcon className={cx('flex', 'w-4')} />
-                    </a>
+                <div className={cx('flex', 'flex-col')}>
+                  <Link href={`/events/${props.eventSlug}/${project.slug}`}>
+                    <a className={cx('font-bold')}>{project.name}</a>
                   </Link>
+                  <span>{project.type}</span>
+                  <span>{formatNumber(project.stoneAmount)} stones</span>
+                  <span>Supervisor: {project.supervisor?.displayName}</span>
+                  <span>{project.status}</span>
                 </div>
               </td>
             </tr>
           ))}
-      </tbody>
+        </tbody>
+      )}
     </table>
   );
 }
