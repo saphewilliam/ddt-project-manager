@@ -9,76 +9,48 @@ export interface Props {
 }
 
 export default function EventsProjectPill(props: Props): ReactElement {
+  let label = '';
+  let color = '';
   switch (props.status) {
     case ProjectStatus.BUILDING:
-      return (
-        <span
-          style={{ backgroundColor: '#900C3F', color: fontColorFromBackgroundHex('##900C3F') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Building
-        </span>
-      );
+      label = 'Building';
+      color = '#900C3F';
+      break;
     case ProjectStatus.BUILT:
-      return (
-        <span
-          style={{ backgroundColor: '#70ad47', color: fontColorFromBackgroundHex('#70ad47') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Built
-        </span>
-      );
+      label = 'Built';
+      color = '#70ad47';
+      break;
     case ProjectStatus.CANCELLED:
-      return (
-        <span
-          style={{ backgroundColor: '#C70039', color: fontColorFromBackgroundHex('#C70039') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Cancelled
-        </span>
-      );
+      label = 'Cancelled';
+      color = '#C70039';
+      break;
     case ProjectStatus.COUNTED:
-      return (
-        <span
-          style={{ backgroundColor: '#47ad83', color: fontColorFromBackgroundHex('#47ad83') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Counted
-        </span>
-      );
+      label = 'Counted';
+      color = '#47ad83';
+      break;
     case ProjectStatus.PLANNED:
-      return (
-        <span
-          style={{ backgroundColor: '#ffc000', color: fontColorFromBackgroundHex('#ffc000') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        ></span>
-      );
+      label = 'Planned';
+      color = '#ffc000';
+      break;
     case ProjectStatus.PLANNING:
-      return (
-        <span
-          style={{ backgroundColor: '#f6f600', color: fontColorFromBackgroundHex('#f6f600') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Planning
-        </span>
-      );
+      label = 'Planning';
+      color = '#f6f600';
+      break;
     case ProjectStatus.READY:
-      return (
-        <span
-          style={{ backgroundColor: '#70ad47', color: fontColorFromBackgroundHex('#70ad47') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Ready
-        </span>
-      );
+      label = 'Ready';
+      color = '#70ad47';
+      break;
     case ProjectStatus.STARTING:
-      return (
-        <span
-          style={{ backgroundColor: '#52BE80', color: fontColorFromBackgroundHex('#52BE80') }}
-          className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
-        >
-          Starting
-        </span>
-      );
+      label = 'Starting';
+      color = '#52BE80';
+      break;
   }
+  return (
+    <span
+      style={{ backgroundColor: color, color: fontColorFromBackgroundHex(color) }}
+      className={cx('whitespace-nowrap', 'py-1', 'px-2', 'text-xs')}
+    >
+      {label}
+    </span>
+  );
 }
