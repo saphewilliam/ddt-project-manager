@@ -7,7 +7,7 @@ import {
   makeStoneListTableColumns,
   StoneListColumnTypes,
   StoneListTableType,
-} from '@lib/stoneListHelpers';
+} from '@lib/inventoryHelpers';
 import Button from '../Button';
 import { HeadCell, ValueCell } from './StoneListCells';
 import StoneListColumnModal from './StoneListColumnModal';

@@ -3,7 +3,7 @@ import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicon
 import { RenderCellProps, RenderHeadProps, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 
 const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-4', 'text-gray-900');
 

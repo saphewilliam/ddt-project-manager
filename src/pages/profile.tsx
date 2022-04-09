@@ -7,7 +7,7 @@ import useSdk from '@hooks/useSdk';
 import useSession from '@hooks/useSession';
 import { promiseWithCatch } from '@lib/util';
 
-export default function ListsPage(): ReactElement {
+export default function ProfilePage(): ReactElement {
   const [loading, setLoading] = useState(false);
   const [, , removeCookie] = useCookies(['ddtauth']);
   const sdk = useSdk();
