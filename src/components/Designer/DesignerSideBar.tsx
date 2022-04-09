@@ -1,7 +1,7 @@
 import cx from 'clsx';
 import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
 import Modal from '@components/Modal';
-import { fontColorFromBackgroundRgb } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundRgb } from '@lib/util';
 import { ToolIndex, Tool, ColorIndex, colors, Color } from 'src/pages/designer';
 import DesignerSideBarSection from './DesignerSideBarSection';
 

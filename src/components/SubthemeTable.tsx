@@ -2,7 +2,7 @@ import { PlusSmIcon, MinusSmIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 
 export interface Props {
   eventSlug: string;

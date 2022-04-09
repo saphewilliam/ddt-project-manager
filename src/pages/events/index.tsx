@@ -6,8 +6,7 @@ import React, { ReactElement } from 'react';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
 import useSafeQuery from '@hooks/useSafeQuery';
-import { formatNumber } from '@lib/stoneListHelpers';
-import { formatDate } from '@lib/util';
+import { formatNumber, formatDate } from '@lib/util';
 
 export default function EventsPage(): ReactElement {
   const { data } = useSafeQuery('useEvents', {});

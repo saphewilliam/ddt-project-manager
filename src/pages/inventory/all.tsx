@@ -1,9 +1,9 @@
 import React, { ReactElement, useMemo } from 'react';
 import ListTemplate from '@components/templates/ListTemplate';
 import useSafeQuery from '@hooks/useSafeQuery';
-import { makeStoneListsTableData } from '@lib/stoneListHelpers';
+import { makeStoneListsTableData } from '@lib/inventoryHelpers';
 
-export default function ListAllPage(): ReactElement {
+export default function AllInventoryPage(): ReactElement {
   const { data } = useSafeQuery('useStoneLists', {});
 
   const tableData = useMemo(() => makeStoneListsTableData(data), [data]);
@@ -13,7 +13,7 @@ export default function ListAllPage(): ReactElement {
       loading={data === undefined}
       data={tableData}
       swrKey="useGetStoneLists"
-      title="List All"
+      title="All inventory"
     />
   );
 }

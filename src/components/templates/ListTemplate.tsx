@@ -4,7 +4,7 @@ import ReactTooltip from 'react-tooltip';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import StoneList from '@components/StoneList';
-import { StoneListTableData } from '@lib/stoneListHelpers';
+import { StoneListTableData } from '@lib/inventoryHelpers';
 
 export interface Props {
   title: string;

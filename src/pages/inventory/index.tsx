@@ -5,7 +5,7 @@ import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import useSafeQuery from '@hooks/useSafeQuery';
-import { formatNumber } from '@lib/stoneListHelpers';
+import { formatNumber } from '@lib/util';
 
 export interface Props {
   name: string;
@@ -13,7 +13,7 @@ export interface Props {
   amount: number;
 }
 
-function ListPageCard(props: Props): ReactElement {
+function InventoryPageCard(props: Props): ReactElement {
   return (
     <li>
       <Link href={props.href}>
@@ -30,7 +30,7 @@ function ListPageCard(props: Props): ReactElement {
   );
 }
 
-export default function ListsPage(): ReactElement {
+export default function InventoryPage(): ReactElement {
   const { data } = useSafeQuery('useStoneListUsers', {});
 
   const allTotal: number = useMemo(
@@ -39,14 +39,14 @@ export default function ListsPage(): ReactElement {
   );
 
   return (
-    <Layout title="Lists">
+    <Layout title="Inventory">
       {data ? (
         <ul className={cx('grid', 'gap-5', 'md:grid-cols-2', 'lg:grid-cols-3')}>
-          <ListPageCard href="/lists/all" name="All" amount={allTotal} />
+          <InventoryPageCard href="/inventory/all" name="All" amount={allTotal} />
           {data.stoneListUsers.map((user) => (
-            <ListPageCard
+            <InventoryPageCard
               key={user.id}
-              href={`/lists/${user.slug}`}
+              href={`/inventory/${user.slug}`}
               name={`${user.firstName} ${user.lastName}`}
               amount={user.stoneAmount}
             />

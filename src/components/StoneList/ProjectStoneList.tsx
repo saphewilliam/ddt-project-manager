@@ -1,7 +1,7 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import { ReactElement } from 'react';
-import { ProjectStoneListColumnTypes } from '@lib/stoneListHelpers';
+import { ProjectStoneListColumnTypes } from '@lib/inventoryHelpers';
 import { ColorCell, HeadCell, ValueCell } from './StoneListCells';
 import StoneListTable from './StoneListTable';
 

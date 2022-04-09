@@ -2,6 +2,23 @@ import { nanoid } from 'nanoid';
 import { ParsedUrlQuery } from 'querystring';
 import { displayError } from '@hooks/useDisplayError';
 
+export function fontColorFromBackgroundHex(hex: string): string {
+  const r = parseInt(hex.substring(1, 3), 16);
+  const g = parseInt(hex.substring(3, 5), 16);
+  const b = parseInt(hex.substring(5, 7), 16);
+  return fontColorFromBackgroundRgb(r, g, b);
+}
+
+export function fontColorFromBackgroundRgb(r: number, g: number, b: number): string {
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  if (luminance > 0.5) return '#000';
+  else return '#fff';
+}
+
+export function formatNumber(number: number): string {
+  return String(number).replace(/(.)(?=(\d{3})+$)/g, '$1.');
+}
+
 export function formatDate(date: Date): string {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
