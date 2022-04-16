@@ -1,8 +1,7 @@
 import cx from 'clsx';
-import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import { ProjectStatus } from '@graphql/__generated__/codegen-self';
-import { fontColorFromBackgroundHex } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex } from '@lib/util';
 
 export interface Props {
   status: ProjectStatus;
