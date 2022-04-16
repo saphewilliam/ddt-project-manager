@@ -1,10 +1,10 @@
 import { Canvas, CanvasUpdateInfo } from './canvas';
-import { WallLayer } from './layers';
+import { CubeLayer } from './layers';
 import { Color, Point, Size, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: WallLayer = new WallLayer(50, 50);
+const layer: CubeLayer = new CubeLayer(5, 48);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
