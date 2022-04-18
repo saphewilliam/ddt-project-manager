@@ -92,9 +92,10 @@ export default function Canvas(props: Props): ReactElement {
     [props.contextMenuItems],
   );
 
+  // FIXME maximum update depth exeeded if I remove dependency array
   useEffect(() => {
     setContextMenuItems(getContextMenuItems());
-  });
+  }, []);
 
   const updateCanvas = useCallback(
     (updateInfo: CanvasUpdateInfo) => {

@@ -2,7 +2,9 @@ import { PlusSmIcon, MinusSmIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
+import { ProjectType, ProjectStatus } from '@graphql/__generated__/codegen-self';
+import { projectTypeToString, fontColorFromBackgroundHex, formatNumber } from '@lib/util';
+import EventsProjectPill from './EventsProjectTypePill';
 
 export interface Props {
   eventSlug: string;
@@ -13,8 +15,8 @@ export interface Props {
       id: string;
       name: string;
       slug: string;
-      type: string;
-      status: string;
+      type: ProjectType;
+      status: ProjectStatus;
       stoneAmount: number;
       supervisor?: { displayName: string } | null;
     }[];
@@ -57,14 +59,14 @@ export default function SubthemeTable(props: Props): ReactElement {
             <tr key={project.id}>
               <td className={cx('w-4')} style={{ backgroundColor: props.subtheme.color }}></td>
               <td className={cx('border', 'border-gray-300', 'px-4', 'py-2', 'text-sm')}>
-                <div className={cx('flex', 'flex-col')}>
+                <div className={cx('flex', 'flex-col', 'items-start')}>
                   <Link href={`/events/${props.eventSlug}/${project.slug}`}>
                     <a className={cx('font-bold')}>{project.name}</a>
                   </Link>
-                  <span>{project.type}</span>
+                  <span>{projectTypeToString(project.type)}</span>
                   <span>{formatNumber(project.stoneAmount)} stones</span>
                   <span>Supervisor: {project.supervisor?.displayName}</span>
-                  <span>{project.status}</span>
+                  <EventsProjectPill status={project.status} />
                 </div>
               </td>
             </tr>

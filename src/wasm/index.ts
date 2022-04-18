@@ -1,10 +1,10 @@
 import { Canvas, CanvasUpdateInfo } from './canvas';
-import { WallLayer } from './layers';
+import { CubeLayer } from './layers';
 import { Color, Point, Size, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: WallLayer = new WallLayer(50, 50);
+const layer: CubeLayer = new CubeLayer(5, 13);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
@@ -45,6 +45,16 @@ export function saveUndo(): void {
   if (undoStore.length === maxUndoLength) undoStore.shift();
   undoStore.push(layer.getStones());
   redoStore.length = 0;
+}
+
+/** Returns the string representation of the design */
+export function save(): string {
+  return layer.stones.map<string>((stone) => stone.toString()).join(';');
+}
+
+/** Takes a string representation of a design and loads it to the canvas. If false is returned, the input is not valid */
+export function load(input: string): boolean {
+  return true;
 }
 
 export function setCanvasSize(width: u32, height: u32): Array<u32> {
