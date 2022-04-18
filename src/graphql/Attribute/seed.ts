@@ -25,20 +25,20 @@ export default async function seedAttributes(prisma: PrismaClient): Promise<void
       {
         id: idMap.attributes.BRIDGE_SMALL,
         teamId: idMap.teams.DUTCH_DOMINO_TEAM,
-        name: 'Small bridge',
-        namePlural: 'Small bridges',
+        name: 'Bridge (small)',
+        namePlural: 'Bridges (small)',
       },
       {
         id: idMap.attributes.BRIDGE_MEDIUM,
         teamId: idMap.teams.DUTCH_DOMINO_TEAM,
-        name: 'Medium bridge',
-        namePlural: 'Medium bridges',
+        name: 'Bridge (medium)',
+        namePlural: 'Bridges (medium)',
       },
       {
         id: idMap.attributes.BRIDGE_LARGE,
         teamId: idMap.teams.DUTCH_DOMINO_TEAM,
-        name: 'Large bridge',
-        namePlural: 'Large bridges',
+        name: 'Bridge (large)',
+        namePlural: 'Bridges (large)',
       },
       {
         id: idMap.attributes.BRIDGE_BLOCK,
@@ -85,8 +85,8 @@ export default async function seedAttributes(prisma: PrismaClient): Promise<void
       {
         id: idMap.attributes.DUCT,
         teamId: idMap.teams.DUTCH_DOMINO_TEAM,
-        name: 'Duct/fieldstarter holder',
-        namePlural: 'Ducts/fieldstarter holders',
+        name: 'Duct / fieldstarter holder',
+        namePlural: 'Ducts / fieldstarter holders',
       },
       {
         id: idMap.attributes.DIODE,

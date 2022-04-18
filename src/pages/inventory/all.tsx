@@ -1,18 +1,18 @@
 import React, { ReactElement, useMemo } from 'react';
-import ListTemplate from '@components/templates/ListTemplate';
+import InventoryTemplate from '@components/templates/InventoryTemplate';
 import useSafeQuery from '@hooks/useSafeQuery';
-import { makeStoneListsTableData } from '@lib/inventoryHelpers';
+import { makeAllInventoryTableData } from '@lib/inventoryHelpers';
 
 export default function AllInventoryPage(): ReactElement {
-  const { data } = useSafeQuery('useStoneLists', {});
+  const { data } = useSafeQuery('useInventory', {});
 
-  const tableData = useMemo(() => makeStoneListsTableData(data), [data]);
+  const tableData = useMemo(() => makeAllInventoryTableData(data), [data]);
 
   return (
-    <ListTemplate
+    <InventoryTemplate
       loading={data === undefined}
-      data={tableData}
-      swrKey="useGetStoneLists"
+      tableData={tableData}
+      swrKey="useInventory"
       title="All inventory"
     />
   );

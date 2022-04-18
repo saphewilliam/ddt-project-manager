@@ -12,7 +12,7 @@ export interface Props {
   visibilityHelpers: VisibilityHelpers;
 }
 
-export default function StoneListColumnModal(props: Props): ReactElement {
+export default function InventoryColumnModal(props: Props): ReactElement {
   return (
     <Modal
       show={props.show}

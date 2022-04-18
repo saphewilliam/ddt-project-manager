@@ -29,7 +29,11 @@ export function ColorCell(props: RenderCellProps): ReactElement {
 }
 
 export function ValueCell(props: RenderCellProps): ReactElement {
-  return <td className={cx(commonClassName, 'text-opacity-80')}>{formatNumber(props.value)}</td>;
+  return (
+    <td className={cx(commonClassName, 'text-opacity-80')}>
+      {typeof props.value === 'number' ? formatNumber(props.value) : props.stringValue}
+    </td>
+  );
 }
 
 export function EditCell(props: RenderCellProps): ReactElement {

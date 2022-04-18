@@ -1,0 +1,15 @@
+mutation UpdateAttributeList($attributeId: String!, $userId: String!, $amount: Int!) {
+  updateAttributeList(attributeId: $attributeId, userId: $userId, amount: $amount) {
+    id
+    user {
+      id
+      firstName
+      lastName
+    }
+    attribute {
+      id
+      name
+    }
+    amount
+  }
+}

@@ -93,6 +93,7 @@ type Mutation {
 
   """Set the `team` field of an active session"""
   setSessionTeam(teamId: String!): Session!
+  updateAttributeList(amount: Int!, attributeId: String!, userId: String!): AttributeList
   updateStoneList(amount: Int!, stoneId: String!, userId: String!): StoneList
 }
 
@@ -152,6 +153,9 @@ enum ProjectType {
 }
 
 type Query {
+  """Get a single attribute inventory record"""
+  attributeList(attributeId: String!, userId: String!): AttributeList
+
   """Get all attributes of a team"""
   attributes: [Attribute!]!
   event(eventSlug: String!): Event
@@ -163,7 +167,7 @@ type Query {
   """Get session by its token"""
   session(token: String!): Session
 
-  """Get a single stonelist record"""
+  """Get a single stone inventory record"""
   stoneList(stoneId: String!, userId: String!): StoneList
 
   """Find all users of this team that have a nonzero stonelist in this team"""

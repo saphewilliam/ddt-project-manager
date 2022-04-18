@@ -10,9 +10,9 @@ import {
   StoneInventoryColumnTypes,
   StoneInventoryTable,
 } from '@lib/inventoryHelpers';
+import InventoryColumnModal from './InventoryColumnModal';
+import StoneInventoryEditModal, { StoneListEditModalSettings } from './StoneInventoryEditModal';
 import { HeadCell, ValueCell } from './StoneListCells';
-import StoneListColumnModal from './StoneListColumnModal';
-import StoneListEditModal, { StoneListEditModalSettings } from './StoneListEditModal';
 
 export interface Props {
   title: string;
@@ -82,7 +82,7 @@ export default function StoneTable(props: Props): ReactElement {
       }
     >
       {userColumns.length > 1 && (
-        <StoneListColumnModal
+        <InventoryColumnModal
           visibilityHelpers={visibilityHelpers}
           originalHeaders={originalHeaders}
           setShow={setShowColumnModal}
@@ -91,7 +91,7 @@ export default function StoneTable(props: Props): ReactElement {
         />
       )}
 
-      <StoneListEditModal
+      <StoneInventoryEditModal
         settings={editModalSettings}
         setSettings={setEditModalSettings}
         swrKey={props.swrKey}

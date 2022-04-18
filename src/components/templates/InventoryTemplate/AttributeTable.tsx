@@ -10,9 +10,11 @@ import {
   AttributeInventoryColumnTypes,
   AttributeInventoryTable,
 } from '@lib/inventoryHelpers';
+import AttributeInventoryEditModal, {
+  AttributeInventoryEditModalSettings,
+} from './AttributeInventoryEditModal';
+import InventoryColumnModal from './InventoryColumnModal';
 import { HeadCell, ValueCell } from './StoneListCells';
-import StoneListColumnModal from './StoneListColumnModal';
-import StoneListEditModal, { StoneListEditModalSettings } from './StoneListEditModal';
 
 export interface Props {
   title: string;
@@ -21,84 +23,80 @@ export interface Props {
 }
 
 export default function AttributeTable(props: Props): ReactElement {
-  return <p>{props.title}</p>;
-  // const [userColumns, setUserColumns] = useState(getInventoryUserColumns(props.rows));
-  // const [showColumnModal, setShowColumnModal] = useState(false);
-  // const [editModalSettings, setEditModalSettings] = useState<StoneListEditModalSettings>({
-  //   show: false,
-  //   stoneId: '',
-  //   userId: '',
-  //   amount: 0,
-  // });
+  const [userColumns, setUserColumns] = useState(getInventoryUserColumns(props.rows));
+  const [showColumnModal, setShowColumnModal] = useState(false);
+  const [editModalSettings, setEditModalSettings] = useState<AttributeInventoryEditModalSettings>({
+    show: false,
+    stoneId: '',
+    userId: '',
+    amount: 0,
+  });
 
-  // useEffect(() => {
-  //   setUserColumns(getInventoryUserColumns(props.rows));
-  // }, [props.rows]);
+  useEffect(() => {
+    setUserColumns(getInventoryUserColumns(props.rows));
+  }, [props.rows]);
 
-  // const { session } = useSession();
+  const { session } = useSession();
 
-  // const columns: Columns<StoneInventoryColumnTypes> = useMemo(
-  //   () => makeStoneInventoryTableColumns(userColumns, session),
-  //   [props, userColumns],
-  // );
+  const columns: Columns<AttributeInventoryColumnTypes> = useMemo(
+    () => makeAttributeInventoryTableColumns(userColumns, session),
+    [props, userColumns],
+  );
 
-  // const data: Data<StoneInventoryColumnTypes> = useMemo(
-  //   () =>
-  //     props.rows.map((row) => ({
-  //       color: row,
-  //       ...row.stoneLists.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
-  //       total: row.stoneLists.reduce((prev, curr) => prev + curr.amount, 0),
-  //       edit: () =>
-  //         setEditModalSettings({
-  //           show: true,
-  //           stoneId: row.id,
-  //           userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
-  //           amount: null,
-  //         }),
-  //     })),
-  //   [props.rows],
-  // );
+  const data: Data<AttributeInventoryColumnTypes> = useMemo(
+    () =>
+      props.rows.map((row) => ({
+        attribute: row,
+        ...row.attributeLists.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
+        total: row.attributeLists.reduce((prev, curr) => prev + curr.amount, 0),
+        edit: () =>
+          setEditModalSettings({
+            show: true,
+            stoneId: row.id,
+            userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
+            amount: null,
+          }),
+      })),
+    [props.rows],
+  );
 
-  // const { headers, originalHeaders, rows, visibilityHelpers } = useTable<StoneInventoryColumnTypes>(
-  //   columns,
-  //   data,
-  //   {
-  //     style: { renderCell: ValueCell, renderHead: HeadCell },
-  //     sort: {
-  //       initial: { column: 'color', order: SortOrder.DESC },
-  //       order: [SortOrder.DESC, SortOrder.ASC],
-  //     },
-  //   },
-  // );
+  const { headers, originalHeaders, rows, visibilityHelpers } =
+    useTable<AttributeInventoryColumnTypes>(columns, data, {
+      style: { renderCell: ValueCell, renderHead: HeadCell },
+      sort: {
+        initial: { column: 'attribute', order: SortOrder.DESC },
+        order: [SortOrder.DESC, SortOrder.ASC],
+      },
+    });
 
-  // return (
-  //   <Card
-  //     title={props.title}
-  //     headerChildren={
-  //       <div>
-  //         {userColumns.length > 1 && (
-  //           <Button label="Show / hide columns" onClick={() => setShowColumnModal(true)} />
-  //         )}
-  //       </div>
-  //     }
-  //   >
-  //     {userColumns.length > 1 && (
-  //       <StoneListColumnModal
-  //         visibilityHelpers={visibilityHelpers}
-  //         originalHeaders={originalHeaders}
-  //         setShow={setShowColumnModal}
-  //         show={showColumnModal}
-  //         title={props.title}
-  //       />
-  //     )}
+  return (
+    <Card
+      title={props.title}
+      headerChildren={
+        <div>
+          {userColumns.length > 1 && (
+            <Button label="Show / hide columns" onClick={() => setShowColumnModal(true)} />
+          )}
+        </div>
+      }
+    >
+      {userColumns.length > 1 && (
+        <InventoryColumnModal
+          visibilityHelpers={visibilityHelpers}
+          originalHeaders={originalHeaders}
+          setShow={setShowColumnModal}
+          show={showColumnModal}
+          title={props.title}
+        />
+      )}
 
-  //     <StoneListEditModal
-  //       settings={editModalSettings}
-  //       setSettings={setEditModalSettings}
-  //       swrKey={props.swrKey}
-  //     />
+      <AttributeInventoryEditModal
+        settings={editModalSettings}
+        setSettings={setEditModalSettings}
+        swrKey={props.swrKey}
+      />
 
-  //     <Table headers={headers} rows={rows} />
-  //   </Card>
-  // );
+      <Table headers={headers} rows={rows} />
+    </Card>
+  );
 }

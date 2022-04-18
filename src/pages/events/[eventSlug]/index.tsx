@@ -7,8 +7,8 @@ import Button from '@components/Button';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
-import ProjectStoneList from '@components/StoneList/ProjectStoneList';
 import SubthemeTable from '@components/SubthemeTable';
+import ProjectStoneList from '@components/templates/InventoryTemplate/ProjectStoneList';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
 

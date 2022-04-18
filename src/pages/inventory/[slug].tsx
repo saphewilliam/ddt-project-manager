@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useEffect } from 'react';
-import ListTemplate from '@components/templates/ListTemplate';
+import InventoryTemplate from '@components/templates/InventoryTemplate';
 import useSafeQuery from '@hooks/useSafeQuery';
-import { makeStoneListTableData } from '@lib/inventoryHelpers';
+import { makeInventoryTableData } from '@lib/inventoryHelpers';
 import { extractURLParam } from '@lib/util';
 
 export default function ListUserPage(): ReactElement {
   const router = useRouter();
   const slug = extractURLParam('slug', router.query);
 
-  const { data } = useSafeQuery(`useUserStoneList`, { userSlug: slug ?? '' }, slug);
+  const { data } = useSafeQuery(`useUserInventory`, { userSlug: slug ?? '' }, slug);
 
   useEffect(() => {
     if (data !== undefined && data.user === null) {
@@ -17,13 +17,13 @@ export default function ListUserPage(): ReactElement {
     }
   }, [data]);
 
-  const tableData = useMemo(() => makeStoneListTableData(data), [data]);
+  const tableData = useMemo(() => makeInventoryTableData(data), [data]);
 
   return (
-    <ListTemplate
+    <InventoryTemplate
       loading={data === undefined}
-      data={tableData}
-      swrKey={`useGetUserStoneList${slug}`}
+      tableData={tableData}
+      swrKey={`useUserInventory${slug}`}
       title={
         data?.user ? `${data.user.firstName} ${data.user.lastName} Inventory` : 'User Inventory'
       }

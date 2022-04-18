@@ -8,7 +8,7 @@ import useSafeQuery from '@hooks/useSafeQuery';
 import useSdk from '@hooks/useSdk';
 import { promiseWithCatch } from '@lib/util';
 
-export interface StoneListEditModalSettings {
+export interface AttributeInventoryEditModalSettings {
   show: boolean;
   stoneId: string;
   userId: string;
@@ -16,18 +16,18 @@ export interface StoneListEditModalSettings {
 }
 
 export interface Props {
-  settings: StoneListEditModalSettings;
-  setSettings: (settings: StoneListEditModalSettings) => void;
+  settings: AttributeInventoryEditModalSettings;
+  setSettings: (settings: AttributeInventoryEditModalSettings) => void;
   swrKey: string;
 }
 
-export default function StoneListEditModal(props: Props): ReactElement {
-  const [stoneId, setStoneId] = useState('');
+export default function AttributeInventoryEditModal(props: Props): ReactElement {
+  const [attributeId, setAttributeId] = useState('');
   const [userId, setUserId] = useState('');
   const [amount, setAmount] = useState<number | null>(0);
   const [loading, setLoading] = useState(false);
 
-  const { data: stonesData } = useSafeQuery('useStones', {});
+  const { data: attributesData } = useSafeQuery('useAttributes', {});
   const { data: usersData } = useSafeQuery('useUsers', {});
   const sdk = useSdk();
 
@@ -35,25 +35,25 @@ export default function StoneListEditModal(props: Props): ReactElement {
 
   const updateAmount = useCallback(async () => {
     setLoading(true);
-    const { stoneList } = await sdk.StoneList({ stoneId, userId });
-    if (stoneList) setAmount(stoneList.amount);
+    const { attributeList } = await sdk.AttributeList({ attributeId, userId });
+    if (attributeList) setAmount(attributeList.amount);
     else setAmount(0);
     setLoading(false);
-  }, [stoneId, userId]);
+  }, [attributeId, userId]);
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    if (stoneId === '' || userId === '' || amount === null) return;
+    if (attributeId === '' || userId === '' || amount === null) return;
     setLoading(true);
     const data = await promiseWithCatch(
-      sdk.UpdateStoneList({ stoneId, userId, amount: amount! }),
+      sdk.UpdateAttributeList({ attributeId, userId, amount: amount! }),
       'Could not edit stonelist',
     );
-    if (data?.updateStoneList) {
-      const { user, stone, amount } = data.updateStoneList;
+    if (data?.updateAttributeList) {
+      const { user, attribute, amount } = data.updateAttributeList;
       await mutate(props.swrKey);
       toast.success(
-        `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} to ${amount}!`,
+        `Successfully updated ${user.firstName} ${user.lastName}'s ${attribute.name} amount to ${amount}!`,
         { duration: 7000 },
       );
       props.setSettings({ ...props.settings, show: false });
@@ -62,47 +62,46 @@ export default function StoneListEditModal(props: Props): ReactElement {
   }
 
   useEffect(() => {
-    setStoneId(props.settings.stoneId);
-    setUserId(props.settings.userId ?? '');
+    setAttributeId(props.settings.stoneId);
+    setUserId(props.settings.userId);
   }, [props.settings]);
 
   useEffect(() => {
     updateAmount();
-  }, [stoneId, userId]);
+  }, [attributeId, userId]);
 
   return (
     <Modal
       show={props.settings.show}
       setShow={(nextShow: boolean) => props.setSettings({ ...props.settings, show: nextShow })}
-      title="Edit Stonelist"
+      title="Edit Attribute Inventory"
       body={
         <>
           <form className={cx('space-y-4')} onSubmit={handleSubmit}>
             <div className={cx('flex', 'flex-col', 'space-y-1')}>
-              <label htmlFor="editStoneListStone">Stone</label>
+              <label htmlFor="editAttributeInventoryAttribute">Attribute</label>
               <select
-                name="editStoneListStone"
-                id="editStoneListStone"
-                value={stoneId}
-                onChange={(e) => setStoneId(e.target.value)}
+                name="editAttributeInventoryAttribute"
+                id="editAttributeInventoryAttribute"
+                value={attributeId}
+                onChange={(e) => setAttributeId(e.target.value)}
               >
                 <option value="" disabled>
-                  Select a stone from the list...
+                  Select an attribute from the list...
                 </option>
-                {stonesData?.stones.map((stone) => (
-                  <option key={stone.id} value={stone.id}>
-                    {stone.name} ({stone.alias}
-                    {stone.alias2 ? ` -> ${stone.alias2}` : ''})
+                {attributesData?.attributes.map((attribute) => (
+                  <option key={attribute.id} value={attribute.id}>
+                    {attribute.name}
                   </option>
                 ))}
               </select>
             </div>
 
             <div className={cx('flex', 'flex-col', 'space-y-1')}>
-              <label htmlFor="editStoneListUser">User</label>
+              <label htmlFor="editAttributeInventoryUser">User</label>
               <select
-                name="editStoneListUser"
-                id="editStoneListUser"
+                name="editAttributeInventoryUser"
+                id="editAttributeInventoryUser"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
               >
@@ -118,11 +117,11 @@ export default function StoneListEditModal(props: Props): ReactElement {
             </div>
 
             <div className={cx('flex', 'flex-col', 'space-y-1')}>
-              <label htmlFor="editStoneListAmount">Amount</label>
+              <label htmlFor="editAttributeInventoryAmount">Amount</label>
               <input
                 type="number"
-                name="editStoneListAmount"
-                id="editStoneListAmount"
+                name="editAttributeInventoryAmount"
+                id="editAttributeInventoryAmount"
                 value={amount ?? ''}
                 onChange={(e) => {
                   const parsed = parseInt(e.target.value);
@@ -145,7 +144,7 @@ export default function StoneListEditModal(props: Props): ReactElement {
           />
           <Button
             label="Submit"
-            disabled={stoneId === '' || userId === '' || amount === null}
+            disabled={attributeId === '' || userId === '' || amount === null}
             loading={loading}
             onClick={handleSubmit}
           />

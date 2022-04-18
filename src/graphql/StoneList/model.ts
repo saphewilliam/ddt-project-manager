@@ -32,7 +32,7 @@ export const stoneListQuery = extendType({
         userId: stringArg(),
       },
       authorize: authorizeSession,
-      description: 'Get a single stonelist record',
+      description: 'Get a single stone inventory record',
       resolve: (_, args, ctx) =>
         ctx.prisma.stoneList.findFirst({
           where: {
@@ -73,7 +73,7 @@ export const stoneListMutation = extendType({
           !(ctx.member?.role === Role.CAPTAIN && stone.stoneType.teamId === ctx.session.teamId) &&
           !ctx.session.user.isAdmin
         )
-          return Error('User does not have correct permissions to perform this action');
+          return Error('User does not have permission to perform this action');
 
         return true;
       },
