@@ -1,15 +1,18 @@
 import { Columns } from '@saphe/react-table';
-import { ColorCell, EditCell } from '@components/StoneList/StoneListCells';
+import { ColorCell, EditCell } from '@components/templates/InventoryTemplate/StoneListCells';
 import {
-  StoneListsQuery,
-  UserStoneListQuery,
+  InventoryQuery,
+  UserInventoryQuery,
   Role,
   SessionQuery,
 } from '@graphql/__generated__/codegen-self';
 
-export type StoneListTableData = StoneListTableType[];
+export interface InventoryTableData {
+  stones: StoneInventoryTable[];
+  attributes: AttributeInventoryTable[];
+}
 
-export interface StoneListTableType {
+export interface StoneInventoryTable {
   title: string;
   rows: {
     id: string;
@@ -29,7 +32,31 @@ export interface StoneListTableType {
   }[];
 }
 
-export type StoneListColumnTypes = {
+export interface AttributeInventoryTable {
+  title: string;
+  rows: {
+    id: string;
+    name: string;
+    attributeLists: {
+      id: string;
+      amount: number;
+      userId: string;
+      displayName: string;
+    }[];
+  }[];
+}
+
+export type InventoryUsers = {
+  userId: string;
+  displayname: string;
+}[];
+
+interface InventoryColumnTypes {
+  total: number;
+  edit: () => void;
+}
+
+export interface StoneInventoryColumnTypes extends InventoryColumnTypes {
   color: {
     id: string;
     name: string;
@@ -39,11 +66,16 @@ export type StoneListColumnTypes = {
     hex2?: string | null;
     order: number;
   };
-  total: number;
-  edit: () => void;
-};
+}
 
-export type ProjectStoneListColumnTypes = {
+export interface AttributeInventoryColumnTypes extends InventoryColumnTypes {
+  attribute: {
+    id: string;
+    namePlural: string;
+  };
+}
+
+export interface StonesOnProjectColumnTypes {
   color: {
     id: string;
     name: string;
@@ -55,24 +87,46 @@ export type ProjectStoneListColumnTypes = {
   };
   person: string;
   amount: number;
-};
+}
 
-export function makeStoneListTableColumns(
-  userColumns: StoneListUserColumns,
+export function makeAttributeInventoryTableColumns(
+  inventoryUsers: InventoryUsers,
   session: SessionQuery['session'],
-): Columns<StoneListColumnTypes> {
+): Columns<AttributeInventoryColumnTypes> {
+  return {
+    attribute: {
+      unhideable: true,
+      sort: (a, b) => a.namePlural.localeCompare(b.namePlural),
+    },
+    ...makeInventoryTableColumns(inventoryUsers, session),
+  };
+}
+
+export function makeStoneInventoryTableColumns(
+  inventoryUsers: InventoryUsers,
+  session: SessionQuery['session'],
+): Columns<StoneInventoryColumnTypes> {
   return {
     color: {
       renderCell: ColorCell,
       unhideable: true,
       sort: (a, b) => b.order - a.order,
     },
-    ...userColumns.reduce(
+    ...makeInventoryTableColumns(inventoryUsers, session),
+  };
+}
+
+function makeInventoryTableColumns(
+  inventoryUsers: InventoryUsers,
+  session: SessionQuery['session'],
+): Columns<InventoryColumnTypes> {
+  return {
+    ...inventoryUsers.reduce(
       (prev, curr) => ({ ...prev, [curr.userId]: { label: curr.displayname, defaultValue: 0 } }),
       {},
     ),
     total: {
-      hidden: userColumns.length <= 1,
+      hidden: inventoryUsers.length <= 1,
       unhideable: true,
     },
     edit: {
@@ -85,22 +139,23 @@ export function makeStoneListTableColumns(
   };
 }
 
-export function makeStoneListTableData(
-  data: UserStoneListQuery | undefined | null,
-): StoneListTableData {
-  const result: StoneListTableData = [];
-  if (data === undefined || data === null) return result;
+export function makeInventoryTableData(
+  data: UserInventoryQuery | undefined | null,
+): InventoryTableData {
+  const result: InventoryTableData = { stones: [], attributes: [] };
+  if (!data) return result;
 
+  // Stones Inventory
   let stoneTypeId = '';
   for (let i = 0, j = -1; i < data.userStoneList.length; i++) {
     const { stone, id, amount } = data.userStoneList[i]!;
     if (stoneTypeId !== stone.stoneTypeId) {
       stoneTypeId = stone.stoneTypeId;
-      result.push({ title: stoneTypeId, rows: [] });
+      result.stones.push({ title: stoneTypeId, rows: [] });
       j++;
     }
 
-    result[j]!.rows.push({
+    result.stones[j]!.rows.push({
       ...stone,
       stoneLists: [
         {
@@ -113,14 +168,36 @@ export function makeStoneListTableData(
     });
   }
 
-  return result.map((table) => ({
-    ...table,
-    title: data.stoneTypes.find((stoneType) => stoneType.id === table.title)!.name,
-  }));
+  // Attributes Inventory
+  const attributes: AttributeInventoryTable[] = [
+    {
+      title: 'Attributes',
+      rows: ,
+    },
+  ];
+  // title: string;
+  // rows: {
+  //   id: string;
+  //   name: string;
+  //   attributeLists: {
+  //     id: string;
+  //     amount: number;
+  //     userId: string;
+  //     displayName: string;
+  //   }[];
+  // }[];
+
+  return {
+    stones: result.stones.map((table) => ({
+      ...table,
+      title: data.stoneTypes.find((stoneType) => stoneType.id === table.title)!.name,
+    })),
+    attributes,
+  };
 }
 
-export function makeStoneListsTableData(data: StoneListsQuery | undefined): StoneListTableData {
-  const result: StoneListTableData = [];
+export function makeAllInventoryTableData(data: InventoryQuery | undefined): InventoryTableData {
+  const result: InventoryTableData = { stones: [], attributes: [] };
   if (data === undefined) return result;
 
   let stoneTypeId = '';
@@ -152,14 +229,9 @@ export function makeStoneListsTableData(data: StoneListsQuery | undefined): Ston
     .filter((table) => table.rows.length > 0);
 }
 
-export type StoneListUserColumns = {
-  userId: string;
-  displayname: string;
-}[];
-
-export function getStoneListUserColumns(rows: StoneListTableType['rows']): StoneListUserColumns {
+export function getInventoryUserColumns(rows: StoneInventoryTable['rows']): InventoryUsers {
   const userIds: Record<string, boolean> = {};
-  const result: StoneListUserColumns = [];
+  const result: InventoryUsers = [];
 
   rows.forEach((row) =>
     row.stoneLists.forEach((stoneList) => {

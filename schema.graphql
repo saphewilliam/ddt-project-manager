@@ -152,6 +152,8 @@ enum ProjectType {
 }
 
 type Query {
+  """Get all attributes of a team"""
+  attributes: [Attribute!]!
   event(eventSlug: String!): Event
   events: [Event!]!
 
@@ -178,6 +180,9 @@ type Query {
 
   """Find user by its slug"""
   user(userSlug: String!): User
+
+  """Get the attributes list of a user in a team"""
+  userAttributeList(userSlug: String!): [AttributeList!]!
 
   """Get stonelist of a user in a team"""
   userStoneList(userSlug: String!): [StoneList!]!

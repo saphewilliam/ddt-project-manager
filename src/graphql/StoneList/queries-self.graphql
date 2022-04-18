@@ -15,13 +15,21 @@ query StoneList($userId: String!, $stoneId: String!) {
   }
 }
 
-query UserStoneList($userSlug: String!) {
+query UserInventory($userSlug: String!) {
   userStoneList(userSlug: $userSlug) {
     id
     amount
     stone {
       id
       ...StoneListStone
+    }
+  }
+  userAttributeList(userSlug: $userSlug) {
+    id
+    amount
+    attribute {
+      id
+      namePlural
     }
   }
   user(userSlug: $userSlug) {
@@ -35,7 +43,17 @@ query UserStoneList($userSlug: String!) {
   }
 }
 
-query StoneLists {
+query Inventory {
+  attributes {
+    id
+    name
+    namePlural
+    attributeLists {
+      id
+      amount
+      userId
+    }
+  }
   stones {
     id
     ...StoneListStone
