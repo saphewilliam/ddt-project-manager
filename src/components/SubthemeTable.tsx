@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
 import { ProjectType, ProjectStatus } from '@graphql/__generated__/codegen-self';
 import { projectTypeToString, fontColorFromBackgroundHex, formatNumber } from '@lib/util';
-import EventsProjectPill from './ProjectStatusBadge';
+import ProjectStatusBadge from './ProjectStatusBadge';
 
 export interface Props {
   eventSlug: string;
@@ -66,7 +66,7 @@ export default function SubthemeTable(props: Props): ReactElement {
                   <span>{projectTypeToString(project.type)}</span>
                   <span>{formatNumber(project.stoneAmount)} stones</span>
                   <span>Supervisor: {project.supervisor?.displayName}</span>
-                  <EventsProjectPill status={project.status} />
+                  <ProjectStatusBadge status={project.status} />
                 </div>
               </td>
             </tr>

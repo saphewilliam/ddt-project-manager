@@ -10,10 +10,8 @@ import {
   AttributeInventoryColumnTypes,
   AttributeInventoryTable,
 } from '@lib/inventoryHelpers';
-import AttributeInventoryEditModal, {
-  AttributeInventoryEditModalSettings,
-} from './AttributeInventoryEditModal';
 import InventoryColumnModal from './InventoryColumnModal';
+import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
 import { HeadCell, ValueCell } from './StoneListCells';
 
 export interface Props {
@@ -25,9 +23,9 @@ export interface Props {
 export default function AttributeTable(props: Props): ReactElement {
   const [userColumns, setUserColumns] = useState(getInventoryUserColumns(props.rows));
   const [showColumnModal, setShowColumnModal] = useState(false);
-  const [editModalSettings, setEditModalSettings] = useState<AttributeInventoryEditModalSettings>({
+  const [editModalSettings, setEditModalSettings] = useState<InventoryEditModalSettings>({
     show: false,
-    stoneId: '',
+    id: null,
     userId: '',
     amount: 0,
   });
@@ -52,7 +50,7 @@ export default function AttributeTable(props: Props): ReactElement {
         edit: () =>
           setEditModalSettings({
             show: true,
-            stoneId: row.id,
+            id: { attribute: row.id },
             userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
             amount: null,
           }),
@@ -90,7 +88,7 @@ export default function AttributeTable(props: Props): ReactElement {
         />
       )}
 
-      <AttributeInventoryEditModal
+      <InventoryEditModal
         settings={editModalSettings}
         setSettings={setEditModalSettings}
         swrKey={props.swrKey}

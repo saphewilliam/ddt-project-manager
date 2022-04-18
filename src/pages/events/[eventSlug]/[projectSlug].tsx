@@ -1,6 +1,7 @@
 // import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
+import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Tabs from '@components/Tabs';
 import useSafeQuery from '@hooks/useSafeQuery';
@@ -25,16 +26,17 @@ export default function ProjectPage(): ReactElement {
 
   return (
     <Layout title={title}>
-      <Tabs
-        tabData={[
-          { label: 'General', content: <span>General tab</span> },
-          { label: 'Stones', content: <span>Stones tab</span> },
-          { label: 'Attributes', content: <span>Attributes tab</span> },
-          { label: 'Attachments', content: <span>Attachments tab</span> },
-          { label: 'History', content: <span>History tab</span> },
-        ]}
-      />
-      {data?.project?.description || 'No description available...'}
+      <Card>
+        <Tabs
+          tabData={[
+            { label: 'General', content: <span>General tab</span> },
+            { label: 'Stones', content: <span>Stones tab</span> },
+            { label: 'Attributes', content: <span>Attributes tab</span> },
+            { label: 'Attachments', content: <span>Attachments tab</span> },
+            { label: 'History', content: <span>History tab</span> },
+          ]}
+        />
+      </Card>
     </Layout>
   );
 }

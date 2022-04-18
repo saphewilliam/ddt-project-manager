@@ -11,7 +11,7 @@ import {
   StoneInventoryTable,
 } from '@lib/inventoryHelpers';
 import InventoryColumnModal from './InventoryColumnModal';
-import StoneInventoryEditModal, { StoneListEditModalSettings } from './StoneInventoryEditModal';
+import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
 import { HeadCell, ValueCell } from './StoneListCells';
 
 export interface Props {
@@ -23,9 +23,9 @@ export interface Props {
 export default function StoneTable(props: Props): ReactElement {
   const [userColumns, setUserColumns] = useState(getInventoryUserColumns(props.rows));
   const [showColumnModal, setShowColumnModal] = useState(false);
-  const [editModalSettings, setEditModalSettings] = useState<StoneListEditModalSettings>({
+  const [editModalSettings, setEditModalSettings] = useState<InventoryEditModalSettings>({
     show: false,
-    stoneId: '',
+    id: null,
     userId: '',
     amount: 0,
   });
@@ -50,7 +50,7 @@ export default function StoneTable(props: Props): ReactElement {
         edit: () =>
           setEditModalSettings({
             show: true,
-            stoneId: row.id,
+            id: { stone: row.id },
             userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
             amount: null,
           }),
@@ -91,7 +91,7 @@ export default function StoneTable(props: Props): ReactElement {
         />
       )}
 
-      <StoneInventoryEditModal
+      <InventoryEditModal
         settings={editModalSettings}
         setSettings={setEditModalSettings}
         swrKey={props.swrKey}
