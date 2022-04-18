@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
 import { ProjectType, ProjectStatus } from '@graphql/__generated__/codegen-self';
 import { projectTypeToString, fontColorFromBackgroundHex, formatNumber } from '@lib/util';
-import EventsProjectPill from './EventsProjectTypePill';
+import EventsProjectPill from './ProjectStatusBadge';
 
 export interface Props {
   eventSlug: string;

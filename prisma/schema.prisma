@@ -126,9 +126,9 @@ model Subtheme {
 
 enum ProjectStatus {
   CANCELLED
-  STARTING
-  PLANNING
   PLANNED
+  DESIGNING
+  DESIGNED
   READY
   BUILDING
   BUILT
