@@ -8,9 +8,9 @@ import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import SubthemeTable from '@components/SubthemeTable';
-import ProjectStoneList from '@components/templates/InventoryTemplate/ProjectStoneList';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
+import ProjectStoneTable from '@templates/InventoryTemplate/ProjectStoneTable';
 
 export default function EventPage(): ReactElement {
   const router = useRouter();
@@ -39,13 +39,13 @@ export default function EventPage(): ReactElement {
             </div>
           </Card>
 
-          <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
+          <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
           <Card className={cx('col-span-2', 'lg:col-span-1')} title="Lines">
             <div className={cx('space-y-12', 'w-full')}>
               {data.event?.subthemes.map(
                 (subtheme) =>
                   subtheme.stones.length > 0 && (
-                    <ProjectStoneList
+                    <ProjectStoneTable
                       title={subtheme.name}
                       rows={subtheme.stones}
                       key={subtheme.id}

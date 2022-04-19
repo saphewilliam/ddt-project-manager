@@ -57,7 +57,7 @@ export default function Navigation(): ReactElement {
         icon: ListOutline,
         activeIcon: ListSolid,
         subItems: [{ label: 'All', href: '/inventory/all' }].concat(
-          data?.stoneListUsers.map((user) => ({
+          data?.inventoryUsers.map((user) => ({
             label: `${user.firstName} ${user.lastName}`,
             href: `/inventory/${user.slug}`,
           })) ?? [],

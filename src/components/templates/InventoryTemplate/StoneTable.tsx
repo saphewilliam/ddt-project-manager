@@ -10,9 +10,9 @@ import {
   StoneInventoryColumnTypes,
   StoneInventoryTable,
 } from '@lib/inventoryHelpers';
+import { HeadCell, ValueCell } from './InventoryCells';
 import InventoryColumnModal from './InventoryColumnModal';
 import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
-import { HeadCell, ValueCell } from './StoneListCells';
 
 export interface Props {
   title: string;
@@ -45,8 +45,8 @@ export default function StoneTable(props: Props): ReactElement {
     () =>
       props.rows.map((row) => ({
         color: row,
-        ...row.stoneLists.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
-        total: row.stoneLists.reduce((prev, curr) => prev + curr.amount, 0),
+        ...row.stoneInventory.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
+        total: row.stoneInventory.reduce((prev, curr) => prev + curr.amount, 0),
         edit: () =>
           setEditModalSettings({
             show: true,

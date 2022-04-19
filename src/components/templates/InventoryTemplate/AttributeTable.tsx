@@ -10,9 +10,9 @@ import {
   AttributeInventoryColumnTypes,
   AttributeInventoryTable,
 } from '@lib/inventoryHelpers';
+import { HeadCell, ValueCell } from './InventoryCells';
 import InventoryColumnModal from './InventoryColumnModal';
 import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
-import { HeadCell, ValueCell } from './StoneListCells';
 
 export interface Props {
   title: string;
@@ -45,8 +45,11 @@ export default function AttributeTable(props: Props): ReactElement {
     () =>
       props.rows.map((row) => ({
         attribute: row,
-        ...row.attributeLists.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
-        total: row.attributeLists.reduce((prev, curr) => prev + curr.amount, 0),
+        ...row.attributeInventory.reduce(
+          (prev, curr) => ({ ...prev, [curr.userId]: curr.amount }),
+          {},
+        ),
+        total: row.attributeInventory.reduce((prev, curr) => prev + curr.amount, 0),
         edit: () =>
           setEditModalSettings({
             show: true,

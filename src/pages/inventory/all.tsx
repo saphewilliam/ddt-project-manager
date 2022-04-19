@@ -1,7 +1,7 @@
 import React, { ReactElement, useMemo } from 'react';
-import InventoryTemplate from '@components/templates/InventoryTemplate';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { makeAllInventoryTableData } from '@lib/inventoryHelpers';
+import InventoryTemplate from '@templates/InventoryTemplate';
 
 export default function AllInventoryPage(): ReactElement {
   const { data } = useSafeQuery('useInventory', {});

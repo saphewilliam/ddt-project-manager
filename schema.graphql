@@ -3,7 +3,7 @@
 
 
 type Attribute {
-  attributeLists: [AttributeList!]!
+  attributeInventory: [AttributeInventory!]!
   createdAt: DateTime!
   id: ID!
   name: String!
@@ -15,7 +15,7 @@ type Attribute {
   updatedAt: DateTime!
 }
 
-type AttributeList {
+type AttributeInventory {
   amount: Int!
   attribute: Attribute!
   attributeId: String!
@@ -93,8 +93,8 @@ type Mutation {
 
   """Set the `team` field of an active session"""
   setSessionTeam(teamId: String!): Session!
-  updateAttributeList(amount: Int!, attributeId: String!, userId: String!): AttributeList
-  updateStoneList(amount: Int!, stoneId: String!, userId: String!): StoneList
+  updateAttributeInventory(amount: Int!, attributeId: String!, userId: String!): AttributeInventory
+  updateStoneInventory(amount: Int!, stoneId: String!, userId: String!): StoneInventory
 }
 
 type Project {
@@ -156,12 +156,15 @@ enum ProjectType {
 
 type Query {
   """Get a single attribute inventory record"""
-  attributeList(attributeId: String!, userId: String!): AttributeList
+  attributeInventory(attributeId: String!, userId: String!): AttributeInventory
 
   """Get all attributes of a team"""
   attributes: [Attribute!]!
   event(eventSlug: String!): Event
   events: [Event!]!
+
+  """Find all users of this team that have a nonzero inventory in this team"""
+  inventoryUsers: [User!]!
 
   """Fetches a project based on its slug"""
   project(eventSlug: String!, projectSlug: String!): Project
@@ -170,10 +173,7 @@ type Query {
   session(token: String!): Session
 
   """Get a single stone inventory record"""
-  stoneList(stoneId: String!, userId: String!): StoneList
-
-  """Find all users of this team that have a nonzero stonelist in this team"""
-  stoneListUsers: [User!]!
+  stoneInventory(stoneId: String!, userId: String!): StoneInventory
 
   """Get all stonetypes of a team"""
   stoneTypes: [StoneType!]!
@@ -187,11 +187,11 @@ type Query {
   """Find user by its slug"""
   user(userSlug: String!): User
 
-  """Get the attributes list of a user in a team"""
-  userAttributeList(userSlug: String!): [AttributeList!]!
+  """Get the attribute inventory of a user in a team"""
+  userAttributeInventory(userSlug: String!): [AttributeInventory!]!
 
-  """Get stonelist of a user in a team"""
-  userStoneList(userSlug: String!): [StoneList!]!
+  """Get stone inventory of a user in a team"""
+  userStoneInventory(userSlug: String!): [StoneInventory!]!
 
   """Find all users of this team"""
   users: [User!]!
@@ -247,14 +247,14 @@ type Stone {
   name: String!
   order: Int!
   projects: [StonesOnProject!]!
-  stoneLists: [StoneList!]!
+  stoneInventory: [StoneInventory!]!
   stoneType: StoneType!
   stoneTypeId: String!
   subthemes: [StonesOnSubtheme!]!
   updatedAt: DateTime!
 }
 
-type StoneList {
+type StoneInventory {
   amount: Int!
   createdAt: DateTime!
   id: ID!
@@ -332,7 +332,7 @@ type Team {
 }
 
 type User {
-  attributeLists: [AttributeList!]!
+  attributeInventory: [AttributeInventory!]!
   attributesOnProjects: [AttributesOnProject!]!
   attributesOnSubthemes: [AttributesOnSubtheme!]!
   avatar: String
@@ -351,7 +351,7 @@ type User {
 
   """The number of dominoes this user posesses"""
   stoneAmount: Int!
-  stoneLists: [StoneList!]!
+  stoneInventory: [StoneInventory!]!
   stonesOnProjects: [StonesOnProject!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!
 

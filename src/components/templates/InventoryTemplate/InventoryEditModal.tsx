@@ -1,5 +1,5 @@
 import cx from 'clsx';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, ReactElement, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
@@ -22,6 +22,11 @@ export interface Props {
   swrKey: string;
 }
 
+type SubmitType =
+  | FormEvent<HTMLFormElement>
+  | React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
+  | undefined;
+
 export default function InventoryEditModal(props: Props): ReactElement {
   const [attributeId, setAttributeId] = useState('');
   const [stoneId, setStoneId] = useState('');
@@ -40,30 +45,30 @@ export default function InventoryEditModal(props: Props): ReactElement {
 
   const updateStoneAmount = useCallback(async () => {
     setLoading(true);
-    const { stoneList } = await sdk.StoneList({ stoneId, userId });
-    if (stoneList) setAmount(stoneList.amount);
+    const { stoneInventory } = await sdk.StoneInventory({ stoneId, userId });
+    if (stoneInventory) setAmount(stoneInventory.amount);
     else setAmount(0);
     setLoading(false);
   }, [stoneId, userId]);
 
   const updateAttributeAmount = useCallback(async () => {
     setLoading(true);
-    const { attributeList } = await sdk.AttributeList({ attributeId, userId });
-    if (attributeList) setAmount(attributeList.amount);
+    const { attributeInventory } = await sdk.AttributeInventory({ attributeId, userId });
+    if (attributeInventory) setAmount(attributeInventory.amount);
     else setAmount(0);
     setLoading(false);
   }, [attributeId, userId]);
 
-  async function handleStoneSubmit(e: any) {
-    e.preventDefault();
+  async function handleStoneSubmit(e: SubmitType) {
+    if (e) e.preventDefault();
     if (stoneId === '' || userId === '' || amount === null) return;
     setLoading(true);
     const data = await promiseWithCatch(
-      sdk.UpdateStoneList({ stoneId, userId, amount: amount! }),
+      sdk.UpdateStoneInventory({ stoneId, userId, amount: amount! }),
       'Could not edit stone inventory',
     );
-    if (data?.updateStoneList) {
-      const { user, stone, amount } = data.updateStoneList;
+    if (data?.updateStoneInventory) {
+      const { user, stone, amount } = data.updateStoneInventory;
       await mutate(props.swrKey);
       toast.success(
         `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} amount to ${amount}!`,
@@ -74,16 +79,16 @@ export default function InventoryEditModal(props: Props): ReactElement {
     setLoading(false);
   }
 
-  async function handleAttributeSubmit(e: any) {
-    e.preventDefault();
+  async function handleAttributeSubmit(e: SubmitType) {
+    if (e) e.preventDefault();
     if (attributeId === '' || userId === '' || amount === null) return;
     setLoading(true);
     const data = await promiseWithCatch(
-      sdk.UpdateAttributeList({ attributeId, userId, amount: amount! }),
+      sdk.UpdateAttributeInventory({ attributeId, userId, amount: amount! }),
       'Could not edit attribute inventory',
     );
-    if (data?.updateAttributeList) {
-      const { user, attribute, amount } = data.updateAttributeList;
+    if (data?.updateAttributeInventory) {
+      const { user, attribute, amount } = data.updateAttributeInventory;
       await mutate(props.swrKey);
       toast.success(
         `Successfully updated ${user.firstName} ${user.lastName}'s ${attribute.name} amount to ${amount}!`,

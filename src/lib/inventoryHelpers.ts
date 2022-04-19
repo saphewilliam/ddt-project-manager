@@ -1,11 +1,11 @@
 import { Columns } from '@saphe/react-table';
-import { ColorCell, EditCell } from '@components/templates/InventoryTemplate/StoneListCells';
 import {
   InventoryQuery,
   UserInventoryQuery,
   Role,
   SessionQuery,
 } from '@graphql/__generated__/codegen-self';
+import { ColorCell, EditCell } from '@templates/InventoryTemplate/InventoryCells';
 
 export interface InventoryTableData {
   stones: StoneInventoryTable[];
@@ -23,7 +23,7 @@ export interface StoneInventoryTable {
     hex2?: string | null;
     order: number;
     stoneTypeId: string;
-    stoneLists: {
+    stoneInventory: {
       id: string;
       amount: number;
       userId: string;
@@ -37,7 +37,7 @@ export interface AttributeInventoryTable {
   rows: {
     id: string;
     name: string;
-    attributeLists: {
+    attributeInventory: {
       id: string;
       amount: number;
       userId: string;
@@ -136,8 +136,8 @@ export function makeInventoryTableData(
 
   // Stones Inventory
   let stoneTypeId = '';
-  for (let i = 0, j = -1; i < data.userStoneList.length; i++) {
-    const { stone, id, amount } = data.userStoneList[i]!;
+  for (let i = 0, j = -1; i < data.userStoneInventory.length; i++) {
+    const { stone, id, amount } = data.userStoneInventory[i]!;
     if (stoneTypeId !== stone.stoneTypeId) {
       stoneTypeId = stone.stoneTypeId;
       result.stones.push({ title: stoneTypeId, rows: [] });
@@ -146,7 +146,7 @@ export function makeInventoryTableData(
 
     result.stones[j]!.rows.push({
       ...stone,
-      stoneLists: [
+      stoneInventory: [
         {
           amount,
           id,
@@ -159,15 +159,15 @@ export function makeInventoryTableData(
 
   // Attributes Inventory
   const attributes: AttributeInventoryTable[] =
-    data.userAttributeList.length === 0
+    data.userAttributeInventory.length === 0
       ? []
       : [
           {
             title: 'Attributes',
-            rows: data.userAttributeList.map(({ id, amount, attribute }) => ({
+            rows: data.userAttributeInventory.map(({ id, amount, attribute }) => ({
               id: attribute.id,
               name: attribute.namePlural,
-              attributeLists: [
+              attributeInventory: [
                 {
                   id,
                   amount,
@@ -201,13 +201,13 @@ export function makeAllInventoryTableData(data: InventoryQuery | undefined): Inv
       result.stones.push({ title: stoneTypeId, rows: [] });
       j++;
     }
-    if (data.stones[i]!.stoneLists.length > 0)
+    if (data.stones[i]!.stoneInventory.length > 0)
       result.stones[j]!.rows.push({
         ...stone,
-        stoneLists: stone.stoneLists.map((stoneList) => ({
-          ...stoneList,
+        stoneInventory: stone.stoneInventory.map((stoneInventory) => ({
+          ...stoneInventory,
           displayName:
-            data.stoneListUsers.find((user) => user.id === stoneList.userId)?.displayName ??
+            data.inventoryUsers.find((user) => user.id === stoneInventory.userId)?.displayName ??
             'No name',
         })),
       });
@@ -221,16 +221,14 @@ export function makeAllInventoryTableData(data: InventoryQuery | undefined): Inv
         .map((attribute) => ({
           id: attribute.id,
           name: attribute.namePlural,
-          attributeLists: attribute.attributeLists.map((attributeList) => ({
-            id: attributeList.id,
-            amount: attributeList.amount,
-            userId: attributeList.userId,
+          attributeInventory: attribute.attributeInventory.map((attributeInventory) => ({
+            ...attributeInventory,
             displayName:
-              data.stoneListUsers.find((user) => user.id === attributeList.userId)?.displayName ??
-              'No name',
+              data.inventoryUsers.find((user) => user.id === attributeInventory.userId)
+                ?.displayName ?? 'No name',
           })),
         }))
-        .filter((row) => row.attributeLists.length > 0),
+        .filter((row) => row.attributeInventory.length > 0),
     },
   ].filter((table) => table.rows.length > 0);
 
@@ -251,16 +249,16 @@ export function getInventoryUserColumns(
   const userIds: Record<string, boolean> = {};
   const result: InventoryUsers = [];
 
-  const addUser = (list: { userId: string; displayName: string }) => {
-    if (!userIds[list.userId]) {
-      userIds[list.userId] = true;
-      result.push({ userId: list.userId, displayname: list.displayName });
+  const addUser = (inventory: { userId: string; displayName: string }) => {
+    if (!userIds[inventory.userId]) {
+      userIds[inventory.userId] = true;
+      result.push({ userId: inventory.userId, displayname: inventory.displayName });
     }
   };
 
   rows.forEach((row) => {
-    if ('stoneLists' in row) row.stoneLists.forEach(addUser);
-    else row.attributeLists.forEach(addUser);
+    if ('stoneInventory' in row) row.stoneInventory.forEach(addUser);
+    else row.attributeInventory.forEach(addUser);
   });
 
   return result;

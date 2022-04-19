@@ -1,0 +1,15 @@
+mutation UpdateAttributeInventory($attributeId: String!, $userId: String!, $amount: Int!) {
+  updateAttributeInventory(attributeId: $attributeId, userId: $userId, amount: $amount) {
+    id
+    user {
+      id
+      firstName
+      lastName
+    }
+    attribute {
+      id
+      name
+    }
+    amount
+  }
+}

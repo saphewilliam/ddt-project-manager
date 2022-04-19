@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useEffect } from 'react';
-import InventoryTemplate from '@components/templates/InventoryTemplate';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { makeInventoryTableData } from '@lib/inventoryHelpers';
 import { extractURLParam } from '@lib/util';
+import InventoryTemplate from '@templates/InventoryTemplate';
 
-export default function ListUserPage(): ReactElement {
+export default function UserInventoryPage(): ReactElement {
   const router = useRouter();
   const slug = extractURLParam('slug', router.query);
 

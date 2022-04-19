@@ -27,10 +27,10 @@ model User {
   isAdmin     Boolean  @default(false)
 
   sessions              Session[]
-  stoneLists            StoneList[]
+  stoneInventory        StoneInventory[]
   stonesOnProjects      StonesOnProject[]
   stonesOnSubthemes     StonesOnSubtheme[]
-  attributeLists        AttributeList[]
+  attributeInventory    AttributeInventory[]
   attributesOnProjects  AttributesOnProject[]
   attributesOnSubthemes AttributesOnSubtheme[]
 
@@ -204,7 +204,7 @@ model StatsOnProject {
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
-// Lists
+// Inventory
 
 model StoneType {
   id          String   @id @default(uuid())
@@ -232,15 +232,15 @@ model Stone {
   description String?
   order       Int
 
-  stoneLists StoneList[]
-  projects   StonesOnProject[]
-  subthemes  StonesOnSubtheme[]
+  stoneInventory StoneInventory[]
+  projects       StonesOnProject[]
+  subthemes      StonesOnSubtheme[]
 
   stoneTypeId String
   stoneType   StoneType @relation(fields: [stoneTypeId], references: [id], onDelete: Cascade)
 }
 
-model StoneList {
+model StoneInventory {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -281,21 +281,21 @@ model StonesOnSubtheme {
 }
 
 model Attribute {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  name       String
   namePlural String
 
-  attributeLists AttributeList[]
-  projects       AttributesOnProject[]
-  subthemes      AttributesOnSubtheme[]
+  attributeInventory AttributeInventory[]
+  projects           AttributesOnProject[]
+  subthemes          AttributesOnSubtheme[]
 
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
 
-model AttributeList {
+model AttributeInventory {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

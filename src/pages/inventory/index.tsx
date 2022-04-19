@@ -31,10 +31,10 @@ function InventoryPageCard(props: Props): ReactElement {
 }
 
 export default function InventoryPage(): ReactElement {
-  const { data } = useSafeQuery('useStoneListUsers', {});
+  const { data } = useSafeQuery('useInventoryUsers', {});
 
   const allTotal: number = useMemo(
-    () => data?.stoneListUsers.reduce((carr, curr) => carr + curr.stoneAmount, 0) ?? 0,
+    () => data?.inventoryUsers.reduce((carr, curr) => carr + curr.stoneAmount, 0) ?? 0,
     [data],
   );
 
@@ -43,7 +43,7 @@ export default function InventoryPage(): ReactElement {
       {data ? (
         <ul className={cx('grid', 'gap-5', 'md:grid-cols-2', 'lg:grid-cols-3')}>
           <InventoryPageCard href="/inventory/all" name="All" amount={allTotal} />
-          {data.stoneListUsers.map((user) => (
+          {data.inventoryUsers.map((user) => (
             <InventoryPageCard
               key={user.id}
               href={`/inventory/${user.slug}`}

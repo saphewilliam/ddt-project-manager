@@ -10,7 +10,7 @@ export const userModel = nexusModel(User, {
       description: 'The number of dominoes this user posesses',
       authorize: authorizeSession,
       resolve: async (root, __, ctx) => {
-        const result = await ctx.prisma.stoneList.aggregate({
+        const result = await ctx.prisma.stoneInventory.aggregate({
           _sum: { amount: true },
           where: { userId: root.id, stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } } },
         });
@@ -45,17 +45,26 @@ export const userQuery = extendType({
           orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],
         }),
     });
-    t.list.field('stoneListUsers', {
+    t.list.field('inventoryUsers', {
       type: 'User',
-      description: 'Find all users of this team that have a nonzero stonelist in this team',
+      description: 'Find all users of this team that have a nonzero inventory in this team',
       authorize: authorizeSession,
       resolve: (_, __, ctx) =>
         ctx.prisma.user.findMany({
           where: {
             teams: { some: { teamId: ctx.session?.teamId ?? '' } },
-            stoneLists: {
-              some: { stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } } },
-            },
+            OR: [
+              {
+                stoneInventory: {
+                  some: { stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } } },
+                },
+              },
+              {
+                attributeInventory: {
+                  some: { attribute: { teamId: ctx.session?.teamId ?? '' } },
+                },
+              },
+            ],
           },
           orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],
         }),

@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { idMap } from '@graphql/idMap';
 
-export default async function seedAttributeLists(prisma: PrismaClient): Promise<void> {
-  await prisma.attributeList.createMany({
+export default async function seedAttributeInventory(prisma: PrismaClient): Promise<void> {
+  await prisma.attributeInventory.createMany({
     data: [
       {
         attributeId: idMap.attributes.FIELDSTARTER_3,

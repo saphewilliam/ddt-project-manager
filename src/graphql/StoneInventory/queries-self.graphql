@@ -1,4 +1,4 @@
-fragment StoneListStone on Stone {
+fragment StoneInventoryStone on Stone {
   name
   alias
   alias2
@@ -8,23 +8,23 @@ fragment StoneListStone on Stone {
   stoneTypeId
 }
 
-query StoneList($userId: String!, $stoneId: String!) {
-  stoneList(userId: $userId, stoneId: $stoneId) {
+query StoneInventory($userId: String!, $stoneId: String!) {
+  stoneInventory(userId: $userId, stoneId: $stoneId) {
     id
     amount
   }
 }
 
 query UserInventory($userSlug: String!) {
-  userStoneList(userSlug: $userSlug) {
+  userStoneInventory(userSlug: $userSlug) {
     id
     amount
     stone {
       id
-      ...StoneListStone
+      ...StoneInventoryStone
     }
   }
-  userAttributeList(userSlug: $userSlug) {
+  userAttributeInventory(userSlug: $userSlug) {
     id
     amount
     attribute {
@@ -48,7 +48,7 @@ query Inventory {
     id
     name
     namePlural
-    attributeLists {
+    attributeInventory {
       id
       amount
       userId
@@ -56,8 +56,8 @@ query Inventory {
   }
   stones {
     id
-    ...StoneListStone
-    stoneLists {
+    ...StoneInventoryStone
+    stoneInventory {
       id
       amount
       userId
@@ -67,7 +67,7 @@ query Inventory {
     id
     name
   }
-  stoneListUsers {
+  inventoryUsers {
     id
     displayName
   }

@@ -1,23 +1,23 @@
 import { Role } from '@prisma/client';
 import { extendType, intArg, stringArg } from 'nexus';
-import { AttributeList } from 'nexus-prisma';
+import { AttributeInventory } from 'nexus-prisma';
 import { authorizeSession, isValidSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
-export const attributeListModel = nexusModel(AttributeList);
+export const attributeInventoryModel = nexusModel(AttributeInventory);
 
-export const attributeListQuery = extendType({
+export const attributeInventoryQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.list.field('userAttributeList', {
-      type: 'AttributeList',
+    t.list.field('userAttributeInventory', {
+      type: 'AttributeInventory',
       args: {
         userSlug: stringArg(),
       },
       authorize: authorizeSession,
-      description: 'Get the attributes list of a user in a team',
+      description: 'Get the attribute inventory of a user in a team',
       resolve: (_, args, ctx) =>
-        ctx.prisma.attributeList.findMany({
+        ctx.prisma.attributeInventory.findMany({
           where: {
             user: { slug: args.userSlug },
             attribute: { teamId: ctx.session?.teamId ?? '' },
@@ -25,8 +25,8 @@ export const attributeListQuery = extendType({
           orderBy: { attribute: { name: 'asc' } },
         }),
     });
-    t.nullable.field('attributeList', {
-      type: 'AttributeList',
+    t.nullable.field('attributeInventory', {
+      type: 'AttributeInventory',
       args: {
         attributeId: stringArg(),
         userId: stringArg(),
@@ -34,7 +34,7 @@ export const attributeListQuery = extendType({
       authorize: authorizeSession,
       description: 'Get a single attribute inventory record',
       resolve: (_, args, ctx) =>
-        ctx.prisma.attributeList.findFirst({
+        ctx.prisma.attributeInventory.findFirst({
           where: {
             userId: args.userId,
             attributeId: args.attributeId,
@@ -45,11 +45,11 @@ export const attributeListQuery = extendType({
   },
 });
 
-export const attributeListMutation = extendType({
+export const attributeInventoryMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nullable.field('updateAttributeList', {
-      type: 'AttributeList',
+    t.nullable.field('updateAttributeInventory', {
+      type: 'AttributeInventory',
       args: {
         attributeId: stringArg(),
         userId: stringArg(),
@@ -67,7 +67,7 @@ export const attributeListMutation = extendType({
         if (args.amount < 0) return Error('Amount should be an integer equal to or greater than 0');
         if (!attribute || !user) return Error('Invalid attributeId or userId');
         if (attribute.teamId !== ctx.session?.teamId)
-          return Error('Attribute list is not part of logged in team');
+          return Error('Attribute is not part of logged in team');
         if (
           !(ctx.member?.role === Role.CAPTAIN && attribute.teamId === ctx.session.teamId) &&
           !ctx.session.user.isAdmin
@@ -77,18 +77,20 @@ export const attributeListMutation = extendType({
         return true;
       },
       resolve: async (_, args, ctx) => {
-        const attributeList = await ctx.prisma.attributeList.findFirst({
+        const attributeInventory = await ctx.prisma.attributeInventory.findFirst({
           where: { attributeId: args.attributeId, userId: args.userId },
         });
 
-        if (!attributeList && args.amount > 0)
-          return await ctx.prisma.attributeList.create({ data: args });
-        else if (attributeList && args.amount === 0)
-          // FIXME: Cannot return null for non-nullable field AttributeList.user.
-          return await ctx.prisma.attributeList.delete({ where: { id: attributeList.id } });
-        else if (attributeList && args.amount > 0)
-          return ctx.prisma.attributeList.update({
-            where: { id: attributeList.id },
+        if (!attributeInventory && args.amount > 0)
+          return await ctx.prisma.attributeInventory.create({ data: args });
+        else if (attributeInventory && args.amount === 0)
+          // FIXME: Cannot return null for non-nullable field AttributeInventory.user.
+          return await ctx.prisma.attributeInventory.delete({
+            where: { id: attributeInventory.id },
+          });
+        else if (attributeInventory && args.amount > 0)
+          return ctx.prisma.attributeInventory.update({
+            where: { id: attributeInventory.id },
             data: { amount: args.amount },
           });
         else return null;

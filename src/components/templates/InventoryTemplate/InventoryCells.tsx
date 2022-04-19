@@ -20,7 +20,7 @@ export function ColorCell(props: RenderCellProps): ReactElement {
         <span>{props.row.color.name}</span>
         <InformationCircleIcon
           className={cx('w-5', 'cursor-pointer', 'ml-3')}
-          data-for="stoneListToolTip"
+          data-for="inventoryToolTip"
           data-tip={props.row.color.alias}
         />
       </div>

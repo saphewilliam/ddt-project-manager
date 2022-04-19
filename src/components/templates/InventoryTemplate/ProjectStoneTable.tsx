@@ -3,7 +3,7 @@ import cx from 'clsx';
 import { ReactElement } from 'react';
 import { StonesOnProjectColumnTypes } from '@lib/inventoryHelpers';
 import Table from '../../Table';
-import { ColorCell, HeadCell, ValueCell } from './StoneListCells';
+import { ColorCell, HeadCell, ValueCell } from './InventoryCells';
 
 export interface Props {
   title: string;
@@ -22,7 +22,7 @@ export interface Props {
   }[];
 }
 
-export default function ProjectStoneList(props: Props): ReactElement {
+export default function ProjectStoneTable(props: Props): ReactElement {
   const columns: Columns<StonesOnProjectColumnTypes> = {
     color: {
       renderCell: ColorCell,

@@ -1,6 +1,0 @@
-query AttributeList($userId: String!, $attributeId: String!) {
-  attributeList(userId: $userId, attributeId: $attributeId) {
-    id
-    amount
-  }
-}

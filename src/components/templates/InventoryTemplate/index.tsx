@@ -3,9 +3,9 @@ import React, { ReactElement } from 'react';
 import ReactTooltip from 'react-tooltip';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
-import AttributeTable from '@components/templates/InventoryTemplate/AttributeTable';
-import StoneTable from '@components/templates/InventoryTemplate/StoneTable';
 import { InventoryTableData } from '@lib/inventoryHelpers';
+import AttributeTable from '@templates/InventoryTemplate/AttributeTable';
+import StoneTable from '@templates/InventoryTemplate/StoneTable';
 
 export interface Props {
   title: string;
@@ -21,7 +21,7 @@ export default function InventoryTemplate(props: Props): ReactElement {
         <Loading />
       ) : (
         <>
-          <ReactTooltip id="stoneListToolTip" place="right" effect="solid" />
+          <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
           <div className={cx('space-y-20')}>
             {props.tableData.stones.map((table, index) => (
               <StoneTable key={index} title={table.title} rows={table.rows} swrKey={props.swrKey} />

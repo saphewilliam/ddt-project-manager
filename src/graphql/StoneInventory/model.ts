@@ -1,23 +1,23 @@
 import { Role } from '@prisma/client';
 import { extendType, intArg, stringArg } from 'nexus';
-import { StoneList } from 'nexus-prisma';
+import { StoneInventory } from 'nexus-prisma';
 import { authorizeSession, isValidSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
-export const stoneListModel = nexusModel(StoneList);
+export const stoneInventoryModel = nexusModel(StoneInventory);
 
-export const stoneListQuery = extendType({
+export const stoneInventoryQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.list.field('userStoneList', {
-      type: 'StoneList',
+    t.list.field('userStoneInventory', {
+      type: 'StoneInventory',
       args: {
         userSlug: stringArg(),
       },
       authorize: authorizeSession,
-      description: 'Get stonelist of a user in a team',
+      description: 'Get stone inventory of a user in a team',
       resolve: (_, args, ctx) =>
-        ctx.prisma.stoneList.findMany({
+        ctx.prisma.stoneInventory.findMany({
           where: {
             user: { slug: args.userSlug },
             stone: { stoneType: { teamId: ctx.session?.teamId ?? '' } },
@@ -25,8 +25,8 @@ export const stoneListQuery = extendType({
           orderBy: [{ stone: { stoneType: { order: 'asc' } } }, { stone: { order: 'asc' } }],
         }),
     });
-    t.nullable.field('stoneList', {
-      type: 'StoneList',
+    t.nullable.field('stoneInventory', {
+      type: 'StoneInventory',
       args: {
         stoneId: stringArg(),
         userId: stringArg(),
@@ -34,7 +34,7 @@ export const stoneListQuery = extendType({
       authorize: authorizeSession,
       description: 'Get a single stone inventory record',
       resolve: (_, args, ctx) =>
-        ctx.prisma.stoneList.findFirst({
+        ctx.prisma.stoneInventory.findFirst({
           where: {
             userId: args.userId,
             stoneId: args.stoneId,
@@ -45,11 +45,11 @@ export const stoneListQuery = extendType({
   },
 });
 
-export const stoneListMutation = extendType({
+export const stoneInventoryMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nullable.field('updateStoneList', {
-      type: 'StoneList',
+    t.nullable.field('updateStoneInventory', {
+      type: 'StoneInventory',
       args: {
         stoneId: stringArg(),
         userId: stringArg(),
@@ -68,7 +68,7 @@ export const stoneListMutation = extendType({
         if (args.amount < 0) return Error('Amount should be an integer equal to or greater than 0');
         if (!stone || !user) return Error('Invalid stoneId or userId');
         if (stone.stoneType.teamId !== ctx.session?.teamId)
-          return Error('Stone list is not part of logged in team');
+          return Error('Stone is not part of logged in team');
         if (
           !(ctx.member?.role === Role.CAPTAIN && stone.stoneType.teamId === ctx.session.teamId) &&
           !ctx.session.user.isAdmin
@@ -78,17 +78,18 @@ export const stoneListMutation = extendType({
         return true;
       },
       resolve: async (_, args, ctx) => {
-        const stoneList = await ctx.prisma.stoneList.findFirst({
+        const stoneInventory = await ctx.prisma.stoneInventory.findFirst({
           where: { stoneId: args.stoneId, userId: args.userId },
         });
 
-        if (!stoneList && args.amount > 0) return await ctx.prisma.stoneList.create({ data: args });
-        else if (stoneList && args.amount === 0)
-          // FIXME: Cannot return null for non-nullable field StoneList.user.
-          return await ctx.prisma.stoneList.delete({ where: { id: stoneList.id } });
-        else if (stoneList && args.amount > 0)
-          return ctx.prisma.stoneList.update({
-            where: { id: stoneList.id },
+        if (!stoneInventory && args.amount > 0)
+          return await ctx.prisma.stoneInventory.create({ data: args });
+        else if (stoneInventory && args.amount === 0)
+          // FIXME: Cannot return null for non-nullable field StoneInventory.user.
+          return await ctx.prisma.stoneInventory.delete({ where: { id: stoneInventory.id } });
+        else if (stoneInventory && args.amount > 0)
+          return ctx.prisma.stoneInventory.update({
+            where: { id: stoneInventory.id },
             data: { amount: args.amount },
           });
         else return null;
