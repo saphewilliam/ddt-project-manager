@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { idMap } from '@graphql/idMap';
 
-// TODO remove these comments
 // SELECT sl.stone_list_id, CONCAT(u.user_firstname, ' ', u.user_lastname), c.color_name, sl.stone_list_amount FROM `stone_lists` sl
 // LEFT JOIN colors c ON c.color_id = sl.color_id
 // LEFT JOIN users u ON u.user_id = sl.user_id

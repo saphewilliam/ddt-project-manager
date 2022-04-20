@@ -24,15 +24,10 @@ export default function InventoryTemplate(props: Props): ReactElement {
           <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
           <div className={cx('space-y-20')}>
             {props.tableData.stones.map((table, index) => (
-              <StoneTable key={index} title={table.title} rows={table.rows} swrKey={props.swrKey} />
+              <StoneTable key={index} swrKey={props.swrKey} {...table} />
             ))}
             {props.tableData.attributes.map((table, index) => (
-              <AttributeTable
-                key={index}
-                title={table.title}
-                rows={table.rows}
-                swrKey={props.swrKey}
-              />
+              <AttributeTable key={index} swrKey={props.swrKey} {...table} />
             ))}
           </div>
         </>

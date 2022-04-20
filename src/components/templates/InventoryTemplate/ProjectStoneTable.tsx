@@ -1,8 +1,8 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import { ReactElement } from 'react';
+import Table from '@components/Table';
 import { StonesOnProjectColumnTypes } from '@lib/inventoryHelpers';
-import Table from '../../Table';
 import { ColorCell, HeadCell, ValueCell } from './InventoryCells';
 
 export interface Props {

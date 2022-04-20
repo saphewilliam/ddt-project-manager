@@ -12,9 +12,7 @@ export default function UserInventoryPage(): ReactElement {
   const { data } = useSafeQuery(`useUserInventory`, { userSlug: slug ?? '' }, slug);
 
   useEffect(() => {
-    if (data !== undefined && data.user === null) {
-      router.push('/inventory');
-    }
+    if (data !== undefined && data.user === null) router.push('/inventory');
   }, [data]);
 
   const tableData = useMemo(() => makeInventoryTableData(data), [data]);
