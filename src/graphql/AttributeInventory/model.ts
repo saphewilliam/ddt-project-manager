@@ -83,12 +83,11 @@ export const attributeInventoryMutation = extendType({
 
         if (!attributeInventory && args.amount > 0)
           return await ctx.prisma.attributeInventory.create({ data: args });
-        else if (attributeInventory && args.amount === 0)
-          // FIXME: Cannot return null for non-nullable field AttributeInventory.user.
-          return await ctx.prisma.attributeInventory.delete({
-            where: { id: attributeInventory.id },
-          });
-        else if (attributeInventory && args.amount > 0)
+        else if (attributeInventory && args.amount === 0) {
+          // TODO returning deleted object gives error in frontend
+          await ctx.prisma.attributeInventory.delete({ where: { id: attributeInventory.id } });
+          return null;
+        } else if (attributeInventory && args.amount > 0)
           return ctx.prisma.attributeInventory.update({
             where: { id: attributeInventory.id },
             data: { amount: args.amount },

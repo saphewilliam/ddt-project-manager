@@ -17,12 +17,12 @@ function InventoryPageCard(props: Props): ReactElement {
   return (
     <li>
       <Link href={props.href}>
-        <a className={cx('block')}>
-          <Card hoverable>
+        <a className={cx('block', 'h-full')}>
+          <Card hoverable className={cx('h-full', 'flex', 'justify-center')}>
             <span className={cx('text-2xl', 'font-bold', 'mb-0')}>{props.name}</span>
-            <li className={cx('flex', 'mt-0', 'text-gray-500')}>
-              <span>{formatNumber(props.amount)} stones</span>
-            </li>
+            <span className={cx('flex', 'mt-0', 'text-gray-500')}>
+              {formatNumber(props.amount)} stones
+            </span>
           </Card>
         </a>
       </Link>

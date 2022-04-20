@@ -84,10 +84,11 @@ export const stoneInventoryMutation = extendType({
 
         if (!stoneInventory && args.amount > 0)
           return await ctx.prisma.stoneInventory.create({ data: args });
-        else if (stoneInventory && args.amount === 0)
-          // FIXME: Cannot return null for non-nullable field StoneInventory.user.
-          return await ctx.prisma.stoneInventory.delete({ where: { id: stoneInventory.id } });
-        else if (stoneInventory && args.amount > 0)
+        else if (stoneInventory && args.amount === 0) {
+          // TODO returning deleted object gives error in frontend
+          await ctx.prisma.stoneInventory.delete({ where: { id: stoneInventory.id } });
+          return null;
+        } else if (stoneInventory && args.amount > 0)
           return ctx.prisma.stoneInventory.update({
             where: { id: stoneInventory.id },
             data: { amount: args.amount },

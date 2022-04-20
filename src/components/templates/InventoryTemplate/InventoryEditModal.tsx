@@ -67,15 +67,21 @@ export default function InventoryEditModal(props: Props): ReactElement {
       sdk.UpdateStoneInventory({ stoneId, userId, amount: amount! }),
       'Could not edit stone inventory',
     );
-    if (data?.updateStoneInventory) {
-      const { user, stone, amount } = data.updateStoneInventory;
+
+    if (data) {
       await mutate(props.swrKey);
-      toast.success(
-        `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} amount to ${amount}!`,
-        { duration: 7000 },
-      );
       props.setSettings({ ...props.settings, show: false });
+
+      if (!data.updateStoneInventory) toast.success(`Successfully updated inventory`);
+      else {
+        const { user, stone, amount } = data.updateStoneInventory;
+        toast.success(
+          `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} amount to ${amount}!`,
+          { duration: 7000 },
+        );
+      }
     }
+
     setLoading(false);
   }
 
@@ -87,15 +93,21 @@ export default function InventoryEditModal(props: Props): ReactElement {
       sdk.UpdateAttributeInventory({ attributeId, userId, amount: amount! }),
       'Could not edit attribute inventory',
     );
-    if (data?.updateAttributeInventory) {
-      const { user, attribute, amount } = data.updateAttributeInventory;
+
+    if (data) {
       await mutate(props.swrKey);
-      toast.success(
-        `Successfully updated ${user.firstName} ${user.lastName}'s ${attribute.name} amount to ${amount}!`,
-        { duration: 7000 },
-      );
       props.setSettings({ ...props.settings, show: false });
+
+      if (!data.updateAttributeInventory) toast.success(`Successfully updated inventory`);
+      else {
+        const { user, attribute, amount } = data.updateAttributeInventory;
+        toast.success(
+          `Successfully updated ${user.firstName} ${user.lastName}'s ${attribute.name} amount to ${amount}!`,
+          { duration: 7000 },
+        );
+      }
     }
+
     setLoading(false);
   }
 
