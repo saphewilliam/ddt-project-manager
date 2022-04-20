@@ -1,10 +1,10 @@
 import { Canvas, CanvasUpdateInfo } from './canvas';
-import { WallLayer } from './layers';
+import { CubeLayer } from './layers';
 import { Color, Point, Size, Stone } from './structs';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: WallLayer = new WallLayer(50, 50);
+const layer: CubeLayer = new CubeLayer(5, 13);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
@@ -47,6 +47,20 @@ export function saveUndo(): void {
   redoStore.length = 0;
 }
 
+/** Returns the string representation of the design */
+export function save(): string {
+  return layer.stones.map<string>((stone) => stone.toString()).join(';');
+}
+
+/** Takes a string representation of a design and loads it to the canvas. If false is returned, the input is not valid */
+export function load(input: string): boolean {
+  return true;
+}
+
+export function reload(): Array<u32> {
+  return canvas.clearSetStones(layer.stones).toArray();
+}
+
 export function setCanvasSize(width: u32, height: u32): Array<u32> {
   if (canvas.size.width !== width || canvas.size.height !== height) {
     canvas.size = new Size(width, height);
@@ -83,7 +97,7 @@ export function selectAllOfColor(r: u8, g: u8, b: u8): Array<u32> {
 
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (stone.color.color === new Color(r, g, b).color) {
+    if (!stone.erased && stone.color.color === new Color(r, g, b).color) {
       stone.selected = true;
       selection.push(stone);
     }

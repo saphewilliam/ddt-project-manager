@@ -1,0 +1,6 @@
+query AttributeInventory($userId: String!, $attributeId: String!) {
+  attributeInventory(userId: $userId, attributeId: $attributeId) {
+    id
+    amount
+  }
+}

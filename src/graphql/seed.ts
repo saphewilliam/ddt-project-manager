@@ -2,12 +2,13 @@
 
 import { PrismaClient } from '@prisma/client';
 import seedAttributes from './Attribute/seed';
+import seedAttributeInventory from './AttributeInventory/seed';
 import seedEvents from './Event/seed';
 import seedMembers from './Member/seed';
 import seedProjects from './Project/seed';
 import seedSessions from './Session/seed';
 import seedStones from './Stone/seed';
-import seedStoneLists from './StoneList/seed';
+import seedStoneInventory from './StoneInventory/seed';
 import seedStonesOnProjects from './StonesOnProject/seed';
 import seedStonesOnSubthemes from './StonesOnSubtheme/seed';
 import seedStoneTypes from './StoneType/seed';
@@ -33,14 +34,17 @@ async function seed(prisma: PrismaClient): Promise<void> {
   console.log('Seeding Attributes...');
   await seedAttributes(prisma);
 
+  console.log('Seeding Attribute Inventory...');
+  await seedAttributeInventory(prisma);
+
   console.log('Seeding StoneTypes...');
   await seedStoneTypes(prisma);
 
   console.log('Seeding Stones...');
   await seedStones(prisma);
 
-  console.log('Seeding StoneLists...');
-  await seedStoneLists(prisma);
+  console.log('Seeding Stone Inventory...');
+  await seedStoneInventory(prisma);
 
   console.log('Seeding Events...');
   await seedEvents(prisma);

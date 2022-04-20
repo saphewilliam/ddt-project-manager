@@ -8,7 +8,7 @@ export interface Props<T extends ColumnTypes> {
   rows: Row<T>[];
 }
 
-export default function StoneListTable<T extends ColumnTypes>(props: Props<T>): ReactElement {
+export default function Table<T extends ColumnTypes>(props: Props<T>): ReactElement {
   useEffect(() => {
     ReactTooltip.rebuild();
   }, [props.rows]);

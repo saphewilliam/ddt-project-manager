@@ -4,7 +4,7 @@ query UI {
     name
     slug
   }
-  stoneListUsers {
+  inventoryUsers {
     id
     firstName
     lastName

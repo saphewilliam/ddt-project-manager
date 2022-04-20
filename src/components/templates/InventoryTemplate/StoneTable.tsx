@@ -1,56 +1,56 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
 import React, { ReactElement, useMemo, useState, useEffect } from 'react';
+import Button from '@components/Button';
 import Card from '@components/Card';
+import Table from '@components/Table';
 import useSession from '@hooks/useSession';
 import {
-  getStoneListUserColumns,
-  makeStoneListTableColumns,
-  StoneListColumnTypes,
-  StoneListTableType,
-} from '@lib/stoneListHelpers';
-import Button from '../Button';
-import { HeadCell, ValueCell } from './StoneListCells';
-import StoneListColumnModal from './StoneListColumnModal';
-import StoneListEditModal, { StoneListEditModalSettings } from './StoneListEditModal';
-import StoneListTable from './StoneListTable';
+  getInventoryUserColumns,
+  makeStoneInventoryTableColumns,
+  StoneInventoryColumnTypes,
+  StoneInventoryTable,
+} from '@lib/inventoryHelpers';
+import { HeadCell, ValueCell } from './InventoryCells';
+import InventoryColumnModal from './InventoryColumnModal';
+import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
 
 export interface Props {
   title: string;
-  rows: StoneListTableType['rows'];
+  rows: StoneInventoryTable['rows'];
   swrKey: string;
 }
 
-export default function StoneList(props: Props): ReactElement {
-  const [userColumns, setUserColumns] = useState(getStoneListUserColumns(props.rows));
+export default function StoneTable(props: Props): ReactElement {
+  const [userColumns, setUserColumns] = useState(getInventoryUserColumns(props.rows));
   const [showColumnModal, setShowColumnModal] = useState(false);
-  const [editModalSettings, setEditModalSettings] = useState<StoneListEditModalSettings>({
+  const [editModalSettings, setEditModalSettings] = useState<InventoryEditModalSettings>({
     show: false,
-    stoneId: '',
+    id: null,
     userId: '',
     amount: 0,
   });
 
   useEffect(() => {
-    setUserColumns(getStoneListUserColumns(props.rows));
+    setUserColumns(getInventoryUserColumns(props.rows));
   }, [props.rows]);
 
   const { session } = useSession();
 
-  const columns: Columns<StoneListColumnTypes> = useMemo(
-    () => makeStoneListTableColumns(userColumns, session),
+  const columns: Columns<StoneInventoryColumnTypes> = useMemo(
+    () => makeStoneInventoryTableColumns(userColumns, session),
     [props, userColumns],
   );
 
-  const data: Data<StoneListColumnTypes> = useMemo(
+  const data: Data<StoneInventoryColumnTypes> = useMemo(
     () =>
       props.rows.map((row) => ({
         color: row,
-        ...row.stoneLists.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
-        total: row.stoneLists.reduce((prev, curr) => prev + curr.amount, 0),
+        ...row.stoneInventory.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
+        total: row.stoneInventory.reduce((prev, curr) => prev + curr.amount, 0),
         edit: () =>
           setEditModalSettings({
             show: true,
-            stoneId: row.id,
+            id: { stone: row.id },
             userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
             amount: null,
           }),
@@ -58,7 +58,7 @@ export default function StoneList(props: Props): ReactElement {
     [props.rows],
   );
 
-  const { headers, originalHeaders, rows, visibilityHelpers } = useTable<StoneListColumnTypes>(
+  const { headers, originalHeaders, rows, visibilityHelpers } = useTable<StoneInventoryColumnTypes>(
     columns,
     data,
     {
@@ -82,7 +82,7 @@ export default function StoneList(props: Props): ReactElement {
       }
     >
       {userColumns.length > 1 && (
-        <StoneListColumnModal
+        <InventoryColumnModal
           visibilityHelpers={visibilityHelpers}
           originalHeaders={originalHeaders}
           setShow={setShowColumnModal}
@@ -91,13 +91,13 @@ export default function StoneList(props: Props): ReactElement {
         />
       )}
 
-      <StoneListEditModal
+      <InventoryEditModal
         settings={editModalSettings}
         setSettings={setEditModalSettings}
         swrKey={props.swrKey}
       />
 
-      <StoneListTable headers={headers} rows={rows} />
+      <Table headers={headers} rows={rows} />
     </Card>
   );
 }

@@ -3,9 +3,9 @@ import cx from 'clsx';
 import React, { ReactElement } from 'react';
 
 export interface Props {
-  title: string;
   show: boolean;
   setShow: (value: boolean) => void;
+  title?: string;
   body?: ReactElement;
   footer?: ReactElement;
 }
@@ -58,12 +58,14 @@ export default function Modal(props: Props): ReactElement {
             props.show ? cx('bg-white', 'pointer-events-auto') : cx('opacity-0', '-translate-y-10'),
           )}
         >
-          <div className={cx('flex', 'justify-between', 'items-center', 'py-3', 'px-5')}>
-            <h3 className={cx('text-xl', 'font-bold')}>{props.title}</h3>
-            <button onClick={() => props.setShow(false)} tabIndex={props.show ? 0 : -1}>
-              <XIcon className={cx('w-4')} />
-            </button>
-          </div>
+          {props.title && (
+            <div className={cx('flex', 'justify-between', 'items-center', 'py-3', 'px-5')}>
+              <h3 className={cx('text-xl', 'font-bold')}>{props.title}</h3>
+              <button onClick={() => props.setShow(false)} tabIndex={props.show ? 0 : -1}>
+                <XIcon className={cx('w-4')} />
+              </button>
+            </div>
+          )}
 
           {props.body && <div className={cx('p-5')}>{props.body}</div>}
 

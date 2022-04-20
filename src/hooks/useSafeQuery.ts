@@ -28,7 +28,7 @@ export default function useSafeQuery<T extends keyof SdkWithHooks>(
 
   const { session } = useSession();
 
-  const key: string | null = !session ? null : useQuery + keyId ?? '';
+  const key: string | null = !session ? null : useQuery + (keyId ?? '');
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const response: ReturnType<SdkWithHooks[T]> = (sdk[useQuery] as any)(key, variables);

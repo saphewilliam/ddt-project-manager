@@ -1,5 +1,5 @@
-query StoneListUsers {
-  stoneListUsers {
+query InventoryUsers {
+  inventoryUsers {
     id
     firstName
     lastName

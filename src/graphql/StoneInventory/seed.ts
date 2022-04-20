@@ -13,8 +13,8 @@ import { idMap } from '@graphql/idMap';
 //   return `{userId: idMap.users.${l[1].replace(/\s/g, '_').toUpperCase()}, stoneId: idMap.stones.${l[2].replace(/\s|-/g, '_').toUpperCase()}, amount: ${l[3]}}`;
 // }).join(',')
 
-export default async function seedStoneLists(prisma: PrismaClient): Promise<void> {
-  await prisma.stoneList.createMany({
+export default async function seedStoneInventory(prisma: PrismaClient): Promise<void> {
+  await prisma.stoneInventory.createMany({
     data: [
       { userId: idMap.users.WILLIAM_FORD, stoneId: idMap.stones.ROOD_LP_D, amount: 792 },
       { userId: idMap.users.WILLIAM_FORD, stoneId: idMap.stones.GEEL_LP_B, amount: 1666 },

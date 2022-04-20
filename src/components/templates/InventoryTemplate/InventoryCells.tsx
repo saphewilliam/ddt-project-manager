@@ -3,7 +3,7 @@ import { InformationCircleIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicon
 import { RenderCellProps, RenderHeadProps, SortOrder } from '@saphe/react-table';
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import { fontColorFromBackgroundHex, formatNumber } from '@lib/stoneListHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 
 const commonClassName = cx('whitespace-nowrap', 'py-1', 'px-4', 'text-gray-900');
 
@@ -20,7 +20,7 @@ export function ColorCell(props: RenderCellProps): ReactElement {
         <span>{props.row.color.name}</span>
         <InformationCircleIcon
           className={cx('w-5', 'cursor-pointer', 'ml-3')}
-          data-for="stoneListToolTip"
+          data-for="inventoryToolTip"
           data-tip={props.row.color.alias}
         />
       </div>
@@ -29,7 +29,11 @@ export function ColorCell(props: RenderCellProps): ReactElement {
 }
 
 export function ValueCell(props: RenderCellProps): ReactElement {
-  return <td className={cx(commonClassName, 'text-opacity-80')}>{formatNumber(props.value)}</td>;
+  return (
+    <td className={cx(commonClassName, 'text-opacity-80')}>
+      {typeof props.value === 'number' ? formatNumber(props.value) : props.stringValue}
+    </td>
+  );
 }
 
 export function EditCell(props: RenderCellProps): ReactElement {

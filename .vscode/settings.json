@@ -4,5 +4,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "colorize.languages": ["javascript"]
+  "colorize.languages": ["javascript", "typescriptreact"]
 }

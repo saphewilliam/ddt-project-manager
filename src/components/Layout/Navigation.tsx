@@ -52,14 +52,14 @@ export default function Navigation(): ReactElement {
       },
       {
         id: 1,
-        href: '/lists',
-        label: 'Lists',
+        href: '/inventory',
+        label: 'Inventory',
         icon: ListOutline,
         activeIcon: ListSolid,
-        subItems: [{ label: 'All', href: '/lists/all' }].concat(
-          data?.stoneListUsers.map((user) => ({
+        subItems: [{ label: 'All', href: '/inventory/all' }].concat(
+          data?.inventoryUsers.map((user) => ({
             label: `${user.firstName} ${user.lastName}`,
-            href: `/lists/${user.slug}`,
+            href: `/inventory/${user.slug}`,
           })) ?? [],
         ),
       },

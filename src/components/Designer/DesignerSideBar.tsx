@@ -1,7 +1,9 @@
 import cx from 'clsx';
 import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
+import Button from '@components/Button';
 import Modal from '@components/Modal';
-import { fontColorFromBackgroundRgb } from '@lib/stoneListHelpers';
+import useWasm from '@hooks/useWasm';
+import { fontColorFromBackgroundRgb } from '@lib/util';
 import { ToolIndex, Tool, ColorIndex, colors, Color } from 'src/pages/designer';
 import DesignerSideBarSection from './DesignerSideBarSection';
 
@@ -17,6 +19,7 @@ export interface Props {
 
 export default function DesignerSideBar(props: Props): ReactElement {
   const [showColorsModal, setShowColorsModal] = useState(false);
+  const { instance } = useWasm();
 
   return (
     <div className={cx('bg-gray-900', 'text-gray-200', 'w-80', 'min-w-[20rem]')}>
@@ -29,6 +32,10 @@ export default function DesignerSideBar(props: Props): ReactElement {
             <li>Canvas background color</li>
           </ul>
         </div>
+        <Button
+          label="Better save than sorry"
+          onClick={() => console.log(instance?.exports.save())}
+        />
       </DesignerSideBarSection>
 
       <DesignerSideBarSection title="Tools" className={cx('flex-wrap')}>

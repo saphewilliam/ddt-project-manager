@@ -5,13 +5,13 @@ import { nexusModel } from '@lib/nexusHelpers';
 
 export const stoneModel = nexusModel(Stone, {
   // TODO: auto hide when override in extend
-  hide: ['stoneLists'],
+  hide: ['stoneInventory'],
   extend(t) {
-    t.list.field('stoneLists', {
-      type: 'StoneList',
+    t.list.field('stoneInventory', {
+      type: 'StoneInventory',
       authorize: authorizeSession,
       resolve(root, _, ctx) {
-        return ctx.prisma.stoneList.findMany({
+        return ctx.prisma.stoneInventory.findMany({
           where: {
             stoneId: root.id,
             user: { teams: { some: { teamId: ctx.session?.teamId ?? '' } } },

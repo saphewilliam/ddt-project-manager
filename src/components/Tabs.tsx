@@ -1,23 +1,45 @@
 import { Tab } from '@headlessui/react';
-import React, { ReactElement } from 'react';
+import cx from 'clsx';
+import React, { Fragment, ReactElement } from 'react';
 
 export interface TabData {
   label: string;
   content: ReactElement;
-  disabled?: boolean;
 }
 
 export interface Props {
   tabData: TabData[];
+  fullWidth?: boolean;
+  setTabIndex?: (tabIndex: number) => void;
+  tabIndex?: number;
 }
 
 export default function Tabs(props: Props): ReactElement {
   return (
-    <Tab.Group manual>
-      <Tab.List>
+    <Tab.Group
+      onChange={(tabIndex) => props.setTabIndex && props.setTabIndex(tabIndex)}
+      selectedIndex={props.tabIndex}
+    >
+      <Tab.List className={cx('flex')}>
         {props.tabData.map((tab, i) => (
-          <Tab disabled={tab.disabled} key={i}>
-            {tab.label}
+          <Tab key={i} as={Fragment}>
+            {({ selected }) => (
+              <button
+                className={cx(
+                  'border-b-2',
+                  'py-2',
+                  'px-5',
+                  'mb-5',
+                  'transition-colors',
+                  props.fullWidth && 'flex-grow',
+                  selected
+                    ? cx('text-primary', 'border-primary')
+                    : cx('text-gray-900', 'border-primary-100', 'hover:border-primary-200'),
+                )}
+              >
+                {tab.label}
+              </button>
+            )}
           </Tab>
         ))}
       </Tab.List>
