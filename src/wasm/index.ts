@@ -57,6 +57,10 @@ export function load(input: string): boolean {
   return true;
 }
 
+export function reload(): Array<u32> {
+  return canvas.clearSetStones(layer.stones).toArray();
+}
+
 export function setCanvasSize(width: u32, height: u32): Array<u32> {
   if (canvas.size.width !== width || canvas.size.height !== height) {
     canvas.size = new Size(width, height);

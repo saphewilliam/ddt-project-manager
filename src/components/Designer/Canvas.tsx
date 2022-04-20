@@ -1,6 +1,14 @@
 import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
-import React, { ReactElement, useRef, useEffect, useCallback, useState, useReducer } from 'react';
+import React, {
+  ReactElement,
+  useRef,
+  useEffect,
+  useCallback,
+  useState,
+  useReducer,
+  useLayoutEffect,
+} from 'react';
 import useWasm from '@hooks/useWasm';
 import ContextMenu, { MenuItem, MenuItemDivide, MenuItemExecute, MenuItemSub } from './ContextMenu';
 
@@ -223,6 +231,13 @@ export default function Canvas(props: Props): ReactElement {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [window, handleKeyDown]);
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      const updateInfo = instance?.exports.reload();
+      updateCanvas(updateInfo);
+    }, 200);
+  }, [canvasRef]);
 
   useResizeObserver(canvasRef, handleResize);
 
