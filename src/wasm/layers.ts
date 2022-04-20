@@ -107,26 +107,6 @@ export class CubeLayer extends Layer {
           if (x !== width - 1)
             this.stones.push(new Stone(new Point(x * 10 + 6, y * 3), new Size(4, 3), initColor, 7));
         }
-        /*
-        } else if (y % 4 === 0) {
-          if (x % 2 === 0)
-            this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(6, 3), initColor, 4));
-          else
-            this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(4, 3), initColor, 5));
-        }
-        */
-        // Long stone row
-        // else {
-        //   if (x === width - 1) continue;
-        //   if ((x % 2 === 0 && y % 4 < 2) || (x % 2 === 1 && y % 4 > 1))
-        //     this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(6, 3), initColor, 2));
-        //   else if (x === 0)
-        //     this.stones.push(new Stone(new Point(x * 5, y * 3), new Size(5, 3), initColor, 3));
-        //   else if (x === width - 2)
-        //     this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(5, 3), initColor, 3));
-        //   else
-        //     this.stones.push(new Stone(new Point(x * 5 + 1, y * 3), new Size(4, 3), initColor, 3));
-        // }
       }
     }
   }
