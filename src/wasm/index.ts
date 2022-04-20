@@ -93,7 +93,7 @@ export function selectAllOfColor(r: u8, g: u8, b: u8): Array<u32> {
 
   for (let i = 0; i < layer.stones.length; i++) {
     const stone = layer.stones[i];
-    if (stone.color.color === new Color(r, g, b).color) {
+    if (!stone.erased && stone.color.color === new Color(r, g, b).color) {
       stone.selected = true;
       selection.push(stone);
     }

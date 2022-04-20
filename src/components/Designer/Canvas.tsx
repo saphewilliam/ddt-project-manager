@@ -1,6 +1,6 @@
 import useResizeObserver from '@react-hook/resize-observer';
 import cx from 'clsx';
-import React, { ReactElement, useRef, useEffect, useCallback, useState } from 'react';
+import React, { ReactElement, useRef, useEffect, useCallback, useState, useReducer } from 'react';
 import useWasm from '@hooks/useWasm';
 import ContextMenu, { MenuItem, MenuItemDivide, MenuItemExecute, MenuItemSub } from './ContextMenu';
 
@@ -21,10 +21,7 @@ export type CanvasUpdateInfo = number[];
 
 type ReactMouseEvent = React.MouseEvent<HTMLCanvasElement, MouseEvent>;
 
-type MenuItemProxy = Omit<MenuItemExecute, 'onClick' | 'disabled'> & {
-  onClick: () => CanvasUpdateInfo;
-  disabled?: () => boolean;
-};
+type MenuItemProxy = Omit<MenuItemExecute, 'onClick'> & { onClick: () => CanvasUpdateInfo };
 type SubMenuItemProxy = Omit<MenuItemSub, 'items'> & { items: (MenuItemProxy | MenuItemDivide)[] };
 
 export interface Props {
@@ -40,9 +37,64 @@ export default function Canvas(props: Props): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [mouseDownStart, setMouseDownStart] = useState<Point | null>(null);
-  const [contextMenuItems, setContextMenuItems] = useState<MenuItem[]>([]);
 
   const { instance, loaded, error } = useWasm();
+
+  const [contextMenuItems, dispatchContextMenuItems] = useReducer(
+    (state: MenuItem[], action: { type: 'set' } | { type: 'update' }): MenuItem[] => {
+      switch (action.type) {
+        case 'set':
+          return (
+            props.contextMenuItems?.map<MenuItem>((item) => {
+              if ('onClick' in item && item.onClick)
+                return {
+                  ...item,
+                  onClick: () => {
+                    const updateInfo = item.onClick();
+                    if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+                  },
+                } as MenuItem;
+              if ('items' in item && item.items)
+                return {
+                  ...item,
+                  items: item.items.map((subItem) => {
+                    if ('onClick' in subItem && subItem.onClick)
+                      return {
+                        ...subItem,
+                        onClick: () => {
+                          const updateInfo = subItem.onClick();
+                          if (updateInfo[0] !== 0) updateCanvas(updateInfo);
+                        },
+                      };
+                    return subItem;
+                  }),
+                } as MenuItem;
+              return item as MenuItem;
+            }) ?? []
+          );
+        case 'update':
+          return (
+            state?.map<MenuItem>((item) => {
+              if ('onClick' in item && item.onClick) return { ...item, disabled: item.disabled };
+              if ('items' in item && item.items)
+                return {
+                  ...item,
+                  items: item.items.map((subItem) => {
+                    if ('onClick' in subItem) return { ...subItem, disabled: subItem.disabled };
+                    return subItem;
+                  }),
+                };
+              return item;
+            }) ?? []
+          );
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    dispatchContextMenuItems({ type: 'set' });
+  }, [props.contextMenuItems]);
 
   const getMousePoint = useCallback(
     (e: ReactMouseEvent): Point | null => {
@@ -58,44 +110,6 @@ export default function Canvas(props: Props): ReactElement {
     },
     [canvasRef],
   );
-
-  const getContextMenuItems: () => MenuItem[] = useCallback(
-    () =>
-      props.contextMenuItems?.map<MenuItem>((item) => {
-        if ('onClick' in item && item.onClick)
-          return {
-            ...item,
-            disabled: item.disabled && item.disabled(),
-            onClick: () => {
-              const updateInfo = item.onClick();
-              if (updateInfo[0] !== 0) updateCanvas(updateInfo);
-            },
-          } as MenuItem;
-        if ('items' in item && item.items)
-          return {
-            ...item,
-            items: item.items.map((subItem) => {
-              if ('onClick' in subItem && subItem.onClick)
-                return {
-                  ...subItem,
-                  disabled: subItem.disabled && subItem.disabled(),
-                  onClick: () => {
-                    const updateInfo = subItem.onClick();
-                    if (updateInfo[0] !== 0) updateCanvas(updateInfo);
-                  },
-                };
-              return subItem;
-            }),
-          } as MenuItem;
-        return item as MenuItem;
-      }) ?? [],
-    [props.contextMenuItems],
-  );
-
-  // FIXME maximum update depth exeeded if I remove dependency array
-  useEffect(() => {
-    setContextMenuItems(getContextMenuItems());
-  }, []);
 
   const updateCanvas = useCallback(
     (updateInfo: CanvasUpdateInfo) => {
@@ -127,7 +141,7 @@ export default function Canvas(props: Props): ReactElement {
       if (shouldClear === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.putImageData(imageData, dx, dy, 0, 0, width, height);
 
-      setContextMenuItems(getContextMenuItems());
+      dispatchContextMenuItems({ type: 'update' });
     },
     [canvasRef],
   );

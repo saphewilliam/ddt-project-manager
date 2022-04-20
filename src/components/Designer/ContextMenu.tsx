@@ -12,7 +12,7 @@ export enum MenuItemKind {
 /** Base interface for objects that hold menu item data. */
 interface MenuItemBase {
   icon?: (props: ComponentProps<'svg'>) => JSX.Element;
-  disabled?: boolean;
+  disabled?: () => boolean;
   label: string;
 }
 
@@ -173,13 +173,16 @@ function Item(props: MenuItemExecute | MenuItemSub): ReactElement {
         'justify-between',
         'transition-colors',
         'select-none',
-        props.disabled ? cx('text-gray-500') : cx('hover:bg-gray-800', 'cursor-pointer'),
+        props.disabled && props.disabled()
+          ? cx('text-gray-500')
+          : cx('hover:bg-gray-800', 'cursor-pointer'),
       )}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
       onClick={(e) => {
         e.preventDefault();
-        if (!props.disabled && 'onClick' in props && props.onClick) props.onClick();
+        if (!(props.disabled && props.disabled()) && 'onClick' in props && props.onClick)
+          props.onClick();
       }}
     >
       <div className={cx('flex', 'items-center', 'space-x-2')}>
