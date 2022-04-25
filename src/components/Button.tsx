@@ -66,10 +66,10 @@ export default function Button(props: Props): ReactElement {
       <ReactLoading color="#fff" type="bubbles" className={cx('-my-5')} />
     </div>
   ) : (
-    <>
+    <div className={cx('flex', 'space-x-2')}>
       {props.icon && <props.icon width={20} />}
       <span>{props.label}</span>
-    </>
+    </div>
   );
 
   return 'href' in props ? (

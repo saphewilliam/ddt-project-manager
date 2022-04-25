@@ -22,6 +22,7 @@ export default function UserInventoryPage(): ReactElement {
       loading={data === undefined}
       tableData={tableData}
       swrKey={`useUserInventory${slug}`}
+      userId={data?.user?.id}
       title={
         data?.user ? `${data.user.firstName} ${data.user.lastName} Inventory` : 'User Inventory'
       }

@@ -12,7 +12,7 @@ import { promiseWithCatch } from '@lib/util';
 export interface InventoryEditModalSettings {
   show: boolean;
   id: { attribute: string } | { stone: string } | null;
-  userId: string;
+  userId: string | null;
   amount: number | null;
 }
 
@@ -31,7 +31,8 @@ export default function InventoryEditModal(props: Props): ReactElement {
   const [attributeId, setAttributeId] = useState('');
   const [stoneId, setStoneId] = useState('');
   const [userId, setUserId] = useState('');
-  const [amount, setAmount] = useState<number | null>(0);
+  const [stoneAmount, setStoneAmount] = useState<number | null>(0);
+  const [attributeAmount, setAttributeAmount] = useState<number | null>(0);
   const [loading, setLoading] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -46,25 +47,25 @@ export default function InventoryEditModal(props: Props): ReactElement {
   const updateStoneAmount = useCallback(async () => {
     setLoading(true);
     const { stoneInventory } = await sdk.StoneInventory({ stoneId, userId });
-    if (stoneInventory) setAmount(stoneInventory.amount);
-    else setAmount(0);
+    if (stoneInventory) setStoneAmount(stoneInventory.amount);
+    else setStoneAmount(0);
     setLoading(false);
   }, [stoneId, userId]);
 
   const updateAttributeAmount = useCallback(async () => {
     setLoading(true);
     const { attributeInventory } = await sdk.AttributeInventory({ attributeId, userId });
-    if (attributeInventory) setAmount(attributeInventory.amount);
-    else setAmount(0);
+    if (attributeInventory) setAttributeAmount(attributeInventory.amount);
+    else setAttributeAmount(0);
     setLoading(false);
   }, [attributeId, userId]);
 
   async function handleStoneSubmit(e: SubmitType) {
     if (e) e.preventDefault();
-    if (stoneId === '' || userId === '' || amount === null) return;
+    if (stoneId === '' || userId === '' || stoneAmount === null) return;
     setLoading(true);
     const data = await promiseWithCatch(
-      sdk.UpdateStoneInventory({ stoneId, userId, amount: amount! }),
+      sdk.UpdateStoneInventory({ stoneId, userId, amount: stoneAmount! }),
       'Could not edit stone inventory',
     );
 
@@ -87,10 +88,10 @@ export default function InventoryEditModal(props: Props): ReactElement {
 
   async function handleAttributeSubmit(e: SubmitType) {
     if (e) e.preventDefault();
-    if (attributeId === '' || userId === '' || amount === null) return;
+    if (attributeId === '' || userId === '' || attributeAmount === null) return;
     setLoading(true);
     const data = await promiseWithCatch(
-      sdk.UpdateAttributeInventory({ attributeId, userId, amount: amount! }),
+      sdk.UpdateAttributeInventory({ attributeId, userId, amount: attributeAmount! }),
       'Could not edit attribute inventory',
     );
 
@@ -125,7 +126,7 @@ export default function InventoryEditModal(props: Props): ReactElement {
       setAttributeId(props.settings.id.attribute);
       setTabIndex(1);
     }
-    setUserId(props.settings.userId);
+    setUserId(props.settings.userId ?? '');
   }, [props.settings]);
 
   useEffect(() => {
@@ -196,11 +197,11 @@ export default function InventoryEditModal(props: Props): ReactElement {
                       type="number"
                       name="editStoneInventoryAmount"
                       id="editStoneInventoryAmount"
-                      value={amount ?? ''}
+                      value={stoneAmount ?? ''}
                       onChange={(e) => {
                         const parsed = parseInt(e.target.value);
-                        if (e.target.value === '') setAmount(null);
-                        else if (!isNaN(parsed) && parsed >= 0) setAmount(parsed);
+                        if (e.target.value === '') setStoneAmount(null);
+                        else if (!isNaN(parsed) && parsed >= 0) setStoneAmount(parsed);
                       }}
                       disabled={loading}
                     />
@@ -256,11 +257,11 @@ export default function InventoryEditModal(props: Props): ReactElement {
                       type="number"
                       name="editAttributeInventoryAmount"
                       id="editAttributeInventoryAmount"
-                      value={amount ?? ''}
+                      value={attributeAmount ?? ''}
                       onChange={(e) => {
                         const parsed = parseInt(e.target.value);
-                        if (e.target.value === '') setAmount(null);
-                        else if (!isNaN(parsed) && parsed >= 0) setAmount(parsed);
+                        if (e.target.value === '') setAttributeAmount(null);
+                        else if (!isNaN(parsed) && parsed >= 0) setAttributeAmount(parsed);
                       }}
                       disabled={loading}
                     />
@@ -282,14 +283,14 @@ export default function InventoryEditModal(props: Props): ReactElement {
           {tabIndex === 0 ? (
             <Button
               label="Submit"
-              disabled={stoneId === '' || userId === '' || amount === null}
+              disabled={stoneId === '' || userId === '' || stoneAmount === null}
               loading={loading}
               onClick={handleStoneSubmit}
             />
           ) : (
             <Button
               label="Submit"
-              disabled={attributeId === '' || userId === '' || amount === null}
+              disabled={attributeId === '' || userId === '' || attributeAmount === null}
               loading={loading}
               onClick={handleAttributeSubmit}
             />
