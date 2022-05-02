@@ -14,7 +14,6 @@ export default function AllInventoryPage(): ReactElement {
       tableData={tableData}
       swrKey="useInventory"
       title="All inventory"
-      userId={null}
     />
   );
 }

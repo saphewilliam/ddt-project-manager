@@ -6,8 +6,8 @@ import Modal from '@components/Modal';
 
 export interface Props {
   title: string;
-  show: boolean;
-  setShow: (value: boolean) => void;
+  isOpen: boolean;
+  close: () => void;
   originalHeaders: RenderHeadProps[];
   visibilityHelpers: VisibilityHelpers;
 }
@@ -15,8 +15,8 @@ export interface Props {
 export default function InventoryColumnModal(props: Props): ReactElement {
   return (
     <Modal
-      show={props.show}
-      setShow={props.setShow}
+      isOpen={props.isOpen}
+      close={props.close}
       title="Show / Hide Columns"
       body={
         <div className={cx('flex', 'flex-col')}>
@@ -25,7 +25,7 @@ export default function InventoryColumnModal(props: Props): ReactElement {
             .map((header, i) => (
               <div key={i} className={cx('flex', 'items-center', 'space-x-3')}>
                 <input
-                  tabIndex={props.show ? 0 : -1}
+                  tabIndex={props.isOpen ? 0 : -1}
                   className={cx('text-primary', 'focus:ring-primary')}
                   type="checkbox"
                   id={`${props.title}-${header.name}`}

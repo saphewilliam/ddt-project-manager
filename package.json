@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@assemblyscript/loader": "0.19.22",
+    "@bitovi/use-simple-reducer": "0.0.2",
     "@dicebear/avatars": "4.10.2",
     "@dicebear/avatars-jdenticon-sprites": "4.10.2",
     "@headlessui/react": "1.5.0",
@@ -54,6 +55,7 @@
     "react": "17.0.2",
     "react-cookie": "4.1.1",
     "react-dom": "17.0.2",
+    "react-google-recaptcha": "2.1.0",
     "react-hot-toast": "2.2.0",
     "react-loading": "2.0.3",
     "react-tooltip": "4.2.21",
@@ -75,6 +77,7 @@
     "@types/node": "17.0.24",
     "@types/react": "18.0.5",
     "@types/react-dom": "18.0.1",
+    "@types/react-google-recaptcha": "2.1.5",
     "@typescript-eslint/eslint-plugin": "5.19.0",
     "@typescript-eslint/parser": "5.20.0",
     "assemblyscript": "0.19.22",

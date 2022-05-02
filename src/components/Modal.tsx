@@ -3,8 +3,8 @@ import cx from 'clsx';
 import React, { ReactElement } from 'react';
 
 export interface Props {
-  show: boolean;
-  setShow: (value: boolean) => void;
+  isOpen: boolean;
+  close: () => void;
   title?: string;
   body?: ReactElement;
   footer?: ReactElement;
@@ -21,9 +21,11 @@ export default function Modal(props: Props): ReactElement {
           'bg-gray-900',
           'transition-opacity',
           'duration-300',
-          props.show ? cx('opacity-30', 'cursor-pointer') : cx('opacity-0', 'pointer-events-none'),
+          props.isOpen
+            ? cx('opacity-30', 'cursor-pointer')
+            : cx('opacity-0', 'pointer-events-none'),
         )}
-        onClick={() => props.setShow(false)}
+        onClick={() => props.close()}
       />
       <div
         className={cx(
@@ -55,13 +57,15 @@ export default function Modal(props: Props): ReactElement {
             'divide-y',
             'divide-opacity-30',
             'divide-gray-900',
-            props.show ? cx('bg-white', 'pointer-events-auto') : cx('opacity-0', '-translate-y-10'),
+            props.isOpen
+              ? cx('bg-white', 'pointer-events-auto')
+              : cx('opacity-0', '-translate-y-10'),
           )}
         >
           {props.title && (
             <div className={cx('flex', 'justify-between', 'items-center', 'py-3', 'px-5')}>
               <h3 className={cx('text-xl', 'font-bold')}>{props.title}</h3>
-              <button onClick={() => props.setShow(false)} tabIndex={props.show ? 0 : -1}>
+              <button onClick={() => props.close()} tabIndex={props.isOpen ? 0 : -1}>
                 <XIcon className={cx('w-4')} />
               </button>
             </div>

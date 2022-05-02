@@ -71,8 +71,8 @@ export default function DesignerSideBar(props: Props): ReactElement {
       </DesignerSideBarSection>
 
       <Modal
-        show={showColorsModal}
-        setShow={setShowColorsModal}
+        isOpen={showColorsModal}
+        close={() => setShowColorsModal(false)}
         title="Color Palette"
         body={
           <div className={cx('space-y-2')}>

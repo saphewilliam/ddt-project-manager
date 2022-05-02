@@ -1,32 +1,28 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import ReactTooltip from 'react-tooltip';
 import Button from '@components/Button';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import { Role } from '@graphql/__generated__/codegen-self';
+import useInventoryEditModal from '@hooks/useInventoryEditModal';
 import useSession from '@hooks/useSession';
 import { InventoryTableData } from '@lib/inventoryHelpers';
 import AttributeTable from '@templates/InventoryTemplate/AttributeTable';
 import StoneTable from '@templates/InventoryTemplate/StoneTable';
-import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
+import InventoryEditModal from './InventoryEditModal';
 
 export interface Props {
   title: string;
+  swrKey: string;
   loading: boolean;
   tableData: InventoryTableData;
-  userId: string | null | undefined;
-  swrKey: string;
+  userId?: string;
 }
 
 export default function InventoryTemplate(props: Props): ReactElement {
-  const [editModalSettings, setEditModalSettings] = useState<InventoryEditModalSettings>({
-    show: false,
-    id: null,
-    userId: null,
-    amount: 0,
-  });
+  const [editModalState, dispatchEditModal] = useInventoryEditModal();
 
   const { session } = useSession();
 
@@ -40,11 +36,9 @@ export default function InventoryTemplate(props: Props): ReactElement {
             label="Edit inventory"
             icon={PencilIcon}
             onClick={() =>
-              setEditModalSettings({
-                show: true,
-                id: null,
-                userId: props.userId ?? null,
-                amount: null,
+              dispatchEditModal({
+                type: 'openStone',
+                payload: { userId: props.userId },
               })
             }
           />
@@ -58,15 +52,15 @@ export default function InventoryTemplate(props: Props): ReactElement {
           <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
           <div className={cx('space-y-20')}>
             {props.tableData.stones.map((table, index) => (
-              <StoneTable key={index} setEditModalSettings={setEditModalSettings} {...table} />
+              <StoneTable key={index} dispatchEditModal={dispatchEditModal} {...table} />
             ))}
             {props.tableData.attributes.map((table, index) => (
-              <AttributeTable key={index} setEditModalSettings={setEditModalSettings} {...table} />
+              <AttributeTable key={index} dispatchEditModal={dispatchEditModal} {...table} />
             ))}
           </div>
           <InventoryEditModal
-            settings={editModalSettings}
-            setSettings={setEditModalSettings}
+            state={editModalState}
+            dispatch={dispatchEditModal}
             swrKey={props.swrKey}
           />
         </>

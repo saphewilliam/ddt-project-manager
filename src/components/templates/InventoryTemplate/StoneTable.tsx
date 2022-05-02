@@ -1,8 +1,9 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
-import React, { ReactElement, useMemo, useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { ReactElement, useMemo, useState, useEffect } from 'react';
 import Button from '@components/Button';
 import Card from '@components/Card';
 import Table from '@components/Table';
+import { Dispatch as DispatchEditModal } from '@hooks/useInventoryEditModal';
 import useSession from '@hooks/useSession';
 import {
   getInventoryUserColumns,
@@ -12,12 +13,11 @@ import {
 } from '@lib/inventoryHelpers';
 import { HeadCell, ValueCell } from './InventoryCells';
 import InventoryColumnModal from './InventoryColumnModal';
-import { InventoryEditModalSettings } from './InventoryEditModal';
 
 export interface Props {
   title: string;
   rows: StoneInventoryTable['rows'];
-  setEditModalSettings: Dispatch<SetStateAction<InventoryEditModalSettings>>;
+  dispatchEditModal: DispatchEditModal;
 }
 
 export default function StoneTable(props: Props): ReactElement {
@@ -42,11 +42,12 @@ export default function StoneTable(props: Props): ReactElement {
         ...row.stoneInventory.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
         total: row.stoneInventory.reduce((prev, curr) => prev + curr.amount, 0),
         edit: () =>
-          props.setEditModalSettings({
-            show: true,
-            id: { stone: row.id },
-            userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
-            amount: null,
+          props.dispatchEditModal({
+            type: 'openStone',
+            payload: {
+              stoneId: row.id,
+              userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
+            },
           }),
       })),
     [props.rows],
@@ -79,8 +80,8 @@ export default function StoneTable(props: Props): ReactElement {
         <InventoryColumnModal
           visibilityHelpers={visibilityHelpers}
           originalHeaders={originalHeaders}
-          setShow={setShowColumnModal}
-          show={showColumnModal}
+          close={() => setShowColumnModal(false)}
+          isOpen={showColumnModal}
           title={props.title}
         />
       )}

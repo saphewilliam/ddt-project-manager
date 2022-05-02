@@ -1,274 +1,205 @@
-import cx from 'clsx';
-import React, { FormEvent, ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
+import FormFields from '@components/FormFields';
 import Modal from '@components/Modal';
 import Tabs from '@components/Tabs';
+import useForm, { Field } from '@hooks/useForm';
+import { Dispatch, State } from '@hooks/useInventoryEditModal';
 import useSafeQuery from '@hooks/useSafeQuery';
 import useSdk from '@hooks/useSdk';
 import { promiseWithCatch } from '@lib/util';
 
-export interface InventoryEditModalSettings {
-  show: boolean;
-  id: { attribute: string } | { stone: string } | null;
-  userId: string | null;
-  amount: number | null;
-}
-
 export interface Props {
-  settings: InventoryEditModalSettings;
-  setSettings: (settings: InventoryEditModalSettings) => void;
+  state: State;
+  dispatch: Dispatch;
   swrKey: string;
 }
 
-type SubmitType =
-  | FormEvent<HTMLFormElement>
-  | React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
-  | undefined;
-
 export default function InventoryEditModal(props: Props): ReactElement {
-  const [attributeId, setAttributeId] = useState('');
-  const [stoneId, setStoneId] = useState('');
-  const [userId, setUserId] = useState('');
-  const [stoneAmount, setStoneAmount] = useState<number | null>(0);
-  const [attributeAmount, setAttributeAmount] = useState<number | null>(0);
-  const [loading, setLoading] = useState(false);
-  const [tabIndex, setTabIndex] = useState(0);
+  const sdk = useSdk();
+  const { mutate } = useSWRConfig();
 
   const { data: stonesData } = useSafeQuery('useStones', {});
   const { data: attributesData } = useSafeQuery('useAttributes', {});
   const { data: usersData } = useSafeQuery('useUsers', {});
 
-  const sdk = useSdk();
+  const stonesOptions = useMemo(
+    () =>
+      stonesData?.stones.map((stone) => ({
+        value: stone.id,
+        label: `${stone.name} (${stone.alias}${stone.alias2 ? ` -> ${stone.alias2}` : ''})`,
+      })) ?? [],
+    [stonesData],
+  );
 
-  const { mutate } = useSWRConfig();
+  const attributesOptions = useMemo(
+    () =>
+      attributesData?.attributes.map((attribute) => ({
+        value: attribute.id,
+        label: attribute.name,
+      })) ?? [],
+    [attributesData],
+  );
 
-  const updateStoneAmount = useCallback(async () => {
-    setLoading(true);
-    const { stoneInventory } = await sdk.StoneInventory({ stoneId, userId });
-    if (stoneInventory) setStoneAmount(stoneInventory.amount);
-    else setStoneAmount(0);
-    setLoading(false);
-  }, [stoneId, userId]);
+  const usersOptions = useMemo(
+    () =>
+      usersData?.users.map((user) => ({
+        value: user.id,
+        label: `${user.firstName} ${user.lastName}`,
+      })) ?? [],
+    [usersData],
+  );
 
-  const updateAttributeAmount = useCallback(async () => {
-    setLoading(true);
-    const { attributeInventory } = await sdk.AttributeInventory({ attributeId, userId });
-    if (attributeInventory) setAttributeAmount(attributeInventory.amount);
-    else setAttributeAmount(0);
-    setLoading(false);
-  }, [attributeId, userId]);
+  // TODO code duplication between the two forms
+  const { form: stoneInventoryForm, submitButton: stoneInventorySubmitButton } = useForm({
+    name: 'stoneInventory',
+    submitButton: { hidden: true },
+    fieldPack: FormFields,
+    fields: {
+      stoneId: {
+        type: Field.SELECT,
+        label: 'Stone',
+        placeholder: 'Select a stone from the list...',
+        validation: { required: 'Please select a stone' },
+        initialValue: props.state.stoneId ?? undefined,
+        options: stonesOptions,
+      },
+      userId: {
+        type: Field.SELECT,
+        label: 'User',
+        placeholder: 'Select a user from the list...',
+        validation: { required: 'Please select a user' },
+        initialValue: props.state.userId ?? undefined,
+        options: usersOptions,
+      },
+      amount: {
+        type: Field.NUMBER,
+        validation: { required: 'Please enter an amount' },
+        initialValue: props.state.stoneAmount ?? undefined,
+      },
+    },
+    async onChange(formValues) {
+      props.dispatch({ type: 'updateStoneAmount', payload: formValues });
+    },
+    async onSubmit(formValues) {
+      const data = await promiseWithCatch(
+        // FIXME UpdateStoneInventory fires twice???
+        sdk.UpdateStoneInventory(formValues),
+        'Could not edit inventory',
+      );
 
-  async function handleStoneSubmit(e: SubmitType) {
-    if (e) e.preventDefault();
-    if (stoneId === '' || userId === '' || stoneAmount === null) return;
-    setLoading(true);
-    const data = await promiseWithCatch(
-      sdk.UpdateStoneInventory({ stoneId, userId, amount: stoneAmount! }),
-      'Could not edit stone inventory',
-    );
+      if (data) {
+        await mutate(props.swrKey);
+        await props.dispatch({ type: 'close' });
 
-    if (data) {
-      await mutate(props.swrKey);
-      props.setSettings({ ...props.settings, show: false });
-
-      if (!data.updateStoneInventory) toast.success(`Successfully updated inventory`);
-      else {
-        const { user, stone, amount } = data.updateStoneInventory;
-        toast.success(
-          `Successfully updated ${user.firstName} ${user.lastName}'s ${stone.name} amount to ${amount}!`,
-          { duration: 7000 },
-        );
+        if (!data.updateStoneInventory) toast.success(`Successfully updated inventory`);
+        else {
+          const { user, stone, amount } = data.updateStoneInventory;
+          toast.success(
+            `Successfully updated ${user.firstName} ${user.lastName}'${
+              user.lastName[user.lastName.length - 1] !== 's' ? 's' : ''
+            } ${stone.name} amount to ${amount}!`,
+            { duration: 7000 },
+          );
+        }
       }
-    }
+    },
+  });
 
-    setLoading(false);
-  }
+  const { form: attributeInventoryForm, submitButton: attributeInventorySubmitButton } = useForm({
+    name: 'attributeInventory',
+    submitButton: { hidden: true },
+    fieldPack: FormFields,
+    fields: {
+      attributeId: {
+        type: Field.SELECT,
+        label: 'Attribute',
+        placeholder: 'Select a attribute from the list...',
+        validation: { required: 'Please select an attribute' },
+        initialValue: props.state.attributeId ?? undefined,
+        options: attributesOptions,
+      },
+      userId: {
+        type: Field.SELECT,
+        label: 'User',
+        placeholder: 'Select a user from the list...',
+        validation: { required: 'Please select a user' },
+        initialValue: props.state.userId ?? undefined,
+        options: usersOptions,
+      },
+      amount: {
+        type: Field.NUMBER,
+        validation: { required: 'Please enter an amount' },
+        initialValue: props.state.attributeAmount ?? undefined,
+      },
+    },
+    async onChange(formValues) {
+      console.log('onChange');
 
-  async function handleAttributeSubmit(e: SubmitType) {
-    if (e) e.preventDefault();
-    if (attributeId === '' || userId === '' || attributeAmount === null) return;
-    setLoading(true);
-    const data = await promiseWithCatch(
-      sdk.UpdateAttributeInventory({ attributeId, userId, amount: attributeAmount! }),
-      'Could not edit attribute inventory',
-    );
+      props.dispatch({ type: 'updateAttributeAmount', payload: formValues });
+    },
+    async onSubmit(formValues) {
+      const data = await promiseWithCatch(
+        // FIXME UpdateAttributeInventory fires twice???
+        sdk.UpdateAttributeInventory(formValues),
+        'Could not edit inventory',
+      );
 
-    if (data) {
-      await mutate(props.swrKey);
-      props.setSettings({ ...props.settings, show: false });
+      if (data) {
+        await mutate(props.swrKey);
+        props.dispatch({ type: 'close' });
 
-      if (!data.updateAttributeInventory) toast.success(`Successfully updated inventory`);
-      else {
-        const { user, attribute, amount } = data.updateAttributeInventory;
-        toast.success(
-          `Successfully updated ${user.firstName} ${user.lastName}'s ${attribute.name} amount to ${amount}!`,
-          { duration: 7000 },
-        );
+        if (!data.updateAttributeInventory) toast.success(`Successfully updated inventory`);
+        else {
+          const { user, attribute, amount } = data.updateAttributeInventory;
+          toast.success(
+            `Successfully updated ${user.firstName} ${user.lastName}'s ${attribute.name} amount to ${amount}!`,
+            { duration: 7000 },
+          );
+        }
       }
-    }
+    },
+  });
 
-    setLoading(false);
-  }
+  // useEffect(() => {
+  //   if (!props.settings.id) {
+  //     setStoneId('');
+  //     setAttributeId('');
+  //     setTabIndex(0);
+  //   } else if ('stone' in props.settings.id) {
+  //     setStoneId(props.settings.id.stone);
+  //     setAttributeId('');
+  //     setTabIndex(0);
+  //   } else {
+  //     setStoneId('');
+  //     setAttributeId(props.settings.id.attribute);
+  //     setTabIndex(1);
+  //   }
+  //   setUserId(props.settings.userId ?? '');
+  // }, [props.settings]);
 
-  useEffect(() => {
-    if (!props.settings.id) {
-      setStoneId('');
-      setAttributeId('');
-      setTabIndex(0);
-    } else if ('stone' in props.settings.id) {
-      setStoneId(props.settings.id.stone);
-      setAttributeId('');
-      setTabIndex(0);
-    } else {
-      setStoneId('');
-      setAttributeId(props.settings.id.attribute);
-      setTabIndex(1);
-    }
-    setUserId(props.settings.userId ?? '');
-  }, [props.settings]);
+  // useEffect(() => {
+  //   updateStoneAmount();
+  // }, [stoneId, userId]);
 
-  useEffect(() => {
-    updateStoneAmount();
-  }, [stoneId, userId]);
-
-  useEffect(() => {
-    updateAttributeAmount();
-  }, [attributeId, userId]);
+  // useEffect(() => {
+  //   updateAttributeAmount();
+  // }, [attributeId, userId]);
 
   return (
     <Modal
-      show={props.settings.show}
-      setShow={(show: boolean) => props.setSettings({ ...props.settings, show })}
-      // title="Edit Inventory"
+      isOpen={props.state.isOpen}
+      close={() => props.dispatch({ type: 'close' })}
       body={
         <Tabs
           fullWidth
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
+          tabIndex={props.state.tabIndex}
+          setTabIndex={(tabIndex) => props.dispatch({ type: 'setTabIndex', payload: { tabIndex } })}
           tabData={[
-            {
-              label: 'Stone Inventory',
-              content: (
-                <form className={cx('space-y-4')} onSubmit={handleStoneSubmit}>
-                  <div className={cx('flex', 'flex-col', 'space-y-1')}>
-                    <label htmlFor="editStoneInventoryStone">Stone</label>
-                    <select
-                      name="editStoneInventoryStone"
-                      id="editStoneInventoryStone"
-                      value={stoneId}
-                      onChange={(e) => setStoneId(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select a stone from the list...
-                      </option>
-                      {stonesData?.stones.map((stone) => (
-                        <option key={stone.id} value={stone.id}>
-                          {stone.name} ({stone.alias}
-                          {stone.alias2 ? ` -> ${stone.alias2}` : ''})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className={cx('flex', 'flex-col', 'space-y-1')}>
-                    <label htmlFor="editStoneInventoryUser">User</label>
-                    <select
-                      name="editStoneInventoryUser"
-                      id="editStoneInventoryUser"
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select a user from the list...
-                      </option>
-                      {usersData?.users.map((user) => (
-                        <option key={user.id} value={user.id}>
-                          {user.firstName} {user.lastName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className={cx('flex', 'flex-col', 'space-y-1')}>
-                    <label htmlFor="editStoneInventoryAmount">Amount</label>
-                    <input
-                      type="number"
-                      name="editStoneInventoryAmount"
-                      id="editStoneInventoryAmount"
-                      value={stoneAmount ?? ''}
-                      onChange={(e) => {
-                        const parsed = parseInt(e.target.value);
-                        if (e.target.value === '') setStoneAmount(null);
-                        else if (!isNaN(parsed) && parsed >= 0) setStoneAmount(parsed);
-                      }}
-                      disabled={loading}
-                    />
-                  </div>
-                </form>
-              ),
-            },
-            {
-              label: 'Attribute Inventory',
-              content: (
-                <form className={cx('space-y-4')} onSubmit={handleAttributeSubmit}>
-                  <div className={cx('flex', 'flex-col', 'space-y-1')}>
-                    <label htmlFor="editAttributeInventoryAttribute">Attribute</label>
-                    <select
-                      name="editAttributeInventoryAttribute"
-                      id="editAttributeInventoryAttribute"
-                      value={attributeId}
-                      onChange={(e) => setAttributeId(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select an attribute from the list...
-                      </option>
-                      {attributesData?.attributes.map((attribute) => (
-                        <option key={attribute.id} value={attribute.id}>
-                          {attribute.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className={cx('flex', 'flex-col', 'space-y-1')}>
-                    <label htmlFor="editAttributeInventoryUser">User</label>
-                    <select
-                      name="editAttributeInventoryUser"
-                      id="editAttributeInventoryUser"
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select a user from the list...
-                      </option>
-                      {usersData?.users.map((user) => (
-                        <option key={user.id} value={user.id}>
-                          {user.firstName} {user.lastName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className={cx('flex', 'flex-col', 'space-y-1')}>
-                    <label htmlFor="editAttributeInventoryAmount">Amount</label>
-                    <input
-                      type="number"
-                      name="editAttributeInventoryAmount"
-                      id="editAttributeInventoryAmount"
-                      value={attributeAmount ?? ''}
-                      onChange={(e) => {
-                        const parsed = parseInt(e.target.value);
-                        if (e.target.value === '') setAttributeAmount(null);
-                        else if (!isNaN(parsed) && parsed >= 0) setAttributeAmount(parsed);
-                      }}
-                      disabled={loading}
-                    />
-                  </div>
-                </form>
-              ),
-            },
+            { label: 'Stone Inventory', content: stoneInventoryForm },
+            { label: 'Attribute Inventory', content: attributeInventoryForm },
           ]}
         />
       }
@@ -277,24 +208,10 @@ export default function InventoryEditModal(props: Props): ReactElement {
           <Button
             label="Cancel"
             type={ButtonType.EMPTY}
-            loading={loading}
-            onClick={() => props.setSettings({ ...props.settings, show: false })}
+            loading={props.state.isLoading}
+            onClick={() => props.dispatch({ type: 'close' })}
           />
-          {tabIndex === 0 ? (
-            <Button
-              label="Submit"
-              disabled={stoneId === '' || userId === '' || stoneAmount === null}
-              loading={loading}
-              onClick={handleStoneSubmit}
-            />
-          ) : (
-            <Button
-              label="Submit"
-              disabled={attributeId === '' || userId === '' || attributeAmount === null}
-              loading={loading}
-              onClick={handleAttributeSubmit}
-            />
-          )}
+          {props.state.tabIndex === 0 ? stoneInventorySubmitButton : attributeInventorySubmitButton}
         </>
       }
     />
