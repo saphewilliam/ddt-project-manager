@@ -3,7 +3,7 @@ import React, { ReactElement, useMemo, useState, useEffect } from 'react';
 import Button from '@components/Button';
 import Card from '@components/Card';
 import Table from '@components/Table';
-import { Dispatch as DispatchEditModal } from '@hooks/useInventoryEditModal';
+import { State } from '@hooks/useForm';
 import useSession from '@hooks/useSession';
 import {
   getInventoryUserColumns,
@@ -11,13 +11,16 @@ import {
   AttributeInventoryColumnTypes,
   AttributeInventoryTable,
 } from '@lib/inventoryHelpers';
+import { Props as EditModalProps } from '@templates/InventoryTemplate/InventoryEditModal';
 import { HeadCell, ValueCell } from './InventoryCells';
 import InventoryColumnModal from './InventoryColumnModal';
 
 export interface Props {
   title: string;
   rows: AttributeInventoryTable['rows'];
-  dispatchEditModal: DispatchEditModal;
+  editModalState: EditModalProps['state'];
+  editModalActions: EditModalProps['actions'];
+  editModalFormActions: State['formState']['actions'];
 }
 
 export default function AttributeTable(props: Props): ReactElement {
@@ -44,16 +47,16 @@ export default function AttributeTable(props: Props): ReactElement {
           {},
         ),
         total: row.attributeInventory.reduce((prev, curr) => prev + curr.amount, 0),
-        edit: () =>
-          props.dispatchEditModal({
-            type: 'openAttribute',
-            payload: {
-              userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
-              attributeId: row.id,
-            },
-          }),
+        edit: () => {
+          props.editModalActions.openAttribute({});
+          // FIXME change is always called twice
+          if (props.editModalState.attributeId !== row.id)
+            props.editModalFormActions.change('attributeId', row.id);
+          if (userColumns.length === 1 && props.editModalState.userId !== userColumns[0]!.userId)
+            props.editModalFormActions.change('userId', userColumns[0]!.userId);
+        },
       })),
-    [props.rows],
+    [props.rows, props.editModalState],
   );
 
   const { headers, originalHeaders, rows, visibilityHelpers } =

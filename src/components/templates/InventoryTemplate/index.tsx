@@ -22,7 +22,7 @@ export interface Props {
 }
 
 export default function InventoryTemplate(props: Props): ReactElement {
-  const [editModalState, dispatchEditModal] = useInventoryEditModal();
+  const inventoryEditModalState = useInventoryEditModal(props.swrKey);
 
   const { session } = useSession();
 
@@ -35,12 +35,7 @@ export default function InventoryTemplate(props: Props): ReactElement {
           <Button
             label="Edit inventory"
             icon={PencilIcon}
-            onClick={() =>
-              dispatchEditModal({
-                type: 'openStone',
-                payload: { userId: props.userId },
-              })
-            }
+            onClick={() => inventoryEditModalState.actions.openStone({ userId: props.userId })}
           />
         ) : undefined
       }
@@ -52,17 +47,25 @@ export default function InventoryTemplate(props: Props): ReactElement {
           <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
           <div className={cx('space-y-20')}>
             {props.tableData.stones.map((table, index) => (
-              <StoneTable key={index} dispatchEditModal={dispatchEditModal} {...table} />
+              <StoneTable
+                key={index}
+                editModalState={inventoryEditModalState.state}
+                editModalActions={inventoryEditModalState.actions}
+                editModalFormActions={inventoryEditModalState.stoneInventoryFormState.actions}
+                {...table}
+              />
             ))}
             {props.tableData.attributes.map((table, index) => (
-              <AttributeTable key={index} dispatchEditModal={dispatchEditModal} {...table} />
+              <AttributeTable
+                key={index}
+                editModalState={inventoryEditModalState.state}
+                editModalActions={inventoryEditModalState.actions}
+                editModalFormActions={inventoryEditModalState.attributeInventoryFormState.actions}
+                {...table}
+              />
             ))}
           </div>
-          <InventoryEditModal
-            state={editModalState}
-            dispatch={dispatchEditModal}
-            swrKey={props.swrKey}
-          />
+          <InventoryEditModal {...inventoryEditModalState} />
         </>
       )}
     </Layout>

@@ -11,7 +11,7 @@ export enum ButtonType {
 interface PropsBase {
   label: string;
   icon?: (props: SVGProps<SVGSVGElement>) => ReactElement;
-  type?: ButtonType;
+  buttonType?: ButtonType;
   loading?: boolean;
   disabled?: boolean;
   className?: string;
@@ -19,6 +19,7 @@ interface PropsBase {
 
 interface ButtonProps extends PropsBase {
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  type: 'submit' | 'button' | 'reset';
 }
 
 interface LinkProps extends PropsBase {
@@ -28,7 +29,7 @@ interface LinkProps extends PropsBase {
 export type Props = PropsBase | ButtonProps | LinkProps;
 
 export default function Button(props: Props): ReactElement {
-  const type = props.type ?? ButtonType.PRIMARY;
+  const type = props.buttonType ?? ButtonType.PRIMARY;
 
   const className = cx(
     props.className,
@@ -72,6 +73,7 @@ export default function Button(props: Props): ReactElement {
   ) : (
     <button
       disabled={props.loading || props.disabled}
+      type={'type' in props ? props.type : 'button'}
       className={className}
       onClick={(e) => 'onClick' in props && props.onClick(e)}
     >
