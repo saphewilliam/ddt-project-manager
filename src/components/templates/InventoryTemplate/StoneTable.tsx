@@ -10,25 +10,20 @@ import {
   StoneInventoryColumnTypes,
   StoneInventoryTable,
 } from '@lib/inventoryHelpers';
+import { Props as EditModalProps } from '@templates/InventoryTemplate/InventoryEditModal';
 import { HeadCell, ValueCell } from './InventoryCells';
 import InventoryColumnModal from './InventoryColumnModal';
-import InventoryEditModal, { InventoryEditModalSettings } from './InventoryEditModal';
 
 export interface Props {
   title: string;
   rows: StoneInventoryTable['rows'];
-  swrKey: string;
+  editModalState: EditModalProps['state'];
+  editModalActions: EditModalProps['actions'];
 }
 
 export default function StoneTable(props: Props): ReactElement {
   const [userColumns, setUserColumns] = useState(getInventoryUserColumns(props.rows));
   const [showColumnModal, setShowColumnModal] = useState(false);
-  const [editModalSettings, setEditModalSettings] = useState<InventoryEditModalSettings>({
-    show: false,
-    id: null,
-    userId: '',
-    amount: 0,
-  });
 
   useEffect(() => {
     setUserColumns(getInventoryUserColumns(props.rows));
@@ -48,11 +43,10 @@ export default function StoneTable(props: Props): ReactElement {
         ...row.stoneInventory.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
         total: row.stoneInventory.reduce((prev, curr) => prev + curr.amount, 0),
         edit: () =>
-          setEditModalSettings({
-            show: true,
-            id: { stone: row.id },
-            userId: userColumns.length === 1 ? userColumns[0]!.userId : '',
-            amount: null,
+          props.editModalActions.openStone({
+            stoneId: row.id,
+            userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
+            amount: row.stoneInventory.length === 1 ? row.stoneInventory[0]?.amount : undefined,
           }),
       })),
     [props.rows],
@@ -85,17 +79,11 @@ export default function StoneTable(props: Props): ReactElement {
         <InventoryColumnModal
           visibilityHelpers={visibilityHelpers}
           originalHeaders={originalHeaders}
-          setShow={setShowColumnModal}
-          show={showColumnModal}
+          close={() => setShowColumnModal(false)}
+          isOpen={showColumnModal}
           title={props.title}
         />
       )}
-
-      <InventoryEditModal
-        settings={editModalSettings}
-        setSettings={setEditModalSettings}
-        swrKey={props.swrKey}
-      />
 
       <Table headers={headers} rows={rows} />
     </Card>

@@ -51,6 +51,11 @@ export async function promiseWithCatch<T>(
     });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isPromise<T>(obj: any): obj is Promise<T> {
+  return String(obj) === '[object Promise]';
+}
+
 export function projectTypeToString(projectType: ProjectType): string {
   switch (projectType) {
     case ProjectType.FIELD_L1:
