@@ -3,7 +3,6 @@ import React, { ReactElement, useMemo, useState, useEffect } from 'react';
 import Button from '@components/Button';
 import Card from '@components/Card';
 import Table from '@components/Table';
-import { State } from '@hooks/useForm';
 import useSession from '@hooks/useSession';
 import {
   getInventoryUserColumns,
@@ -20,7 +19,6 @@ export interface Props {
   rows: AttributeInventoryTable['rows'];
   editModalState: EditModalProps['state'];
   editModalActions: EditModalProps['actions'];
-  editModalFormActions: State['formState']['actions'];
 }
 
 export default function AttributeTable(props: Props): ReactElement {
@@ -47,14 +45,13 @@ export default function AttributeTable(props: Props): ReactElement {
           {},
         ),
         total: row.attributeInventory.reduce((prev, curr) => prev + curr.amount, 0),
-        edit: () => {
-          props.editModalActions.openAttribute({});
-          // FIXME change is always called twice
-          if (props.editModalState.attributeId !== row.id)
-            props.editModalFormActions.change('attributeId', row.id);
-          if (userColumns.length === 1 && props.editModalState.userId !== userColumns[0]!.userId)
-            props.editModalFormActions.change('userId', userColumns[0]!.userId);
-        },
+        edit: () =>
+          props.editModalActions.openAttribute({
+            attributeId: row.id,
+            userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
+            amount:
+              row.attributeInventory.length === 1 ? row.attributeInventory[0]?.amount : undefined,
+          }),
       })),
     [props.rows, props.editModalState],
   );

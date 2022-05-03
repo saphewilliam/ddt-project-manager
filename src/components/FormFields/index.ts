@@ -1,4 +1,4 @@
-import { FieldPack } from '@hooks/useForm';
+import { FieldPack } from '@saphe/react-form';
 import FieldContainer from './FieldContainer';
 import SubmitButton from './SubmitButton';
 

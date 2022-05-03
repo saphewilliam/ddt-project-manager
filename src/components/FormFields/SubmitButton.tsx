@@ -1,6 +1,6 @@
+import { Props } from '@saphe/react-form';
 import { ReactElement } from 'react';
 import Button from '@components/Button';
-import { Props } from '@hooks/useForm';
 
 export default function SubmitButton(props: Props.SubmitButtonProps): ReactElement {
   return (

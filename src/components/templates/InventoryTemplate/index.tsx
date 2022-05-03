@@ -51,7 +51,6 @@ export default function InventoryTemplate(props: Props): ReactElement {
                 key={index}
                 editModalState={inventoryEditModalState.state}
                 editModalActions={inventoryEditModalState.actions}
-                editModalFormActions={inventoryEditModalState.stoneInventoryFormState.actions}
                 {...table}
               />
             ))}
@@ -60,7 +59,6 @@ export default function InventoryTemplate(props: Props): ReactElement {
                 key={index}
                 editModalState={inventoryEditModalState.state}
                 editModalActions={inventoryEditModalState.actions}
-                editModalFormActions={inventoryEditModalState.attributeInventoryFormState.actions}
                 {...table}
               />
             ))}

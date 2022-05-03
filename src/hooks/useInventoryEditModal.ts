@@ -1,10 +1,10 @@
+import useForm, { Field } from '@saphe/react-form';
 import { useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import FormFields from '@components/FormFields';
 import useAsyncReducer from '@hooks/useAsyncReducer';
 import { promiseWithCatch } from '@lib/util';
-import useForm, { Field } from './useForm';
 import useSafeQuery from './useSafeQuery';
 import useSdk from './useSdk';
 
@@ -66,19 +66,21 @@ export default function useInventoryEditModal(swrKey: string) {
   const { state, actions } = useAsyncReducer(initialState, {
     close: (prevState) => ({ ...prevState, isOpen: false }),
     setTabIndex: (prevState, tabIndex: number) => ({ ...prevState, tabIndex }),
-    openStone: (_, config?: { stoneId?: string; userId?: string }) => ({
+    openStone: (_, config?: { stoneId?: string; userId?: string; amount?: number }) => ({
       ...initialState,
       isOpen: true,
       tabIndex: 0,
       stoneId: config?.stoneId ?? null,
       userId: config?.userId ?? null,
+      stoneAmount: config?.amount ?? null,
     }),
-    openAttribute: (_, config?: { attributeId?: string; userId?: string }) => ({
+    openAttribute: (_, config?: { attributeId?: string; userId?: string; amount?: number }) => ({
       ...initialState,
       isOpen: true,
       tabIndex: 1,
       attributeId: config?.attributeId ?? null,
       userId: config?.userId ?? null,
+      attributeAmount: config?.amount ?? null,
     }),
     setStoneInventory: (
       prevState,
@@ -92,9 +94,9 @@ export default function useInventoryEditModal(swrKey: string) {
 
   // TODO code duplication between the two forms
   const {
-    formState: stoneInventoryFormState,
     form: stoneInventoryForm,
     submitButton: stoneInventorySubmitButton,
+    formState: stoneInventoryFormState,
   } = useForm({
     name: 'stoneInventory',
     submitButton: { hidden: true },
@@ -160,9 +162,9 @@ export default function useInventoryEditModal(swrKey: string) {
   });
 
   const {
-    formState: attributeInventoryFormState,
     form: attributeInventoryForm,
     submitButton: attributeInventorySubmitButton,
+    formState: attributeInventoryFormState,
   } = useForm({
     name: 'attributeInventory',
     submitButton: { hidden: true },
@@ -228,11 +230,11 @@ export default function useInventoryEditModal(swrKey: string) {
   return {
     state,
     actions,
-    stoneInventoryFormState,
     stoneInventoryForm,
     stoneInventorySubmitButton,
-    attributeInventoryFormState,
+    stoneInventoryFormState,
     attributeInventoryForm,
     attributeInventorySubmitButton,
+    attributeInventoryFormState,
   };
 }

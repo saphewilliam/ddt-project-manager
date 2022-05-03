@@ -3,7 +3,6 @@ import React, { ReactElement, useMemo, useState, useEffect } from 'react';
 import Button from '@components/Button';
 import Card from '@components/Card';
 import Table from '@components/Table';
-import { State } from '@hooks/useForm';
 import useSession from '@hooks/useSession';
 import {
   getInventoryUserColumns,
@@ -20,7 +19,6 @@ export interface Props {
   rows: StoneInventoryTable['rows'];
   editModalState: EditModalProps['state'];
   editModalActions: EditModalProps['actions'];
-  editModalFormActions: State['formState']['actions'];
 }
 
 export default function StoneTable(props: Props): ReactElement {
@@ -44,14 +42,12 @@ export default function StoneTable(props: Props): ReactElement {
         color: row,
         ...row.stoneInventory.reduce((prev, curr) => ({ ...prev, [curr.userId]: curr.amount }), {}),
         total: row.stoneInventory.reduce((prev, curr) => prev + curr.amount, 0),
-        edit: () => {
-          props.editModalActions.openStone({});
-          // FIXME change is always called twice
-          if (props.editModalState.stoneId !== row.id)
-            props.editModalFormActions.change('stoneId', row.id);
-          if (userColumns.length === 1 && props.editModalState.userId !== userColumns[0]!.userId)
-            props.editModalFormActions.change('userId', userColumns[0]!.userId);
-        },
+        edit: () =>
+          props.editModalActions.openStone({
+            stoneId: row.id,
+            userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
+            amount: row.stoneInventory.length === 1 ? row.stoneInventory[0]?.amount : undefined,
+          }),
       })),
     [props.rows, props.editModalState.stoneId],
   );
