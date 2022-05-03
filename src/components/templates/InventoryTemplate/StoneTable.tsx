@@ -49,7 +49,7 @@ export default function StoneTable(props: Props): ReactElement {
             amount: row.stoneInventory.length === 1 ? row.stoneInventory[0]?.amount : undefined,
           }),
       })),
-    [props.rows, props.editModalState.stoneId],
+    [props.rows],
   );
 
   const { headers, originalHeaders, rows, visibilityHelpers } = useTable<StoneInventoryColumnTypes>(

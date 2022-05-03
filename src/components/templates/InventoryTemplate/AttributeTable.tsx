@@ -53,7 +53,7 @@ export default function AttributeTable(props: Props): ReactElement {
               row.attributeInventory.length === 1 ? row.attributeInventory[0]?.amount : undefined,
           }),
       })),
-    [props.rows, props.editModalState],
+    [props.rows],
   );
 
   const { headers, originalHeaders, rows, visibilityHelpers } =

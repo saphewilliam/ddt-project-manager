@@ -36,7 +36,7 @@
     "@heroicons/react": "1.0.6",
     "@prisma/client": "3.12.0",
     "@react-hook/resize-observer": "1.2.5",
-    "@saphe/react-form": "^0.7.0",
+    "@saphe/react-form": "0.7.0",
     "@saphe/react-table": "0.6.0",
     "apollo-server-micro": "3.6.7",
     "as-bind": "0.8.2",

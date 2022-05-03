@@ -1250,7 +1250,7 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@saphe/react-form@^0.7.0":
+"@saphe/react-form@0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@saphe/react-form/-/react-form-0.7.0.tgz#ad0514a5060f214f50ca3272e2238114ec762310"
   integrity sha512-PVUJ3PbYNEWCfEuCnBda2F3WHSBaxR90EJTfGfQDj+i1UmhLwwfP8ZS2d3IdvEONwMxn5ma0lBNgfQb/1A2KwA==
