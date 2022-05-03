@@ -29,14 +29,14 @@ interface LinkProps extends PropsBase {
 export type Props = PropsBase | ButtonProps | LinkProps;
 
 export default function Button(props: Props): ReactElement {
-  const type = props.buttonType ?? ButtonType.PRIMARY;
+  const buttonType = props.buttonType ?? ButtonType.PRIMARY;
 
   const className = cx(
     props.className,
     'block',
     props.loading || props.disabled
       ? cx('bg-gray', 'text-white')
-      : type === ButtonType.PRIMARY
+      : buttonType === ButtonType.PRIMARY
       ? cx(
           'bg-primary',
           'hover:bg-primary-light',
@@ -45,7 +45,7 @@ export default function Button(props: Props): ReactElement {
           'text-white',
           'font-bold',
         )
-      : type === ButtonType.EMPTY
+      : buttonType === ButtonType.EMPTY
       ? cx('text-gray-900', 'font-semibold')
       : '',
     (props.loading || props.disabled) && 'cursor-default',

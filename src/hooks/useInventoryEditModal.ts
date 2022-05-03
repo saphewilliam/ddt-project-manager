@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import FormFields from '@components/FormFields';
 import useAsyncReducer from '@hooks/useAsyncReducer';
