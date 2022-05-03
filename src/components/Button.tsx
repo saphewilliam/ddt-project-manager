@@ -75,7 +75,7 @@ export default function Button(props: Props): ReactElement {
       disabled={props.loading || props.disabled}
       type={'type' in props ? props.type : 'button'}
       className={className}
-      onClick={(e) => 'onClick' in props && props.onClick(e)}
+      onClick={(e) => 'onClick' in props && props.onClick && props.onClick(e)}
     >
       {children}
     </button>

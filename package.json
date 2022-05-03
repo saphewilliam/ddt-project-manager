@@ -79,7 +79,7 @@
     "@typescript-eslint/eslint-plugin": "5.22.0",
     "@typescript-eslint/parser": "5.22.0",
     "assemblyscript": "0.19.22",
-    "autoprefixer": "10.4.6",
+    "autoprefixer": "10.4.5",
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.5",
     "eslint-config-prettier": "8.5.0",
