@@ -1250,10 +1250,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@saphe/react-form@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@saphe/react-form/-/react-form-0.7.0.tgz#ad0514a5060f214f50ca3272e2238114ec762310"
-  integrity sha512-PVUJ3PbYNEWCfEuCnBda2F3WHSBaxR90EJTfGfQDj+i1UmhLwwfP8ZS2d3IdvEONwMxn5ma0lBNgfQb/1A2KwA==
+"@saphe/react-form@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@saphe/react-form/-/react-form-0.8.0.tgz#42c3e8437a99d21a74b35bbfffc0e99c2dd50dcc"
+  integrity sha512-GI445DSVGzBPDuuNKkkaBdqFau8pYvysEEpTPWHs9rb6cDUZ+P0hfXFz9jL3dfPP1q94U6/zYys1sFNsMBOtkw==
   dependencies:
     react-google-recaptcha "2.1.0"
     tslib "2.3.1"

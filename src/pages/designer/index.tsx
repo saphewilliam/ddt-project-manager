@@ -20,7 +20,11 @@ import {
   ZoomOutIcon as ZoomOutIconSolid,
 } from '@heroicons/react/solid';
 import React, { ReactElement, SVGProps, useCallback, useState } from 'react';
-import Canvas, { Props as CanvasProps, CanvasUpdateInfo } from '@components/Designer/Canvas';
+import Canvas, {
+  Props as CanvasProps,
+  CanvasUpdateInfo,
+  CanvasOptions,
+} from '@components/Designer/Canvas';
 import { MenuItemKind } from '@components/Designer/ContextMenu';
 import DesignerSideBar from '@components/Designer/DesignerSideBar';
 import Layout from '@components/Layout';
@@ -104,6 +108,14 @@ export interface Tool {
 export default function DesignerPage(): ReactElement {
   const [selectedTool, setSelectedTool] = useState<ToolIndex>(ToolIndex.DRAW);
   const [selectedColor, setSelectedColor] = useState<ColorIndex>(0);
+
+  const [canvasOptions, setCanvasOptions] = useState<CanvasOptions>({
+    strokeWidth: null,
+    strokeColor: null,
+    selectedStrokeColor: null,
+    backgroundColor: null,
+  });
+
   const [palette, setPalette] = useState<{ [P in ColorIndex]: Color }>({
     [0]: colors[30]!,
     [1]: colors[31]!,
@@ -447,10 +459,13 @@ export default function DesignerPage(): ReactElement {
           setPalette={setPalette}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
+          canvasOptions={canvasOptions}
+          setCanvasOptions={setCanvasOptions}
         />
       }
     >
       <Canvas
+        options={canvasOptions}
         contextMenuItems={contextMenuItems}
         onMouseDown={tools[selectedTool].onMouseDown}
         onMouseUp={tools[selectedTool].onMouseUp}

@@ -18,9 +18,9 @@
         "context-menu",
         "sub",
         "scrollbar-thin",
-        "scrollbar-track-gray-900",
+        "scrollbar-track-gray-800",
         "scrollbar-track-gray-100",
-        "scrollbar-thumb-gray-800",
+        "scrollbar-thumb-gray-600",
         "scrollbar-thumb-gray-400"
       ]
     }

@@ -1,5 +1,4 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
-import cx from 'clsx';
 import { ReactElement } from 'react';
 import Table from '@components/Table';
 import { AttributesOnProjectColumnTypes } from '@lib/inventoryHelpers';

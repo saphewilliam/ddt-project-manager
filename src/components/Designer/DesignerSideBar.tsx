@@ -1,10 +1,13 @@
+import useForm, { Field } from '@saphe/react-form';
 import cx from 'clsx';
 import React, { Dispatch, ReactElement, SetStateAction, useState } from 'react';
 import Button from '@components/Button';
+import FormFields from '@components/FormFields';
 import Modal from '@components/Modal';
 import useWasm from '@hooks/useWasm';
 import { fontColorFromBackgroundRgb } from '@lib/util';
 import { ToolIndex, Tool, ColorIndex, colors, Color } from 'src/pages/designer';
+import { CanvasOptions } from './Canvas';
 import DesignerSideBarSection from './DesignerSideBarSection';
 
 export interface Props {
@@ -15,27 +18,60 @@ export interface Props {
   setPalette: Dispatch<SetStateAction<{ [P in ColorIndex]: Color }>>;
   selectedColor: ColorIndex;
   setSelectedColor: Dispatch<SetStateAction<ColorIndex>>;
+  canvasOptions: CanvasOptions;
+  setCanvasOptions: Dispatch<SetStateAction<CanvasOptions>>;
 }
 
 export default function DesignerSideBar(props: Props): ReactElement {
   const [showColorsModal, setShowColorsModal] = useState(false);
   const { instance } = useWasm();
 
+  const { form: canvasOptionsForm } = useForm({
+    name: 'canvasOptionsForm',
+    fieldPack: FormFields,
+    submitButton: { hidden: true },
+    fields: {
+      strokeWidth: {
+        type: Field.NUMBER,
+        placeholder: '1',
+        initialValue: props.canvasOptions.strokeWidth ?? undefined,
+      },
+      strokeColor: {
+        type: Field.COLOR,
+        placeholder: '#000000',
+        initialValue: props.canvasOptions.strokeColor ?? '#000000',
+      },
+      selectedStrokeColor: {
+        type: Field.COLOR,
+        placeholder: '#ff0000',
+        initialValue: props.canvasOptions.selectedStrokeColor ?? '#ff0000',
+      },
+      backgroundColor: {
+        type: Field.COLOR,
+        placeholder: '#ffffff',
+        initialValue: props.canvasOptions.backgroundColor ?? '#ffffff',
+      },
+    },
+    onChange: props.setCanvasOptions,
+  });
+
   return (
-    <div className={cx('bg-gray-900', 'text-gray-200', 'w-80', 'min-w-[20rem]')}>
+    <div
+      className={cx(
+        'bg-gray-900',
+        'text-gray-200',
+        'w-80',
+        'min-w-[20rem]',
+        'scrollbar-thin',
+        'scrollbar-track-gray-800',
+        'scrollbar-thumb-gray-600',
+      )}
+    >
       <DesignerSideBarSection title="Options">
-        <div>
-          <p>TODO</p>
-          <ul>
-            <li>Design size</li>
-            <li>Stroke width, color</li>
-            <li>Canvas background color</li>
-          </ul>
+        <div className={cx('w-full')}>
+          {/* TODO design size? */}
+          {canvasOptionsForm}
         </div>
-        <Button
-          label="Better save than sorry"
-          onClick={() => console.log(instance?.exports.save())}
-        />
       </DesignerSideBarSection>
 
       <DesignerSideBarSection title="Tools" className={cx('flex-wrap')}>
@@ -150,6 +186,10 @@ export default function DesignerSideBar(props: Props): ReactElement {
       </DesignerSideBarSection>
 
       <DesignerSideBarSection title="Layers">TODO layers</DesignerSideBarSection>
+
+      <DesignerSideBarSection title="Debug">
+        <Button label="Save design" onClick={() => console.log(instance?.exports.save())} />
+      </DesignerSideBarSection>
     </div>
   );
 }

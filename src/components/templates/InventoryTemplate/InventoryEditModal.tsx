@@ -25,7 +25,7 @@ export default function InventoryEditModal(props: Props): ReactElement {
       close={actions.close}
       body={
         <Tabs
-          fullWidth
+          full
           tabIndex={state.tabIndex}
           setTabIndex={actions.setTabIndex}
           tabData={[

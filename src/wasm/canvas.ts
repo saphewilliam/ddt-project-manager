@@ -40,10 +40,17 @@ export class Canvas {
   origin: Point;
   scale: u32;
 
+  strokeWidth: u32;
+  strokeColor: Color;
+  selectedStrokeColor: Color;
+
   constructor(width: u32, height: u32) {
     this.origin = new Point(0, 0);
     this.size = new Size(width, height);
     this.scale = 5;
+    this.strokeWidth = 1;
+    this.strokeColor = new Color(0, 0, 0);
+    this.selectedStrokeColor = new Color(255, 0, 0);
   }
 
   /** Checks if a stone is in bounds of a canvas (x1, y1), (x2, y2) area */
@@ -157,17 +164,16 @@ export class Canvas {
       const xUpClamped: i32 = Math.min(xUp, this.size.width) as i32;
       const yLowClamped: i32 = Math.max(yLow, 0) as i32;
       const yUpClamped: i32 = Math.min(yUp, this.size.height) as i32;
-
-      // TODO move these somewhere globally?
-      const strokeWidth: u32 = 1;
-      const strokeColor: Color = new Color(0, 0, 0);
-      const selectedStrokeColor: Color = new Color(255, 0, 0);
-
-      const stoneStrokeColor: u32 = stone.selected ? selectedStrokeColor.color : strokeColor.color;
+      const stoneStrokeColor: u32 = stone.selected
+        ? this.selectedStrokeColor.color
+        : this.strokeColor.color;
 
       for (let y: i32 = yLowClamped - info.origin.y; y < yUpClamped - info.origin.y; y++) {
         const rowIndex = info.size.width * y;
-        if (y < yLow - info.origin.y + strokeWidth || y >= yUp - info.origin.y - strokeWidth) {
+        if (
+          y < yLow - info.origin.y + this.strokeWidth ||
+          y >= yUp - info.origin.y - this.strokeWidth
+        ) {
           // Top stroke
           info.pixels.fill(
             stoneStrokeColor,
@@ -188,7 +194,7 @@ export class Canvas {
             stoneStrokeColor,
             rowIndex + xLowClamped - info.origin.x,
             rowIndex +
-              (Math.max(Math.min(xLow + strokeWidth, this.size.width), 0) as i32) -
+              (Math.max(Math.min(xLow + this.strokeWidth, this.size.width), 0) as i32) -
               info.origin.x,
           );
 
@@ -196,7 +202,7 @@ export class Canvas {
           info.pixels.fill(
             stoneStrokeColor,
             rowIndex +
-              (Math.max(Math.min(xUp - strokeWidth, this.size.width), 0) as i32) -
+              (Math.max(Math.min(xUp - this.strokeWidth, this.size.width), 0) as i32) -
               info.origin.x,
             rowIndex + xUpClamped - info.origin.x,
           );

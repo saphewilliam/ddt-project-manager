@@ -1,11 +1,11 @@
 import { Canvas, CanvasUpdateInfo } from './canvas';
-import { CubeLayer } from './layers';
+import { PixelGridLayer } from './layers';
 import { Color, Point, Size, Stone } from './structs';
 import { err } from './util';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: CubeLayer = new CubeLayer(5, 13);
+const layer: PixelGridLayer = new PixelGridLayer(50, 200);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
@@ -65,6 +65,44 @@ export function reload(): Array<u32> {
 export function setCanvasSize(width: u32, height: u32): Array<u32> {
   if (canvas.size.width !== width || canvas.size.height !== height) {
     canvas.size = new Size(width, height);
+    return canvas.setStones(layer.stones).toArray();
+  }
+  return new CanvasUpdateInfo().toArray();
+}
+
+export function setStrokeWidth(width: number): Array<u32> {
+  if (width > 0 && canvas.strokeWidth !== width) {
+    canvas.strokeWidth = width as u32;
+    return canvas.setStones(layer.stones).toArray();
+  }
+  return new CanvasUpdateInfo().toArray();
+}
+
+function colorFromHex(hex: string): Color | null {
+  const allowedCharacters = '1234567890aAbBcCdDeEfF';
+  if (hex.length !== 7) return null;
+  for (let i = 1; i < 8; i++) if (!allowedCharacters.includes(hex.charAt(i))) return null;
+
+  const int = parseInt(hex.slice(1), 16) as i32;
+  const r = ((int >> 16) & 255) as u8;
+  const g = ((int >> 8) & 255) as u8;
+  const b = (int & 255) as u8;
+  return new Color(r, g, b);
+}
+
+export function setStrokeColor(hex: string): Array<u32> {
+  const color = colorFromHex(hex);
+  if (color !== null && canvas.strokeColor.color !== color.color) {
+    canvas.strokeColor = color;
+    return canvas.setStones(layer.stones).toArray();
+  }
+  return new CanvasUpdateInfo().toArray();
+}
+
+export function setSelectedStrokeColor(hex: string): Array<u32> {
+  const color = colorFromHex(hex);
+  if (color !== null && canvas.selectedStrokeColor.color !== color.color) {
+    canvas.selectedStrokeColor = color;
     return canvas.setStones(layer.stones).toArray();
   }
   return new CanvasUpdateInfo().toArray();

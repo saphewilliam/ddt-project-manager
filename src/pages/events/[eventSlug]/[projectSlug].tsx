@@ -30,7 +30,19 @@ export default function ProjectPage(): ReactElement {
         <Tabs
           tabData={[
             { label: 'General', content: <span>General tab</span> },
-            { label: 'Stones', content: <span>Stones tab</span> },
+            {
+              label: 'Stones',
+              content: (
+                // TODO tabs in inventory screen?
+                <Tabs
+                  vertical
+                  tabData={[
+                    { label: 'Wall', content: <span>Wall tab</span> },
+                    { label: 'Field', content: <span>Field tab</span> },
+                  ]}
+                />
+              ),
+            },
             { label: 'Attributes', content: <span>Attributes tab</span> },
             { label: 'Attachments', content: <span>Attachments tab</span> },
             { label: 'History', content: <span>History tab</span> },
