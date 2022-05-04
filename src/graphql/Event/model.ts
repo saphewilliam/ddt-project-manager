@@ -1,13 +1,24 @@
 import { Prisma } from '@prisma/client';
-import { extendType, stringArg } from 'nexus';
+import { extendType, objectType, stringArg } from 'nexus';
 import { Event } from 'nexus-prisma';
 import { authorizeSession } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
 
+export const attributesOnEvent = objectType({
+  name: 'AttributesOnEvent',
+  definition(t) {
+    t.int('amount');
+    t.string('attributeId');
+    t.field('attribute', { type: 'Attribute' });
+    t.string('userId');
+    t.field('user', { type: 'User' });
+  },
+});
+
 export const eventModel = nexusModel(Event, {
   extend(t) {
     t.int('stoneAmount', {
-      description: 'The number of dominoes assigned to this event',
+      description: 'The number of dominoes assigned to this event in total',
       authorize: authorizeSession,
       resolve: async (root, _, ctx) => {
         const projectResult = await ctx.prisma.stonesOnProject.aggregate({
@@ -21,6 +32,42 @@ export const eventModel = nexusModel(Event, {
         });
 
         return (projectResult._sum.amount ?? 0) + (subthemeResult._sum.amount ?? 0);
+      },
+    });
+    t.list.field('attributes', {
+      type: 'AttributesOnEvent',
+      authorize: authorizeSession,
+      resolve: async (root, _, ctx) => {
+        const projectAttributes = await ctx.prisma.attributesOnProject.groupBy({
+          _sum: { amount: true },
+          by: ['attributeId', 'userId'],
+          where: { project: { subtheme: { eventId: root.id } } },
+        });
+
+        const subthemeAttributes = await ctx.prisma.attributesOnSubtheme.groupBy({
+          _sum: { amount: true },
+          by: ['attributeId', 'userId'],
+          where: { subtheme: { eventId: root.id } },
+        });
+
+        type Attributes = { amount: number; attributeId: string; userId: string }[];
+        const attributes: Attributes = [...projectAttributes, ...subthemeAttributes].reduce(
+          (prev, curr) => {
+            const i = prev.findIndex(
+              (value) => value.attributeId === curr.attributeId && value.userId === curr.userId,
+            );
+            if (i === -1) prev.push({ ...curr, amount: curr._sum.amount ?? 0 });
+            else prev[i]!.amount = (prev[i]?.amount ?? 0) + (curr._sum.amount ?? 0);
+            return prev;
+          },
+          [] as Attributes,
+        );
+
+        return attributes.map((attribute) => ({
+          ...attribute,
+          user: ctx.prisma.user.findUnique({ where: { id: attribute.userId } }),
+          attribute: ctx.prisma.attribute.findUnique({ where: { id: attribute.attributeId } }),
+        }));
       },
     });
   },

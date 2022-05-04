@@ -26,6 +26,14 @@ type AttributeInventory {
   userId: String!
 }
 
+type AttributesOnEvent {
+  amount: Int!
+  attribute: Attribute!
+  attributeId: String!
+  user: User!
+  userId: String!
+}
+
 type AttributesOnProject {
   amount: Int!
   attribute: Attribute!
@@ -58,6 +66,7 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 type Event {
+  attributes: [AttributesOnEvent!]!
   createdAt: DateTime!
   date: DateTime!
   id: ID!
@@ -65,7 +74,7 @@ type Event {
   name: String!
   slug: String!
 
-  """The number of dominoes assigned to this event"""
+  """The number of dominoes assigned to this event in total"""
   stoneAmount: Int!
   subthemes: [Subtheme!]!
   team: Team!
@@ -314,6 +323,9 @@ type Subtheme {
   order: Int!
   projects: [Project!]!
   slug: String!
+
+  """The number of dominoes assigned to this subtheme in total"""
+  stoneAmount: Int!
   stones: [StonesOnSubtheme!]!
   updatedAt: DateTime!
 }

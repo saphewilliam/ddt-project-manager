@@ -3,6 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import seedAttributes from './Attribute/seed';
 import seedAttributeInventory from './AttributeInventory/seed';
+import seedAttributesOnProjects from './AttributesOnProject/seed';
 import seedEvents from './Event/seed';
 import seedMembers from './Member/seed';
 import seedProjects from './Project/seed';
@@ -58,8 +59,11 @@ async function seed(prisma: PrismaClient): Promise<void> {
   console.log('Seeding Projects...');
   await seedProjects(prisma);
 
-  console.log('Seeindg Stones on Projects...');
+  console.log('Seeding Stones on Projects...');
   await seedStonesOnProjects(prisma);
+
+  console.log('Seeding Attributes on Projects...');
+  await seedAttributesOnProjects(prisma);
 }
 
 seed(prisma)
