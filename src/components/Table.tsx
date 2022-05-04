@@ -23,7 +23,6 @@ export default function Table<T extends ColumnTypes>(props: Props<T>): ReactElem
         'scrollbar-thin',
         'scrollbar-track-gray-100',
         'scrollbar-thumb-gray-400',
-        'scrollbar-rounded',
       )}
     >
       <table className={cx('w-full')}>
@@ -42,8 +41,7 @@ export default function Table<T extends ColumnTypes>(props: Props<T>): ReactElem
                 'hover:bg-gray-100',
                 'transition-colors',
                 'border-b',
-                'border-gray-900',
-                'border-opacity-20',
+                'border-gray-900/20',
               )}
             >
               {row.cells.map((cell, j) => (

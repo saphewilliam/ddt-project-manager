@@ -84,7 +84,7 @@ export default function DesignerSideBar(props: Props): ReactElement {
                 />
                 <select
                   value={color.name}
-                  className={cx('flex-grow', 'py-1')}
+                  className={cx('grow', 'py-1')}
                   name={`colorPicker${i}`}
                   id={`colorPicker${i}`}
                   onChange={(e) =>

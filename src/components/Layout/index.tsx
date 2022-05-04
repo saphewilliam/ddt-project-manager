@@ -33,7 +33,7 @@ export default function Layout(props: Props): ReactElement {
           'flex',
           'flex-col',
           'justify-between',
-          'flex-grow',
+          'grow',
           'overflow-y-auto',
           'text-gray-900',
           'bg-gray-50',
@@ -41,7 +41,7 @@ export default function Layout(props: Props): ReactElement {
       >
         {session !== null ? (
           <>
-            <div className={cx('sm:px-16', 'px-4', 'py-12', 'flex-grow')}>
+            <div className={cx('sm:px-16', 'px-4', 'py-12', 'grow')}>
               {props.title && !props.hideHeader && (
                 <Card className={cx('mb-7')}>
                   <div className={cx('flex', 'justify-between', 'items-center')}>

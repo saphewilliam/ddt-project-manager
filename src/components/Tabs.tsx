@@ -31,7 +31,7 @@ export default function Tabs(props: Props): ReactElement {
                   'px-5',
                   'mb-5',
                   'transition-colors',
-                  props.fullWidth && 'flex-grow',
+                  props.fullWidth && 'grow',
                   selected
                     ? cx('text-primary', 'border-primary')
                     : cx('text-gray-900', 'border-primary-100', 'hover:border-primary-200'),

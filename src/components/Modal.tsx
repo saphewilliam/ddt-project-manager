@@ -55,8 +55,7 @@ export default function Modal(props: Props): ReactElement {
             'transition-all',
             'duration-300',
             'divide-y',
-            'divide-opacity-30',
-            'divide-gray-900',
+            'divide-gray-900/30',
             props.isOpen
               ? cx('bg-white', 'pointer-events-auto')
               : cx('opacity-0', '-translate-y-10'),

@@ -4,11 +4,24 @@
     "plugin:@typescript-eslint/recommended",
     "next",
     "next/core-web-vitals",
+    "plugin:tailwindcss/recommended",
     "prettier",
     "plugin:prettier/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript"
   ],
+  "settings": {
+    "tailwindcss": {
+      "callees": ["classnames", "clsx", "cx"],
+      "whitelist": [
+        "scrollbar-thin",
+        "scrollbar-track-gray-900",
+        "scrollbar-track-gray-100",
+        "scrollbar-thumb-gray-800",
+        "scrollbar-thumb-gray-400"
+      ]
+    }
+  },
   "rules": {
     "react-hooks/exhaustive-deps": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }],

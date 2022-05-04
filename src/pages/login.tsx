@@ -125,7 +125,7 @@ export default function LoginPage(): ReactElement {
           <Image src="/img/login_bg.jpg" alt="Login Background" layout="fill" objectFit="cover" />
         </div>
       </div>
-      <div className={cx('flex-grow', 'flex', 'flex-col', 'justify-center', 'items-center')}>
+      <div className={cx('grow', 'flex', 'flex-col', 'justify-center', 'items-center')}>
         <div className={cx('w-7/12')}>
           <h1 className={cx('font-bold', 'text-4xl', 'mb-4')}>Sign in</h1>
           <p className={cx('font-semibold', 'text-gray')}>Sign in to the DDT Project Manager</p>
