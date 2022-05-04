@@ -1,6 +1,7 @@
 import { Canvas, CanvasUpdateInfo } from './canvas';
 import { CubeLayer } from './layers';
 import { Color, Point, Size, Stone } from './structs';
+import { err } from './util';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
@@ -194,7 +195,12 @@ export function paste(): Array<u32> {
         clipboardTopRight = stone;
     }
 
-    if (selectionTopRight.type !== clipboardTopRight.type) return new CanvasUpdateInfo().toArray();
+    if (selectionTopRight.type !== clipboardTopRight.type) {
+      err(
+        `Cannot paste here: selection top right stone type (${selectionTopRight.type}) must match clipboard top right stone type (${clipboardTopRight.type})`,
+      );
+      return new CanvasUpdateInfo().toArray();
+    }
 
     const delta = new Point(
       selectionTopRight.origin.x - clipboardTopRight.origin.x,

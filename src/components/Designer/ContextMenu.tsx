@@ -131,7 +131,6 @@ const Menu = forwardRef<
 >((props, ref) => (
   <ul
     ref={ref}
-    // eslint-disable-next-line tailwindcss/no-custom-classname
     className={cx(
       'context-menu',
       'absolute',
@@ -202,7 +201,6 @@ function Item(props: MenuItemExecute | MenuItemSub): ReactElement {
       {'items' in props && props.items && (
         <>
           <ChevronRightIcon width={16} height={16} className={cx('text-gray-400')} />
-          {/* eslint-disable-next-line tailwindcss/no-custom-classname */}
           <Menu items={props.items} isOpen={isOpen} className={cx('sub', 'left-full', 'w-40')} />
         </>
       )}

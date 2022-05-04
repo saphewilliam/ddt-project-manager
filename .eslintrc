@@ -4,7 +4,8 @@
     "plugin:@typescript-eslint/recommended",
     "next",
     "next/core-web-vitals",
-    "plugin:tailwindcss/recommended",
+    // TODO check periodically if CI can handle this plugin
+    // "plugin:tailwindcss/recommended",
     "prettier",
     "plugin:prettier/recommended",
     "plugin:import/recommended",
@@ -14,6 +15,8 @@
     "tailwindcss": {
       "callees": ["classnames", "clsx", "cx"],
       "whitelist": [
+        "context-menu",
+        "sub",
         "scrollbar-thin",
         "scrollbar-track-gray-900",
         "scrollbar-track-gray-100",
