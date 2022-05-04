@@ -10,6 +10,7 @@ import Loading from '@components/Loading';
 import SubthemeTable from '@components/SubthemeTable';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
+import ProjectAttributeTable from '@templates/InventoryTemplate/ProjectAttributeTable';
 import ProjectStoneTable from '@templates/InventoryTemplate/ProjectStoneTable';
 
 export default function EventPage(): ReactElement {
@@ -40,6 +41,7 @@ export default function EventPage(): ReactElement {
           </Card>
 
           <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
+
           <Card className={cx('col-span-2', 'lg:col-span-1')} title="Lines">
             <div className={cx('space-y-12', 'w-full')}>
               {data.event?.subthemes.map(
@@ -56,38 +58,7 @@ export default function EventPage(): ReactElement {
           </Card>
 
           <Card className={cx('col-span-2', 'lg:col-span-1')} title="Attributes">
-            <table className={cx('table-auto', 'w-full')}>
-              <tbody>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Muizenvallen</td>
-                  <td>7</td>
-                </tr>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Muurhaakjes</td>
-                  <td>7</td>
-                </tr>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Diodes/Vlakstarterhouders</td>
-                  <td>100</td>
-                </tr>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Vlakstarters (8 stones)</td>
-                  <td>3</td>
-                </tr>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Vlakstarters (10 stones)</td>
-                  <td>9</td>
-                </tr>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Vlakstarters (11 stones)</td>
-                  <td>37</td>
-                </tr>
-                <tr className={cx('border-b-0', 'border-gray-300', 'px-4', 'py-2')}>
-                  <td>Vlakstarters (12 stones)</td>
-                  <td>1</td>
-                </tr>
-              </tbody>
-            </table>
+            <ProjectAttributeTable rows={data.event?.attributes ?? []} />
           </Card>
         </div>
       )}
