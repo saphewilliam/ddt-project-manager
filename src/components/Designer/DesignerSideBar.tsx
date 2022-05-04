@@ -55,17 +55,18 @@ export default function DesignerSideBar(props: Props): ReactElement {
               'transition-colors',
               'text-gray-900',
               'w-[5.5rem]',
-              'h-14',
+              'h-16',
               'rounded-md',
             )}
           >
             {props.selectedTool === toolIndex ? (
-              <tool.selectedIcon width={20} />
+              <tool.selectedIcon width={18} />
             ) : (
-              <tool.icon width={20} />
+              <tool.icon width={18} />
             )}
 
-            <span className={cx('font-bold', 'text-sm')}>{tool.label}</span>
+            <span className={cx('font-bold', 'text-xs')}>{tool.label}</span>
+            <span className={cx('text-xs')}>({tool.shortcut})</span>
           </button>
         ))}
       </DesignerSideBarSection>
@@ -130,6 +131,7 @@ export default function DesignerSideBar(props: Props): ReactElement {
           {Object.entries(props.palette).map(([colorIndex, color], index) => (
             <button
               key={index}
+              title={`${color.name} (ctrl + ${(index + 1) % 10})`}
               className={cx(
                 'w-9',
                 'h-9',
