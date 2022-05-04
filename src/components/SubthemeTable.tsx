@@ -11,6 +11,7 @@ export interface Props {
   subtheme: {
     color: string;
     name: string;
+    stoneAmount: number;
     projects: {
       id: string;
       name: string;
@@ -47,7 +48,9 @@ export default function SubthemeTable(props: Props): ReactElement {
                   <PlusSmIcon className={cx('w-4')} />
                 )}
               </button>
-              <span>{props.subtheme.name}</span>
+              <span>
+                {props.subtheme.name} ({formatNumber(props.subtheme.stoneAmount)} stones)
+              </span>
             </div>
           </td>
         </tr>

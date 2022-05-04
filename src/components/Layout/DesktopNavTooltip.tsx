@@ -51,8 +51,8 @@ export default function DesktopNavTooltip(props: Props): ReactElement {
             'overflow-y-scroll',
             'scrollbar-thin',
             'bg-gray-900',
-            'scrollbar-track-gray-900',
-            'scrollbar-thumb-gray-800',
+            'scrollbar-track-gray-800',
+            'scrollbar-thumb-gray-600',
             props.show && 'pointer-events-auto',
           )}
         >

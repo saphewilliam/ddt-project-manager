@@ -1,3 +1,9 @@
+// console.error() + toast.error()
+declare function displayError(message: string): void;
+export function err(message: string): void {
+  displayError(message);
+}
+
 // console.log()
 declare function consoleLog(message: string): void;
 export function log(message: string): void {

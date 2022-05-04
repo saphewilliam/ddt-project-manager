@@ -34,9 +34,9 @@
     "@dicebear/avatars-jdenticon-sprites": "4.10.2",
     "@headlessui/react": "1.5.0",
     "@heroicons/react": "1.0.6",
-    "@prisma/client": "3.12.0",
+    "@prisma/client": "3.13.0",
     "@react-hook/resize-observer": "1.2.5",
-    "@saphe/react-form": "0.7.0",
+    "@saphe/react-form": "0.8.0",
     "@saphe/react-table": "0.6.0",
     "apollo-server-micro": "3.6.7",
     "as-bind": "0.8.2",
@@ -84,14 +84,15 @@
     "eslint-config-next": "12.1.5",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-tailwindcss": "3.5.0",
     "graphql-codegen-plugin-typescript-swr": "0.8.1",
     "postcss": "8.4.13",
     "prettier": "2.6.2",
-    "prisma": "3.12.0",
+    "prisma": "3.13.0",
     "tailwind-scrollbar": "1.3.1",
     "tailwindcss": "3.0.24",
     "ts-node": "10.7.0",
     "tsconfig-paths": "3.14.1",
-    "typescript": "4.6.4"
+    "typescript": "4.5.5"
   }
 }

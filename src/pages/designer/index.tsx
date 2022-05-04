@@ -20,7 +20,11 @@ import {
   ZoomOutIcon as ZoomOutIconSolid,
 } from '@heroicons/react/solid';
 import React, { ReactElement, SVGProps, useCallback, useState } from 'react';
-import Canvas, { Props as CanvasProps, CanvasUpdateInfo } from '@components/Designer/Canvas';
+import Canvas, {
+  Props as CanvasProps,
+  CanvasUpdateInfo,
+  CanvasOptions,
+} from '@components/Designer/Canvas';
 import { MenuItemKind } from '@components/Designer/ContextMenu';
 import DesignerSideBar from '@components/Designer/DesignerSideBar';
 import Layout from '@components/Layout';
@@ -91,6 +95,7 @@ export enum ToolIndex {
 
 export interface Tool {
   label: string;
+  shortcut: string;
   description: string;
   icon: (props: SVGProps<SVGSVGElement>) => ReactElement;
   selectedIcon: (props: SVGProps<SVGSVGElement>) => ReactElement;
@@ -103,6 +108,14 @@ export interface Tool {
 export default function DesignerPage(): ReactElement {
   const [selectedTool, setSelectedTool] = useState<ToolIndex>(ToolIndex.DRAW);
   const [selectedColor, setSelectedColor] = useState<ColorIndex>(0);
+
+  const [canvasOptions, setCanvasOptions] = useState<CanvasOptions>({
+    strokeWidth: null,
+    strokeColor: null,
+    selectedStrokeColor: null,
+    backgroundColor: null,
+  });
+
   const [palette, setPalette] = useState<{ [P in ColorIndex]: Color }>({
     [0]: colors[30]!,
     [1]: colors[31]!,
@@ -121,6 +134,7 @@ export default function DesignerPage(): ReactElement {
   const tools: { [P in keyof typeof ToolIndex]: Tool } = {
     [ToolIndex.DRAW]: {
       label: 'Draw',
+      shortcut: 'Ctrl + D',
       description: 'Click and drag your mouse to color dominoes in the selected color',
       icon: PencilIconOutline,
       selectedIcon: PencilIconSolid,
@@ -149,6 +163,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.ERASE]: {
       label: 'Erase',
+      shortcut: 'Ctrl + E',
       description: 'Click and drag your mouse to remove dominoes from the design',
       icon: XCircleIconOutline,
       selectedIcon: XCircleIconSolid,
@@ -164,6 +179,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.SELECT]: {
       label: 'Select',
+      shortcut: 'Ctrl + S',
       description: 'Click and drag your mouse to select dominoes in a square',
       icon: CubeTransparentIconOutline,
       selectedIcon: CubeTransparentIconSolid,
@@ -180,6 +196,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.MOVE]: {
       label: 'Move',
+      shortcut: 'Ctrl + M',
       description: 'Click and drag your mouse to move around on the canvas',
       icon: HandIconOutline,
       selectedIcon: HandIconSolid,
@@ -195,6 +212,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.ZOOM_IN]: {
       label: 'Zoom in',
+      shortcut: 'Ctrl + I',
       description: 'Click on the canvas to zoom in on that position',
       icon: ZoomInIconOutline,
       selectedIcon: ZoomInIconSolid,
@@ -204,6 +222,7 @@ export default function DesignerPage(): ReactElement {
     },
     [ToolIndex.ZOOM_OUT]: {
       label: 'Zoom out',
+      shortcut: 'Ctrl + O',
       description: 'Click on the canvas to zoom out from that position',
       icon: ZoomOutIconOutline,
       selectedIcon: ZoomOutIconSolid,
@@ -323,8 +342,17 @@ export default function DesignerPage(): ReactElement {
       }
 
       if (e.repeat) return [0];
+      const key = e.key.toLowerCase();
+      const num = parseInt(key);
 
-      switch (e.key.toLowerCase()) {
+      // Color shortcuts
+      if (e.ctrlKey && !isNaN(num) && num >= 0 && num < 10) {
+        e.preventDefault();
+        setSelectedColor((num === 0 ? 9 : num - 1) as ColorIndex);
+      }
+
+      switch (key) {
+        // Utilities shortcuts
         case 'a':
           if (e.ctrlKey) {
             e.preventDefault();
@@ -373,6 +401,44 @@ export default function DesignerPage(): ReactElement {
               return instance?.exports.redo();
             }
           break;
+
+        // Tools shortcuts
+        case 'd':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            setSelectedTool(ToolIndex.DRAW);
+          }
+          break;
+        case 'e':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            setSelectedTool(ToolIndex.ERASE);
+          }
+          break;
+        case 's':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            setSelectedTool(ToolIndex.SELECT);
+          }
+          break;
+        case 'm':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            setSelectedTool(ToolIndex.MOVE);
+          }
+          break;
+        case 'i':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            setSelectedTool(ToolIndex.ZOOM_IN);
+          }
+          break;
+        case 'o':
+          if (e.ctrlKey) {
+            e.preventDefault();
+            setSelectedTool(ToolIndex.ZOOM_OUT);
+          }
+          break;
       }
 
       return [0];
@@ -393,10 +459,13 @@ export default function DesignerPage(): ReactElement {
           setPalette={setPalette}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
+          canvasOptions={canvasOptions}
+          setCanvasOptions={setCanvasOptions}
         />
       }
     >
       <Canvas
+        options={canvasOptions}
         contextMenuItems={contextMenuItems}
         onMouseDown={tools[selectedTool].onMouseDown}
         onMouseUp={tools[selectedTool].onMouseUp}

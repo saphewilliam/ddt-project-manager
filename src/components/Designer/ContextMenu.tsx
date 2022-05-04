@@ -201,7 +201,7 @@ function Item(props: MenuItemExecute | MenuItemSub): ReactElement {
       {'items' in props && props.items && (
         <>
           <ChevronRightIcon width={16} height={16} className={cx('text-gray-400')} />
-          <Menu items={props.items} isOpen={isOpen} className={cx('left-full', 'sub', 'w-40')} />
+          <Menu items={props.items} isOpen={isOpen} className={cx('sub', 'left-full', 'w-40')} />
         </>
       )}
     </li>

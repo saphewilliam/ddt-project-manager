@@ -17,12 +17,12 @@ export interface Point {
   y: number;
 }
 
-// interface CanvasOptions {
-//   stroke: {
-//     thickness: number;
-//     color: Color;
-//   }
-// }
+export interface CanvasOptions {
+  strokeWidth: number | null;
+  strokeColor: string | null;
+  selectedStrokeColor: string | null;
+  backgroundColor: string | null;
+}
 
 /** [shouldUpdate, shouldClear dx, dy, width, height, ...pixels] */
 export type CanvasUpdateInfo = number[];
@@ -33,7 +33,7 @@ type MenuItemProxy = Omit<MenuItemExecute, 'onClick'> & { onClick: () => CanvasU
 type SubMenuItemProxy = Omit<MenuItemSub, 'items'> & { items: (MenuItemProxy | MenuItemDivide)[] };
 
 export interface Props {
-  // options: CanvasOptions
+  options: CanvasOptions;
   contextMenuItems?: (MenuItemProxy | SubMenuItemProxy | MenuItemDivide)[];
   onMouseDown?: (point: Point) => CanvasUpdateInfo;
   onMouseUp?: (point: Point) => CanvasUpdateInfo;
@@ -146,12 +146,15 @@ export default function Canvas(props: Props): ReactElement {
       // TODO faster way to do this for loop?
       for (let i = 0; i < pixels.length; i++) buffer32[i] = pixels[i] ?? 0;
       const imageData = new ImageData(buffer8, width, height);
-      if (shouldClear === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (shouldClear === 1) {
+        ctx.fillStyle = props.options.backgroundColor ?? '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       ctx.putImageData(imageData, dx, dy, 0, 0, width, height);
 
       dispatchContextMenuItems({ type: 'update' });
     },
-    [canvasRef],
+    [canvasRef, props.options.backgroundColor],
   );
 
   const handleResize = useCallback(() => {
@@ -231,6 +234,28 @@ export default function Canvas(props: Props): ReactElement {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [window, handleKeyDown]);
+
+  useEffect(() => {
+    const updateInfo = instance?.exports.reload();
+    updateCanvas(updateInfo);
+  }, [props.options.backgroundColor]);
+
+  useEffect(() => {
+    const updateInfo = instance?.exports.setStrokeWidth(props.options.strokeWidth ?? 1);
+    updateCanvas(updateInfo);
+  }, [props.options.strokeWidth]);
+
+  useEffect(() => {
+    const updateInfo = instance?.exports.setStrokeColor(props.options.strokeColor ?? '#000000');
+    updateCanvas(updateInfo);
+  }, [props.options.strokeColor]);
+
+  useEffect(() => {
+    const updateInfo = instance?.exports.setSelectedStrokeColor(
+      props.options.selectedStrokeColor ?? '#ff0000',
+    );
+    updateCanvas(updateInfo);
+  }, [props.options.selectedStrokeColor]);
 
   useLayoutEffect(() => {
     setTimeout(() => {

@@ -27,8 +27,8 @@ export default function DesktopNav(props: Props): ReactElement {
         'scrollbar-thin',
         'bg-gray-900',
         'text-gray-200',
-        'scrollbar-track-gray-900',
-        'scrollbar-thumb-gray-800',
+        'scrollbar-track-gray-800',
+        'scrollbar-thumb-gray-600',
       )}
       style={{
         width: navWidth + 'px',

@@ -33,6 +33,7 @@ query Event($eventSlug: String!) {
       order
       slug
       color
+      stoneAmount
       projects {
         id
         name
@@ -63,6 +64,17 @@ query Event($eventSlug: String!) {
           alias2
           order
         }
+      }
+    }
+    attributes {
+      amount
+      user {
+        id
+        displayName
+      }
+      attribute {
+        id
+        namePlural
       }
     }
   }

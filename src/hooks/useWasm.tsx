@@ -1,6 +1,7 @@
 import * as AsBind from 'as-bind';
 import { useState, useEffect, ReactNode, ReactElement, createContext, useContext } from 'react';
 import { environment } from '@lib/environment';
+import { displayError } from './useDisplayError';
 
 // TODO typing
 type Any = any;
@@ -37,6 +38,7 @@ export function WasmProvider(props: Props): ReactElement {
 
         const instance = await (AsBind as Any).instantiate(wasm, {
           util: {
+            displayError,
             // eslint-disable-next-line no-console
             consoleLog: (message: string) => console.log(message),
             // eslint-disable-next-line no-console
