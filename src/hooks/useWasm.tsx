@@ -38,7 +38,6 @@ export function WasmProvider(props: Props): ReactElement {
 
         const instance = await (AsBind as Any).instantiate(wasm, {
           util: {
-            // eslint-disable-next-line no-console
             displayError,
             // eslint-disable-next-line no-console
             consoleLog: (message: string) => console.log(message),
