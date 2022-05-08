@@ -1,3 +1,4 @@
+import cx from 'clsx';
 import React, { ReactElement } from 'react';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
@@ -31,16 +32,35 @@ export default function TestPage(): ReactElement {
         <div className="m-4">
           <Tabs
             tabData={[
-              { label: 'Member', content: MemberForm },
-              { label: 'Attribute', content: AttributeForm },
-              { label: 'Stone', content: StoneForm },
-              { label: 'Stone Type', content: StoneTypeForm },
-              { label: 'Stone order', content: StoneOrderForm },
-              { label: 'Event', content: EventForm },
-              { label: 'Subtheme', content: SubthemeForm },
-              { label: 'Stat', content: StatForm },
-              { label: 'Team', content: TeamForm },
-              { label: 'User', content: UserForm },
+              // { label: 'Member', content: MemberForm },
+              // { label: 'Attribute', content: AttributeForm },
+              // { label: 'Stone', content: StoneForm },
+              // { label: 'Stone Type', content: StoneTypeForm },
+              // { label: 'Stone order', content: StoneOrderForm },
+              // { label: 'Event', content: EventForm },
+              // { label: 'Subtheme', content: SubthemeForm },
+              // { label: 'Stat', content: StatForm },
+              // { label: 'Team', content: TeamForm },
+              // { label: 'User', content: UserForm },
+              { label: 'General', content: UserForm },
+              {
+                label: 'Inventory',
+                content: (
+                  <div className={cx('space-y-10')}>
+                    <div>
+                      <h2>Attributes</h2>
+                      {AttributeForm}
+                    </div>
+                    <div>
+                      <h2>Stones</h2>
+                      {StoneForm}
+                    </div>
+                  </div>
+                ),
+              },
+              { label: 'Events', content: UserForm },
+              { label: 'Projects', content: UserForm },
+              { label: 'Admin', content: UserForm },
             ]}
           />
         </div>

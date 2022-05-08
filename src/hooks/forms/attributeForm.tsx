@@ -1,6 +1,11 @@
 import useForm, { Field, State } from '@saphe/react-form';
+import { toast } from 'react-hot-toast';
+import useSdk from '@hooks/useSdk';
+import { promiseWithCatch } from '@lib/util';
 
 export default function useAttributeForm(): State {
+  const sdk = useSdk();
+
   return useForm({
     name: 'AttributeForm',
     fields: {
@@ -18,7 +23,18 @@ export default function useAttributeForm(): State {
       },
     },
     async onSubmit(formValues) {
-      console.log(formValues);
+      const data = await promiseWithCatch(
+        sdk.CreateAttribute({
+          data: {
+            name: formValues.attributeNameField,
+            namePlural: formValues.attributePluralNameField,
+          },
+        }),
+        'Something went wrong while creating the attribute...',
+      );
+      if (!data) return;
+
+      toast.success(`Attribute '${data.createAttritbute.name}' was created`);
     },
   });
 }

@@ -16,6 +16,11 @@ type Attribute {
   updatedAt: DateTime!
 }
 
+input AttributeCreateInput {
+  name: String!
+  namePlural: String!
+}
+
 type AttributeInventory {
   amount: Int!
   attribute: Attribute!
@@ -119,6 +124,9 @@ type Member {
 }
 
 type Mutation {
+  """Creates an attribute"""
+  createAttritbute(data: AttributeCreateInput!): Attribute!
+
   """Generate a new session for a user with an active account"""
   login(email: String!, isPermanent: Boolean!, password: String!): String!
 
