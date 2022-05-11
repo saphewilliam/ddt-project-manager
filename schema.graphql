@@ -3,9 +3,10 @@
 
 
 type Attribute {
-  attributeInventory: [AttributeInventory!]!
   createdAt: DateTime!
+  history: [AttributeInventoryHistory!]!
   id: ID!
+  inventory: [AttributeInventory!]!
   name: String!
   namePlural: String!
   projects: [AttributesOnProject!]!
@@ -21,6 +22,19 @@ type AttributeInventory {
   attributeId: String!
   createdAt: DateTime!
   id: ID!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type AttributeInventoryHistory {
+  attribute: Attribute!
+  attributeId: String!
+  createdAt: DateTime!
+  fieldName: String!
+  id: ID!
+  newValue: String!
+  oldValue: String!
   updatedAt: DateTime!
   user: User!
   userId: String!
@@ -109,10 +123,12 @@ type Mutation {
 type Project {
   attributes: [AttributesOnProject!]!
   createdAt: DateTime!
-  description: String!
+  description: String
+  history: [ProjectHistory!]!
   id: ID!
   name: String!
   number: Int!
+  parts: [ProjectPart!]!
   slug: String!
   stats: [StatsOnProject!]!
   status: ProjectStatus!
@@ -120,11 +136,35 @@ type Project {
   """The number of dominoes assigned to this project"""
   stoneAmount: Int!
   stones: [StonesOnProject!]!
-  subNumber: Int!
   subtheme: Subtheme!
   subthemeId: String!
   supervisor: User
   supervisorId: String
+  updatedAt: DateTime!
+}
+
+type ProjectHistory {
+  createdAt: DateTime!
+  fieldName: String!
+  id: ID!
+  newValue: String!
+  oldValue: String!
+  project: Project!
+  projectId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type ProjectPart {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  number: Int!
+  project: Project!
+  projectId: String!
+  slug: String!
   type: ProjectType!
   updatedAt: DateTime!
 }
@@ -252,7 +292,9 @@ type Stone {
   description: String
   hex: String!
   hex2: String
+  history: [StoneInventoryHistory!]!
   id: ID!
+  inventory: [StoneInventory!]!
   name: String!
   order: Int!
   projects: [StonesOnProject!]!
@@ -274,9 +316,22 @@ type StoneInventory {
   userId: String!
 }
 
+type StoneInventoryHistory {
+  createdAt: DateTime!
+  fieldName: String!
+  id: ID!
+  newValue: String!
+  oldValue: String!
+  stone: Stone!
+  stoneId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
 type StoneType {
   createdAt: DateTime!
-  description: String!
+  description: String
   id: ID!
   name: String!
   order: Int!
@@ -345,6 +400,7 @@ type Team {
 
 type User {
   attributeInventory: [AttributeInventory!]!
+  attributeInventoryHistory: [AttributeInventoryHistory!]!
   attributesOnProjects: [AttributesOnProject!]!
   attributesOnSubthemes: [AttributesOnSubtheme!]!
   avatar: String
@@ -355,6 +411,7 @@ type User {
   id: ID!
   isAdmin: Boolean!
   lastName: String!
+  projectHistory: [ProjectHistory!]!
 
   """The projects that this user supervises"""
   projects: [Project!]!
@@ -364,6 +421,7 @@ type User {
   """The number of dominoes this user posesses"""
   stoneAmount: Int!
   stoneInventory: [StoneInventory!]!
+  stoneInventoryHistory: [StoneInventoryHistory!]!
   stonesOnProjects: [StonesOnProject!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!
 

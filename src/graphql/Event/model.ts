@@ -23,7 +23,7 @@ export const eventModel = nexusModel(Event, {
       resolve: async (root, _, ctx) => {
         const projectResult = await ctx.prisma.stonesOnProject.aggregate({
           _sum: { amount: true },
-          where: { project: { subtheme: { eventId: root.id } } },
+          where: { project: { project: { subtheme: { eventId: root.id } } } },
         });
 
         const subthemeResult = await ctx.prisma.stonesOnSubtheme.aggregate({
@@ -41,7 +41,7 @@ export const eventModel = nexusModel(Event, {
         const projectAttributes = await ctx.prisma.attributesOnProject.groupBy({
           _sum: { amount: true },
           by: ['attributeId', 'userId'],
-          where: { project: { subtheme: { eventId: root.id } } },
+          where: { project: { project: { subtheme: { eventId: root.id } } } },
         });
 
         const subthemeAttributes = await ctx.prisma.attributesOnSubtheme.groupBy({

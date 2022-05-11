@@ -26,13 +26,16 @@ model User {
   email       String   @unique
   isAdmin     Boolean  @default(false)
 
-  sessions              Session[]
-  stoneInventory        StoneInventory[]
-  stonesOnProjects      StonesOnProject[]
-  stonesOnSubthemes     StonesOnSubtheme[]
-  attributeInventory    AttributeInventory[]
-  attributesOnProjects  AttributesOnProject[]
-  attributesOnSubthemes AttributesOnSubtheme[]
+  sessions                  Session[]
+  stoneInventory            StoneInventory[]
+  stonesOnProjects          StonesOnProject[]
+  stonesOnSubthemes         StonesOnSubtheme[]
+  stoneInventoryHistory     StoneInventoryHistory[]
+  attributeInventory        AttributeInventory[]
+  attributesOnProjects      AttributesOnProject[]
+  attributesOnSubthemes     AttributesOnSubtheme[]
+  attributeInventoryHistory AttributeInventoryHistory[]
+  projectHistory            ProjectHistory[]
 
   /// The teams this user is a member of
   teams    Member[]
@@ -164,20 +167,49 @@ model Project {
   updatedAt   DateTime @updatedAt
   name        String
   slug        String   @unique
-  description String
+  description String?
   number      Int
-  subNumber   Int
 
-  type       ProjectType
-  status     ProjectStatus
-  attributes AttributesOnProject[]
-  stones     StonesOnProject[]
-  stats      StatsOnProject[]
+  status  ProjectStatus
+  parts   ProjectPart[]
+  stats   StatsOnProject[]
+  history ProjectHistory[]
 
   subthemeId   String
   subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
   supervisorId String?
   supervisor   User?    @relation(fields: [supervisorId], references: [id], onDelete: SetNull)
+}
+
+model ProjectPart {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  slug        String   @unique
+  description String?
+  number      Int
+
+  type       ProjectType
+  stones     StonesOnProject[]
+  attributes AttributesOnProject[]
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model ProjectHistory {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fieldName String
+  oldValue  String
+  newValue  String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Restrict)
 }
 
 model Stat {
@@ -211,7 +243,7 @@ model StoneType {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   name        String
-  description String
+  description String?
   order       Int
 
   stones Stone[]
@@ -232,9 +264,10 @@ model Stone {
   description String?
   order       Int
 
-  stoneInventory StoneInventory[]
-  projects       StonesOnProject[]
-  subthemes      StonesOnSubtheme[]
+  inventory StoneInventory[]
+  projects  StonesOnProject[]
+  subthemes StonesOnSubtheme[]
+  history   StoneInventoryHistory[]
 
   stoneTypeId String
   stoneType   StoneType @relation(fields: [stoneTypeId], references: [id], onDelete: Cascade)
@@ -259,11 +292,11 @@ model StonesOnProject {
   amount    Int
 
   stoneId   String
-  stone     Stone   @relation(fields: [stoneId], references: [id], onDelete: Restrict)
+  stone     Stone       @relation(fields: [stoneId], references: [id], onDelete: Restrict)
   userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Restrict)
   projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project   ProjectPart @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model StonesOnSubtheme {
@@ -280,6 +313,20 @@ model StonesOnSubtheme {
   subtheme   Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
 }
 
+model StoneInventoryHistory {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fieldName String
+  oldValue  String
+  newValue  String
+
+  stoneId String
+  stone   Stone  @relation(fields: [stoneId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+}
+
 model Attribute {
   id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
@@ -287,9 +334,10 @@ model Attribute {
   name       String
   namePlural String
 
-  attributeInventory AttributeInventory[]
-  projects           AttributesOnProject[]
-  subthemes          AttributesOnSubtheme[]
+  inventory AttributeInventory[]
+  projects  AttributesOnProject[]
+  subthemes AttributesOnSubtheme[]
+  history   AttributeInventoryHistory[]
 
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
@@ -314,11 +362,11 @@ model AttributesOnProject {
   amount    Int
 
   attributeId String
-  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  attribute   Attribute   @relation(fields: [attributeId], references: [id], onDelete: Restrict)
   userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Restrict)
   projectId   String
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     ProjectPart @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model AttributesOnSubtheme {
@@ -333,4 +381,18 @@ model AttributesOnSubtheme {
   user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
   subthemeId  String
   subtheme    Subtheme  @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+}
+
+model AttributeInventoryHistory {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fieldName String
+  oldValue  String
+  newValue  String
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
 }

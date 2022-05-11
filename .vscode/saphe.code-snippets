@@ -59,8 +59,8 @@
     "prefix": "saphe-nexus-model",
     "description": "Boilerplate Typescript Nexus Model",
     "body": [
-      "import { nexusModel } from '@lib/nexusHelpers';",
       "import { ${2:Model} } from 'nexus-prisma';",
+      "import { nexusModel } from '@lib/nexusHelpers';",
       "",
       "export const ${1:modelName}Model = nexusModel(${2:Model});",
       ""

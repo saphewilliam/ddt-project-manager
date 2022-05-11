@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import { idMap } from '@graphql/idMap';
 
 export default async function seedStonesOnProjects(prisma: PrismaClient): Promise<void> {
   await prisma.stonesOnProject.createMany({
     data: [
+      /*
       {
         projectId: idMap.projects.WDC_2021_DON_DOMINO,
         stoneId: idMap.stones.ROOD_DO_A,
@@ -821,6 +821,7 @@ export default async function seedStonesOnProjects(prisma: PrismaClient): Promis
         userId: idMap.users.WIM_VAN_OTTERDIJK,
         amount: 1888,
       },
+      */
     ],
   });
 }

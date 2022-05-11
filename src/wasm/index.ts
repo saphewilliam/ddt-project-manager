@@ -5,7 +5,7 @@ import { err } from './util';
 
 // Initialize global state
 const canvas: Canvas = new Canvas(0, 0);
-const layer: PixelGridLayer = new PixelGridLayer(50, 200);
+const layer: PixelGridLayer = new PixelGridLayer(15, 30);
 
 const undoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
 const redoStore: Array<Array<Stone>> = new Array<Array<Stone>>();
