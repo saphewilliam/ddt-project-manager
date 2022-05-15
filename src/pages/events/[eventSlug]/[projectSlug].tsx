@@ -1,12 +1,16 @@
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Tabs from '@components/Tabs';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
+import ProjectAttributeTable from '@templates/InventoryTemplate/ProjectAttributeTable';
+import ProjectStoneTable from '@templates/InventoryTemplate/ProjectStoneTable';
 
 export default function ProjectPage(): ReactElement {
+  const [subTabIndex, setSubTabIndex] = useState(0);
+
   const router = useRouter();
   const eventSlug = extractURLParam('eventSlug', router.query) ?? '';
   const projectSlug = extractURLParam('projectSlug', router.query) ?? '';
@@ -28,17 +32,35 @@ export default function ProjectPage(): ReactElement {
             {
               label: 'Stones',
               content: (
-                // TODO tabs in inventory screen?
                 <Tabs
                   vertical
-                  tabData={[
-                    { label: 'Wall', content: <span>Wall tab</span> },
-                    { label: 'Field', content: <span>Field tab</span> },
-                  ]}
+                  tabIndex={subTabIndex}
+                  setTabIndex={setSubTabIndex}
+                  tabData={
+                    data?.project?.parts.map((part) => ({
+                      label: `#${data.project?.number}.${part.number} ${part.name}`,
+                      content: <ProjectStoneTable rows={part.stones} />,
+                    })) ?? []
+                  }
                 />
               ),
             },
-            { label: 'Attributes', content: <span>Attributes tab</span> },
+            {
+              label: 'Attributes',
+              content: (
+                <Tabs
+                  vertical
+                  tabIndex={subTabIndex}
+                  setTabIndex={setSubTabIndex}
+                  tabData={
+                    data?.project?.parts.map((part) => ({
+                      label: `#${data.project?.number}.${part.number} ${part.name}`,
+                      content: <ProjectAttributeTable rows={part.attributes} />,
+                    })) ?? []
+                  }
+                />
+              ),
+            },
             { label: 'Attachments', content: <span>Attachments tab</span> },
             { label: 'History', content: <span>History tab</span> },
           ]}

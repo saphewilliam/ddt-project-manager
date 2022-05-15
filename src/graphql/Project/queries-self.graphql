@@ -7,6 +7,7 @@ query Project($projectSlug: String!, $eventSlug: String!) {
     number
     parts {
       id
+      name
       number
       type
       stones {
@@ -19,6 +20,11 @@ query Project($projectSlug: String!, $eventSlug: String!) {
         stone {
           id
           name
+          hex
+          hex2
+          alias
+          alias2
+          order
         }
       }
       attributes {
@@ -26,7 +32,7 @@ query Project($projectSlug: String!, $eventSlug: String!) {
         amount
         attribute {
           id
-          name
+          namePlural
         }
         user {
           id

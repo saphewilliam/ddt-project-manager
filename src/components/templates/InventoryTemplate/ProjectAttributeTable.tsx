@@ -1,10 +1,12 @@
 import useTable, { Columns, Data, SortOrder } from '@saphe/react-table';
+import cx from 'clsx';
 import { ReactElement } from 'react';
 import Table from '@components/Table';
 import { AttributesOnProjectColumnTypes } from '@lib/inventoryHelpers';
 import { HeadCell, ValueCell } from './InventoryCells';
 
 export interface Props {
+  title?: string;
   rows: {
     amount: number;
     user: { displayName: string };
@@ -39,5 +41,12 @@ export default function ProjectAttributeTable(props: Props): ReactElement {
     style: { renderCell: ValueCell, renderHead: HeadCell },
   });
 
-  return <Table headers={headers} rows={rows} />;
+  return (
+    <div className={cx('w-full')}>
+      {props.title && (
+        <span className={cx('text-xl', 'mb-3', 'block', 'font-semibold')}>{props.title}</span>
+      )}
+      <Table headers={headers} rows={rows} />
+    </div>
+  );
 }
