@@ -2,26 +2,13 @@ import { PlusSmIcon, MinusSmIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { ProjectType, ProjectStatus } from '@graphql/__generated__/codegen-self';
+import { EventQuery } from '@graphql/__generated__/codegen-self';
 import { projectTypeToString, fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 import ProjectStatusBadge from './ProjectStatusBadge';
 
 export interface Props {
   eventSlug: string;
-  subtheme: {
-    color: string;
-    name: string;
-    stoneAmount: number;
-    projects: {
-      id: string;
-      name: string;
-      slug: string;
-      type: ProjectType;
-      status: ProjectStatus;
-      stoneAmount: number;
-      supervisor?: { displayName: string } | null;
-    }[];
-  };
+  subtheme: NonNullable<EventQuery['event']>['subthemes'][number];
 }
 
 export default function SubthemeTable(props: Props): ReactElement {
@@ -66,7 +53,15 @@ export default function SubthemeTable(props: Props): ReactElement {
                   <Link href={`/events/${props.eventSlug}/${project.slug}`}>
                     <a className={cx('font-bold')}>{project.name}</a>
                   </Link>
-                  <span>{projectTypeToString(project.type)}</span>
+                  <span>
+                    {project.parts
+                      .filter(
+                        (part, index, self) =>
+                          self.findIndex((p) => p.type === part.type) === index,
+                      )
+                      .map((part) => projectTypeToString(part.type))
+                      .join(', ')}
+                  </span>
                   <span>{formatNumber(project.stoneAmount)} stones</span>
                   <span>Supervisor: {project.supervisor?.displayName}</span>
                   <ProjectStatusBadge status={project.status} />

@@ -5,9 +5,9 @@ import { nexusModel } from '@lib/nexusHelpers';
 
 export const stoneModel = nexusModel(Stone, {
   // TODO: auto hide when override in extend
-  hide: ['stoneInventory'],
+  hide: ['inventory'],
   extend(t) {
-    t.list.field('stoneInventory', {
+    t.list.field('inventory', {
       type: 'StoneInventory',
       authorize: authorizeSession,
       resolve(root, _, ctx) {

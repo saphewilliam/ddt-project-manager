@@ -92,8 +92,8 @@ export function projectTypeToString(projectType: ProjectType): string {
       return 'Spiral';
     case ProjectType.STRUCTURE:
       return 'Structure';
-    case ProjectType.HANDSET:
-      return 'Handset';
+    case ProjectType.FREE_HAND:
+      return 'Free hand';
     case ProjectType.DECOR:
       return 'Decor';
     case ProjectType.OTHER:

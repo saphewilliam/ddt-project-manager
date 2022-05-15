@@ -156,7 +156,7 @@ enum ProjectType {
   FALLWALL
   SPIRAL
   STRUCTURE
-  HANDSET
+  FREE_HAND
   DECOR
   OTHER
 }

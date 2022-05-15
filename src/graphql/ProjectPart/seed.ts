@@ -68,7 +68,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Schatkaart',
         slug: generateSlug('Schatkaart'),
         number: 1,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.WDC_2021.PETER_PAN.TREASURE_MAP.INDIAN_VILLAGE,
@@ -100,7 +100,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Foot Steps',
         slug: generateSlug('Foot Steps'),
         number: 5,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.WDC_2021.PETER_PAN.LOST_BOYS.DECOR,
@@ -284,7 +284,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Measuring Tape',
         slug: generateSlug('Measuring Tape'),
         number: 4,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.WDC_2021.EMPERORS_NEW_CLOTHES.TOOLS.SPOOL_1,
@@ -444,7 +444,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Food',
         slug: generateSlug('Food'),
         number: 7,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.WDC_2021.BEAUTY_AND_THE_BEAST.FIGHT.TREES,
@@ -540,7 +540,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Floor',
         slug: generateSlug('Floor'),
         number: 5,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.WDC_2021.BEAUTY_AND_THE_BEAST.BALLROOM.CHANDELIER,
@@ -566,7 +566,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Sonimod',
         slug: generateSlug('Sonimod'),
         number: 1,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.DDT_10_YEARS.PROJECT.FIREWORKS.TECHNIQUE,
@@ -574,7 +574,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Fireworks Technique',
         slug: generateSlug('Fireworks Technique'),
         number: 2,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.DDT_10_YEARS.PROJECT.TEN_YEARS.STRUCTURES,
@@ -590,7 +590,7 @@ export default async function seedProjectParts(prisma: PrismaClient): Promise<vo
         name: 'Cerpentines',
         slug: generateSlug('Cerpentines'),
         number: 1,
-        type: ProjectType.HANDSET,
+        type: ProjectType.FREE_HAND,
       },
       {
         id: idMap.events.DDT_10_YEARS.PROJECT.PARTY_WALL.WALL,

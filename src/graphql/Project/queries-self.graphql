@@ -5,23 +5,38 @@ query Project($projectSlug: String!, $eventSlug: String!) {
     description
     status
     number
-    subNumber
-    type
+    parts {
+      id
+      number
+      type
+      stones {
+        id
+        amount
+        user {
+          id
+          displayName
+        }
+        stone {
+          id
+          name
+        }
+      }
+      attributes {
+        id
+        amount
+        attribute {
+          id
+          name
+        }
+        user {
+          id
+          displayName
+        }
+      }
+    }
     supervisor {
       id
       displayName
-    }
-    stones {
-      id
-      amount
-      user {
-        id
-        displayName
-      }
-      stone {
-        id
-        name
-      }
     }
     stats {
       id
@@ -29,18 +44,6 @@ query Project($projectSlug: String!, $eventSlug: String!) {
       stat {
         id
         name
-      }
-    }
-    attributes {
-      id
-      amount
-      attribute {
-        id
-        name
-      }
-      user {
-        id
-        displayName
       }
     }
     subtheme {

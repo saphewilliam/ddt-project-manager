@@ -1,4 +1,3 @@
-// import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect } from 'react';
 import Card from '@components/Card';
@@ -18,11 +17,7 @@ export default function ProjectPage(): ReactElement {
     if (data?.project === null && !error) router.replace(`/events/${eventSlug}`);
   }, [data]);
 
-  const title = data?.project
-    ? `#${data.project.number}${data.project.subNumber ? `.${data.project.subNumber}` : ''} ${
-        data.project.name
-      }`
-    : '';
+  const title = data?.project ? `#${data.project.number} ${data.project.name}` : '';
 
   return (
     <Layout title={title}>

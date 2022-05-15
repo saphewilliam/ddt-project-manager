@@ -48,7 +48,7 @@ query Inventory {
     id
     name
     namePlural
-    attributeInventory {
+    inventory {
       id
       amount
       userId
@@ -57,7 +57,7 @@ query Inventory {
   stones {
     id
     ...StoneInventoryStone
-    stoneInventory {
+    inventory {
       id
       amount
       userId
