@@ -3,7 +3,7 @@ import { DateTimeResolver } from 'graphql-scalars';
 
 export * from './Attribute/model';
 export * from './AttributeInventory/model';
-export * from './AttributesOnProject/model';
+export * from './AttributesOnProjectPart/model';
 export * from './AttributesOnSubtheme/model';
 export * from './Event/model';
 export * from './History/model';
@@ -15,7 +15,7 @@ export * from './Stat/model';
 export * from './StatsOnProject/model';
 export * from './Stone/model';
 export * from './StoneInventory/model';
-export * from './StonesOnProject/model';
+export * from './StonesOnProjectPart/model';
 export * from './StonesOnSubtheme/model';
 export * from './StoneType/model';
 export * from './Subtheme/model';

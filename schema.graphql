@@ -9,7 +9,7 @@ type Attribute {
   inventory: [AttributeInventory!]!
   name: String!
   namePlural: String!
-  projects: [AttributesOnProject!]!
+  projectParts: [AttributesOnProjectPart!]!
   subthemes: [AttributesOnSubtheme!]!
   team: Team!
   teamId: String!
@@ -48,14 +48,14 @@ type AttributesOnEvent {
   userId: String!
 }
 
-type AttributesOnProject {
+type AttributesOnProjectPart {
   amount: Int!
   attribute: Attribute!
   attributeId: String!
   createdAt: DateTime!
   id: ID!
-  project: ProjectPart!
-  projectId: String!
+  projectPart: ProjectPart!
+  projectPartId: String!
   updatedAt: DateTime!
   user: User!
   userId: String!
@@ -157,7 +157,7 @@ type ProjectHistory {
 }
 
 type ProjectPart {
-  attributes: [AttributesOnProject!]!
+  attributes: [AttributesOnProjectPart!]!
   createdAt: DateTime!
   description: String
   id: ID!
@@ -166,7 +166,7 @@ type ProjectPart {
   project: Project!
   projectId: String!
   slug: String!
-  stones: [StonesOnProject!]!
+  stones: [StonesOnProjectPart!]!
   type: ProjectType!
   updatedAt: DateTime!
 }
@@ -299,7 +299,7 @@ type Stone {
   inventory: [StoneInventory!]!
   name: String!
   order: Int!
-  projects: [StonesOnProject!]!
+  projectParts: [StonesOnProjectPart!]!
   stoneType: StoneType!
   stoneTypeId: String!
   subthemes: [StonesOnSubtheme!]!
@@ -342,12 +342,12 @@ type StoneType {
   updatedAt: DateTime!
 }
 
-type StonesOnProject {
+type StonesOnProjectPart {
   amount: Int!
   createdAt: DateTime!
   id: ID!
-  project: ProjectPart!
-  projectId: String!
+  projectPart: ProjectPart!
+  projectPartId: String!
   stone: Stone!
   stoneId: String!
   updatedAt: DateTime!
@@ -402,7 +402,7 @@ type Team {
 type User {
   attributeInventory: [AttributeInventory!]!
   attributeInventoryHistory: [AttributeInventoryHistory!]!
-  attributesOnProjects: [AttributesOnProject!]!
+  attributesOnProjectParts: [AttributesOnProjectPart!]!
   attributesOnSubthemes: [AttributesOnSubtheme!]!
   avatar: String
   createdAt: DateTime!
@@ -421,7 +421,7 @@ type User {
   stoneAmount: Int!
   stoneInventory: [StoneInventory!]!
   stoneInventoryHistory: [StoneInventoryHistory!]!
-  stonesOnProjects: [StonesOnProject!]!
+  stonesOnProjectParts: [StonesOnProjectPart!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!
   supervisingProjects: [Project!]!
 

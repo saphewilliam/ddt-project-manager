@@ -28,11 +28,11 @@ model User {
 
   sessions                  Session[]
   stoneInventory            StoneInventory[]
-  stonesOnProjects          StonesOnProject[]
+  stonesOnProjectParts      StonesOnProjectPart[]
   stonesOnSubthemes         StonesOnSubtheme[]
   stoneInventoryHistory     StoneInventoryHistory[]
   attributeInventory        AttributeInventory[]
-  attributesOnProjects      AttributesOnProject[]
+  attributesOnProjectParts  AttributesOnProjectPart[]
   attributesOnSubthemes     AttributesOnSubtheme[]
   attributeInventoryHistory AttributeInventoryHistory[]
   projectHistory            ProjectHistory[]
@@ -193,8 +193,8 @@ model ProjectPart {
   number      Int
 
   type       ProjectType
-  stones     StonesOnProject[]
-  attributes AttributesOnProject[]
+  stones     StonesOnProjectPart[]
+  attributes AttributesOnProjectPart[]
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -266,10 +266,10 @@ model Stone {
   description String?
   order       Int
 
-  inventory StoneInventory[]
-  projects  StonesOnProject[]
-  subthemes StonesOnSubtheme[]
-  history   StoneInventoryHistory[]
+  inventory    StoneInventory[]
+  projectParts StonesOnProjectPart[]
+  subthemes    StonesOnSubtheme[]
+  history      StoneInventoryHistory[]
 
   stoneTypeId String
   stoneType   StoneType @relation(fields: [stoneTypeId], references: [id], onDelete: Cascade)
@@ -287,18 +287,18 @@ model StoneInventory {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model StonesOnProject {
+model StonesOnProjectPart {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   amount    Int
 
-  stoneId   String
-  stone     Stone       @relation(fields: [stoneId], references: [id], onDelete: Restrict)
-  userId    String
-  user      User        @relation(fields: [userId], references: [id], onDelete: Restrict)
-  projectId String
-  project   ProjectPart @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  stoneId       String
+  stone         Stone       @relation(fields: [stoneId], references: [id], onDelete: Restrict)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  projectPartId String
+  projectPart   ProjectPart @relation(fields: [projectPartId], references: [id], onDelete: Cascade)
 }
 
 model StonesOnSubtheme {
@@ -336,10 +336,10 @@ model Attribute {
   name       String
   namePlural String
 
-  inventory AttributeInventory[]
-  projects  AttributesOnProject[]
-  subthemes AttributesOnSubtheme[]
-  history   AttributeInventoryHistory[]
+  inventory    AttributeInventory[]
+  projectParts AttributesOnProjectPart[]
+  subthemes    AttributesOnSubtheme[]
+  history      AttributeInventoryHistory[]
 
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
@@ -357,18 +357,18 @@ model AttributeInventory {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model AttributesOnProject {
+model AttributesOnProjectPart {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   amount    Int
 
-  attributeId String
-  attribute   Attribute   @relation(fields: [attributeId], references: [id], onDelete: Restrict)
-  userId      String
-  user        User        @relation(fields: [userId], references: [id], onDelete: Restrict)
-  projectId   String
-  project     ProjectPart @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  attributeId   String
+  attribute     Attribute   @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  projectPartId String
+  projectPart   ProjectPart @relation(fields: [projectPartId], references: [id], onDelete: Cascade)
 }
 
 model AttributesOnSubtheme {

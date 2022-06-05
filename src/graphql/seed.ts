@@ -3,7 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import seedAttributes from './Attribute/seed';
 import seedAttributeInventory from './AttributeInventory/seed';
-import seedAttributesOnProjects from './AttributesOnProject/seed';
+import seedAttributesOnProjects from './AttributesOnProjectPart/seed';
 import seedEvents from './Event/seed';
 import seedMembers from './Member/seed';
 import seedProjects from './Project/seed';
@@ -11,7 +11,7 @@ import seedProjectParts from './ProjectPart/seed';
 import seedSessions from './Session/seed';
 import seedStones from './Stone/seed';
 import seedStoneInventory from './StoneInventory/seed';
-import seedStonesOnProjects from './StonesOnProject/seed';
+import seedStonesOnProjects from './StonesOnProjectPart/seed';
 import seedStonesOnSubthemes from './StonesOnSubtheme/seed';
 import seedStoneTypes from './StoneType/seed';
 import seedSubthemes from './Subtheme/seed';

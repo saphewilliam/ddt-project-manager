@@ -8,9 +8,9 @@ export const subthemeModel = nexusModel(Subtheme, {
       description: 'The number of dominoes assigned to this subtheme in total',
       authorize: authorizeSession,
       resolve: async (root, _, ctx) => {
-        const projectResult = await ctx.prisma.stonesOnProject.aggregate({
+        const projectResult = await ctx.prisma.stonesOnProjectPart.aggregate({
           _sum: { amount: true },
-          where: { project: { project: { subthemeId: root.id } } },
+          where: { projectPart: { project: { subthemeId: root.id } } },
         });
 
         const subthemeResult = await ctx.prisma.stonesOnSubtheme.aggregate({

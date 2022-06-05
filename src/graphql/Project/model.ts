@@ -12,9 +12,9 @@ export const projectModel = nexusModel(Project, {
       description: 'The number of dominoes assigned to this project',
       authorize: authorizeSession,
       resolve: async (root, _, ctx) => {
-        const result = await ctx.prisma.stonesOnProject.aggregate({
+        const result = await ctx.prisma.stonesOnProjectPart.aggregate({
           _sum: { amount: true },
-          where: { project: { projectId: root.id } },
+          where: { projectPart: { projectId: root.id } },
         });
         return result._sum.amount ?? 0;
       },

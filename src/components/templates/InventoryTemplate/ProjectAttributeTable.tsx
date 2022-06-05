@@ -9,7 +9,10 @@ export interface Props {
   title?: string;
   rows: {
     amount: number;
-    user: { displayName: string };
+    user: {
+      id: string;
+      displayName: string;
+    };
     attribute: {
       id: string;
       namePlural: string;
