@@ -122,6 +122,8 @@ type Mutation {
 
 type Project {
   createdAt: DateTime!
+  createdBy: User
+  createdById: String
   description: String
   history: [ProjectHistory!]!
   id: ID!
@@ -146,7 +148,7 @@ type ProjectHistory {
   fieldName: String!
   id: ID!
   newValue: String!
-  oldValue: String!
+  oldValue: String
   project: Project!
   projectId: String!
   updatedAt: DateTime!
@@ -404,6 +406,7 @@ type User {
   attributesOnSubthemes: [AttributesOnSubtheme!]!
   avatar: String
   createdAt: DateTime!
+  createdProjects: [Project!]!
   displayName: String!
   email: String!
   firstName: String!
@@ -411,9 +414,6 @@ type User {
   isAdmin: Boolean!
   lastName: String!
   projectHistory: [ProjectHistory!]!
-
-  """The projects that this user supervises"""
-  projects: [Project!]!
   sessions: [Session!]!
   slug: String!
 
@@ -423,6 +423,7 @@ type User {
   stoneInventoryHistory: [StoneInventoryHistory!]!
   stonesOnProjects: [StonesOnProject!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!
+  supervisingProjects: [Project!]!
 
   """The teams this user is a member of"""
   teams: [Member!]!

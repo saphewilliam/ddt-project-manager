@@ -1,6 +1,7 @@
 query Project($projectSlug: String!, $eventSlug: String!) {
   project(projectSlug: $projectSlug, eventSlug: $eventSlug) {
     id
+    createdAt
     name
     description
     status
@@ -58,6 +59,21 @@ query Project($projectSlug: String!, $eventSlug: String!) {
       event {
         id
         name
+      }
+    }
+    createdBy {
+      id
+      displayName
+    }
+    history {
+      id
+      createdAt
+      fieldName
+      oldValue
+      newValue
+      user {
+        id
+        displayName
       }
     }
   }

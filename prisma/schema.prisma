@@ -36,11 +36,11 @@ model User {
   attributesOnSubthemes     AttributesOnSubtheme[]
   attributeInventoryHistory AttributeInventoryHistory[]
   projectHistory            ProjectHistory[]
+  supervisingProjects       Project[]                   @relation("supervisor")
+  createdProjects           Project[]                   @relation("createdProject")
 
   /// The teams this user is a member of
-  teams    Member[]
-  /// The projects that this user supervises
-  projects Project[]
+  teams Member[]
 }
 
 model Session {
@@ -178,7 +178,9 @@ model Project {
   subthemeId   String
   subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
   supervisorId String?
-  supervisor   User?    @relation(fields: [supervisorId], references: [id], onDelete: SetNull)
+  supervisor   User?    @relation(name: "supervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
+  createdById  String?
+  createdBy    User?    @relation(name: "createdProject", fields: [createdById], references: [id], onDelete: SetNull)
 }
 
 model ProjectPart {
@@ -203,7 +205,7 @@ model ProjectHistory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   fieldName String
-  oldValue  String
+  oldValue  String?
   newValue  String
 
   projectId String

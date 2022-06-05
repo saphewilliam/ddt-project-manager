@@ -14,7 +14,7 @@ export const projectModel = nexusModel(Project, {
       resolve: async (root, _, ctx) => {
         const result = await ctx.prisma.stonesOnProject.aggregate({
           _sum: { amount: true },
-          where: { projectId: root.id },
+          where: { project: { projectId: root.id } },
         });
         return result._sum.amount ?? 0;
       },
