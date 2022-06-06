@@ -167,7 +167,7 @@ model Project {
   updatedAt   DateTime @updatedAt
   name        String
   slug        String   @unique
-  description String?
+  description Json?
   number      Int
 
   status  ProjectStatus

@@ -15,5 +15,5 @@ export default function ProjectPage(): ReactElement {
     if (data?.project === null && !error) router.replace(`/events/${eventSlug}`);
   }, [data]);
 
-  return <ProjectTemplate project={data?.project ?? null} />;
+  return <ProjectTemplate project={data?.project ?? null} swrKey={`useProject${projectSlug}`} />;
 }

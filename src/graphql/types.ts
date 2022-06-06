@@ -1,5 +1,5 @@
 import { GraphQLScalarType } from 'graphql';
-import { DateTimeResolver } from 'graphql-scalars';
+import { DateTimeResolver, JSONResolver } from 'graphql-scalars';
 
 export * from './Attribute/model';
 export * from './AttributeInventory/model';
@@ -23,3 +23,4 @@ export * from './Team/model';
 export * from './User/model';
 
 export const dateTimeScalar = new GraphQLScalarType(DateTimeResolver);
+export const jsonScalar = new GraphQLScalarType({ ...JSONResolver, name: 'Json' });

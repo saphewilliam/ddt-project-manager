@@ -1,0 +1,10 @@
+query Subthemes {
+  subthemes {
+    id
+    name
+    event {
+      id
+      name
+    }
+  }
+}

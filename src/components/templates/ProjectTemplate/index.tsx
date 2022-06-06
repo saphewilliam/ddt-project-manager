@@ -12,9 +12,10 @@ import StonesPanel from './StonesPanel';
 
 export interface Props {
   project: ProjectQuery['project'];
+  swrKey: string;
 }
 
-export default function ProjectTemplate({ project }: Props): ReactElement {
+export default function ProjectTemplate({ project, swrKey }: Props): ReactElement {
   const [tabIndex, setTabIndex] = useState(0);
 
   const title = project ? `#${project.number} ${project.name}` : '';
@@ -29,7 +30,7 @@ export default function ProjectTemplate({ project }: Props): ReactElement {
             tabData={[
               {
                 label: 'General',
-                content: <GeneralPanel project={project} />,
+                content: <GeneralPanel project={project} swrKey={swrKey} />,
               },
               {
                 label: 'Stones',

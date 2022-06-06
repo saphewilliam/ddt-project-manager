@@ -51,7 +51,9 @@ export default function SubthemeTable(props: Props): ReactElement {
               <td className={cx('border', 'border-gray-300', 'px-4', 'py-2', 'text-sm')}>
                 <div className={cx('flex', 'flex-col', 'items-start')}>
                   <Link href={`/events/${props.eventSlug}/${project.slug}`}>
-                    <a className={cx('font-bold')}>{project.name}</a>
+                    <a className={cx('font-bold')}>
+                      #{project.number} {project.name}
+                    </a>
                   </Link>
                   <span>
                     {project.parts

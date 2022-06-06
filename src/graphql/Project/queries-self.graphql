@@ -11,6 +11,7 @@ query Project($projectSlug: String!, $eventSlug: String!) {
       name
       number
       type
+      description
       stones {
         id
         amount
