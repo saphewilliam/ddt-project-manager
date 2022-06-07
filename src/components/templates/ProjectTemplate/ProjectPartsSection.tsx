@@ -14,14 +14,13 @@ export interface Props {
   project: NonNullable<ProjectQuery['project']>;
 }
 
-// TODO error, success, and warning color
 const Warning = (props: { children: ReactNode }): ReactElement => (
   <div
     className={cx(
       'flex',
       'items-center',
       'space-x-4',
-      'bg-primary-400',
+      'bg-warning',
       'px-5',
       'py-1',
       'text-white',
@@ -90,9 +89,14 @@ export default function ProjectPartsSection(props: Props): ReactElement {
                             ))}
                           </select>
                         </div>
-                        {/* TODO error, success, and warning color, plus hover effect */}
                         <button
-                          className={cx('bg-ddt-red', 'text-white', 'p-2', 'rounded-md')}
+                          className={cx(
+                            'bg-danger-500',
+                            'hover:bg-danger-600',
+                            'text-white',
+                            'p-2',
+                            'rounded-md',
+                          )}
                           onClick={() => actions.delete(part.id)}
                         >
                           <TrashIcon width={18} height={18} />

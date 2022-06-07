@@ -10,12 +10,11 @@ export interface Props {
 export default function HistoryPanel({ project }: Props): ReactElement {
   return (
     <span className={cx('flex', 'space-x-1')}>
-      <span>On</span>
-      <span className={cx('font-bold')}>{formatDate(new Date(project.createdAt))}</span>
-      <span className={cx('italic')}>
+      <span className={cx('italic', 'font-bold')}>
         {project.createdBy ? project.createdBy.displayName : '~deleted user~'}
       </span>
-      <span>created this project</span>
+      <span>created this project on</span>
+      <span className={cx('font-bold')}>{formatDate(new Date(project.createdAt))}</span>
     </span>
   );
 }

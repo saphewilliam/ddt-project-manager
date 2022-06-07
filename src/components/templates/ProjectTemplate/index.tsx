@@ -1,5 +1,6 @@
 import { ReactElement, useState } from 'react';
 import Loading from 'react-loading';
+import ReactTooltip from 'react-tooltip';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Tabs from '@components/Tabs';
@@ -22,6 +23,7 @@ export default function ProjectTemplate({ project, swrKey }: Props): ReactElemen
 
   return (
     <Layout title={title}>
+      <ReactTooltip id="inventoryToolTip" place="right" effect="solid" />
       {!project ? (
         <Loading />
       ) : (

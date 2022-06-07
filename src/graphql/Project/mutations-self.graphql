@@ -3,5 +3,12 @@ mutation UpdateProject($id: String!, $data: ProjectUpdateInput!) {
     id
     name
     slug
+    subtheme {
+      id
+      event {
+        id
+        slug
+      }
+    }
   }
 }

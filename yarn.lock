@@ -1349,19 +1349,21 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@saphe/react-form@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@saphe/react-form/-/react-form-0.8.0.tgz#42c3e8437a99d21a74b35bbfffc0e99c2dd50dcc"
-  integrity sha512-GI445DSVGzBPDuuNKkkaBdqFau8pYvysEEpTPWHs9rb6cDUZ+P0hfXFz9jL3dfPP1q94U6/zYys1sFNsMBOtkw==
+"@saphe/react-form@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@saphe/react-form/-/react-form-0.9.2.tgz#12d127973ea7dc871522db82f8a5970a4ddfcb8d"
+  integrity sha512-VHcSdsKc32/sNTo7wBmV2jeqVlKzFKsJAlxVdOzPe/E+qYfdEf4o1bYunURK3UWZ21K0LrCkkScvw6h1JHOlHw==
   dependencies:
+    "@saphe/react-use" "0.1.0"
     react-google-recaptcha "2.1.0"
     tslib "2.3.1"
 
-"@saphe/react-table@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@saphe/react-table/-/react-table-0.6.0.tgz#25fa59158dcdb30b82415501da1fc2aece9c5668"
-  integrity sha512-TD9UJVOtpwS07gn7PxjBATDI5omu7a4bEvpTZKpklsISoMYTf9ZehTHqyh1wFY8MC5BxaSPUfbMOVL1hcAIkFg==
+"@saphe/react-table@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@saphe/react-table/-/react-table-0.7.0.tgz#92395fd836525a62b9779f422c8223b324115ed6"
+  integrity sha512-e6hxRzdNs3dcIKFqBuSUCr1cRF/DtI6asieWvQ3Zg+j1uSpfYLyNGTVbT/JQZdIOtipE9Qr7bsVGosaWTFsI2A==
   dependencies:
+    "@saphe/react-use" "0.1.0"
     fuzzysort "1.1.4"
     tslib "2.3.1"
 

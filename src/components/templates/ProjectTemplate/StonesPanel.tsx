@@ -25,7 +25,6 @@ export default function GeneralPanel(props: Props): ReactElement {
         {
           label: 'Overview',
           content: (
-            // TODO tooltips break
             <ProjectStoneTable
               rows={props.project.parts.reduce((prev, curr) => {
                 const newRows = [...prev] as ProjectStoneTableProps['rows'];

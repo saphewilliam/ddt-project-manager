@@ -3,6 +3,7 @@ import { useAsyncReducer } from '@saphe/react-use';
 import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo } from 'react';
+import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
 import FormFields from '@components/FormFields';
@@ -13,7 +14,7 @@ import ProjectStatusBadge, {
 import { ProjectQuery, ProjectStatus } from '@graphql/__generated__/codegen-self';
 import useSafeQuery from '@hooks/useSafeQuery';
 import useSdk from '@hooks/useSdk';
-import { extractURLParam } from '@lib/util';
+import { promiseWithCatch } from '@lib/util';
 import { GeneralPanelSection } from './GeneralPanel';
 
 export interface Props {
@@ -22,14 +23,12 @@ export interface Props {
 }
 
 export default function InfoSection(props: Props): ReactElement {
+  const router = useRouter();
   const sdk = useSdk();
   const { mutate } = useSWRConfig();
 
   const { data: usersData } = useSafeQuery('useUsers', {});
   const { data: subthemesData } = useSafeQuery('useSubthemes', {});
-
-  const router = useRouter();
-  const eventSlug = extractURLParam('eventSlug', router.query) ?? '';
 
   const usersOptions = useMemo(
     () =>
@@ -94,28 +93,35 @@ export default function InfoSection(props: Props): ReactElement {
       },
     },
     async onSubmit(formValues) {
-      const newProject = await sdk.UpdateProject({
-        id: props.project.id,
-        data: {
-          name: formValues.name,
-          subthemeId: formValues.subthemeId,
-          supervisorId: formValues.supervisorId,
-          status: formValues.status as ProjectStatus,
-          description: props.project.description,
-          parts: props.project.parts.map((part) => ({
-            id: part.id,
-            name: part.name,
-            number: part.number,
-            description: part.description,
-            type: part.type,
-          })),
-        },
-      });
+      const newProject = await promiseWithCatch(
+        sdk.UpdateProject({
+          id: props.project.id,
+          data: {
+            name: formValues.name,
+            subthemeId: formValues.subthemeId,
+            supervisorId: formValues.supervisorId,
+            status: formValues.status as ProjectStatus,
+            description: props.project.description,
+            parts: props.project.parts.map((part) => ({
+              id: part.id,
+              name: part.name,
+              number: part.number,
+              description: part.description,
+              type: part.type,
+            })),
+          },
+        }),
+        'Error while updating project',
+      );
+      if (!newProject) return;
       if (newProject.updateProject) {
-        // TODO success messages
         await mutate(props.swrKey);
+        await mutate(`useEvent${newProject.updateProject.subtheme.event.slug}`);
+        toast.success(`Successfully updated ${newProject.updateProject.name}`);
         actions.reset();
-        router.replace(`/events/${eventSlug}/${newProject.updateProject.slug}`);
+        router.replace(
+          `/events/${newProject.updateProject.subtheme.event.slug}/${newProject.updateProject.slug}`,
+        );
       }
     },
   });

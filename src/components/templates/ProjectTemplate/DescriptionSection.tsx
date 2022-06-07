@@ -5,13 +5,15 @@ import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
 import React, { ReactElement } from 'react';
 import { EditorProps } from 'react-draft-wysiwyg';
+import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
 import { ProjectQuery } from '@graphql/__generated__/codegen-self';
 import useSdk from '@hooks/useSdk';
+import { promiseWithCatch } from '@lib/util';
 import styles from './editor.module.scss';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { GeneralPanelSection } from './GeneralPanel';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 export interface Props {
   project: NonNullable<ProjectQuery['project']>;
@@ -42,29 +44,35 @@ export default function DescriptionSection(props: Props): ReactElement {
       const content = convertToRaw(prevState.value.getCurrentContent());
       const isEmpty = content.blocks.reduce((prev, curr) => prev && curr.text.trim() === '', true);
 
-      await sdk.UpdateProject({
-        id: props.project.id,
-        data: {
-          name: props.project.name,
-          status: props.project.status,
-          subthemeId: props.project.subtheme.id,
-          supervisorId: props.project.supervisor?.id ?? null,
-          parts: props.project.parts.map((part) => ({
-            id: part.id,
-            name: part.name,
-            number: part.number,
-            description: part.description,
-            type: part.type,
-          })),
-          description: isEmpty ? null : content,
-        },
-      });
-      await mutate(props.swrKey);
+      const newProject = await promiseWithCatch(
+        sdk.UpdateProject({
+          id: props.project.id,
+          data: {
+            name: props.project.name,
+            status: props.project.status,
+            subthemeId: props.project.subtheme.id,
+            supervisorId: props.project.supervisor?.id ?? null,
+            parts: props.project.parts.map((part) => ({
+              id: part.id,
+              name: part.name,
+              number: part.number,
+              description: part.description,
+              type: part.type,
+            })),
+            description: isEmpty ? null : content,
+          },
+        }),
+        'Errror while updating project',
+      );
+
+      if (newProject?.updateProject) {
+        await mutate(props.swrKey);
+        toast.success(`Successfully updated ${newProject.updateProject.name}`);
+      }
       return { ...prevState, isEditing: false };
     },
   });
 
-  // TODO style active state
   const className = cx('!rounded-md', '!shadow-none', '!h-6', 'hover:bg-gray-50');
 
   return (
