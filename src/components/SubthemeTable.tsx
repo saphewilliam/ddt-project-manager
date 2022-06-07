@@ -3,7 +3,8 @@ import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
 import { EventQuery } from '@graphql/__generated__/codegen-self';
-import { projectTypeToString, fontColorFromBackgroundHex, formatNumber } from '@lib/util';
+import { projectTypeToString } from '@lib/projectTypeHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 import ProjectStatusBadge from './ProjectStatusBadge';
 
 export interface Props {

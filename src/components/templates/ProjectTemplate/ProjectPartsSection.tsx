@@ -5,7 +5,7 @@ import React, { CSSProperties, ReactElement, ReactNode } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Button, { ButtonType } from '@components/Button';
 import { ProjectQuery, ProjectType } from '@graphql/__generated__/codegen-self';
-import { projectTypeToString } from '@lib/util';
+import { projectTypeToString } from '@lib/projectTypeHelpers';
 import { GeneralPanelSection } from './GeneralPanel';
 import useProjectPartsSectionState from './hooks/useProjectPartsSectionState';
 
