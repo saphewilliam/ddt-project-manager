@@ -1,6 +1,7 @@
 import useForm, { Field } from '@saphe/react-form';
 import { useAsyncReducer } from '@saphe/react-use';
 import cx from 'clsx';
+import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo } from 'react';
 import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
@@ -12,6 +13,7 @@ import ProjectStatusBadge, {
 import { ProjectQuery, ProjectStatus } from '@graphql/__generated__/codegen-self';
 import useSafeQuery from '@hooks/useSafeQuery';
 import useSdk from '@hooks/useSdk';
+import { extractURLParam } from '@lib/util';
 import { GeneralPanelSection } from './GeneralPanel';
 
 export interface Props {
@@ -25,6 +27,9 @@ export default function InfoSection(props: Props): ReactElement {
 
   const { data: usersData } = useSafeQuery('useUsers', {});
   const { data: subthemesData } = useSafeQuery('useSubthemes', {});
+
+  const router = useRouter();
+  const eventSlug = extractURLParam('eventSlug', router.query) ?? '';
 
   const usersOptions = useMemo(
     () =>
@@ -58,16 +63,21 @@ export default function InfoSection(props: Props): ReactElement {
     fieldPack: FormFields,
     submitButton: { label: 'Save information', hidden: true },
     fields: {
+      name: {
+        type: Field.TEXT,
+        initialValue: props.project.name,
+        validation: { required: 'Please enter a name' },
+      },
       supervisorId: {
-        label: 'Supervisor',
         type: Field.SELECT,
+        label: 'Supervisor',
         initialValue: props.project.supervisor?.id,
         validation: { required: 'Please choose a project supervisor' },
         options: usersOptions,
       },
       subthemeId: {
-        label: 'Subtheme',
         type: Field.SELECT,
+        label: 'Subtheme',
         initialValue: props.project.subtheme.id,
         validation: { required: 'Please choose a subtheme' },
         options: subthemesOptions,
@@ -84,9 +94,10 @@ export default function InfoSection(props: Props): ReactElement {
       },
     },
     async onSubmit(formValues) {
-      await sdk.UpdateProject({
+      const newProject = await sdk.UpdateProject({
         id: props.project.id,
         data: {
+          name: formValues.name,
           subthemeId: formValues.subthemeId,
           supervisorId: formValues.supervisorId,
           status: formValues.status as ProjectStatus,
@@ -100,8 +111,12 @@ export default function InfoSection(props: Props): ReactElement {
           })),
         },
       });
-      await mutate(props.swrKey);
-      actions.reset();
+      if (newProject.updateProject) {
+        // TODO success messages
+        await mutate(props.swrKey);
+        actions.reset();
+        router.replace(`/events/${eventSlug}/${newProject.updateProject.slug}`);
+      }
     },
   });
 

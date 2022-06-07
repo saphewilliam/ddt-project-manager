@@ -45,6 +45,7 @@ export default function DescriptionSection(props: Props): ReactElement {
       await sdk.UpdateProject({
         id: props.project.id,
         data: {
+          name: props.project.name,
           status: props.project.status,
           subthemeId: props.project.subtheme.id,
           supervisorId: props.project.supervisor?.id ?? null,

@@ -227,6 +227,7 @@ enum ProjectType {
 
 input ProjectUpdateInput {
   description: Json
+  name: String!
   parts: [ProjectPartUpdateWithoutProjectInput!]!
   status: ProjectStatus!
   subthemeId: String!

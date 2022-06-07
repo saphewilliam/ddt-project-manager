@@ -36,6 +36,7 @@ export const projectModel = nexusModel(Project, {
 export const ProjectUpdateInput = inputObjectType({
   name: 'ProjectUpdateInput',
   definition(t) {
+    t.string('name');
     t.nullable.string('supervisorId');
     t.string('subthemeId');
     t.field({ name: 'status', type: 'ProjectStatus' });
@@ -107,6 +108,8 @@ export const projectMutation = extendType({
         return await ctx.prisma.project.update({
           where: { id: project.id },
           data: {
+            name: args.data.name,
+            slug: args.data.name === project.name ? project.slug : generateSlug(args.data.name),
             description: args.data.description,
             supervisorId: args.data.supervisorId,
             subthemeId: args.data.subthemeId,

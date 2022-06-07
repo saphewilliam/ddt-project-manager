@@ -23,7 +23,7 @@ export function GeneralPanelSection(props: {
 
   return (
     <section>
-      <span className={cx('flex', 'space-x-2', 'mb-2')}>
+      <span className={cx('flex', 'space-x-3', 'mb-2')}>
         <h3 className={cx('font-bold', 'text-lg')}>{props.title}</h3>
         {!props.isEditing &&
           (session?.user.isAdmin ||

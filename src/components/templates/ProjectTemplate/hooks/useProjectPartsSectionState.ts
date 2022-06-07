@@ -96,6 +96,7 @@ export default function useProjectPartsSectionState(
       await sdk.UpdateProject({
         id: project.id,
         data: {
+          name: project.name,
           status: project.status,
           subthemeId: project.subtheme.id,
           supervisorId: project.supervisor?.id ?? null,
