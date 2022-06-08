@@ -116,6 +116,8 @@ export default function InfoSection(props: Props): ReactElement {
       if (!newProject) return;
       if (newProject.updateProject) {
         await mutate(props.swrKey);
+        // FIXME changing events leads to endless loading screen
+        // TODO only mutate event if slug / events slug has changed
         await mutate(`useEvent${newProject.updateProject.subtheme.event.slug}`);
         toast.success(`Successfully updated ${newProject.updateProject.name}`);
         actions.reset();

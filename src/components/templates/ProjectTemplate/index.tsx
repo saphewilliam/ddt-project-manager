@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react';
-import Loading from 'react-loading';
 import ReactTooltip from 'react-tooltip';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
+import Loading from '@components/Loading';
 import Tabs from '@components/Tabs';
 import { ProjectQuery } from '@graphql/__generated__/codegen-self';
 import AttachmentsPanel from './AttachmentsPanel';
