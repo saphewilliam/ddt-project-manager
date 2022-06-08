@@ -45,9 +45,41 @@ export const ProjectUpdateInput = inputObjectType({
   },
 });
 
+export const projectCreateInput = inputObjectType({
+  name: 'ProjectCreateInput',
+  definition(t) {
+    t.string('name');
+    t.string('description');
+    t.int('number');
+    t.string('supervisorId');
+    t.string('subthemeId');
+  },
+});
+
 export const projectMutation = extendType({
   type: 'Mutation',
   definition(t) {
+    t.field('createProject', {
+      type: 'Project',
+      authorize: authorizeSession,
+      description: 'Creates an project',
+      args: {
+        data: arg({ type: 'ProjectCreateInput' }),
+      },
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.project.create({
+          data: {
+            name: args.data.name,
+            slug: generateSlug(args.data.name),
+            description: args.data.description,
+            supervisorId: args.data.supervisorId,
+            subthemeId: args.data.subthemeId,
+            number: args.data.number,
+            status: PrismaProjectStatus.PLANNED,
+          },
+        });
+      },
+    });
     t.nullable.field('updateProject', {
       type: 'Project',
       args: {
@@ -146,48 +178,6 @@ export const projectQuery = extendType({
           return null;
 
         return project;
-      },
-    });
-  },
-});
-
-export const projectCreateInput = inputObjectType({
-  name: 'ProjectCreateInput',
-  definition(t) {
-    t.string('name');
-    t.string('description');
-    t.int('number');
-    t.int('subNumber');
-    t.field({ name: 'projectType', type: 'ProjectType' });
-    t.string('supervisorId');
-    t.string('subthemeId');
-  },
-});
-
-export const projectMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('createProject', {
-      type: 'Project',
-      authorize: authorizeSession,
-      description: 'Creates an project',
-      args: {
-        data: arg({ type: 'ProjectCreateInput' }),
-      },
-      resolve: (_, args, ctx) => {
-        return ctx.prisma.project.create({
-          data: {
-            name: args.data.name,
-            slug: generateSlug(args.data.name),
-            description: args.data.description,
-            type: args.data.projectType,
-            supervisorId: args.data.supervisorId,
-            subthemeId: args.data.subthemeId,
-            number: args.data.number,
-            subNumber: args.data.subNumber,
-            status: PrismaProjectStatus.PLANNED,
-          },
-        });
       },
     });
   },

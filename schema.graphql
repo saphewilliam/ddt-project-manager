@@ -169,6 +169,14 @@ type Project {
   updatedAt: DateTime!
 }
 
+input ProjectCreateInput {
+  description: String!
+  name: String!
+  number: Int!
+  subthemeId: String!
+  supervisorId: String!
+}
+
 type ProjectHistory {
   createdAt: DateTime!
   fieldName: String!
@@ -274,7 +282,6 @@ type Query {
 
   """Get all stones of a team"""
   stones: [Stone!]!
-  subthemes: [Subtheme!]!
 
   """Find all subthemes"""
   subthemes: [Subtheme!]!
