@@ -39,14 +39,18 @@ query Event($eventSlug: String!) {
         name
         number
         slug
-        subNumber
         supervisor {
           id
           displayName
         }
-        type
         status
         stoneAmount
+        parts {
+          id
+          type
+          name
+          number
+        }
       }
       stones {
         id

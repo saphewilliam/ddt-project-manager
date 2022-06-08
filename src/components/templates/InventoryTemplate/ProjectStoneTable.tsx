@@ -6,10 +6,13 @@ import { StonesOnProjectColumnTypes } from '@lib/inventoryHelpers';
 import { ColorCell, HeadCell, ValueCell } from './InventoryCells';
 
 export interface Props {
-  title: string;
+  title?: string;
   rows: {
     amount: number;
-    user: { displayName: string };
+    user: {
+      id: string;
+      displayName: string;
+    };
     stone: {
       id: string;
       name: string;
@@ -47,8 +50,10 @@ export default function ProjectStoneTable(props: Props): ReactElement {
   });
 
   return (
-    <div>
-      <span className={cx('text-xl', 'mb-3', 'block', 'font-semibold')}>{props.title}</span>
+    <div className={cx('w-full')}>
+      {props.title && (
+        <span className={cx('text-xl', 'mb-3', 'block', 'font-semibold')}>{props.title}</span>
+      )}
       <Table headers={headers} rows={rows} />
     </div>
   );

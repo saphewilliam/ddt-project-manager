@@ -15,6 +15,9 @@ module.exports = {
       white: colors.white,
       gray: addKeys(colors.slate),
       primary: addKeys(colors.amber),
+      danger: addKeys(colors.red),
+      success: addKeys(colors.green),
+      warning: addKeys(colors.yellow),
       ddt: {
         purple: '#411F5E',
         blue: '#171A75',

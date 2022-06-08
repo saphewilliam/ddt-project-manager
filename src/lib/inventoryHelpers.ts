@@ -201,13 +201,13 @@ export function makeAllInventoryTableData(data: InventoryQuery | undefined): Inv
       result.stones.push({ title: stoneTypeId, rows: [] });
       j++;
     }
-    if (data.stones[i]!.stoneInventory.length > 0)
+    if (data.stones[i]!.inventory.length > 0)
       result.stones[j]!.rows.push({
         ...stone,
-        stoneInventory: stone.stoneInventory.map((stoneInventory) => ({
-          ...stoneInventory,
+        stoneInventory: stone.inventory.map((inventory) => ({
+          ...inventory,
           displayName:
-            data.inventoryUsers.find((user) => user.id === stoneInventory.userId)?.displayName ??
+            data.inventoryUsers.find((user) => user.id === inventory.userId)?.displayName ??
             'No name',
         })),
       });
@@ -221,11 +221,11 @@ export function makeAllInventoryTableData(data: InventoryQuery | undefined): Inv
         .map((attribute) => ({
           id: attribute.id,
           name: attribute.namePlural,
-          attributeInventory: attribute.attributeInventory.map((attributeInventory) => ({
-            ...attributeInventory,
+          attributeInventory: attribute.inventory.map((inventory) => ({
+            ...inventory,
             displayName:
-              data.inventoryUsers.find((user) => user.id === attributeInventory.userId)
-                ?.displayName ?? 'No name',
+              data.inventoryUsers.find((user) => user.id === inventory.userId)?.displayName ??
+              'No name',
           })),
         }))
         .filter((row) => row.attributeInventory.length > 0),

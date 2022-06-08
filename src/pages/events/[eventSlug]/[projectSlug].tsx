@@ -1,9 +1,6 @@
-// import cx from 'clsx';
 import { useRouter } from 'next/router';
-import React, { ReactElement, useEffect } from 'react';
-import Card from '@components/Card';
-import Layout from '@components/Layout';
-import Tabs from '@components/Tabs';
+import { ReactElement, useEffect } from 'react';
+import ProjectTemplate from '@components/templates/ProjectTemplate';
 import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
 
@@ -12,43 +9,11 @@ export default function ProjectPage(): ReactElement {
   const eventSlug = extractURLParam('eventSlug', router.query) ?? '';
   const projectSlug = extractURLParam('projectSlug', router.query) ?? '';
 
-  const { data, error } = useSafeQuery('useProject', { eventSlug, projectSlug });
+  const { data, error } = useSafeQuery('useProject', { eventSlug, projectSlug }, projectSlug);
 
   useEffect(() => {
     if (data?.project === null && !error) router.replace(`/events/${eventSlug}`);
   }, [data]);
 
-  const title = data?.project
-    ? `#${data.project.number}${data.project.subNumber ? `.${data.project.subNumber}` : ''} ${
-        data.project.name
-      }`
-    : '';
-
-  return (
-    <Layout title={title}>
-      <Card>
-        <Tabs
-          tabData={[
-            { label: 'General', content: <span>General tab</span> },
-            {
-              label: 'Stones',
-              content: (
-                // TODO tabs in inventory screen?
-                <Tabs
-                  vertical
-                  tabData={[
-                    { label: 'Wall', content: <span>Wall tab</span> },
-                    { label: 'Field', content: <span>Field tab</span> },
-                  ]}
-                />
-              ),
-            },
-            { label: 'Attributes', content: <span>Attributes tab</span> },
-            { label: 'Attachments', content: <span>Attachments tab</span> },
-            { label: 'History', content: <span>History tab</span> },
-          ]}
-        />
-      </Card>
-    </Layout>
-  );
+  return <ProjectTemplate project={data?.project ?? null} swrKey={`useProject${projectSlug}`} />;
 }

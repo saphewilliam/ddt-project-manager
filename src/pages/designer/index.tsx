@@ -84,7 +84,7 @@ export enum ToolIndex {
   ZOOM_OUT = 'ZOOM_OUT',
 }
 
-// TODO?
+// TODO
 // interface Tool {
 //   shortCut: string;
 //   mouseWheel?: () => void;

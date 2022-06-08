@@ -29,13 +29,14 @@ export default function Tabs(props: Props): ReactElement {
               {({ selected }) => (
                 <button
                   className={cx(
+                    'whitespace-nowrap',
                     'transition-colors',
                     selected
                       ? cx('text-primary', 'border-primary')
                       : cx('text-gray-900', 'border-primary-100', 'hover:border-primary-200'),
                     props.full && 'grow',
                     props.vertical
-                      ? cx('border-r-2', 'pl-5', 'pr-10', 'py-2', 'mr-5')
+                      ? cx('border-r-2', 'pl-5', 'pr-10', 'py-2', 'mr-5', 'flex', 'justify-start')
                       : cx('border-b-2', 'px-5', 'py-2', 'mb-5'),
                   )}
                 >
@@ -45,7 +46,7 @@ export default function Tabs(props: Props): ReactElement {
             </Tab>
           ))}
         </Tab.List>
-        <Tab.Panels>
+        <Tab.Panels className={cx('w-full')}>
           {props.tabData.map((tab, i) => (
             <Tab.Panel key={i}>{tab.content}</Tab.Panel>
           ))}

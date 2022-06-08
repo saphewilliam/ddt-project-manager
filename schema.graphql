@@ -3,12 +3,13 @@
 
 
 type Attribute {
-  attributeInventory: [AttributeInventory!]!
   createdAt: DateTime!
+  history: [AttributeInventoryHistory!]!
   id: ID!
+  inventory: [AttributeInventory!]!
   name: String!
   namePlural: String!
-  projects: [AttributesOnProject!]!
+  projectParts: [AttributesOnProjectPart!]!
   subthemes: [AttributesOnSubtheme!]!
   team: Team!
   teamId: String!
@@ -26,6 +27,19 @@ type AttributeInventory {
   userId: String!
 }
 
+type AttributeInventoryHistory {
+  attribute: Attribute!
+  attributeId: String!
+  createdAt: DateTime!
+  fieldName: String!
+  id: ID!
+  newValue: String!
+  oldValue: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
 type AttributesOnEvent {
   amount: Int!
   attribute: Attribute!
@@ -34,16 +48,22 @@ type AttributesOnEvent {
   userId: String!
 }
 
-type AttributesOnProject {
+type AttributesOnProjectPart {
   amount: Int!
   attribute: Attribute!
   attributeId: String!
   createdAt: DateTime!
   id: ID!
-  project: Project!
-  projectId: String!
+  projectPart: ProjectPart!
+  projectPartId: String!
   updatedAt: DateTime!
   user: User!
+  userId: String!
+}
+
+input AttributesOnProjectPartUpdateWithoutProjectPartInput {
+  amount: Int!
+  attributeId: String!
   userId: String!
 }
 
@@ -82,6 +102,11 @@ type Event {
   updatedAt: DateTime!
 }
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar Json @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
 type Member {
   createdAt: DateTime!
   id: ID!
@@ -103,30 +128,67 @@ type Mutation {
   """Set the `team` field of an active session"""
   setSessionTeam(teamId: String!): Session!
   updateAttributeInventory(amount: Int!, attributeId: String!, userId: String!): AttributeInventory
+  updateProject(data: ProjectUpdateInput!, id: String!): Project
   updateStoneInventory(amount: Int!, stoneId: String!, userId: String!): StoneInventory
 }
 
 type Project {
-  attributes: [AttributesOnProject!]!
   createdAt: DateTime!
-  description: String!
+  createdBy: User
+  createdById: String
+  description: Json
+  history: [ProjectHistory!]!
   id: ID!
   name: String!
   number: Int!
+  parts: [ProjectPart!]!
   slug: String!
   stats: [StatsOnProject!]!
   status: ProjectStatus!
 
   """The number of dominoes assigned to this project"""
   stoneAmount: Int!
-  stones: [StonesOnProject!]!
-  subNumber: Int!
   subtheme: Subtheme!
   subthemeId: String!
   supervisor: User
   supervisorId: String
+  updatedAt: DateTime!
+}
+
+type ProjectHistory {
+  createdAt: DateTime!
+  fieldName: String!
+  id: ID!
+  newValue: String!
+  oldValue: String
+  project: Project!
+  projectId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type ProjectPart {
+  attributes: [AttributesOnProjectPart!]!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  number: Int!
+  project: Project!
+  projectId: String!
+  slug: String!
+  stones: [StonesOnProjectPart!]!
   type: ProjectType!
   updatedAt: DateTime!
+}
+
+input ProjectPartUpdateWithoutProjectInput {
+  description: String
+  id: ID!
+  name: String!
+  number: Int!
+  type: ProjectType!
 }
 
 enum ProjectStatus {
@@ -151,7 +213,7 @@ enum ProjectType {
   FIELD_L1
   FIELD_L2
   FIELD_M50
-  HANDSET
+  FREE_HAND
   OTHER
   SPIRAL
   STRUCTURE
@@ -161,6 +223,15 @@ enum ProjectType {
   WALL_SPEED
   WALL_T
   WALL_X
+}
+
+input ProjectUpdateInput {
+  description: Json
+  name: String!
+  parts: [ProjectPartUpdateWithoutProjectInput!]!
+  status: ProjectStatus!
+  subthemeId: String!
+  supervisorId: String
 }
 
 type Query {
@@ -189,6 +260,7 @@ type Query {
 
   """Get all stones of a team"""
   stones: [Stone!]!
+  subthemes: [Subtheme!]!
 
   """Fetch the teams that the user is a member of"""
   teams: [Team!]!
@@ -252,11 +324,12 @@ type Stone {
   description: String
   hex: String!
   hex2: String
+  history: [StoneInventoryHistory!]!
   id: ID!
+  inventory: [StoneInventory!]!
   name: String!
   order: Int!
-  projects: [StonesOnProject!]!
-  stoneInventory: [StoneInventory!]!
+  projectParts: [StonesOnProjectPart!]!
   stoneType: StoneType!
   stoneTypeId: String!
   subthemes: [StonesOnSubtheme!]!
@@ -274,9 +347,22 @@ type StoneInventory {
   userId: String!
 }
 
+type StoneInventoryHistory {
+  createdAt: DateTime!
+  fieldName: String!
+  id: ID!
+  newValue: String!
+  oldValue: String!
+  stone: Stone!
+  stoneId: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
 type StoneType {
   createdAt: DateTime!
-  description: String!
+  description: String
   id: ID!
   name: String!
   order: Int!
@@ -286,16 +372,22 @@ type StoneType {
   updatedAt: DateTime!
 }
 
-type StonesOnProject {
+type StonesOnProjectPart {
   amount: Int!
   createdAt: DateTime!
   id: ID!
-  project: Project!
-  projectId: String!
+  projectPart: ProjectPart!
+  projectPartId: String!
   stone: Stone!
   stoneId: String!
   updatedAt: DateTime!
   user: User!
+  userId: String!
+}
+
+input StonesOnProjectPartUpdateWithoutProjectPartInput {
+  amount: Int!
+  stoneId: String!
   userId: String!
 }
 
@@ -345,27 +437,29 @@ type Team {
 
 type User {
   attributeInventory: [AttributeInventory!]!
-  attributesOnProjects: [AttributesOnProject!]!
+  attributeInventoryHistory: [AttributeInventoryHistory!]!
+  attributesOnProjectParts: [AttributesOnProjectPart!]!
   attributesOnSubthemes: [AttributesOnSubtheme!]!
   avatar: String
   createdAt: DateTime!
+  createdProjects: [Project!]!
   displayName: String!
   email: String!
   firstName: String!
   id: ID!
   isAdmin: Boolean!
   lastName: String!
-
-  """The projects that this user supervises"""
-  projects: [Project!]!
+  projectHistory: [ProjectHistory!]!
   sessions: [Session!]!
   slug: String!
 
   """The number of dominoes this user posesses"""
   stoneAmount: Int!
   stoneInventory: [StoneInventory!]!
-  stonesOnProjects: [StonesOnProject!]!
+  stoneInventoryHistory: [StoneInventoryHistory!]!
+  stonesOnProjectParts: [StonesOnProjectPart!]!
   stonesOnSubthemes: [StonesOnSubtheme!]!
+  supervisingProjects: [Project!]!
 
   """The teams this user is a member of"""
   teams: [Member!]!

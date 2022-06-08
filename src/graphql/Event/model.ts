@@ -21,9 +21,9 @@ export const eventModel = nexusModel(Event, {
       description: 'The number of dominoes assigned to this event in total',
       authorize: authorizeSession,
       resolve: async (root, _, ctx) => {
-        const projectResult = await ctx.prisma.stonesOnProject.aggregate({
+        const projectResult = await ctx.prisma.stonesOnProjectPart.aggregate({
           _sum: { amount: true },
-          where: { project: { subtheme: { eventId: root.id } } },
+          where: { projectPart: { project: { subtheme: { eventId: root.id } } } },
         });
 
         const subthemeResult = await ctx.prisma.stonesOnSubtheme.aggregate({
@@ -38,10 +38,10 @@ export const eventModel = nexusModel(Event, {
       type: 'AttributesOnEvent',
       authorize: authorizeSession,
       resolve: async (root, _, ctx) => {
-        const projectAttributes = await ctx.prisma.attributesOnProject.groupBy({
+        const projectAttributes = await ctx.prisma.attributesOnProjectPart.groupBy({
           _sum: { amount: true },
           by: ['attributeId', 'userId'],
-          where: { project: { subtheme: { eventId: root.id } } },
+          where: { projectPart: { project: { subtheme: { eventId: root.id } } } },
         });
 
         const subthemeAttributes = await ctx.prisma.attributesOnSubtheme.groupBy({

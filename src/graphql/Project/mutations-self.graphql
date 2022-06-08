@@ -1,0 +1,14 @@
+mutation UpdateProject($id: String!, $data: ProjectUpdateInput!) {
+  updateProject(id: $id, data: $data) {
+    id
+    name
+    slug
+    subtheme {
+      id
+      event {
+        id
+        slug
+      }
+    }
+  }
+}

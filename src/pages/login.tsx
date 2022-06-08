@@ -122,7 +122,13 @@ export default function LoginPage(): ReactElement {
       </Head>
       <div className={cx('w-7/12', 'bg-gray-900')}>
         <div className={cx('w-full', 'h-full', 'relative')}>
-          <Image src="/img/login_bg.jpg" alt="Login Background" layout="fill" objectFit="cover" />
+          <Image
+            priority
+            src="/img/login_bg.jpg"
+            alt="Login Background"
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
       </div>
       <div className={cx('grow', 'flex', 'flex-col', 'justify-center', 'items-center')}>

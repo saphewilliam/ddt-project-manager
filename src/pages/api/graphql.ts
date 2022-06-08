@@ -13,8 +13,6 @@ const startServer = apolloServer.start();
 
 const cors = Cors();
 
-export const config: PageConfig = { api: { bodyParser: false } };
-
 export default cors(async function handler(req, res): Promise<void | boolean> {
   if (req.method === 'OPTIONS') {
     res.end();
@@ -27,3 +25,5 @@ export default cors(async function handler(req, res): Promise<void | boolean> {
     path: '/api/graphql',
   })(req, res);
 });
+
+export const config: PageConfig = { api: { bodyParser: false } };

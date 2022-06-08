@@ -7,7 +7,18 @@ export interface Props {
   status: ProjectStatus;
 }
 
-function getProjectStatusBadgeText(status: ProjectStatus): { label: string; color: string } {
+export const projectStatuses: ProjectStatus[] = [
+  ProjectStatus.CANCELLED,
+  ProjectStatus.PLANNED,
+  ProjectStatus.DESIGNING,
+  ProjectStatus.DESIGNED,
+  ProjectStatus.READY,
+  ProjectStatus.BUILDING,
+  ProjectStatus.BUILT,
+  ProjectStatus.COUNTED,
+];
+
+export function getProjectStatusBadgeText(status: ProjectStatus): { label: string; color: string } {
   switch (status) {
     case ProjectStatus.CANCELLED:
       return { label: 'Cancelled', color: '#910000' };

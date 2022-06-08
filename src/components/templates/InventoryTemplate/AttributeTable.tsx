@@ -50,7 +50,9 @@ export default function AttributeTable(props: Props): ReactElement {
             attributeId: row.id,
             userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
             amount:
-              row.attributeInventory.length === 1 ? row.attributeInventory[0]?.amount : undefined,
+              row.attributeInventory.length === 1 && userColumns.length === 1
+                ? row.attributeInventory[0]?.amount
+                : undefined,
           }),
       })),
     [props.rows],

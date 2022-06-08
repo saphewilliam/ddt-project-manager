@@ -50,8 +50,8 @@ export default function Button(props: Props): ReactElement {
       : '',
     (props.loading || props.disabled) && 'cursor-default',
     'transition-all',
-    'py-2',
-    'px-5',
+    'py-1',
+    'px-4',
     'rounded-lg',
   );
 

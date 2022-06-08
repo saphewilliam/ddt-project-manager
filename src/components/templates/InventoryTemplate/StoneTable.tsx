@@ -46,7 +46,10 @@ export default function StoneTable(props: Props): ReactElement {
           props.editModalActions.openStone({
             stoneId: row.id,
             userId: userColumns.length === 1 ? userColumns[0]!.userId : undefined,
-            amount: row.stoneInventory.length === 1 ? row.stoneInventory[0]?.amount : undefined,
+            amount:
+              row.stoneInventory.length === 1 && userColumns.length === 1
+                ? row.stoneInventory[0]?.amount
+                : undefined,
           }),
       })),
     [props.rows],

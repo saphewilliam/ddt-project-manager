@@ -2,26 +2,14 @@ import { PlusSmIcon, MinusSmIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { ProjectType, ProjectStatus } from '@graphql/__generated__/codegen-self';
-import { projectTypeToString, fontColorFromBackgroundHex, formatNumber } from '@lib/util';
+import { EventQuery } from '@graphql/__generated__/codegen-self';
+import { projectTypeToString } from '@lib/projectTypeHelpers';
+import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 import ProjectStatusBadge from './ProjectStatusBadge';
 
 export interface Props {
   eventSlug: string;
-  subtheme: {
-    color: string;
-    name: string;
-    stoneAmount: number;
-    projects: {
-      id: string;
-      name: string;
-      slug: string;
-      type: ProjectType;
-      status: ProjectStatus;
-      stoneAmount: number;
-      supervisor?: { displayName: string } | null;
-    }[];
-  };
+  subtheme: NonNullable<EventQuery['event']>['subthemes'][number];
 }
 
 export default function SubthemeTable(props: Props): ReactElement {
@@ -64,9 +52,19 @@ export default function SubthemeTable(props: Props): ReactElement {
               <td className={cx('border', 'border-gray-300', 'px-4', 'py-2', 'text-sm')}>
                 <div className={cx('flex', 'flex-col', 'items-start')}>
                   <Link href={`/events/${props.eventSlug}/${project.slug}`}>
-                    <a className={cx('font-bold')}>{project.name}</a>
+                    <a className={cx('font-bold')}>
+                      #{project.number} {project.name}
+                    </a>
                   </Link>
-                  <span>{projectTypeToString(project.type)}</span>
+                  <span>
+                    {project.parts
+                      .filter(
+                        (part, index, self) =>
+                          self.findIndex((p) => p.type === part.type) === index,
+                      )
+                      .map((part) => projectTypeToString(part.type))
+                      .join(', ')}
+                  </span>
                   <span>{formatNumber(project.stoneAmount)} stones</span>
                   <span>Supervisor: {project.supervisor?.displayName}</span>
                   <ProjectStatusBadge status={project.status} />
