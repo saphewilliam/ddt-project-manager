@@ -16,6 +16,11 @@ type Attribute {
   updatedAt: DateTime!
 }
 
+input AttributeCreateInput {
+  name: String!
+  namePlural: String!
+}
+
 type AttributeInventory {
   amount: Int!
   attribute: Attribute!
@@ -119,6 +124,15 @@ type Member {
 }
 
 type Mutation {
+  """Creates an attribute"""
+  createAttritbute(data: AttributeCreateInput!): Attribute!
+
+  """Creates an project"""
+  createProject(data: ProjectCreateInput!): Project!
+
+  """Creates an user"""
+  createUser(data: UserCreateInput!): User!
+
   """Generate a new session for a user with an active account"""
   login(email: String!, isPermanent: Boolean!, password: String!): String!
 
@@ -153,6 +167,14 @@ type Project {
   supervisor: User
   supervisorId: String
   updatedAt: DateTime!
+}
+
+input ProjectCreateInput {
+  description: String!
+  name: String!
+  number: Int!
+  subthemeId: String!
+  supervisorId: String!
 }
 
 type ProjectHistory {
@@ -260,6 +282,8 @@ type Query {
 
   """Get all stones of a team"""
   stones: [Stone!]!
+
+  """Find all subthemes"""
   subthemes: [Subtheme!]!
 
   """Fetch the teams that the user is a member of"""
@@ -464,4 +488,13 @@ type User {
   """The teams this user is a member of"""
   teams: [Member!]!
   updatedAt: DateTime!
+}
+
+input UserCreateInput {
+  displayName: String!
+  email: String!
+  firstName: String!
+  isAdmin: Boolean!
+  lastName: String!
+  password: String!
 }

@@ -1,7 +1,8 @@
-import { extendType, stringArg } from 'nexus';
+import { arg, extendType, inputObjectType, stringArg } from 'nexus';
 import { User } from 'nexus-prisma';
-import { authorizeSession } from '@lib/authHelpers';
+import { authorizeSession, hashPw } from '@lib/authHelpers';
 import { nexusModel } from '@lib/nexusHelpers';
+import { generateSlug } from '@lib/util';
 
 export const userModel = nexusModel(User, {
   hide: ['password'],
@@ -68,6 +69,45 @@ export const userQuery = extendType({
           },
           orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }],
         }),
+    });
+  },
+});
+
+export const userCreateInput = inputObjectType({
+  name: 'UserCreateInput',
+  definition(t) {
+    t.string('firstName');
+    t.string('lastName');
+    t.string('displayName');
+    t.string('password');
+    t.string('email');
+    t.boolean('isAdmin');
+  },
+});
+
+export const userMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('createUser', {
+      type: 'User',
+      authorize: authorizeSession,
+      description: 'Creates an user',
+      args: {
+        data: arg({ type: userCreateInput }),
+      },
+      resolve: async (_, args, ctx) => {
+        return ctx.prisma.user.create({
+          data: {
+            firstName: args.data.firstName,
+            lastName: args.data.lastName,
+            slug: generateSlug(args.data.firstName),
+            displayName: args.data.displayName,
+            password: await hashPw(args.data.password),
+            email: args.data.email,
+            isAdmin: args.data.isAdmin,
+          },
+        });
+      },
     });
   },
 });
