@@ -24,13 +24,13 @@ export default function useStoneForm(): State {
         validation: { required: 'Please fill out a value' },
       },
       stoneColorField: {
-        type: Field.TEXT,
+        type: Field.COLOR,
         label: 'Stone color',
         placeholder: 'E.g. #000000 ',
         validation: { required: 'Please fill out a value' },
       },
       stoneColorchangingColorField: {
-        type: Field.TEXT,
+        type: Field.COLOR,
         label: 'Stone colorchanging color',
         placeholder: 'E.g. #ffffff ',
         validation: { required: 'Please fill out a value' },

@@ -33,13 +33,13 @@ export const subthemeModel = nexusModel(Subtheme, {
     });
   },
 });
-
-export const subthemQuery = extendType({
+export const subthemeQuery = extendType({
   type: 'Query',
   definition(t) {
     t.list.field('subthemes', {
       type: 'Subtheme',
       authorize: authorizeSession,
+      description: 'Find all subthemes',
       resolve: (_, __, ctx) =>
         ctx.prisma.subtheme.findMany({ where: { event: { teamId: ctx.session?.teamId ?? '' } } }),
     });

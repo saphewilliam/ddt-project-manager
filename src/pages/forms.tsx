@@ -6,6 +6,7 @@ import Tabs from '@components/Tabs';
 import useAttributeForm from '@hooks/forms/attributeForm';
 import useEventForm from '@hooks/forms/eventForm';
 import useMemberForm from '@hooks/forms/memberForm';
+import useProjectForm from '@hooks/forms/projectForm';
 import useStatForm from '@hooks/forms/statForm';
 import useStoneForm from '@hooks/forms/stoneForm';
 import useStoneOrderForm from '@hooks/forms/stoneOrderForm';
@@ -25,6 +26,7 @@ export default function TestPage(): ReactElement {
   const { form: StatForm } = useStatForm();
   const { form: TeamForm } = useTeamForm();
   const { form: UserForm } = useUserForm();
+  const { form: ProjectForm } = useProjectForm();
 
   return (
     <Layout title="Admin Forms">
@@ -42,7 +44,17 @@ export default function TestPage(): ReactElement {
               // { label: 'Stat', content: StatForm },
               // { label: 'Team', content: TeamForm },
               // { label: 'User', content: UserForm },
-              { label: 'General', content: UserForm },
+              {
+                label: 'General',
+                content: (
+                  <div className={cx('space-y-10')}>
+                    <div>
+                      <h2>Member</h2>
+                      {MemberForm}
+                    </div>
+                  </div>
+                ),
+              },
               {
                 label: 'Inventory',
                 content: (
@@ -55,12 +67,62 @@ export default function TestPage(): ReactElement {
                       <h2>Stones</h2>
                       {StoneForm}
                     </div>
+                    <div>
+                      <h2>Color type</h2>
+                      {StoneTypeForm}
+                    </div>
+                    <div>
+                      <h2>Color order</h2>
+                      {StoneOrderForm}
+                    </div>
                   </div>
                 ),
               },
-              { label: 'Events', content: UserForm },
-              { label: 'Projects', content: UserForm },
-              { label: 'Admin', content: UserForm },
+              {
+                label: 'Events',
+                content: (
+                  <div className={cx('space-y-10')}>
+                    <div>
+                      <h2>Events</h2>
+                      {EventForm}
+                    </div>
+                    <div>
+                      <h2>Subtheme</h2>
+                      {SubthemeForm}
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                label: 'Projects',
+                content: (
+                  <div className={cx('space-y-10')}>
+                    <div>
+                      <h2>Project</h2>
+                      {ProjectForm}
+                    </div>
+                    <div>
+                      <h2>Stats</h2>
+                      {StatForm}
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                label: 'Admin',
+                content: (
+                  <div className={cx('space-y-10')}>
+                    <div>
+                      <h2>Teams</h2>
+                      {TeamForm}
+                    </div>
+                    <div>
+                      <h2>Users</h2>
+                      {UserForm}
+                    </div>
+                  </div>
+                ),
+              },
             ]}
           />
         </div>
