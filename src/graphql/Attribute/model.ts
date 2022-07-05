@@ -40,7 +40,7 @@ class AttributeResolver {
 export const resolvers = [
   AttributeRelationsResolver,
   CreateAttributeResolver,
-  FindManyAttributeResolver,
+  AttributeResolver,
 ] as const;
 
 export const modelConfig: ModelConfig<'Attribute'> = {};
