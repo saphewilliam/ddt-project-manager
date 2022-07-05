@@ -1,0 +1,12 @@
+model Team {
+  __uuid__
+
+  name String
+
+  members    Member[]
+  sessions   Session[]
+  events     Event[]
+  stoneTypes StoneType[]
+  attributes Attribute[]
+  stats      Stat[]
+}

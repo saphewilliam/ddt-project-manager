@@ -1,7 +1,7 @@
 projects:
   self:
     schema: schema.graphql
-    documents: ./src/graphql/*/{queries,mutations}-self.graphql
+    documents: ./src/graphql/*/{queries,mutations}.graphql
     extensions:
       endpoints:
         default:

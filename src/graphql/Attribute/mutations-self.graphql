@@ -1,6 +1,0 @@
-mutation CreateAttribute($data: AttributeCreateInput!) {
-  createAttritbute(data: $data) {
-    id
-    name
-  }
-}

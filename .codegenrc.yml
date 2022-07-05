@@ -1,14 +1,33 @@
 overwrite: true
+schema: ./schema.graphql
+documents: ./src/graphql/*/{queries,mutations}.graphql
+# hooks:
+#   afterAllFileWrite:
+#     - yarn lint
 generates:
-  ./src/graphql/__generated__/codegen-self.ts:
-    schema: ./schema.graphql
-    documents: ./src/graphql/*/{queries,mutations}-self.graphql
+  ./src/graphql/__generated__/introspection.json:
     plugins:
-      - typescript
+      - urql-introspection
+    config:
+      module: es2015
+      includeScalars: true
+      includeEnums: true
+      includeInputs: true
+  ./src/graphql/__generated__/codegen.tsx:
+    - typescript
+  ./src/graphql/:
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: __generated__/codegen.tsx
+      folder: __generated__
+      extension: .ts
+    plugins:
       - typescript-operations
-      - typescript-graphql-request
-      - plugin-typescript-swr
+      - typescript-urql
     config:
       namingConvention: keep
       skipTypename: true
-      avoidOptionals: true
+
+      # TODO https://www.graphql-code-generator.com/plugins/typescript-urql
+      # urqlImportFrom: ./TODO
+      # scalars: TODO

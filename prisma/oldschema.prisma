@@ -1,0 +1,330 @@
+// Authentication
+
+model User {
+  __uuid__
+
+  firstName   String
+  lastName    String
+  displayName String
+  slug        String  @unique
+  password    String?
+  avatar      String?
+  email       String  @unique
+  isAdmin     Boolean @default(false)
+
+  sessions                  Session[]
+  stoneInventory            StoneInventory[]
+  stonesOnProjectParts      StonesOnProjectPart[]
+  stonesOnSubthemes         StonesOnSubtheme[]
+  stoneInventoryHistory     StoneInventoryHistory[]
+  attributeInventory        AttributeInventory[]
+  attributesOnProjectParts  AttributesOnProjectPart[]
+  attributesOnSubthemes     AttributesOnSubtheme[]
+  attributeInventoryHistory AttributeInventoryHistory[]
+  projectHistory            ProjectHistory[]
+  supervisingProjects       Project[]                   @relation("supervisor")
+  createdProjects           Project[]                   @relation("createdProject")
+
+  /// The teams this user is a member of
+  teams Member[]
+}
+
+model Session {
+  __uuid__
+
+  expiresAt DateTime?
+  token     String    @unique
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // OPTIONAL
+  teamId String?
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+}
+
+// Teams
+
+enum Role {
+  CAPTAIN
+  BUILDER
+  GUEST
+}
+
+model Member {
+  __uuid__
+  __team__
+
+  role Role
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+}
+
+// Events
+
+model Event {
+  __uuid__
+  __team__
+
+  name String
+  date DateTime
+  slug String   @unique
+  img  String
+
+  subthemes Subtheme[]
+}
+
+model Subtheme {
+  __uuid__
+
+  name  String
+  color String
+  order Int
+  slug  String @unique
+
+  projects   Project[]
+  attributes AttributesOnSubtheme[]
+  stones     StonesOnSubtheme[]
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+enum ProjectStatus {
+  CANCELLED
+  PLANNED
+  DESIGNING
+  DESIGNED
+  READY
+  BUILDING
+  BUILT
+  COUNTED
+}
+
+enum ProjectType {
+  FIELD_L1
+  FIELD_L2
+  FIELD_M50
+  FIELD_FLAT
+  FIELD_CROSS_L1
+  FIELD_CROSS_L2
+  FIELD_CROSS_M50
+  FIELD_CIRCLE
+  WALL_X
+  WALL_S
+  WALL_T
+  WALL_SPEED
+  WALL_CUBE
+  WALL_OCTO
+  FALLWALL
+  SPIRAL
+  STRUCTURE
+  FREE_HAND
+  DECOR
+  OTHER
+}
+
+model Project {
+  __uuid__
+
+  name        String
+  slug        String @unique
+  description Json?
+  number      Int
+
+  status  ProjectStatus
+  parts   ProjectPart[]
+  stats   StatsOnProject[]
+  history ProjectHistory[]
+
+  subthemeId   String
+  subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+  supervisorId String?
+  supervisor   User?    @relation(name: "supervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
+  createdById  String?
+  createdBy    User?    @relation(name: "createdProject", fields: [createdById], references: [id], onDelete: SetNull)
+}
+
+model ProjectPart {
+  __uuid__
+
+  name        String
+  slug        String  @unique
+  description String?
+  number      Int
+
+  type       ProjectType
+  stones     StonesOnProjectPart[]
+  attributes AttributesOnProjectPart[]
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model ProjectHistory {
+  __uuid__
+
+  fieldName String
+  oldValue  String?
+  newValue  String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Restrict)
+}
+
+model Stat {
+  __uuid__
+  __team__
+
+  name String
+
+  projects StatsOnProject[]
+}
+
+model StatsOnProject {
+  __uuid__
+
+  value String
+
+  statId    String
+  stat      Stat    @relation(fields: [statId], references: [id], onDelete: Restrict)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+// Inventory
+
+model StoneType {
+  __uuid__
+  __team__
+
+  name        String
+  description String?
+  order       Int
+
+  stones Stone[]
+}
+
+model Stone {
+  __uuid__
+
+  name        String
+  alias       String
+  alias2      String?
+  hex         String
+  hex2        String?
+  description String?
+  order       Int
+
+  inventory    StoneInventory[]
+  projectParts StonesOnProjectPart[]
+  subthemes    StonesOnSubtheme[]
+  history      StoneInventoryHistory[]
+
+  stoneTypeId String
+  stoneType   StoneType @relation(fields: [stoneTypeId], references: [id], onDelete: Cascade)
+}
+
+model StoneInventory {
+  __uuid__
+
+  amount Int
+
+  stoneId String
+  stone   Stone  @relation(fields: [stoneId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model StonesOnProjectPart {
+  __uuid__
+
+  amount Int
+
+  stoneId       String
+  stone         Stone       @relation(fields: [stoneId], references: [id], onDelete: Restrict)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  projectPartId String
+  projectPart   ProjectPart @relation(fields: [projectPartId], references: [id], onDelete: Cascade)
+}
+
+model StonesOnSubtheme {
+  __uuid__
+
+  amount Int
+
+  stoneId    String
+  stone      Stone    @relation(fields: [stoneId], references: [id], onDelete: Restrict)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  subthemeId String
+  subtheme   Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+}
+
+model StoneInventoryHistory {
+  __uuid__
+
+  fieldName String
+  oldValue  String
+  newValue  String
+
+  stoneId String
+  stone   Stone  @relation(fields: [stoneId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+}
+
+model AttributeInventory {
+  __uuid__
+
+  amount Int
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AttributesOnProjectPart {
+  __uuid__
+
+  amount Int
+
+  attributeId   String
+  attribute     Attribute   @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  projectPartId String
+  projectPart   ProjectPart @relation(fields: [projectPartId], references: [id], onDelete: Cascade)
+}
+
+model AttributesOnSubtheme {
+  __uuid__
+
+  amount Int
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  subthemeId  String
+  subtheme    Subtheme  @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+}
+
+model AttributeInventoryHistory {
+  __uuid__
+
+  fieldName String
+  oldValue  String
+  newValue  String
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+}

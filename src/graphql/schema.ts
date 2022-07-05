@@ -1,27 +1,15 @@
-import { makeSchema, fieldAuthorizePlugin, queryComplexityPlugin } from 'nexus';
-import { FieldAuthorizePluginErrorConfig } from 'nexus/dist/plugins/fieldAuthorizePlugin';
-import { join } from 'path';
-import * as types from './types';
+import 'reflect-metadata';
+import { GraphQLSchema } from 'graphql';
+import path from 'node:path';
+import { buildSchema } from 'type-graphql';
+import { resolvers } from './resolvers';
 
-export const schema = makeSchema({
-  types,
-  plugins: [
-    fieldAuthorizePlugin({
-      formatError: ({ error }: FieldAuthorizePluginErrorConfig): Error =>
-        error ?? new Error('Not authorized'),
-    }),
-    queryComplexityPlugin(),
-  ],
-  outputs: {
-    typegen: join(process.cwd(), 'node_modules', '@types', 'nexus-typegen', 'index.d.ts'),
-    schema: join(process.cwd(), 'schema.graphql'),
-  },
-  nonNullDefaults: {
-    input: true,
-    output: true,
-  },
-  contextType: {
-    export: 'Context',
-    module: join(process.cwd(), 'src', 'graphql', 'context.ts'),
-  },
-});
+export async function makeSchema(emit?: boolean): Promise<GraphQLSchema> {
+  return await buildSchema({
+    resolvers,
+    validate: false,
+    emitSchemaFile: emit ? path.resolve(process.cwd(), 'schema.graphql') : undefined,
+  });
+}
+
+if (process.env.GENERATE === 'true') (async () => makeSchema(true))();

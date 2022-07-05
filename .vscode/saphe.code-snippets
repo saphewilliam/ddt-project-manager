@@ -54,15 +54,27 @@
       ""
     ]
   },
-  "Saphe Nexus model": {
+  "Saphe Graphql model": {
     "scope": "typescript",
-    "prefix": "saphe-nexus-model",
-    "description": "Boilerplate Typescript Nexus Model",
+    "prefix": "saphe-graphql-model",
+    "description": "Boilerplate Typescript Graphql Model",
     "body": [
-      "import { ${2:Model} } from 'nexus-prisma';",
-      "import { nexusModel } from '@lib/nexusHelpers';",
+      "import {",
+      "  ModelConfig,",
+      "  ResolverActionsConfig,",
+      "  RelationResolverActionsConfig,",
+      "  ${1:ModelName}RelationsResolver,",
+      "} from '@graphql/__generated__/type-graphql-transpiled';",
       "",
-      "export const ${1:modelName}Model = nexusModel(${2:Model});",
+      "export const resolvers = [",
+      "  ${1:ModelName}RelationsResolver,",
+      "] as const;",
+      "",
+      "export const modelConfig: ModelConfig<'${1:ModelName}'> = {};",
+      "",
+      "export const relationsConfig: RelationResolverActionsConfig<'${1:ModelName}'> = {};",
+      "",
+      "export const actionsConfig: ResolverActionsConfig<'${1:ModelName}'> = {};",
       ""
     ]
   },

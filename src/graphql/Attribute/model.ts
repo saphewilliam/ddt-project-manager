@@ -1,56 +1,55 @@
-import { extendType, arg, inputObjectType } from 'nexus';
-import { Attribute } from 'nexus-prisma';
-import { authorizeSession } from '@lib/authHelpers';
-import { nexusModel } from '@lib/nexusHelpers';
+import graphqlFields from 'graphql-fields';
+import { ArgsDictionary, Authorized, createMethodDecorator, Extensions } from 'type-graphql';
+import * as TypeGraphQL from 'type-graphql';
+import {
+  ResolverActionsConfig,
+  CreateAttributeResolver,
+  AttributeRelationsResolver,
+  ModelConfig,
+  RelationResolverActionsConfig,
+  Attribute,
+  FindManyAttributeArgs,
+} from '@graphql/__generated__/type-graphql-transpiled';
+import {
+  transformFields,
+  transformCountFieldIntoSelectRelationsCount,
+} from '@graphql/__generated__/type-graphql-transpiled/helpers';
+import type { Context } from '@graphql/context';
+import type { GraphQLResolveInfo } from 'graphql';
 
-export const attributeModel = nexusModel(Attribute);
-
-export const attributeQuery = extendType({
-  type: 'Query',
-  definition(t) {
-    t.list.field('attributes', {
-      type: 'Attribute',
-      authorize: authorizeSession,
-      description: 'Get all attributes of a team',
-      resolve: (_, __, ctx) => {
-        return ctx.prisma.attribute.findMany({
-          where: { teamId: ctx.session?.teamId ?? '' },
-          orderBy: { name: 'asc' },
-        });
+@TypeGraphQL.Resolver((_of) => Attribute)
+class AttributeResolver {
+  @TypeGraphQL.Query((_returns) => [Attribute])
+  async attributes(
+    @TypeGraphQL.Ctx() ctx: Context,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: FindManyAttributeArgs,
+  ): Promise<Attribute[]> {
+    const { _count } = transformFields(graphqlFields(info));
+    return ctx.prisma.attribute.findMany({
+      ...args,
+      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
+      where: {
+        ...args.where,
+        teamId: ctx.session?.teamId ?? '',
       },
     });
-  },
-});
+  }
+}
 
-export const attributeCreateInput = inputObjectType({
-  name: 'AttributeCreateInput',
-  definition(t) {
-    t.string('name');
-    t.string('namePlural');
-  },
-});
+export const resolvers = [
+  AttributeRelationsResolver,
+  CreateAttributeResolver,
+  FindManyAttributeResolver,
+] as const;
 
-export const attributeMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('createAttritbute', {
-      type: 'Attribute',
-      authorize: authorizeSession,
-      description: 'Creates an attribute',
-      args: {
-        data: arg({ type: 'AttributeCreateInput' }),
-      },
-      resolve: (_, args, ctx) => {
-        return ctx.prisma.attribute.create({
-          data: {
-            name: args.data.name,
-            namePlural: args.data.namePlural,
-            team: {
-              connect: { id: ctx.session?.teamId ?? '' },
-            },
-          },
-        });
-      },
-    });
-  },
-});
+export const modelConfig: ModelConfig<'Attribute'> = {};
+
+export const relationsConfig: RelationResolverActionsConfig<'Attribute'> = {};
+
+export const actionsConfig: ResolverActionsConfig<'Attribute'> = {};
+
+// createAttribute: [
+//   Authorized(Role.Admin),
+//   Extensions({ logMessage: 'Danger zone', logLevel: LogLevel.WARN }),
+// ],

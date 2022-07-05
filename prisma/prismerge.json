@@ -1,0 +1,14 @@
+{
+  "projectmanager": {
+    "inputs": [
+      "./prisma/base.prisma",
+      "./src/graphql/*/*.prisma",
+      "./prisma/oldschema.prisma"
+    ],
+    "mixins": {
+      "uuid": "./prisma/mixins/uuid.prisma.mixin",
+      "team": "./prisma/mixins/team.prisma.mixin"
+    },
+    "output": "./schema.prisma"
+  }
+}
