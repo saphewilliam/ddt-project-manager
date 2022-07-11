@@ -46,94 +46,8 @@ model Attribute {
 
   inventory        AttributeInventory[]
   inventoryHistory AttributeInventoryHistory[]
-  projectParts     AttributesOnProjectPart[]
+  projectParts     AttributesOnProject[]
   subthemes        AttributesOnSubtheme[]
-}
-
-model Team {
-  // Meta information
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  id        String   @id @default(uuid())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  createdAt DateTime @default(now())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  updatedAt DateTime @updatedAt
-
-
-  name String
-
-  members    Member[]
-  sessions   Session[]
-  events     Event[]
-  stoneTypes StoneType[]
-  attributes Attribute[]
-  stats      Stat[]
-}
-
-// Authentication
-
-model User {
-  // Meta information
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  id        String   @id @default(uuid())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  createdAt DateTime @default(now())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  updatedAt DateTime @updatedAt
-
-
-  firstName   String
-  lastName    String
-  displayName String
-  slug        String  @unique
-  password    String?
-  avatar      String?
-  email       String  @unique
-  isAdmin     Boolean @default(false)
-
-  sessions                  Session[]
-  stoneInventory            StoneInventory[]
-  stonesOnProjectParts      StonesOnProjectPart[]
-  stonesOnSubthemes         StonesOnSubtheme[]
-  stoneInventoryHistory     StoneInventoryHistory[]
-  attributeInventory        AttributeInventory[]
-  attributesOnProjectParts  AttributesOnProjectPart[]
-  attributesOnSubthemes     AttributesOnSubtheme[]
-  attributeInventoryHistory AttributeInventoryHistory[]
-  projectHistory            ProjectHistory[]
-  supervisingProjects       Project[]                   @relation("supervisor")
-  createdProjects           Project[]                   @relation("createdProject")
-
-  /// The teams this user is a member of
-  teams Member[]
-}
-
-model Session {
-  // Meta information
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  id        String   @id @default(uuid())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  createdAt DateTime @default(now())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  updatedAt DateTime @updatedAt
-
-
-  expiresAt DateTime?
-  token     String    @unique
-
-  userId String
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // OPTIONAL
-  teamId String?
-  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
-}
-
-// Teams
-
-enum Role {
-  CAPTAIN
-  BUILDER
-  GUEST
 }
 
 model Member {
@@ -157,6 +71,94 @@ model Member {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, teamId])
+}
+
+model Session {
+  // Meta information
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  id        String   @id @default(uuid())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  createdAt DateTime @default(now())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  updatedAt DateTime @updatedAt
+
+
+  expiresAt DateTime?
+  // @TypeGraphQL.omit(output: true)
+  token     String    @unique
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// @TypeGraphQL.omit(input: true)
+  teamId String?
+  /// @TypeGraphQL.omit(input: true)
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+}
+
+model Team {
+  // Meta information
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  id        String   @id @default(uuid())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  createdAt DateTime @default(now())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  updatedAt DateTime @updatedAt
+
+
+  name String
+
+  members    Member[]
+  sessions   Session[]
+  events     Event[]
+  stoneTypes StoneType[]
+  attributes Attribute[]
+  stats      Stat[]
+}
+
+model User {
+  // Meta information
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  id        String   @id @default(uuid())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  createdAt DateTime @default(now())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  updatedAt DateTime @updatedAt
+
+
+  firstName   String
+  lastName    String
+  displayName String
+  slug        String  @unique
+  password    String?
+  avatar      String?
+  email       String  @unique
+  isAdmin     Boolean @default(false)
+
+  sessions                  Session[]
+  stoneInventory            StoneInventory[]
+  stonesOnProjectParts      StonesOnProject[]
+  stonesOnSubthemes         StonesOnSubtheme[]
+  stoneInventoryHistory     StoneInventoryHistory[]
+  attributeInventory        AttributeInventory[]
+  attributesOnProjectParts  AttributesOnProject[]
+  attributesOnSubthemes     AttributesOnSubtheme[]
+  attributeInventoryHistory AttributeInventoryHistory[]
+  projectHistory            ProjectHistory[]
+  supervisingProjects       Project[]                   @relation("supervisor")
+  createdProjects           Project[]                   @relation("createdProject")
+
+  /// The teams this user is a member of
+  teams Member[]
+}
+
+// Authentication
+
+// Teams
+
+enum Role {
+  CAPTAIN
+  BUILDER
+  GUEST
 }
 
 // Events
@@ -285,8 +287,8 @@ model ProjectPart {
   number      Int
 
   type       ProjectType
-  stones     StonesOnProjectPart[]
-  attributes AttributesOnProjectPart[]
+  stones     StonesOnProject[]
+  attributes AttributesOnProject[]
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -393,7 +395,7 @@ model Stone {
   order       Int
 
   inventory    StoneInventory[]
-  projectParts StonesOnProjectPart[]
+  projectParts StonesOnProject[]
   subthemes    StonesOnSubtheme[]
   history      StoneInventoryHistory[]
 
@@ -419,7 +421,8 @@ model StoneInventory {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model StonesOnProjectPart {
+// TODO rename back
+model StonesOnProject {
   // Meta information
   /// @TypeGraphQL.omit(input: ["create", "update"])
   id        String   @id @default(uuid())
@@ -497,7 +500,8 @@ model AttributeInventory {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model AttributesOnProjectPart {
+// TODO rename back
+model AttributesOnProject {
   // Meta information
   /// @TypeGraphQL.omit(input: ["create", "update"])
   id        String   @id @default(uuid())

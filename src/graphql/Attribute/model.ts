@@ -1,47 +1,50 @@
-import graphqlFields from 'graphql-fields';
-import { ArgsDictionary, Authorized, createMethodDecorator, Extensions } from 'type-graphql';
 import * as TypeGraphQL from 'type-graphql';
 import {
   ResolverActionsConfig,
-  CreateAttributeResolver,
   AttributeRelationsResolver,
   ModelConfig,
   RelationResolverActionsConfig,
   Attribute,
   FindManyAttributeArgs,
+  CreateAttributeArgs,
 } from '@graphql/__generated__/type-graphql-transpiled';
-import {
-  transformFields,
-  transformCountFieldIntoSelectRelationsCount,
-} from '@graphql/__generated__/type-graphql-transpiled/helpers';
+import { Auth } from '@lib/authHelpers';
+import { count } from '@lib/graphqlHelpers';
 import type { Context } from '@graphql/context';
 import type { GraphQLResolveInfo } from 'graphql';
 
 @TypeGraphQL.Resolver((_of) => Attribute)
 class AttributeResolver {
   @TypeGraphQL.Query((_returns) => [Attribute])
+  @Auth()
   async attributes(
     @TypeGraphQL.Ctx() ctx: Context,
     @TypeGraphQL.Info() info: GraphQLResolveInfo,
     @TypeGraphQL.Args() args: FindManyAttributeArgs,
   ): Promise<Attribute[]> {
-    const { _count } = transformFields(graphqlFields(info));
     return ctx.prisma.attribute.findMany({
       ...args,
-      ...(_count && transformCountFieldIntoSelectRelationsCount(_count)),
-      where: {
-        ...args.where,
-        teamId: ctx.session?.teamId ?? '',
-      },
+      ...count(info),
+      where: { ...args.where, teamId: ctx.session?.teamId ?? '' },
+    });
+  }
+
+  @TypeGraphQL.Mutation((_returns) => Attribute)
+  @Auth('CAPTAIN')
+  async createAttribute(
+    @TypeGraphQL.Ctx() ctx: Context,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: CreateAttributeArgs,
+  ): Promise<Attribute> {
+    return ctx.prisma.attribute.create({
+      ...args,
+      ...count(info),
+      data: { ...args.data, teamId: ctx.session?.teamId ?? '' },
     });
   }
 }
 
-export const resolvers = [
-  AttributeRelationsResolver,
-  CreateAttributeResolver,
-  AttributeResolver,
-] as const;
+export const resolvers = [AttributeRelationsResolver, AttributeResolver] as const;
 
 export const modelConfig: ModelConfig<'Attribute'> = {};
 

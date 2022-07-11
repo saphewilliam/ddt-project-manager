@@ -7,6 +7,6 @@ model Attribute {
 
   inventory        AttributeInventory[]
   inventoryHistory AttributeInventoryHistory[]
-  projectParts     AttributesOnProjectPart[]
+  projectParts     AttributesOnProject[]
   subthemes        AttributesOnSubtheme[]
 }

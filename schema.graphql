@@ -11,7 +11,7 @@ type Attribute {
   inventoryHistory(cursor: AttributeInventoryHistoryWhereUniqueInput, distinct: [AttributeInventoryHistoryScalarFieldEnum!], orderBy: [AttributeInventoryHistoryOrderByWithRelationInput!], skip: Int, take: Int, where: AttributeInventoryHistoryWhereInput): [AttributeInventoryHistory!]!
   name: String!
   namePlural: String!
-  projectParts(cursor: AttributesOnProjectPartWhereUniqueInput, distinct: [AttributesOnProjectPartScalarFieldEnum!], orderBy: [AttributesOnProjectPartOrderByWithRelationInput!], skip: Int, take: Int, where: AttributesOnProjectPartWhereInput): [AttributesOnProjectPart!]!
+  projectParts(cursor: AttributesOnProjectWhereUniqueInput, distinct: [AttributesOnProjectScalarFieldEnum!], orderBy: [AttributesOnProjectOrderByWithRelationInput!], skip: Int, take: Int, where: AttributesOnProjectWhereInput): [AttributesOnProject!]!
   subthemes(cursor: AttributesOnSubthemeWhereUniqueInput, distinct: [AttributesOnSubthemeScalarFieldEnum!], orderBy: [AttributesOnSubthemeOrderByWithRelationInput!], skip: Int, take: Int, where: AttributesOnSubthemeWhereInput): [AttributesOnSubtheme!]!
   team: Team!
   teamId: String!
@@ -30,25 +30,8 @@ input AttributeCreateInput {
   inventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutAttributeInput
   name: String!
   namePlural: String!
-  projectParts: AttributesOnProjectPartCreateNestedManyWithoutAttributeInput
+  projectParts: AttributesOnProjectCreateNestedManyWithoutAttributeInput
   subthemes: AttributesOnSubthemeCreateNestedManyWithoutAttributeInput
-}
-
-input AttributeCreateManyTeamInput {
-  name: String!
-  namePlural: String!
-}
-
-input AttributeCreateManyTeamInputEnvelope {
-  data: [AttributeCreateManyTeamInput!]!
-  skipDuplicates: Boolean
-}
-
-input AttributeCreateNestedManyWithoutTeamInput {
-  connect: [AttributeWhereUniqueInput!]
-  connectOrCreate: [AttributeCreateOrConnectWithoutTeamInput!]
-  create: [AttributeCreateWithoutTeamInput!]
-  createMany: AttributeCreateManyTeamInputEnvelope
 }
 
 input AttributeCreateNestedOneWithoutInventoryHistoryInput {
@@ -95,16 +78,11 @@ input AttributeCreateOrConnectWithoutSubthemesInput {
   where: AttributeWhereUniqueInput!
 }
 
-input AttributeCreateOrConnectWithoutTeamInput {
-  create: AttributeCreateWithoutTeamInput!
-  where: AttributeWhereUniqueInput!
-}
-
 input AttributeCreateWithoutInventoryHistoryInput {
   inventory: AttributeInventoryCreateNestedManyWithoutAttributeInput
   name: String!
   namePlural: String!
-  projectParts: AttributesOnProjectPartCreateNestedManyWithoutAttributeInput
+  projectParts: AttributesOnProjectCreateNestedManyWithoutAttributeInput
   subthemes: AttributesOnSubthemeCreateNestedManyWithoutAttributeInput
 }
 
@@ -112,7 +90,7 @@ input AttributeCreateWithoutInventoryInput {
   inventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutAttributeInput
   name: String!
   namePlural: String!
-  projectParts: AttributesOnProjectPartCreateNestedManyWithoutAttributeInput
+  projectParts: AttributesOnProjectCreateNestedManyWithoutAttributeInput
   subthemes: AttributesOnSubthemeCreateNestedManyWithoutAttributeInput
 }
 
@@ -129,16 +107,7 @@ input AttributeCreateWithoutSubthemesInput {
   inventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutAttributeInput
   name: String!
   namePlural: String!
-  projectParts: AttributesOnProjectPartCreateNestedManyWithoutAttributeInput
-}
-
-input AttributeCreateWithoutTeamInput {
-  inventory: AttributeInventoryCreateNestedManyWithoutAttributeInput
-  inventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutAttributeInput
-  name: String!
-  namePlural: String!
-  projectParts: AttributesOnProjectPartCreateNestedManyWithoutAttributeInput
-  subthemes: AttributesOnSubthemeCreateNestedManyWithoutAttributeInput
+  projectParts: AttributesOnProjectCreateNestedManyWithoutAttributeInput
 }
 
 type AttributeInventory {
@@ -396,7 +365,7 @@ input AttributeOrderByWithRelationInput {
   inventoryHistory: AttributeInventoryHistoryOrderByRelationAggregateInput
   name: SortOrder
   namePlural: SortOrder
-  projectParts: AttributesOnProjectPartOrderByRelationAggregateInput
+  projectParts: AttributesOnProjectOrderByRelationAggregateInput
   subthemes: AttributesOnSubthemeOrderByRelationAggregateInput
   updatedAt: SortOrder
 }
@@ -425,7 +394,7 @@ input AttributeWhereInput {
   inventoryHistory: AttributeInventoryHistoryListRelationFilter
   name: StringFilter
   namePlural: StringFilter
-  projectParts: AttributesOnProjectPartListRelationFilter
+  projectParts: AttributesOnProjectListRelationFilter
   subthemes: AttributesOnSubthemeListRelationFilter
   updatedAt: DateTimeFilter
 }
@@ -434,7 +403,7 @@ input AttributeWhereUniqueInput {
   id: String
 }
 
-type AttributesOnProjectPart {
+type AttributesOnProject {
   amount: Int!
   attributeId: String!
   createdAt: DateTime!
@@ -444,104 +413,104 @@ type AttributesOnProjectPart {
   userId: String!
 }
 
-input AttributesOnProjectPartCreateManyAttributeInput {
+input AttributesOnProjectCreateManyAttributeInput {
   amount: Int!
   projectPartId: String!
   userId: String!
 }
 
-input AttributesOnProjectPartCreateManyAttributeInputEnvelope {
-  data: [AttributesOnProjectPartCreateManyAttributeInput!]!
+input AttributesOnProjectCreateManyAttributeInputEnvelope {
+  data: [AttributesOnProjectCreateManyAttributeInput!]!
   skipDuplicates: Boolean
 }
 
-input AttributesOnProjectPartCreateManyProjectPartInput {
+input AttributesOnProjectCreateManyProjectPartInput {
   amount: Int!
   attributeId: String!
   userId: String!
 }
 
-input AttributesOnProjectPartCreateManyProjectPartInputEnvelope {
-  data: [AttributesOnProjectPartCreateManyProjectPartInput!]!
+input AttributesOnProjectCreateManyProjectPartInputEnvelope {
+  data: [AttributesOnProjectCreateManyProjectPartInput!]!
   skipDuplicates: Boolean
 }
 
-input AttributesOnProjectPartCreateManyUserInput {
+input AttributesOnProjectCreateManyUserInput {
   amount: Int!
   attributeId: String!
   projectPartId: String!
 }
 
-input AttributesOnProjectPartCreateManyUserInputEnvelope {
-  data: [AttributesOnProjectPartCreateManyUserInput!]!
+input AttributesOnProjectCreateManyUserInputEnvelope {
+  data: [AttributesOnProjectCreateManyUserInput!]!
   skipDuplicates: Boolean
 }
 
-input AttributesOnProjectPartCreateNestedManyWithoutAttributeInput {
-  connect: [AttributesOnProjectPartWhereUniqueInput!]
-  connectOrCreate: [AttributesOnProjectPartCreateOrConnectWithoutAttributeInput!]
-  create: [AttributesOnProjectPartCreateWithoutAttributeInput!]
-  createMany: AttributesOnProjectPartCreateManyAttributeInputEnvelope
+input AttributesOnProjectCreateNestedManyWithoutAttributeInput {
+  connect: [AttributesOnProjectWhereUniqueInput!]
+  connectOrCreate: [AttributesOnProjectCreateOrConnectWithoutAttributeInput!]
+  create: [AttributesOnProjectCreateWithoutAttributeInput!]
+  createMany: AttributesOnProjectCreateManyAttributeInputEnvelope
 }
 
-input AttributesOnProjectPartCreateNestedManyWithoutProjectPartInput {
-  connect: [AttributesOnProjectPartWhereUniqueInput!]
-  connectOrCreate: [AttributesOnProjectPartCreateOrConnectWithoutProjectPartInput!]
-  create: [AttributesOnProjectPartCreateWithoutProjectPartInput!]
-  createMany: AttributesOnProjectPartCreateManyProjectPartInputEnvelope
+input AttributesOnProjectCreateNestedManyWithoutProjectPartInput {
+  connect: [AttributesOnProjectWhereUniqueInput!]
+  connectOrCreate: [AttributesOnProjectCreateOrConnectWithoutProjectPartInput!]
+  create: [AttributesOnProjectCreateWithoutProjectPartInput!]
+  createMany: AttributesOnProjectCreateManyProjectPartInputEnvelope
 }
 
-input AttributesOnProjectPartCreateNestedManyWithoutUserInput {
-  connect: [AttributesOnProjectPartWhereUniqueInput!]
-  connectOrCreate: [AttributesOnProjectPartCreateOrConnectWithoutUserInput!]
-  create: [AttributesOnProjectPartCreateWithoutUserInput!]
-  createMany: AttributesOnProjectPartCreateManyUserInputEnvelope
+input AttributesOnProjectCreateNestedManyWithoutUserInput {
+  connect: [AttributesOnProjectWhereUniqueInput!]
+  connectOrCreate: [AttributesOnProjectCreateOrConnectWithoutUserInput!]
+  create: [AttributesOnProjectCreateWithoutUserInput!]
+  createMany: AttributesOnProjectCreateManyUserInputEnvelope
 }
 
-input AttributesOnProjectPartCreateOrConnectWithoutAttributeInput {
-  create: AttributesOnProjectPartCreateWithoutAttributeInput!
-  where: AttributesOnProjectPartWhereUniqueInput!
+input AttributesOnProjectCreateOrConnectWithoutAttributeInput {
+  create: AttributesOnProjectCreateWithoutAttributeInput!
+  where: AttributesOnProjectWhereUniqueInput!
 }
 
-input AttributesOnProjectPartCreateOrConnectWithoutProjectPartInput {
-  create: AttributesOnProjectPartCreateWithoutProjectPartInput!
-  where: AttributesOnProjectPartWhereUniqueInput!
+input AttributesOnProjectCreateOrConnectWithoutProjectPartInput {
+  create: AttributesOnProjectCreateWithoutProjectPartInput!
+  where: AttributesOnProjectWhereUniqueInput!
 }
 
-input AttributesOnProjectPartCreateOrConnectWithoutUserInput {
-  create: AttributesOnProjectPartCreateWithoutUserInput!
-  where: AttributesOnProjectPartWhereUniqueInput!
+input AttributesOnProjectCreateOrConnectWithoutUserInput {
+  create: AttributesOnProjectCreateWithoutUserInput!
+  where: AttributesOnProjectWhereUniqueInput!
 }
 
-input AttributesOnProjectPartCreateWithoutAttributeInput {
+input AttributesOnProjectCreateWithoutAttributeInput {
   amount: Int!
   projectPart: ProjectPartCreateNestedOneWithoutAttributesInput!
   user: UserCreateNestedOneWithoutAttributesOnProjectPartsInput!
 }
 
-input AttributesOnProjectPartCreateWithoutProjectPartInput {
+input AttributesOnProjectCreateWithoutProjectPartInput {
   amount: Int!
   attribute: AttributeCreateNestedOneWithoutProjectPartsInput!
   user: UserCreateNestedOneWithoutAttributesOnProjectPartsInput!
 }
 
-input AttributesOnProjectPartCreateWithoutUserInput {
+input AttributesOnProjectCreateWithoutUserInput {
   amount: Int!
   attribute: AttributeCreateNestedOneWithoutProjectPartsInput!
   projectPart: ProjectPartCreateNestedOneWithoutAttributesInput!
 }
 
-input AttributesOnProjectPartListRelationFilter {
-  every: AttributesOnProjectPartWhereInput
-  none: AttributesOnProjectPartWhereInput
-  some: AttributesOnProjectPartWhereInput
+input AttributesOnProjectListRelationFilter {
+  every: AttributesOnProjectWhereInput
+  none: AttributesOnProjectWhereInput
+  some: AttributesOnProjectWhereInput
 }
 
-input AttributesOnProjectPartOrderByRelationAggregateInput {
+input AttributesOnProjectOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-input AttributesOnProjectPartOrderByWithRelationInput {
+input AttributesOnProjectOrderByWithRelationInput {
   amount: SortOrder
   attribute: AttributeOrderByWithRelationInput
   attributeId: SortOrder
@@ -554,7 +523,7 @@ input AttributesOnProjectPartOrderByWithRelationInput {
   userId: SortOrder
 }
 
-enum AttributesOnProjectPartScalarFieldEnum {
+enum AttributesOnProjectScalarFieldEnum {
   amount
   attributeId
   createdAt
@@ -564,10 +533,10 @@ enum AttributesOnProjectPartScalarFieldEnum {
   userId
 }
 
-input AttributesOnProjectPartWhereInput {
-  AND: [AttributesOnProjectPartWhereInput!]
-  NOT: [AttributesOnProjectPartWhereInput!]
-  OR: [AttributesOnProjectPartWhereInput!]
+input AttributesOnProjectWhereInput {
+  AND: [AttributesOnProjectWhereInput!]
+  NOT: [AttributesOnProjectWhereInput!]
+  OR: [AttributesOnProjectWhereInput!]
   amount: IntFilter
   attribute: AttributeRelationFilter
   attributeId: StringFilter
@@ -580,7 +549,7 @@ input AttributesOnProjectPartWhereInput {
   userId: StringFilter
 }
 
-input AttributesOnProjectPartWhereUniqueInput {
+input AttributesOnProjectWhereUniqueInput {
   id: String
 }
 
@@ -803,25 +772,6 @@ type EventCount {
   subthemes: Int!
 }
 
-input EventCreateManyTeamInput {
-  date: DateTime!
-  img: String!
-  name: String!
-  slug: String!
-}
-
-input EventCreateManyTeamInputEnvelope {
-  data: [EventCreateManyTeamInput!]!
-  skipDuplicates: Boolean
-}
-
-input EventCreateNestedManyWithoutTeamInput {
-  connect: [EventWhereUniqueInput!]
-  connectOrCreate: [EventCreateOrConnectWithoutTeamInput!]
-  create: [EventCreateWithoutTeamInput!]
-  createMany: EventCreateManyTeamInputEnvelope
-}
-
 input EventCreateNestedOneWithoutSubthemesInput {
   connect: EventWhereUniqueInput
   connectOrCreate: EventCreateOrConnectWithoutSubthemesInput
@@ -833,24 +783,11 @@ input EventCreateOrConnectWithoutSubthemesInput {
   where: EventWhereUniqueInput!
 }
 
-input EventCreateOrConnectWithoutTeamInput {
-  create: EventCreateWithoutTeamInput!
-  where: EventWhereUniqueInput!
-}
-
 input EventCreateWithoutSubthemesInput {
   date: DateTime!
   img: String!
   name: String!
   slug: String!
-}
-
-input EventCreateWithoutTeamInput {
-  date: DateTime!
-  img: String!
-  name: String!
-  slug: String!
-  subthemes: SubthemeCreateNestedManyWithoutEventInput
 }
 
 input EventListRelationFilter {
@@ -939,16 +876,6 @@ type Member {
   userId: String!
 }
 
-input MemberCreateManyTeamInput {
-  role: Role!
-  userId: String!
-}
-
-input MemberCreateManyTeamInputEnvelope {
-  data: [MemberCreateManyTeamInput!]!
-  skipDuplicates: Boolean
-}
-
 input MemberCreateManyUserInput {
   role: Role!
 }
@@ -958,13 +885,6 @@ input MemberCreateManyUserInputEnvelope {
   skipDuplicates: Boolean
 }
 
-input MemberCreateNestedManyWithoutTeamInput {
-  connect: [MemberWhereUniqueInput!]
-  connectOrCreate: [MemberCreateOrConnectWithoutTeamInput!]
-  create: [MemberCreateWithoutTeamInput!]
-  createMany: MemberCreateManyTeamInputEnvelope
-}
-
 input MemberCreateNestedManyWithoutUserInput {
   connect: [MemberWhereUniqueInput!]
   connectOrCreate: [MemberCreateOrConnectWithoutUserInput!]
@@ -972,19 +892,9 @@ input MemberCreateNestedManyWithoutUserInput {
   createMany: MemberCreateManyUserInputEnvelope
 }
 
-input MemberCreateOrConnectWithoutTeamInput {
-  create: MemberCreateWithoutTeamInput!
-  where: MemberWhereUniqueInput!
-}
-
 input MemberCreateOrConnectWithoutUserInput {
   create: MemberCreateWithoutUserInput!
   where: MemberWhereUniqueInput!
-}
-
-input MemberCreateWithoutTeamInput {
-  role: Role!
-  user: UserCreateNestedOneWithoutTeamsInput!
 }
 
 input MemberCreateWithoutUserInput {
@@ -1043,6 +953,15 @@ input MemberWhereUniqueInput {
 
 type Mutation {
   createAttribute(data: AttributeCreateInput!): Attribute!
+
+  """Generate a new session for a user with an active account"""
+  login(email: String!, isPermanent: Boolean!, password: String!): String!
+
+  """Invalidate the active session"""
+  logout: Session!
+
+  """Set the `team` field of the active session"""
+  setSessionTeam(teamId: String!): Session!
 }
 
 input NestedBoolFilter {
@@ -1210,12 +1129,6 @@ input ProjectCreateNestedOneWithoutPartsInput {
   create: ProjectCreateWithoutPartsInput
 }
 
-input ProjectCreateNestedOneWithoutStatsInput {
-  connect: ProjectWhereUniqueInput
-  connectOrCreate: ProjectCreateOrConnectWithoutStatsInput
-  create: ProjectCreateWithoutStatsInput
-}
-
 input ProjectCreateOrConnectWithoutCreatedByInput {
   create: ProjectCreateWithoutCreatedByInput!
   where: ProjectWhereUniqueInput!
@@ -1228,11 +1141,6 @@ input ProjectCreateOrConnectWithoutHistoryInput {
 
 input ProjectCreateOrConnectWithoutPartsInput {
   create: ProjectCreateWithoutPartsInput!
-  where: ProjectWhereUniqueInput!
-}
-
-input ProjectCreateOrConnectWithoutStatsInput {
-  create: ProjectCreateWithoutStatsInput!
   where: ProjectWhereUniqueInput!
 }
 
@@ -1280,19 +1188,6 @@ input ProjectCreateWithoutPartsInput {
   number: Int!
   slug: String!
   stats: StatsOnProjectCreateNestedManyWithoutProjectInput
-  status: ProjectStatus!
-  subtheme: SubthemeCreateNestedOneWithoutProjectsInput!
-  supervisor: UserCreateNestedOneWithoutSupervisingProjectsInput
-}
-
-input ProjectCreateWithoutStatsInput {
-  createdBy: UserCreateNestedOneWithoutCreatedProjectsInput
-  description: JSON
-  history: ProjectHistoryCreateNestedManyWithoutProjectInput
-  name: String!
-  number: Int!
-  parts: ProjectPartCreateNestedManyWithoutProjectInput
-  slug: String!
   status: ProjectStatus!
   subtheme: SubthemeCreateNestedOneWithoutProjectsInput!
   supervisor: UserCreateNestedOneWithoutSupervisingProjectsInput
@@ -1499,22 +1394,22 @@ input ProjectPartCreateWithoutAttributesInput {
   number: Int!
   project: ProjectCreateNestedOneWithoutPartsInput!
   slug: String!
-  stones: StonesOnProjectPartCreateNestedManyWithoutProjectPartInput
+  stones: StonesOnProjectCreateNestedManyWithoutProjectPartInput
   type: ProjectType!
 }
 
 input ProjectPartCreateWithoutProjectInput {
-  attributes: AttributesOnProjectPartCreateNestedManyWithoutProjectPartInput
+  attributes: AttributesOnProjectCreateNestedManyWithoutProjectPartInput
   description: String
   name: String!
   number: Int!
   slug: String!
-  stones: StonesOnProjectPartCreateNestedManyWithoutProjectPartInput
+  stones: StonesOnProjectCreateNestedManyWithoutProjectPartInput
   type: ProjectType!
 }
 
 input ProjectPartCreateWithoutStonesInput {
-  attributes: AttributesOnProjectPartCreateNestedManyWithoutProjectPartInput
+  attributes: AttributesOnProjectCreateNestedManyWithoutProjectPartInput
   description: String
   name: String!
   number: Int!
@@ -1534,7 +1429,7 @@ input ProjectPartOrderByRelationAggregateInput {
 }
 
 input ProjectPartOrderByWithRelationInput {
-  attributes: AttributesOnProjectPartOrderByRelationAggregateInput
+  attributes: AttributesOnProjectOrderByRelationAggregateInput
   createdAt: SortOrder
   description: SortOrder
   id: SortOrder
@@ -1543,7 +1438,7 @@ input ProjectPartOrderByWithRelationInput {
   project: ProjectOrderByWithRelationInput
   projectId: SortOrder
   slug: SortOrder
-  stones: StonesOnProjectPartOrderByRelationAggregateInput
+  stones: StonesOnProjectOrderByRelationAggregateInput
   type: SortOrder
   updatedAt: SortOrder
 }
@@ -1557,7 +1452,7 @@ input ProjectPartWhereInput {
   AND: [ProjectPartWhereInput!]
   NOT: [ProjectPartWhereInput!]
   OR: [ProjectPartWhereInput!]
-  attributes: AttributesOnProjectPartListRelationFilter
+  attributes: AttributesOnProjectListRelationFilter
   createdAt: DateTimeFilter
   description: StringNullableFilter
   id: StringFilter
@@ -1566,7 +1461,7 @@ input ProjectPartWhereInput {
   project: ProjectRelationFilter
   projectId: StringFilter
   slug: StringFilter
-  stones: StonesOnProjectPartListRelationFilter
+  stones: StonesOnProjectListRelationFilter
   type: EnumProjectTypeFilter
   updatedAt: DateTimeFilter
 }
@@ -1645,6 +1540,9 @@ input ProjectWhereUniqueInput {
 
 type Query {
   attributes(cursor: AttributeWhereUniqueInput, distinct: [AttributeScalarFieldEnum!], orderBy: [AttributeOrderByWithRelationInput!], skip: Int, take: Int, where: AttributeWhereInput): [Attribute!]!
+
+  """Get unique session"""
+  session(where: SessionWhereUniqueInput!): Session
   teams(cursor: TeamWhereUniqueInput, distinct: [TeamScalarFieldEnum!], orderBy: [TeamOrderByWithRelationInput!], skip: Int, take: Int, where: TeamWhereInput): [Team!]!
 }
 
@@ -1663,15 +1561,17 @@ type Session {
   createdAt: DateTime!
   expiresAt: DateTime
   id: String!
+  member: Member
+  team: Team
   teamId: String
   token: String!
   updatedAt: DateTime!
+  user: User!
   userId: String!
 }
 
 input SessionCreateManyUserInput {
   expiresAt: DateTime
-  teamId: String
   token: String!
 }
 
@@ -1694,7 +1594,6 @@ input SessionCreateOrConnectWithoutUserInput {
 
 input SessionCreateWithoutUserInput {
   expiresAt: DateTime
-  team: TeamCreateNestedOneWithoutSessionsInput
   token: String!
 }
 
@@ -1712,8 +1611,6 @@ input SessionOrderByWithRelationInput {
   createdAt: SortOrder
   expiresAt: SortOrder
   id: SortOrder
-  team: TeamOrderByWithRelationInput
-  teamId: SortOrder
   token: SortOrder
   updatedAt: SortOrder
   user: UserOrderByWithRelationInput
@@ -1737,8 +1634,6 @@ input SessionWhereInput {
   createdAt: DateTimeFilter
   expiresAt: DateTimeNullableFilter
   id: StringFilter
-  team: TeamRelationFilter
-  teamId: StringNullableFilter
   token: StringFilter
   updatedAt: DateTimeFilter
   user: UserRelationFilter
@@ -1768,22 +1663,6 @@ type StatCount {
   projects: Int!
 }
 
-input StatCreateManyTeamInput {
-  name: String!
-}
-
-input StatCreateManyTeamInputEnvelope {
-  data: [StatCreateManyTeamInput!]!
-  skipDuplicates: Boolean
-}
-
-input StatCreateNestedManyWithoutTeamInput {
-  connect: [StatWhereUniqueInput!]
-  connectOrCreate: [StatCreateOrConnectWithoutTeamInput!]
-  create: [StatCreateWithoutTeamInput!]
-  createMany: StatCreateManyTeamInputEnvelope
-}
-
 input StatCreateNestedOneWithoutProjectsInput {
   connect: StatWhereUniqueInput
   connectOrCreate: StatCreateOrConnectWithoutProjectsInput
@@ -1795,18 +1674,8 @@ input StatCreateOrConnectWithoutProjectsInput {
   where: StatWhereUniqueInput!
 }
 
-input StatCreateOrConnectWithoutTeamInput {
-  create: StatCreateWithoutTeamInput!
-  where: StatWhereUniqueInput!
-}
-
 input StatCreateWithoutProjectsInput {
   name: String!
-}
-
-input StatCreateWithoutTeamInput {
-  name: String!
-  projects: StatsOnProjectCreateNestedManyWithoutStatInput
 }
 
 input StatListRelationFilter {
@@ -1865,16 +1734,6 @@ input StatsOnProjectCreateManyProjectInputEnvelope {
   skipDuplicates: Boolean
 }
 
-input StatsOnProjectCreateManyStatInput {
-  projectId: String!
-  value: String!
-}
-
-input StatsOnProjectCreateManyStatInputEnvelope {
-  data: [StatsOnProjectCreateManyStatInput!]!
-  skipDuplicates: Boolean
-}
-
 input StatsOnProjectCreateNestedManyWithoutProjectInput {
   connect: [StatsOnProjectWhereUniqueInput!]
   connectOrCreate: [StatsOnProjectCreateOrConnectWithoutProjectInput!]
@@ -1882,30 +1741,13 @@ input StatsOnProjectCreateNestedManyWithoutProjectInput {
   createMany: StatsOnProjectCreateManyProjectInputEnvelope
 }
 
-input StatsOnProjectCreateNestedManyWithoutStatInput {
-  connect: [StatsOnProjectWhereUniqueInput!]
-  connectOrCreate: [StatsOnProjectCreateOrConnectWithoutStatInput!]
-  create: [StatsOnProjectCreateWithoutStatInput!]
-  createMany: StatsOnProjectCreateManyStatInputEnvelope
-}
-
 input StatsOnProjectCreateOrConnectWithoutProjectInput {
   create: StatsOnProjectCreateWithoutProjectInput!
   where: StatsOnProjectWhereUniqueInput!
 }
 
-input StatsOnProjectCreateOrConnectWithoutStatInput {
-  create: StatsOnProjectCreateWithoutStatInput!
-  where: StatsOnProjectWhereUniqueInput!
-}
-
 input StatsOnProjectCreateWithoutProjectInput {
   stat: StatCreateNestedOneWithoutProjectsInput!
-  value: String!
-}
-
-input StatsOnProjectCreateWithoutStatInput {
-  project: ProjectCreateNestedOneWithoutStatsInput!
   value: String!
 }
 
@@ -1935,28 +1777,6 @@ input StatsOnProjectWhereInput {
 
 input StatsOnProjectWhereUniqueInput {
   id: String
-}
-
-input StoneCreateManyStoneTypeInput {
-  alias: String!
-  alias2: String
-  description: String
-  hex: String!
-  hex2: String
-  name: String!
-  order: Int!
-}
-
-input StoneCreateManyStoneTypeInputEnvelope {
-  data: [StoneCreateManyStoneTypeInput!]!
-  skipDuplicates: Boolean
-}
-
-input StoneCreateNestedManyWithoutStoneTypeInput {
-  connect: [StoneWhereUniqueInput!]
-  connectOrCreate: [StoneCreateOrConnectWithoutStoneTypeInput!]
-  create: [StoneCreateWithoutStoneTypeInput!]
-  createMany: StoneCreateManyStoneTypeInputEnvelope
 }
 
 input StoneCreateNestedOneWithoutHistoryInput {
@@ -1998,11 +1818,6 @@ input StoneCreateOrConnectWithoutProjectPartsInput {
   where: StoneWhereUniqueInput!
 }
 
-input StoneCreateOrConnectWithoutStoneTypeInput {
-  create: StoneCreateWithoutStoneTypeInput!
-  where: StoneWhereUniqueInput!
-}
-
 input StoneCreateOrConnectWithoutSubthemesInput {
   create: StoneCreateWithoutSubthemesInput!
   where: StoneWhereUniqueInput!
@@ -2017,7 +1832,7 @@ input StoneCreateWithoutHistoryInput {
   inventory: StoneInventoryCreateNestedManyWithoutStoneInput
   name: String!
   order: Int!
-  projectParts: StonesOnProjectPartCreateNestedManyWithoutStoneInput
+  projectParts: StonesOnProjectCreateNestedManyWithoutStoneInput
   stoneType: StoneTypeCreateNestedOneWithoutStonesInput!
   subthemes: StonesOnSubthemeCreateNestedManyWithoutStoneInput
 }
@@ -2031,7 +1846,7 @@ input StoneCreateWithoutInventoryInput {
   history: StoneInventoryHistoryCreateNestedManyWithoutStoneInput
   name: String!
   order: Int!
-  projectParts: StonesOnProjectPartCreateNestedManyWithoutStoneInput
+  projectParts: StonesOnProjectCreateNestedManyWithoutStoneInput
   stoneType: StoneTypeCreateNestedOneWithoutStonesInput!
   subthemes: StonesOnSubthemeCreateNestedManyWithoutStoneInput
 }
@@ -2050,20 +1865,6 @@ input StoneCreateWithoutProjectPartsInput {
   subthemes: StonesOnSubthemeCreateNestedManyWithoutStoneInput
 }
 
-input StoneCreateWithoutStoneTypeInput {
-  alias: String!
-  alias2: String
-  description: String
-  hex: String!
-  hex2: String
-  history: StoneInventoryHistoryCreateNestedManyWithoutStoneInput
-  inventory: StoneInventoryCreateNestedManyWithoutStoneInput
-  name: String!
-  order: Int!
-  projectParts: StonesOnProjectPartCreateNestedManyWithoutStoneInput
-  subthemes: StonesOnSubthemeCreateNestedManyWithoutStoneInput
-}
-
 input StoneCreateWithoutSubthemesInput {
   alias: String!
   alias2: String
@@ -2074,7 +1875,7 @@ input StoneCreateWithoutSubthemesInput {
   inventory: StoneInventoryCreateNestedManyWithoutStoneInput
   name: String!
   order: Int!
-  projectParts: StonesOnProjectPartCreateNestedManyWithoutStoneInput
+  projectParts: StonesOnProjectCreateNestedManyWithoutStoneInput
   stoneType: StoneTypeCreateNestedOneWithoutStonesInput!
 }
 
@@ -2282,24 +2083,6 @@ type StoneTypeCount {
   stones: Int!
 }
 
-input StoneTypeCreateManyTeamInput {
-  description: String
-  name: String!
-  order: Int!
-}
-
-input StoneTypeCreateManyTeamInputEnvelope {
-  data: [StoneTypeCreateManyTeamInput!]!
-  skipDuplicates: Boolean
-}
-
-input StoneTypeCreateNestedManyWithoutTeamInput {
-  connect: [StoneTypeWhereUniqueInput!]
-  connectOrCreate: [StoneTypeCreateOrConnectWithoutTeamInput!]
-  create: [StoneTypeCreateWithoutTeamInput!]
-  createMany: StoneTypeCreateManyTeamInputEnvelope
-}
-
 input StoneTypeCreateNestedOneWithoutStonesInput {
   connect: StoneTypeWhereUniqueInput
   connectOrCreate: StoneTypeCreateOrConnectWithoutStonesInput
@@ -2311,22 +2094,10 @@ input StoneTypeCreateOrConnectWithoutStonesInput {
   where: StoneTypeWhereUniqueInput!
 }
 
-input StoneTypeCreateOrConnectWithoutTeamInput {
-  create: StoneTypeCreateWithoutTeamInput!
-  where: StoneTypeWhereUniqueInput!
-}
-
 input StoneTypeCreateWithoutStonesInput {
   description: String
   name: String!
   order: Int!
-}
-
-input StoneTypeCreateWithoutTeamInput {
-  description: String
-  name: String!
-  order: Int!
-  stones: StoneCreateNestedManyWithoutStoneTypeInput
 }
 
 input StoneTypeListRelationFilter {
@@ -2396,7 +2167,7 @@ input StoneWhereInput {
   inventory: StoneInventoryListRelationFilter
   name: StringFilter
   order: IntFilter
-  projectParts: StonesOnProjectPartListRelationFilter
+  projectParts: StonesOnProjectListRelationFilter
   stoneType: StoneTypeRelationFilter
   stoneTypeId: StringFilter
   subthemes: StonesOnSubthemeListRelationFilter
@@ -2407,107 +2178,107 @@ input StoneWhereUniqueInput {
   id: String
 }
 
-input StonesOnProjectPartCreateManyProjectPartInput {
+input StonesOnProjectCreateManyProjectPartInput {
   amount: Int!
   stoneId: String!
   userId: String!
 }
 
-input StonesOnProjectPartCreateManyProjectPartInputEnvelope {
-  data: [StonesOnProjectPartCreateManyProjectPartInput!]!
+input StonesOnProjectCreateManyProjectPartInputEnvelope {
+  data: [StonesOnProjectCreateManyProjectPartInput!]!
   skipDuplicates: Boolean
 }
 
-input StonesOnProjectPartCreateManyStoneInput {
+input StonesOnProjectCreateManyStoneInput {
   amount: Int!
   projectPartId: String!
   userId: String!
 }
 
-input StonesOnProjectPartCreateManyStoneInputEnvelope {
-  data: [StonesOnProjectPartCreateManyStoneInput!]!
+input StonesOnProjectCreateManyStoneInputEnvelope {
+  data: [StonesOnProjectCreateManyStoneInput!]!
   skipDuplicates: Boolean
 }
 
-input StonesOnProjectPartCreateManyUserInput {
+input StonesOnProjectCreateManyUserInput {
   amount: Int!
   projectPartId: String!
   stoneId: String!
 }
 
-input StonesOnProjectPartCreateManyUserInputEnvelope {
-  data: [StonesOnProjectPartCreateManyUserInput!]!
+input StonesOnProjectCreateManyUserInputEnvelope {
+  data: [StonesOnProjectCreateManyUserInput!]!
   skipDuplicates: Boolean
 }
 
-input StonesOnProjectPartCreateNestedManyWithoutProjectPartInput {
-  connect: [StonesOnProjectPartWhereUniqueInput!]
-  connectOrCreate: [StonesOnProjectPartCreateOrConnectWithoutProjectPartInput!]
-  create: [StonesOnProjectPartCreateWithoutProjectPartInput!]
-  createMany: StonesOnProjectPartCreateManyProjectPartInputEnvelope
+input StonesOnProjectCreateNestedManyWithoutProjectPartInput {
+  connect: [StonesOnProjectWhereUniqueInput!]
+  connectOrCreate: [StonesOnProjectCreateOrConnectWithoutProjectPartInput!]
+  create: [StonesOnProjectCreateWithoutProjectPartInput!]
+  createMany: StonesOnProjectCreateManyProjectPartInputEnvelope
 }
 
-input StonesOnProjectPartCreateNestedManyWithoutStoneInput {
-  connect: [StonesOnProjectPartWhereUniqueInput!]
-  connectOrCreate: [StonesOnProjectPartCreateOrConnectWithoutStoneInput!]
-  create: [StonesOnProjectPartCreateWithoutStoneInput!]
-  createMany: StonesOnProjectPartCreateManyStoneInputEnvelope
+input StonesOnProjectCreateNestedManyWithoutStoneInput {
+  connect: [StonesOnProjectWhereUniqueInput!]
+  connectOrCreate: [StonesOnProjectCreateOrConnectWithoutStoneInput!]
+  create: [StonesOnProjectCreateWithoutStoneInput!]
+  createMany: StonesOnProjectCreateManyStoneInputEnvelope
 }
 
-input StonesOnProjectPartCreateNestedManyWithoutUserInput {
-  connect: [StonesOnProjectPartWhereUniqueInput!]
-  connectOrCreate: [StonesOnProjectPartCreateOrConnectWithoutUserInput!]
-  create: [StonesOnProjectPartCreateWithoutUserInput!]
-  createMany: StonesOnProjectPartCreateManyUserInputEnvelope
+input StonesOnProjectCreateNestedManyWithoutUserInput {
+  connect: [StonesOnProjectWhereUniqueInput!]
+  connectOrCreate: [StonesOnProjectCreateOrConnectWithoutUserInput!]
+  create: [StonesOnProjectCreateWithoutUserInput!]
+  createMany: StonesOnProjectCreateManyUserInputEnvelope
 }
 
-input StonesOnProjectPartCreateOrConnectWithoutProjectPartInput {
-  create: StonesOnProjectPartCreateWithoutProjectPartInput!
-  where: StonesOnProjectPartWhereUniqueInput!
+input StonesOnProjectCreateOrConnectWithoutProjectPartInput {
+  create: StonesOnProjectCreateWithoutProjectPartInput!
+  where: StonesOnProjectWhereUniqueInput!
 }
 
-input StonesOnProjectPartCreateOrConnectWithoutStoneInput {
-  create: StonesOnProjectPartCreateWithoutStoneInput!
-  where: StonesOnProjectPartWhereUniqueInput!
+input StonesOnProjectCreateOrConnectWithoutStoneInput {
+  create: StonesOnProjectCreateWithoutStoneInput!
+  where: StonesOnProjectWhereUniqueInput!
 }
 
-input StonesOnProjectPartCreateOrConnectWithoutUserInput {
-  create: StonesOnProjectPartCreateWithoutUserInput!
-  where: StonesOnProjectPartWhereUniqueInput!
+input StonesOnProjectCreateOrConnectWithoutUserInput {
+  create: StonesOnProjectCreateWithoutUserInput!
+  where: StonesOnProjectWhereUniqueInput!
 }
 
-input StonesOnProjectPartCreateWithoutProjectPartInput {
+input StonesOnProjectCreateWithoutProjectPartInput {
   amount: Int!
   stone: StoneCreateNestedOneWithoutProjectPartsInput!
   user: UserCreateNestedOneWithoutStonesOnProjectPartsInput!
 }
 
-input StonesOnProjectPartCreateWithoutStoneInput {
+input StonesOnProjectCreateWithoutStoneInput {
   amount: Int!
   projectPart: ProjectPartCreateNestedOneWithoutStonesInput!
   user: UserCreateNestedOneWithoutStonesOnProjectPartsInput!
 }
 
-input StonesOnProjectPartCreateWithoutUserInput {
+input StonesOnProjectCreateWithoutUserInput {
   amount: Int!
   projectPart: ProjectPartCreateNestedOneWithoutStonesInput!
   stone: StoneCreateNestedOneWithoutProjectPartsInput!
 }
 
-input StonesOnProjectPartListRelationFilter {
-  every: StonesOnProjectPartWhereInput
-  none: StonesOnProjectPartWhereInput
-  some: StonesOnProjectPartWhereInput
+input StonesOnProjectListRelationFilter {
+  every: StonesOnProjectWhereInput
+  none: StonesOnProjectWhereInput
+  some: StonesOnProjectWhereInput
 }
 
-input StonesOnProjectPartOrderByRelationAggregateInput {
+input StonesOnProjectOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
-input StonesOnProjectPartWhereInput {
-  AND: [StonesOnProjectPartWhereInput!]
-  NOT: [StonesOnProjectPartWhereInput!]
-  OR: [StonesOnProjectPartWhereInput!]
+input StonesOnProjectWhereInput {
+  AND: [StonesOnProjectWhereInput!]
+  NOT: [StonesOnProjectWhereInput!]
+  OR: [StonesOnProjectWhereInput!]
   amount: IntFilter
   createdAt: DateTimeFilter
   id: StringFilter
@@ -2520,7 +2291,7 @@ input StonesOnProjectPartWhereInput {
   userId: StringFilter
 }
 
-input StonesOnProjectPartWhereUniqueInput {
+input StonesOnProjectWhereUniqueInput {
   id: String
 }
 
@@ -2671,25 +2442,6 @@ input StringNullableFilter {
   startsWith: String
 }
 
-input SubthemeCreateManyEventInput {
-  color: String!
-  name: String!
-  order: Int!
-  slug: String!
-}
-
-input SubthemeCreateManyEventInputEnvelope {
-  data: [SubthemeCreateManyEventInput!]!
-  skipDuplicates: Boolean
-}
-
-input SubthemeCreateNestedManyWithoutEventInput {
-  connect: [SubthemeWhereUniqueInput!]
-  connectOrCreate: [SubthemeCreateOrConnectWithoutEventInput!]
-  create: [SubthemeCreateWithoutEventInput!]
-  createMany: SubthemeCreateManyEventInputEnvelope
-}
-
 input SubthemeCreateNestedOneWithoutAttributesInput {
   connect: SubthemeWhereUniqueInput
   connectOrCreate: SubthemeCreateOrConnectWithoutAttributesInput
@@ -2713,11 +2465,6 @@ input SubthemeCreateOrConnectWithoutAttributesInput {
   where: SubthemeWhereUniqueInput!
 }
 
-input SubthemeCreateOrConnectWithoutEventInput {
-  create: SubthemeCreateWithoutEventInput!
-  where: SubthemeWhereUniqueInput!
-}
-
 input SubthemeCreateOrConnectWithoutProjectsInput {
   create: SubthemeCreateWithoutProjectsInput!
   where: SubthemeWhereUniqueInput!
@@ -2731,16 +2478,6 @@ input SubthemeCreateOrConnectWithoutStonesInput {
 input SubthemeCreateWithoutAttributesInput {
   color: String!
   event: EventCreateNestedOneWithoutSubthemesInput!
-  name: String!
-  order: Int!
-  projects: ProjectCreateNestedManyWithoutSubthemeInput
-  slug: String!
-  stones: StonesOnSubthemeCreateNestedManyWithoutSubthemeInput
-}
-
-input SubthemeCreateWithoutEventInput {
-  attributes: AttributesOnSubthemeCreateNestedManyWithoutSubthemeInput
-  color: String!
   name: String!
   order: Int!
   projects: ProjectCreateNestedManyWithoutSubthemeInput
@@ -2844,26 +2581,6 @@ type TeamCount {
   stoneTypes: Int!
 }
 
-input TeamCreateNestedOneWithoutSessionsInput {
-  connect: TeamWhereUniqueInput
-  connectOrCreate: TeamCreateOrConnectWithoutSessionsInput
-  create: TeamCreateWithoutSessionsInput
-}
-
-input TeamCreateOrConnectWithoutSessionsInput {
-  create: TeamCreateWithoutSessionsInput!
-  where: TeamWhereUniqueInput!
-}
-
-input TeamCreateWithoutSessionsInput {
-  attributes: AttributeCreateNestedManyWithoutTeamInput
-  events: EventCreateNestedManyWithoutTeamInput
-  members: MemberCreateNestedManyWithoutTeamInput
-  name: String!
-  stats: StatCreateNestedManyWithoutTeamInput
-  stoneTypes: StoneTypeCreateNestedManyWithoutTeamInput
-}
-
 input TeamOrderByWithRelationInput {
   attributes: AttributeOrderByRelationAggregateInput
   createdAt: SortOrder
@@ -2875,11 +2592,6 @@ input TeamOrderByWithRelationInput {
   stats: StatOrderByRelationAggregateInput
   stoneTypes: StoneTypeOrderByRelationAggregateInput
   updatedAt: SortOrder
-}
-
-input TeamRelationFilter {
-  is: TeamWhereInput
-  isNot: TeamWhereInput
 }
 
 enum TeamScalarFieldEnum {
@@ -2907,6 +2619,37 @@ input TeamWhereInput {
 
 input TeamWhereUniqueInput {
   id: String
+}
+
+type User {
+  _count: UserCount
+  avatar: String
+  createdAt: DateTime!
+  displayName: String!
+  email: String!
+  firstName: String!
+  id: String!
+  isAdmin: Boolean!
+  lastName: String!
+  password: String
+  slug: String!
+  updatedAt: DateTime!
+}
+
+type UserCount {
+  attributeInventory: Int!
+  attributeInventoryHistory: Int!
+  attributesOnProjectParts: Int!
+  attributesOnSubthemes: Int!
+  createdProjects: Int!
+  projectHistory: Int!
+  sessions: Int!
+  stoneInventory: Int!
+  stoneInventoryHistory: Int!
+  stonesOnProjectParts: Int!
+  stonesOnSubthemes: Int!
+  supervisingProjects: Int!
+  teams: Int!
 }
 
 input UserCreateNestedOneWithoutAttributeInventoryHistoryInput {
@@ -2975,12 +2718,6 @@ input UserCreateNestedOneWithoutSupervisingProjectsInput {
   create: UserCreateWithoutSupervisingProjectsInput
 }
 
-input UserCreateNestedOneWithoutTeamsInput {
-  connect: UserWhereUniqueInput
-  connectOrCreate: UserCreateOrConnectWithoutTeamsInput
-  create: UserCreateWithoutTeamsInput
-}
-
 input UserCreateOrConnectWithoutAttributeInventoryHistoryInput {
   create: UserCreateWithoutAttributeInventoryHistoryInput!
   where: UserWhereUniqueInput!
@@ -3036,14 +2773,9 @@ input UserCreateOrConnectWithoutSupervisingProjectsInput {
   where: UserWhereUniqueInput!
 }
 
-input UserCreateOrConnectWithoutTeamsInput {
-  create: UserCreateWithoutTeamsInput!
-  where: UserWhereUniqueInput!
-}
-
 input UserCreateWithoutAttributeInventoryHistoryInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3058,7 +2790,7 @@ input UserCreateWithoutAttributeInventoryHistoryInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3066,7 +2798,7 @@ input UserCreateWithoutAttributeInventoryHistoryInput {
 
 input UserCreateWithoutAttributeInventoryInput {
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3081,7 +2813,7 @@ input UserCreateWithoutAttributeInventoryInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3104,7 +2836,7 @@ input UserCreateWithoutAttributesOnProjectPartsInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3113,7 +2845,7 @@ input UserCreateWithoutAttributesOnProjectPartsInput {
 input UserCreateWithoutAttributesOnSubthemesInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
   displayName: String!
@@ -3127,7 +2859,7 @@ input UserCreateWithoutAttributesOnSubthemesInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3136,7 +2868,7 @@ input UserCreateWithoutAttributesOnSubthemesInput {
 input UserCreateWithoutCreatedProjectsInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   displayName: String!
@@ -3150,7 +2882,7 @@ input UserCreateWithoutCreatedProjectsInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3159,7 +2891,7 @@ input UserCreateWithoutCreatedProjectsInput {
 input UserCreateWithoutProjectHistoryInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3173,7 +2905,7 @@ input UserCreateWithoutProjectHistoryInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3182,7 +2914,7 @@ input UserCreateWithoutProjectHistoryInput {
 input UserCreateWithoutStoneInventoryHistoryInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3196,7 +2928,7 @@ input UserCreateWithoutStoneInventoryHistoryInput {
   sessions: SessionCreateNestedManyWithoutUserInput
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3205,7 +2937,7 @@ input UserCreateWithoutStoneInventoryHistoryInput {
 input UserCreateWithoutStoneInventoryInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3219,7 +2951,7 @@ input UserCreateWithoutStoneInventoryInput {
   sessions: SessionCreateNestedManyWithoutUserInput
   slug: String!
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
@@ -3228,7 +2960,7 @@ input UserCreateWithoutStoneInventoryInput {
 input UserCreateWithoutStonesOnProjectPartsInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3251,7 +2983,7 @@ input UserCreateWithoutStonesOnProjectPartsInput {
 input UserCreateWithoutStonesOnSubthemesInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3266,7 +2998,7 @@ input UserCreateWithoutStonesOnSubthemesInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
   teams: MemberCreateNestedManyWithoutUserInput
 }
@@ -3274,7 +3006,7 @@ input UserCreateWithoutStonesOnSubthemesInput {
 input UserCreateWithoutSupervisingProjectsInput {
   attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
   attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
   attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
   avatar: String
   createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
@@ -3289,38 +3021,15 @@ input UserCreateWithoutSupervisingProjectsInput {
   slug: String!
   stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
   stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
   stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
   teams: MemberCreateNestedManyWithoutUserInput
-}
-
-input UserCreateWithoutTeamsInput {
-  attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
-  attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
-  attributesOnProjectParts: AttributesOnProjectPartCreateNestedManyWithoutUserInput
-  attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
-  avatar: String
-  createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
-  displayName: String!
-  email: String!
-  firstName: String!
-  isAdmin: Boolean
-  lastName: String!
-  password: String
-  projectHistory: ProjectHistoryCreateNestedManyWithoutUserInput
-  sessions: SessionCreateNestedManyWithoutUserInput
-  slug: String!
-  stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
-  stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
-  stonesOnProjectParts: StonesOnProjectPartCreateNestedManyWithoutUserInput
-  stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
-  supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
 }
 
 input UserOrderByWithRelationInput {
   attributeInventory: AttributeInventoryOrderByRelationAggregateInput
   attributeInventoryHistory: AttributeInventoryHistoryOrderByRelationAggregateInput
-  attributesOnProjectParts: AttributesOnProjectPartOrderByRelationAggregateInput
+  attributesOnProjectParts: AttributesOnProjectOrderByRelationAggregateInput
   attributesOnSubthemes: AttributesOnSubthemeOrderByRelationAggregateInput
   avatar: SortOrder
   createdAt: SortOrder
@@ -3337,7 +3046,7 @@ input UserOrderByWithRelationInput {
   slug: SortOrder
   stoneInventory: StoneInventoryOrderByRelationAggregateInput
   stoneInventoryHistory: StoneInventoryHistoryOrderByRelationAggregateInput
-  stonesOnProjectParts: StonesOnProjectPartOrderByRelationAggregateInput
+  stonesOnProjectParts: StonesOnProjectOrderByRelationAggregateInput
   stonesOnSubthemes: StonesOnSubthemeOrderByRelationAggregateInput
   supervisingProjects: ProjectOrderByRelationAggregateInput
   teams: MemberOrderByRelationAggregateInput
@@ -3355,7 +3064,7 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   attributeInventory: AttributeInventoryListRelationFilter
   attributeInventoryHistory: AttributeInventoryHistoryListRelationFilter
-  attributesOnProjectParts: AttributesOnProjectPartListRelationFilter
+  attributesOnProjectParts: AttributesOnProjectListRelationFilter
   attributesOnSubthemes: AttributesOnSubthemeListRelationFilter
   avatar: StringNullableFilter
   createdAt: DateTimeFilter
@@ -3372,7 +3081,7 @@ input UserWhereInput {
   slug: StringFilter
   stoneInventory: StoneInventoryListRelationFilter
   stoneInventoryHistory: StoneInventoryHistoryListRelationFilter
-  stonesOnProjectParts: StonesOnProjectPartListRelationFilter
+  stonesOnProjectParts: StonesOnProjectListRelationFilter
   stonesOnSubthemes: StonesOnSubthemeListRelationFilter
   supervisingProjects: ProjectListRelationFilter
   teams: MemberListRelationFilter

@@ -5,10 +5,10 @@ import seedAttributes from './Attribute/seed';
 // import seedAttributeInventory from './AttributeInventory/seed';
 // import seedAttributesOnProjects from './AttributesOnProjectPart/seed';
 // import seedEvents from './Event/seed';
-// import seedMembers from './Member/seed';
+import seedMembers from './Member/seed';
 // import seedProjects from './Project/seed';
 // import seedProjectParts from './ProjectPart/seed';
-// import seedSessions from './Session/seed';
+import seedSessions from './Session/seed';
 // import seedStones from './Stone/seed';
 // import seedStoneInventory from './StoneInventory/seed';
 // import seedStonesOnProjects from './StonesOnProjectPart/seed';
@@ -16,7 +16,7 @@ import seedAttributes from './Attribute/seed';
 // import seedStoneTypes from './StoneType/seed';
 // import seedSubthemes from './Subtheme/seed';
 import seedTeams from './Team/seed';
-// import seedUsers from './User/seed';
+import seedUsers from './User/seed';
 
 const prisma = new PrismaClient();
 
@@ -24,14 +24,14 @@ async function seed(prisma: PrismaClient): Promise<void> {
   console.log('Seeding Teams...');
   await seedTeams(prisma);
 
-  // console.log('Seeding Users...');
-  // await seedUsers(prisma);
+  console.log('Seeding Users...');
+  await seedUsers(prisma);
 
-  // console.log('Seeding Sessions...');
-  // await seedSessions(prisma);
+  console.log('Seeding Sessions...');
+  await seedSessions(prisma);
 
-  // console.log('Seeding Members...');
-  // await seedMembers(prisma);
+  console.log('Seeding Members...');
+  await seedMembers(prisma);
 
   console.log('Seeding Attributes...');
   await seedAttributes(prisma);

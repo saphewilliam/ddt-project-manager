@@ -4169,6 +4169,18 @@ graphql-fields@2.0.3:
   resolved "https://registry.yarnpkg.com/graphql-fields/-/graphql-fields-2.0.3.tgz#5e68dff7afbb202be4f4f40623e983b22c96ab8f"
   integrity sha512-x3VE5lUcR4XCOxPIqaO4CE+bTK8u6gVouOdpQX9+EKHr+scqtK5Pp/l8nIGqIpN1TUlkKE6jDCCycm/WtLRAwA==
 
+graphql-query-complexity-apollo-plugin@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity-apollo-plugin/-/graphql-query-complexity-apollo-plugin-1.0.2.tgz#1eff2eb4ea455a3577c9a2f3580561a5e19b394a"
+  integrity sha512-TjDzIuAILNI0+wemtTpl47Vj/wCi8TGhq8tVcJQOsHUkiflrVhrHwKHiBX7V5KC5rgUAJtnsqSgVBDJqsAvwjg==
+
+graphql-query-complexity@0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.11.0.tgz#6078e72a39a410bb5285673077565ec8ee127c6b"
+  integrity sha512-1Ns64a41XYLehYFxZwoEn7i7myUQPd/fLRZPZ73ULjln4VBWMwptzB8LiPWNaRHsTjLMkecZPeqmuKYNXrFIGA==
+  dependencies:
+    lodash.get "^4.4.2"
+
 graphql-query-complexity@^0.7.0:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.7.2.tgz#7fc6bb20930ab1b666ecf3bbfb24b65b6f08ecc4"
