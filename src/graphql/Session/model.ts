@@ -1,6 +1,6 @@
 import * as TypeGraphQL from 'type-graphql';
 import {
-  FindUniqueSessionArgs,
+  FindUniqueSessionResolver,
   Session,
   ModelConfig,
   ResolverActionsConfig,
@@ -23,23 +23,10 @@ class SessionResolver {
     });
   }
 
-  @TypeGraphQL.Query((_returns) => Session, {
-    // TODO make complexity enums to standardize
-    complexity: 1,
-    description: 'Get unique session',
-    nullable: true,
-  })
-  async session(
-    @TypeGraphQL.Ctx() ctx: Context,
-    @TypeGraphQL.Args() args: FindUniqueSessionArgs,
-  ): Promise<Session | null> {
-    return await ctx.prisma.session.findUnique(args);
-  }
-
   @TypeGraphQL.Mutation((_returns) => String, {
     // TODO
     complexity: 10,
-    description: 'Generate a new session for a user with an active account',
+    description: 'Create a new session for a user with an active account',
   })
   async login(
     @TypeGraphQL.Ctx() ctx: Context,
@@ -72,7 +59,11 @@ class SessionResolver {
   }
 }
 
-export const resolvers = [SessionRelationsResolver, SessionResolver] as const;
+export const resolvers = [
+  SessionRelationsResolver,
+  SessionResolver,
+  FindUniqueSessionResolver,
+] as const;
 
 export const modelConfig: ModelConfig<'Session'> = {};
 

@@ -5,13 +5,17 @@ import { nanoid } from 'nanoid';
 import { Authorized, AuthChecker } from 'type-graphql';
 import { Context } from '@graphql/context';
 
-export type AuthCheck = 'ADMIN' | 'CAPTAIN';
+/** Configure which group of users can perform which actions.
+ * An admin has access to everything, only an admin can access something with AuthCheck === 'ADMIN'
+ * Only a team captain can access something with AuthCheck === 'CAPTAIN'
+ * If AuthCheck === undefined, the user has to be logged in with a team selected
+ * If AuthCheck === 'NO_TEAM', then the user does not need a team selected
+ */
+export type AuthCheck = 'ADMIN' | 'CAPTAIN' | undefined | 'NO_TEAM';
 
 /** Wrapper for the type-graphql Authorized decorator to ensure type-safety */
 export const Auth = (auth?: AuthCheck) => Authorized(auth);
 
-// TODO
-//   if (session.teamId === null && !teamMayBeNull) return Error('Please select a team');
 export const authChecker: AuthChecker<Context, AuthCheck> = ({ context }, authCheck) => {
   const prefix = '[AUTH] Access denied! ';
   if (authCheck.length > 1)
@@ -29,6 +33,11 @@ export const authChecker: AuthChecker<Context, AuthCheck> = ({ context }, authCh
 
   // Check if the user has the required permissions
   const auth = authCheck[0];
+  if (session.user.isAdmin) return true;
+
+  if (session.teamId === null && auth !== 'NO_TEAM')
+    throw new GraphQLError(`${prefix}Please select a team.`);
+
   if (auth === 'ADMIN' && !session.user.isAdmin)
     throw new GraphQLError(`${prefix}You need to be an admin to perform this action.`);
 

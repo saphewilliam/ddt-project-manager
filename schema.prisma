@@ -128,11 +128,14 @@ model User {
   firstName   String
   lastName    String
   displayName String
-  slug        String  @unique
-  password    String?
-  avatar      String?
-  email       String  @unique
-  isAdmin     Boolean @default(false)
+  slug        String @unique
+
+  // TODO
+  /// @TypeGraphQL.omit(output: true)
+  password String?
+  avatar   String?
+  email    String  @unique
+  isAdmin  Boolean @default(false)
 
   sessions                  Session[]
   stoneInventory            StoneInventory[]

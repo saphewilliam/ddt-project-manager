@@ -18,7 +18,7 @@ export const complexityPlugin = (schema: GraphQLSchema) =>
   createComplexityPlugin({
     schema,
     estimators: [fieldExtensionsEstimator(), simpleEstimator({ defaultComplexity: 1 })],
-    maximumComplexity: 1,
+    maximumComplexity: 20,
     createError: (max, actual) =>
       new GraphQLError(`Operation is too complex: ${actual}. Maximum allowed complexity: ${max}`),
   });

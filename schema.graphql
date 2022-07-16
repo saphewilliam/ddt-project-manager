@@ -953,8 +953,9 @@ input MemberWhereUniqueInput {
 
 type Mutation {
   createAttribute(data: AttributeCreateInput!): Attribute!
+  createUser(data: UserCreateInput!): User!
 
-  """Generate a new session for a user with an active account"""
+  """Create a new session for a user with an active account"""
   login(email: String!, isPermanent: Boolean!, password: String!): String!
 
   """Invalidate the active session"""
@@ -1049,6 +1050,27 @@ input NestedStringNullableFilter {
   not: NestedStringNullableFilter
   notIn: [String!]
   startsWith: String
+}
+
+type Project {
+  _count: ProjectCount
+  createdAt: DateTime!
+  createdById: String
+  description: JSON
+  id: String!
+  name: String!
+  number: Int!
+  slug: String!
+  status: ProjectStatus!
+  subthemeId: String!
+  supervisorId: String
+  updatedAt: DateTime!
+}
+
+type ProjectCount {
+  history: Int!
+  parts: Int!
+  stats: Int!
 }
 
 input ProjectCreateManyCreatedByInput {
@@ -1219,6 +1241,17 @@ input ProjectCreateWithoutSupervisorInput {
   subtheme: SubthemeCreateNestedOneWithoutProjectsInput!
 }
 
+type ProjectHistory {
+  createdAt: DateTime!
+  fieldName: String!
+  id: String!
+  newValue: String!
+  oldValue: String
+  projectId: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
 input ProjectHistoryCreateManyProjectInput {
   fieldName: String!
   newValue: String!
@@ -1289,6 +1322,30 @@ input ProjectHistoryListRelationFilter {
 
 input ProjectHistoryOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input ProjectHistoryOrderByWithRelationInput {
+  createdAt: SortOrder
+  fieldName: SortOrder
+  id: SortOrder
+  newValue: SortOrder
+  oldValue: SortOrder
+  project: ProjectOrderByWithRelationInput
+  projectId: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum ProjectHistoryScalarFieldEnum {
+  createdAt
+  fieldName
+  id
+  newValue
+  oldValue
+  projectId
+  updatedAt
+  userId
 }
 
 input ProjectHistoryWhereInput {
@@ -1476,6 +1533,20 @@ input ProjectRelationFilter {
   isNot: ProjectWhereInput
 }
 
+enum ProjectScalarFieldEnum {
+  createdAt
+  createdById
+  description
+  id
+  name
+  number
+  slug
+  status
+  subthemeId
+  supervisorId
+  updatedAt
+}
+
 enum ProjectStatus {
   BUILDING
   BUILT
@@ -1540,10 +1611,9 @@ input ProjectWhereUniqueInput {
 
 type Query {
   attributes(cursor: AttributeWhereUniqueInput, distinct: [AttributeScalarFieldEnum!], orderBy: [AttributeOrderByWithRelationInput!], skip: Int, take: Int, where: AttributeWhereInput): [Attribute!]!
-
-  """Get unique session"""
   session(where: SessionWhereUniqueInput!): Session
   teams(cursor: TeamWhereUniqueInput, distinct: [TeamScalarFieldEnum!], orderBy: [TeamOrderByWithRelationInput!], skip: Int, take: Int, where: TeamWhereInput): [Team!]!
+  users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
 
 enum QueryMode {
@@ -1879,6 +1949,15 @@ input StoneCreateWithoutSubthemesInput {
   stoneType: StoneTypeCreateNestedOneWithoutStonesInput!
 }
 
+type StoneInventory {
+  amount: Int!
+  createdAt: DateTime!
+  id: String!
+  stoneId: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
 input StoneInventoryCreateManyStoneInput {
   amount: Int!
   userId: String!
@@ -1931,6 +2010,17 @@ input StoneInventoryCreateWithoutStoneInput {
 input StoneInventoryCreateWithoutUserInput {
   amount: Int!
   stone: StoneCreateNestedOneWithoutInventoryInput!
+}
+
+type StoneInventoryHistory {
+  createdAt: DateTime!
+  fieldName: String!
+  id: String!
+  newValue: String!
+  oldValue: String!
+  stoneId: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 input StoneInventoryHistoryCreateManyStoneInput {
@@ -2005,6 +2095,30 @@ input StoneInventoryHistoryOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input StoneInventoryHistoryOrderByWithRelationInput {
+  createdAt: SortOrder
+  fieldName: SortOrder
+  id: SortOrder
+  newValue: SortOrder
+  oldValue: SortOrder
+  stone: StoneOrderByWithRelationInput
+  stoneId: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum StoneInventoryHistoryScalarFieldEnum {
+  createdAt
+  fieldName
+  id
+  newValue
+  oldValue
+  stoneId
+  updatedAt
+  userId
+}
+
 input StoneInventoryHistoryWhereInput {
   AND: [StoneInventoryHistoryWhereInput!]
   NOT: [StoneInventoryHistoryWhereInput!]
@@ -2035,6 +2149,26 @@ input StoneInventoryOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input StoneInventoryOrderByWithRelationInput {
+  amount: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  stone: StoneOrderByWithRelationInput
+  stoneId: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum StoneInventoryScalarFieldEnum {
+  amount
+  createdAt
+  id
+  stoneId
+  updatedAt
+  userId
+}
+
 input StoneInventoryWhereInput {
   AND: [StoneInventoryWhereInput!]
   NOT: [StoneInventoryWhereInput!]
@@ -2061,6 +2195,25 @@ input StoneListRelationFilter {
 
 input StoneOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input StoneOrderByWithRelationInput {
+  alias: SortOrder
+  alias2: SortOrder
+  createdAt: SortOrder
+  description: SortOrder
+  hex: SortOrder
+  hex2: SortOrder
+  history: StoneInventoryHistoryOrderByRelationAggregateInput
+  id: SortOrder
+  inventory: StoneInventoryOrderByRelationAggregateInput
+  name: SortOrder
+  order: SortOrder
+  projectParts: StonesOnProjectOrderByRelationAggregateInput
+  stoneType: StoneTypeOrderByWithRelationInput
+  stoneTypeId: SortOrder
+  subthemes: StonesOnSubthemeOrderByRelationAggregateInput
+  updatedAt: SortOrder
 }
 
 input StoneRelationFilter {
@@ -2178,6 +2331,16 @@ input StoneWhereUniqueInput {
   id: String
 }
 
+type StonesOnProject {
+  amount: Int!
+  createdAt: DateTime!
+  id: String!
+  projectPartId: String!
+  stoneId: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
 input StonesOnProjectCreateManyProjectPartInput {
   amount: Int!
   stoneId: String!
@@ -2275,6 +2438,29 @@ input StonesOnProjectOrderByRelationAggregateInput {
   _count: SortOrder
 }
 
+input StonesOnProjectOrderByWithRelationInput {
+  amount: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  projectPart: ProjectPartOrderByWithRelationInput
+  projectPartId: SortOrder
+  stone: StoneOrderByWithRelationInput
+  stoneId: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum StonesOnProjectScalarFieldEnum {
+  amount
+  createdAt
+  id
+  projectPartId
+  stoneId
+  updatedAt
+  userId
+}
+
 input StonesOnProjectWhereInput {
   AND: [StonesOnProjectWhereInput!]
   NOT: [StonesOnProjectWhereInput!]
@@ -2293,6 +2479,16 @@ input StonesOnProjectWhereInput {
 
 input StonesOnProjectWhereUniqueInput {
   id: String
+}
+
+type StonesOnSubtheme {
+  amount: Int!
+  createdAt: DateTime!
+  id: String!
+  stoneId: String!
+  subthemeId: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 input StonesOnSubthemeCreateManyStoneInput {
@@ -2390,6 +2586,29 @@ input StonesOnSubthemeListRelationFilter {
 
 input StonesOnSubthemeOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input StonesOnSubthemeOrderByWithRelationInput {
+  amount: SortOrder
+  createdAt: SortOrder
+  id: SortOrder
+  stone: StoneOrderByWithRelationInput
+  stoneId: SortOrder
+  subtheme: SubthemeOrderByWithRelationInput
+  subthemeId: SortOrder
+  updatedAt: SortOrder
+  user: UserOrderByWithRelationInput
+  userId: SortOrder
+}
+
+enum StonesOnSubthemeScalarFieldEnum {
+  amount
+  createdAt
+  id
+  stoneId
+  subthemeId
+  updatedAt
+  userId
 }
 
 input StonesOnSubthemeWhereInput {
@@ -2623,16 +2842,30 @@ input TeamWhereUniqueInput {
 
 type User {
   _count: UserCount
+  attributeInventory(cursor: AttributeInventoryWhereUniqueInput, distinct: [AttributeInventoryScalarFieldEnum!], orderBy: [AttributeInventoryOrderByWithRelationInput!], skip: Int, take: Int, where: AttributeInventoryWhereInput): [AttributeInventory!]!
+  attributeInventoryHistory(cursor: AttributeInventoryHistoryWhereUniqueInput, distinct: [AttributeInventoryHistoryScalarFieldEnum!], orderBy: [AttributeInventoryHistoryOrderByWithRelationInput!], skip: Int, take: Int, where: AttributeInventoryHistoryWhereInput): [AttributeInventoryHistory!]!
+  attributesOnProjectParts(cursor: AttributesOnProjectWhereUniqueInput, distinct: [AttributesOnProjectScalarFieldEnum!], orderBy: [AttributesOnProjectOrderByWithRelationInput!], skip: Int, take: Int, where: AttributesOnProjectWhereInput): [AttributesOnProject!]!
+  attributesOnSubthemes(cursor: AttributesOnSubthemeWhereUniqueInput, distinct: [AttributesOnSubthemeScalarFieldEnum!], orderBy: [AttributesOnSubthemeOrderByWithRelationInput!], skip: Int, take: Int, where: AttributesOnSubthemeWhereInput): [AttributesOnSubtheme!]!
   avatar: String
   createdAt: DateTime!
+  createdProjects(cursor: ProjectWhereUniqueInput, distinct: [ProjectScalarFieldEnum!], orderBy: [ProjectOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectWhereInput): [Project!]!
   displayName: String!
   email: String!
   firstName: String!
   id: String!
   isAdmin: Boolean!
   lastName: String!
-  password: String
+  projectHistory(cursor: ProjectHistoryWhereUniqueInput, distinct: [ProjectHistoryScalarFieldEnum!], orderBy: [ProjectHistoryOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectHistoryWhereInput): [ProjectHistory!]!
+  sessions(cursor: SessionWhereUniqueInput, distinct: [SessionScalarFieldEnum!], orderBy: [SessionOrderByWithRelationInput!], skip: Int, take: Int, where: SessionWhereInput): [Session!]!
   slug: String!
+  stoneInventory(cursor: StoneInventoryWhereUniqueInput, distinct: [StoneInventoryScalarFieldEnum!], orderBy: [StoneInventoryOrderByWithRelationInput!], skip: Int, take: Int, where: StoneInventoryWhereInput): [StoneInventory!]!
+  stoneInventoryHistory(cursor: StoneInventoryHistoryWhereUniqueInput, distinct: [StoneInventoryHistoryScalarFieldEnum!], orderBy: [StoneInventoryHistoryOrderByWithRelationInput!], skip: Int, take: Int, where: StoneInventoryHistoryWhereInput): [StoneInventoryHistory!]!
+  stonesOnProjectParts(cursor: StonesOnProjectWhereUniqueInput, distinct: [StonesOnProjectScalarFieldEnum!], orderBy: [StonesOnProjectOrderByWithRelationInput!], skip: Int, take: Int, where: StonesOnProjectWhereInput): [StonesOnProject!]!
+  stonesOnSubthemes(cursor: StonesOnSubthemeWhereUniqueInput, distinct: [StonesOnSubthemeScalarFieldEnum!], orderBy: [StonesOnSubthemeOrderByWithRelationInput!], skip: Int, take: Int, where: StonesOnSubthemeWhereInput): [StonesOnSubtheme!]!
+  supervisingProjects(cursor: ProjectWhereUniqueInput, distinct: [ProjectScalarFieldEnum!], orderBy: [ProjectOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectWhereInput): [Project!]!
+
+  """The teams this user is a member of"""
+  teams(cursor: MemberWhereUniqueInput, distinct: [MemberScalarFieldEnum!], orderBy: [MemberOrderByWithRelationInput!], skip: Int, take: Int, where: MemberWhereInput): [Member!]!
   updatedAt: DateTime!
 }
 
@@ -2650,6 +2883,30 @@ type UserCount {
   stonesOnSubthemes: Int!
   supervisingProjects: Int!
   teams: Int!
+}
+
+input UserCreateInput {
+  attributeInventory: AttributeInventoryCreateNestedManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryCreateNestedManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectCreateNestedManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeCreateNestedManyWithoutUserInput
+  avatar: String
+  createdProjects: ProjectCreateNestedManyWithoutCreatedByInput
+  displayName: String!
+  email: String!
+  firstName: String!
+  isAdmin: Boolean
+  lastName: String!
+  password: String
+  projectHistory: ProjectHistoryCreateNestedManyWithoutUserInput
+  sessions: SessionCreateNestedManyWithoutUserInput
+  slug: String!
+  stoneInventory: StoneInventoryCreateNestedManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryCreateNestedManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectCreateNestedManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeCreateNestedManyWithoutUserInput
+  supervisingProjects: ProjectCreateNestedManyWithoutSupervisorInput
+  teams: MemberCreateNestedManyWithoutUserInput
 }
 
 input UserCreateNestedOneWithoutAttributeInventoryHistoryInput {
@@ -3056,6 +3313,20 @@ input UserOrderByWithRelationInput {
 input UserRelationFilter {
   is: UserWhereInput
   isNot: UserWhereInput
+}
+
+enum UserScalarFieldEnum {
+  avatar
+  createdAt
+  displayName
+  email
+  firstName
+  id
+  isAdmin
+  lastName
+  password
+  slug
+  updatedAt
 }
 
 input UserWhereInput {

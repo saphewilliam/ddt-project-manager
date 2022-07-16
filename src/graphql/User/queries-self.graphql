@@ -1,10 +1,13 @@
+# Find all users of this team that have a nonzero inventory in this team
 query InventoryUsers {
-  inventoryUsers {
+  users(orderBy: [{ firstName: asc }, { lastName: asc }]) {
     id
     firstName
     lastName
     slug
-    stoneAmount
+    _count {
+      stoneInventory
+    }
   }
 }
 

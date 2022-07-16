@@ -5,6 +5,9 @@ model User {
   lastName    String
   displayName String
   slug        String  @unique
+
+  // TODO
+  /// @TypeGraphQL.omit(output: true)
   password    String?
   avatar      String?
   email       String  @unique
