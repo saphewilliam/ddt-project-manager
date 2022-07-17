@@ -1,7 +1,7 @@
 import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
-import { NavigationContext } from '@providers/NavigationProvider';
 import cx from 'clsx';
 import React, { ReactElement, useContext } from 'react';
+import { NavigationContext } from '@providers/NavigationProvider';
 import DesktopNavItem from './DesktopNavItem';
 import { NavItemProps } from './Navigation';
 import ProfileBox from './ProfileBox';

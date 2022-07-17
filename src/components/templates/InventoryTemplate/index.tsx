@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import Button from '@components/Button';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
-import { Role } from '@graphql/__generated__/codegen-self';
+import { Role } from '@graphql/__generated__/codegen';
 import useInventoryEditModal from '@hooks/useInventoryEditModal';
 import useSession from '@hooks/useSession';
 import { InventoryTableData } from '@lib/inventoryHelpers';

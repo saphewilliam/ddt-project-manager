@@ -4,6 +4,7 @@ import React, {
   ReactElement,
   ReactNode,
   SetStateAction,
+  useContext,
   useState,
 } from 'react';
 
@@ -27,7 +28,7 @@ export const NavigationContext = createContext<State>({
   expandedItem: null,
 });
 
-export default function NavigationProvider(props: Props): ReactElement {
+export function NavigationProvider(props: Props): ReactElement {
   const [collapsed, setCollapsed] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
@@ -43,4 +44,8 @@ export default function NavigationProvider(props: Props): ReactElement {
       {props.children}
     </NavigationContext.Provider>
   );
+}
+
+export default function useNavigation(): State {
+  return useContext(NavigationContext);
 }

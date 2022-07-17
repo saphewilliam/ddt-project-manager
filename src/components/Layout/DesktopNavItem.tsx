@@ -1,5 +1,4 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import { NavigationContext } from '@providers/NavigationProvider';
 import cx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,6 +12,7 @@ import React, {
   useCallback,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { NavigationContext } from '@providers/NavigationProvider';
 import DesktopNavTooltip from './DesktopNavTooltip';
 import { NavItemProps } from './Navigation';
 

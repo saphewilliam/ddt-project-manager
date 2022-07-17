@@ -2,7 +2,7 @@ import { useAsyncReducer } from '@saphe/react-use';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
-import { ProjectQuery, ProjectType } from '@graphql/__generated__/codegen-self';
+import { ProjectQuery, ProjectType } from '@graphql/__generated__/codegen';
 import useSdk from '@hooks/useSdk';
 import { promiseWithCatch } from '@lib/util';
 

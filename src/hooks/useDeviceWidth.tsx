@@ -1,4 +1,4 @@
-import React, { createContext, ReactElement, ReactNode, useState, useEffect } from 'react';
+import { useContext, createContext, ReactElement, ReactNode, useState, useEffect } from 'react';
 
 export interface Props {
   children?: ReactNode;
@@ -16,7 +16,7 @@ export type State = {
 
 export const DeviceWidthContext = createContext<State>(null);
 
-export default function DeviceWidthProvider(props: Props): ReactElement {
+export function DeviceWidthProvider(props: Props): ReactElement {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [breakpoints, setBreakpoints] = useState<State>(null);
 
@@ -44,4 +44,8 @@ export default function DeviceWidthProvider(props: Props): ReactElement {
   return (
     <DeviceWidthContext.Provider value={breakpoints}>{props.children}</DeviceWidthContext.Provider>
   );
+}
+
+export default function useDeviceWidth(): State {
+  return useContext(DeviceWidthContext);
 }

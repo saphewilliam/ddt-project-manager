@@ -1,6 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 import { useRouter } from 'next/router';
 import React, {
+  useContext,
   createContext,
   ReactElement,
   ReactNode,
@@ -10,7 +11,7 @@ import React, {
   SetStateAction,
 } from 'react';
 import { useCookies } from 'react-cookie';
-import { getSdk, SessionQuery } from '@graphql/__generated__/codegen-self';
+import { SessionQuery } from '@graphql/Session/__generated__/queries';
 import { environment } from '@lib/environment';
 import { promiseWithCatch } from '@lib/util';
 
@@ -27,7 +28,7 @@ export const SessionContext = createContext<{
   session: null,
 });
 
-export default function SessionProvider(props: Props): ReactElement {
+export function SessionProvider(props: Props): ReactElement {
   const router = useRouter();
   const [session, setSession] = useState<SessionQuery['session']>(null);
   const [cookie, , removeCookie] = useCookies(['ddtauth']);
@@ -64,4 +65,11 @@ export default function SessionProvider(props: Props): ReactElement {
       {props.children}
     </SessionContext.Provider>
   );
+}
+
+export default function useSession(): {
+  session: SessionQuery['session'];
+  setSession: Dispatch<SetStateAction<SessionQuery['session']>>;
+} {
+  return useContext(SessionContext);
 }

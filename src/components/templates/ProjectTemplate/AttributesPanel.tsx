@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactElement, SetStateAction } from 'react';
 import Tabs from '@components/Tabs';
-import { ProjectQuery } from '@graphql/__generated__/codegen-self';
+import { ProjectQuery } from '@graphql/__generated__/codegen';
 import ProjectAttributeTable, {
   Props as ProjectAttributeTableProps,
 } from '../InventoryTemplate/ProjectAttributeTable';

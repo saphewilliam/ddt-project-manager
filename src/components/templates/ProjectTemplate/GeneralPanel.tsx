@@ -1,7 +1,7 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import React, { ReactElement, ReactNode } from 'react';
-import { ProjectQuery, Role } from '@graphql/__generated__/codegen-self';
+import { ProjectQuery, Role } from '@graphql/__generated__/codegen';
 import useSession from '@hooks/useSession';
 import DescriptionSection from './DescriptionSection';
 import InfoSection from './InfoSection';

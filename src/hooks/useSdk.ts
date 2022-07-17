@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { useCookies } from 'react-cookie';
-import { getSdk, Sdk } from '@graphql/__generated__/codegen-self';
+import { getSdk, Sdk } from '@graphql/__generated__/codegen';
 import { environment } from '@lib/environment';
 
 export default function useSdk(): Sdk {

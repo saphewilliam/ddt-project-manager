@@ -2,7 +2,7 @@ import { PlusSmIcon, MinusSmIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
 import Link from 'next/link';
 import React, { ReactElement, useState } from 'react';
-import { EventQuery } from '@graphql/__generated__/codegen-self';
+import { EventQuery } from '@graphql/__generated__/codegen';
 import { projectTypeToString } from '@lib/projectTypeHelpers';
 import { fontColorFromBackgroundHex, formatNumber } from '@lib/util';
 import ProjectStatusBadge from './ProjectStatusBadge';

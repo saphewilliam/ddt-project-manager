@@ -1,10 +1,10 @@
+import cx from 'clsx';
+import Head from 'next/head';
+import React, { ReactElement, ReactNode } from 'react';
 import Card from '@components/Card';
 import Loading from '@components/Loading';
 import useDeviceWidth from '@hooks/useDeviceWidth';
 import useSession from '@hooks/useSession';
-import cx from 'clsx';
-import Head from 'next/head';
-import React, { ReactElement, ReactNode } from 'react';
 import Navigation from './Navigation';
 import SocketFooter from './SocketFooter';
 

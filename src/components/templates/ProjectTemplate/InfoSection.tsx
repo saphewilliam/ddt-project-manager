@@ -1,3 +1,4 @@
+import useSafeQuery from '@hooks/useSafeQuery';
 import useForm, { Field } from '@saphe/react-form';
 import { useAsyncReducer } from '@saphe/react-use';
 import cx from 'clsx';
@@ -11,8 +12,7 @@ import ProjectStatusBadge, {
   getProjectStatusBadgeText,
   projectStatuses,
 } from '@components/ProjectStatusBadge';
-import { ProjectQuery, ProjectStatus } from '@graphql/__generated__/codegen-self';
-import useSafeQuery from '@hooks/useSafeQuery';
+import { ProjectQuery, ProjectStatus } from '@graphql/__generated__/codegen';
 import useSdk from '@hooks/useSdk';
 import { promiseWithCatch } from '@lib/util';
 import { GeneralPanelSection } from './GeneralPanel';

@@ -1,4 +1,3 @@
-import { Role } from '@graphql/__generated__/codegen-self';
 import {
   HomeIcon as HomeOutline,
   ClipboardListIcon as ListOutline,
@@ -17,10 +16,11 @@ import {
   UserIcon as ProfileSolid,
   AnnotationIcon as FeedbackSolid,
 } from '@heroicons/react/solid';
+import React, { ReactElement, useMemo, ComponentProps } from 'react';
+import { Role } from '@graphql/__generated__/codegen';
 import useDeviceWidth from '@hooks/useDeviceWidth';
 import useSafeQuery from '@hooks/useSafeQuery';
 import useSession from '@hooks/useSession';
-import React, { ReactElement, useMemo, ComponentProps } from 'react';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 

@@ -14,7 +14,11 @@ generates:
       includeEnums: true
       includeInputs: true
   ./src/graphql/__generated__/codegen.tsx:
-    - typescript
+    plugins:
+      - typescript
+    config:
+      namingConvention: keep
+      skipTypename: true
   ./src/graphql/:
     preset: near-operation-file
     presetConfig:

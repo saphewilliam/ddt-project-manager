@@ -1,11 +1,11 @@
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-jdenticon-sprites';
-import useSession from '@hooks/useSession';
-import { NavigationContext } from '@providers/NavigationProvider';
 import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { ReactElement, useContext, useMemo } from 'react';
+import useSession from '@hooks/useSession';
+import { NavigationContext } from '@providers/NavigationProvider';
 
 export default function ProfileBox(): ReactElement {
   const navState = useContext(NavigationContext);

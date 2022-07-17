@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import { ProjectStatus } from '@graphql/__generated__/codegen-self';
+import { ProjectStatus } from '@graphql/__generated__/codegen';
 import { fontColorFromBackgroundHex } from '@lib/util';
 
 export interface Props {

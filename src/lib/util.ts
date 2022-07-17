@@ -1,6 +1,6 @@
-// import { displayError } from '@hooks/useDisplayError';
 import { nanoid } from 'nanoid';
 import { ParsedUrlQuery } from 'querystring';
+import { displayError } from '@hooks/useDisplayError';
 
 export function fontColorFromBackgroundHex(hex: string): string {
   const r = parseInt(hex.substring(1, 3), 16);
@@ -36,16 +36,16 @@ export function generateSlug(raw: string): string {
   return `${raw.toLowerCase().replace(/[.'-]/g, '').replace(/\s+/g, '-')}-${nanoid(6)}`;
 }
 
-// export async function promiseWithCatch<T>(
-//   promise: Promise<T>,
-//   messagePrefix?: string,
-// ): Promise<T | null> {
-//   return promise
-//     .then((data) => data)
-//     .catch((error: Error) => {
-//       displayError(
-//         `${messagePrefix ?? 'ERROR'}: ${error.message.substring(0, error.message.indexOf(':'))}`,
-//       );
-//       return null;
-//     });
-// }
+export async function promiseWithCatch<T>(
+  promise: Promise<T>,
+  messagePrefix?: string,
+): Promise<T | null> {
+  return promise
+    .then((data) => data)
+    .catch((error: Error) => {
+      displayError(
+        `${messagePrefix ?? 'ERROR'}: ${error.message.substring(0, error.message.indexOf(':'))}`,
+      );
+      return null;
+    });
+}

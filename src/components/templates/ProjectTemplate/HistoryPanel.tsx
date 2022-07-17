@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import React, { ReactElement } from 'react';
-import { ProjectQuery } from '@graphql/__generated__/codegen-self';
+import { ProjectQuery } from '@graphql/__generated__/codegen';
 import { formatDate } from '@lib/util';
 
 export interface Props {

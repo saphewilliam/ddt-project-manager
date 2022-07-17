@@ -4,7 +4,7 @@ import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import Tabs from '@components/Tabs';
-import { ProjectQuery } from '@graphql/__generated__/codegen-self';
+import { ProjectQuery } from '@graphql/__generated__/codegen';
 import AttachmentsPanel from './AttachmentsPanel';
 import AttributesPanel from './AttributesPanel';
 import GeneralPanel from './GeneralPanel';

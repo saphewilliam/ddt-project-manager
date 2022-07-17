@@ -8,7 +8,7 @@ import { EditorProps } from 'react-draft-wysiwyg';
 import { toast } from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
-import { ProjectQuery } from '@graphql/__generated__/codegen-self';
+import { ProjectQuery } from '@graphql/__generated__/codegen';
 import useSdk from '@hooks/useSdk';
 import { promiseWithCatch } from '@lib/util';
 import styles from './editor.module.scss';

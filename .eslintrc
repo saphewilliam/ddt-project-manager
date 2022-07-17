@@ -28,7 +28,7 @@
   },
   "rules": {
     "react-hooks/exhaustive-deps": "off",
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    // "no-console": ["warn", { "allow": ["warn", "error"] }], TODO reenable
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-empty-interface": "warn",
@@ -38,7 +38,7 @@
       { 
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
       }
     ],
     "import/order": ["warn", {
