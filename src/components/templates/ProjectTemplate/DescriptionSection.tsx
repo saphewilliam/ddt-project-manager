@@ -1,32 +1,32 @@
+import useSdk from '@hooks/useSdk';
 import { useAsyncReducer } from '@saphe/react-use';
 import cx from 'clsx';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
 import { EditorProps } from 'react-draft-wysiwyg';
 import { toast } from 'react-hot-toast';
-import { useSWRConfig } from 'swr';
 import Button, { ButtonType } from '@components/Button';
-import { ProjectQuery } from '@graphql/__generated__/codegen';
-import useSdk from '@hooks/useSdk';
-import { promiseWithCatch } from '@lib/util';
+import { ProjectQuery, useProjectQuery } from '@graphql/Project/__generated__/queries';
+import { extractURLParam, promiseWithCatch } from '@lib/util';
 import styles from './editor.module.scss';
 import { GeneralPanelSection } from './GeneralPanel';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
-export interface Props {
-  project: NonNullable<ProjectQuery['project']>;
-  swrKey: string;
-}
+import { useUpdateProjectMutation } from '@graphql/Project/__generated__/mutations';
 
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 });
 
-export default function DescriptionSection(props: Props): ReactElement {
-  const sdk = useSdk();
-  const { mutate } = useSWRConfig();
+export default function DescriptionSection(): ReactElement {
+  const router = useRouter();
+  const projectSlug = extractURLParam('projectSlug', router.query);
+  const [projectQuery, refetchProject] = useProjectQuery({
+    variables: { where: { slug: projectSlug } },
+  });
+  const [updateProject] = useUpdateProjectMutation();
 
   const initialState = {
     isEditing: false,
@@ -43,16 +43,17 @@ export default function DescriptionSection(props: Props): ReactElement {
     save: async (prevState) => {
       const content = convertToRaw(prevState.value.getCurrentContent());
       const isEmpty = content.blocks.reduce((prev, curr) => prev && curr.text.trim() === '', true);
+      const project = projectQuery.data?.project;
 
-      const newProject = await promiseWithCatch(
-        sdk.UpdateProject({
-          id: props.project.id,
+      const updatedProject = await promiseWithCatch(
+        updateProject({
+          id: project.id,
           data: {
-            name: props.project.name,
-            status: props.project.status,
-            subthemeId: props.project.subtheme.id,
-            supervisorId: props.project.supervisor?.id ?? null,
-            parts: props.project.parts.map((part) => ({
+            name: { set: project.name },
+            status: { set: project.status },
+            subthemeId: project.subtheme.id,
+            supervisorId: project.supervisor?.id ?? null,
+            parts: project.parts.map((part) => ({
               id: part.id,
               name: part.name,
               number: part.number,
@@ -62,12 +63,12 @@ export default function DescriptionSection(props: Props): ReactElement {
             description: isEmpty ? null : content,
           },
         }),
-        'Errror while updating project',
+        'Error while updating project',
       );
 
-      if (newProject?.updateProject) {
-        await mutate(props.swrKey);
-        toast.success(`Successfully updated ${newProject.updateProject.name}`);
+      if (updatedProject?.data?.updateProject) {
+        refetchProject();
+        toast.success(`Successfully updated ${updatedProject.data.updateProject.name}`);
       }
       return { ...prevState, isEditing: false };
     },
@@ -122,12 +123,10 @@ export default function DescriptionSection(props: Props): ReactElement {
             />
           </div>
         </>
-      ) : props.project.description ? (
+      ) : projectQuery.data?.project?.description ? (
         <div
           className={styles['edited']}
-          dangerouslySetInnerHTML={{
-            __html: draftToHtml(props.project.description),
-          }}
+          dangerouslySetInnerHTML={{ __html: draftToHtml(projectQuery.data.project.description) }}
         />
       ) : (
         <p>No description found</p>

@@ -280,6 +280,100 @@ enum AttributeInventoryHistoryScalarFieldEnum {
   userId
 }
 
+input AttributeInventoryHistoryScalarWhereInput {
+  AND: [AttributeInventoryHistoryScalarWhereInput!]
+  NOT: [AttributeInventoryHistoryScalarWhereInput!]
+  OR: [AttributeInventoryHistoryScalarWhereInput!]
+  attributeId: StringFilter
+  createdAt: DateTimeFilter
+  fieldName: StringFilter
+  id: StringFilter
+  newValue: StringFilter
+  oldValue: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input AttributeInventoryHistoryUpdateManyMutationInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: StringFieldUpdateOperationsInput
+}
+
+input AttributeInventoryHistoryUpdateManyWithWhereWithoutAttributeInput {
+  data: AttributeInventoryHistoryUpdateManyMutationInput!
+  where: AttributeInventoryHistoryScalarWhereInput!
+}
+
+input AttributeInventoryHistoryUpdateManyWithWhereWithoutUserInput {
+  data: AttributeInventoryHistoryUpdateManyMutationInput!
+  where: AttributeInventoryHistoryScalarWhereInput!
+}
+
+input AttributeInventoryHistoryUpdateManyWithoutAttributeInput {
+  connect: [AttributeInventoryHistoryWhereUniqueInput!]
+  connectOrCreate: [AttributeInventoryHistoryCreateOrConnectWithoutAttributeInput!]
+  create: [AttributeInventoryHistoryCreateWithoutAttributeInput!]
+  createMany: AttributeInventoryHistoryCreateManyAttributeInputEnvelope
+  delete: [AttributeInventoryHistoryWhereUniqueInput!]
+  deleteMany: [AttributeInventoryHistoryScalarWhereInput!]
+  disconnect: [AttributeInventoryHistoryWhereUniqueInput!]
+  set: [AttributeInventoryHistoryWhereUniqueInput!]
+  update: [AttributeInventoryHistoryUpdateWithWhereUniqueWithoutAttributeInput!]
+  updateMany: [AttributeInventoryHistoryUpdateManyWithWhereWithoutAttributeInput!]
+  upsert: [AttributeInventoryHistoryUpsertWithWhereUniqueWithoutAttributeInput!]
+}
+
+input AttributeInventoryHistoryUpdateManyWithoutUserInput {
+  connect: [AttributeInventoryHistoryWhereUniqueInput!]
+  connectOrCreate: [AttributeInventoryHistoryCreateOrConnectWithoutUserInput!]
+  create: [AttributeInventoryHistoryCreateWithoutUserInput!]
+  createMany: AttributeInventoryHistoryCreateManyUserInputEnvelope
+  delete: [AttributeInventoryHistoryWhereUniqueInput!]
+  deleteMany: [AttributeInventoryHistoryScalarWhereInput!]
+  disconnect: [AttributeInventoryHistoryWhereUniqueInput!]
+  set: [AttributeInventoryHistoryWhereUniqueInput!]
+  update: [AttributeInventoryHistoryUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AttributeInventoryHistoryUpdateManyWithWhereWithoutUserInput!]
+  upsert: [AttributeInventoryHistoryUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AttributeInventoryHistoryUpdateWithWhereUniqueWithoutAttributeInput {
+  data: AttributeInventoryHistoryUpdateWithoutAttributeInput!
+  where: AttributeInventoryHistoryWhereUniqueInput!
+}
+
+input AttributeInventoryHistoryUpdateWithWhereUniqueWithoutUserInput {
+  data: AttributeInventoryHistoryUpdateWithoutUserInput!
+  where: AttributeInventoryHistoryWhereUniqueInput!
+}
+
+input AttributeInventoryHistoryUpdateWithoutAttributeInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAttributeInventoryHistoryInput
+}
+
+input AttributeInventoryHistoryUpdateWithoutUserInput {
+  attribute: AttributeUpdateOneRequiredWithoutInventoryHistoryInput
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: StringFieldUpdateOperationsInput
+}
+
+input AttributeInventoryHistoryUpsertWithWhereUniqueWithoutAttributeInput {
+  create: AttributeInventoryHistoryCreateWithoutAttributeInput!
+  update: AttributeInventoryHistoryUpdateWithoutAttributeInput!
+  where: AttributeInventoryHistoryWhereUniqueInput!
+}
+
+input AttributeInventoryHistoryUpsertWithWhereUniqueWithoutUserInput {
+  create: AttributeInventoryHistoryCreateWithoutUserInput!
+  update: AttributeInventoryHistoryUpdateWithoutUserInput!
+  where: AttributeInventoryHistoryWhereUniqueInput!
+}
+
 input AttributeInventoryHistoryWhereInput {
   AND: [AttributeInventoryHistoryWhereInput!]
   NOT: [AttributeInventoryHistoryWhereInput!]
@@ -328,6 +422,92 @@ enum AttributeInventoryScalarFieldEnum {
   id
   updatedAt
   userId
+}
+
+input AttributeInventoryScalarWhereInput {
+  AND: [AttributeInventoryScalarWhereInput!]
+  NOT: [AttributeInventoryScalarWhereInput!]
+  OR: [AttributeInventoryScalarWhereInput!]
+  amount: IntFilter
+  attributeId: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input AttributeInventoryUpdateManyMutationInput {
+  amount: IntFieldUpdateOperationsInput
+}
+
+input AttributeInventoryUpdateManyWithWhereWithoutAttributeInput {
+  data: AttributeInventoryUpdateManyMutationInput!
+  where: AttributeInventoryScalarWhereInput!
+}
+
+input AttributeInventoryUpdateManyWithWhereWithoutUserInput {
+  data: AttributeInventoryUpdateManyMutationInput!
+  where: AttributeInventoryScalarWhereInput!
+}
+
+input AttributeInventoryUpdateManyWithoutAttributeInput {
+  connect: [AttributeInventoryWhereUniqueInput!]
+  connectOrCreate: [AttributeInventoryCreateOrConnectWithoutAttributeInput!]
+  create: [AttributeInventoryCreateWithoutAttributeInput!]
+  createMany: AttributeInventoryCreateManyAttributeInputEnvelope
+  delete: [AttributeInventoryWhereUniqueInput!]
+  deleteMany: [AttributeInventoryScalarWhereInput!]
+  disconnect: [AttributeInventoryWhereUniqueInput!]
+  set: [AttributeInventoryWhereUniqueInput!]
+  update: [AttributeInventoryUpdateWithWhereUniqueWithoutAttributeInput!]
+  updateMany: [AttributeInventoryUpdateManyWithWhereWithoutAttributeInput!]
+  upsert: [AttributeInventoryUpsertWithWhereUniqueWithoutAttributeInput!]
+}
+
+input AttributeInventoryUpdateManyWithoutUserInput {
+  connect: [AttributeInventoryWhereUniqueInput!]
+  connectOrCreate: [AttributeInventoryCreateOrConnectWithoutUserInput!]
+  create: [AttributeInventoryCreateWithoutUserInput!]
+  createMany: AttributeInventoryCreateManyUserInputEnvelope
+  delete: [AttributeInventoryWhereUniqueInput!]
+  deleteMany: [AttributeInventoryScalarWhereInput!]
+  disconnect: [AttributeInventoryWhereUniqueInput!]
+  set: [AttributeInventoryWhereUniqueInput!]
+  update: [AttributeInventoryUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AttributeInventoryUpdateManyWithWhereWithoutUserInput!]
+  upsert: [AttributeInventoryUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AttributeInventoryUpdateWithWhereUniqueWithoutAttributeInput {
+  data: AttributeInventoryUpdateWithoutAttributeInput!
+  where: AttributeInventoryWhereUniqueInput!
+}
+
+input AttributeInventoryUpdateWithWhereUniqueWithoutUserInput {
+  data: AttributeInventoryUpdateWithoutUserInput!
+  where: AttributeInventoryWhereUniqueInput!
+}
+
+input AttributeInventoryUpdateWithoutAttributeInput {
+  amount: IntFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutAttributeInventoryInput
+}
+
+input AttributeInventoryUpdateWithoutUserInput {
+  amount: IntFieldUpdateOperationsInput
+  attribute: AttributeUpdateOneRequiredWithoutInventoryInput
+}
+
+input AttributeInventoryUpsertWithWhereUniqueWithoutAttributeInput {
+  create: AttributeInventoryCreateWithoutAttributeInput!
+  update: AttributeInventoryUpdateWithoutAttributeInput!
+  where: AttributeInventoryWhereUniqueInput!
+}
+
+input AttributeInventoryUpsertWithWhereUniqueWithoutUserInput {
+  create: AttributeInventoryCreateWithoutUserInput!
+  update: AttributeInventoryUpdateWithoutUserInput!
+  where: AttributeInventoryWhereUniqueInput!
 }
 
 input AttributeInventoryWhereInput {
@@ -382,6 +562,90 @@ enum AttributeScalarFieldEnum {
   namePlural
   teamId
   updatedAt
+}
+
+input AttributeUpdateOneRequiredWithoutInventoryHistoryInput {
+  connect: AttributeWhereUniqueInput
+  connectOrCreate: AttributeCreateOrConnectWithoutInventoryHistoryInput
+  create: AttributeCreateWithoutInventoryHistoryInput
+  update: AttributeUpdateWithoutInventoryHistoryInput
+  upsert: AttributeUpsertWithoutInventoryHistoryInput
+}
+
+input AttributeUpdateOneRequiredWithoutInventoryInput {
+  connect: AttributeWhereUniqueInput
+  connectOrCreate: AttributeCreateOrConnectWithoutInventoryInput
+  create: AttributeCreateWithoutInventoryInput
+  update: AttributeUpdateWithoutInventoryInput
+  upsert: AttributeUpsertWithoutInventoryInput
+}
+
+input AttributeUpdateOneRequiredWithoutProjectPartsInput {
+  connect: AttributeWhereUniqueInput
+  connectOrCreate: AttributeCreateOrConnectWithoutProjectPartsInput
+  create: AttributeCreateWithoutProjectPartsInput
+  update: AttributeUpdateWithoutProjectPartsInput
+  upsert: AttributeUpsertWithoutProjectPartsInput
+}
+
+input AttributeUpdateOneRequiredWithoutSubthemesInput {
+  connect: AttributeWhereUniqueInput
+  connectOrCreate: AttributeCreateOrConnectWithoutSubthemesInput
+  create: AttributeCreateWithoutSubthemesInput
+  update: AttributeUpdateWithoutSubthemesInput
+  upsert: AttributeUpsertWithoutSubthemesInput
+}
+
+input AttributeUpdateWithoutInventoryHistoryInput {
+  inventory: AttributeInventoryUpdateManyWithoutAttributeInput
+  name: StringFieldUpdateOperationsInput
+  namePlural: StringFieldUpdateOperationsInput
+  projectParts: AttributesOnProjectUpdateManyWithoutAttributeInput
+  subthemes: AttributesOnSubthemeUpdateManyWithoutAttributeInput
+}
+
+input AttributeUpdateWithoutInventoryInput {
+  inventoryHistory: AttributeInventoryHistoryUpdateManyWithoutAttributeInput
+  name: StringFieldUpdateOperationsInput
+  namePlural: StringFieldUpdateOperationsInput
+  projectParts: AttributesOnProjectUpdateManyWithoutAttributeInput
+  subthemes: AttributesOnSubthemeUpdateManyWithoutAttributeInput
+}
+
+input AttributeUpdateWithoutProjectPartsInput {
+  inventory: AttributeInventoryUpdateManyWithoutAttributeInput
+  inventoryHistory: AttributeInventoryHistoryUpdateManyWithoutAttributeInput
+  name: StringFieldUpdateOperationsInput
+  namePlural: StringFieldUpdateOperationsInput
+  subthemes: AttributesOnSubthemeUpdateManyWithoutAttributeInput
+}
+
+input AttributeUpdateWithoutSubthemesInput {
+  inventory: AttributeInventoryUpdateManyWithoutAttributeInput
+  inventoryHistory: AttributeInventoryHistoryUpdateManyWithoutAttributeInput
+  name: StringFieldUpdateOperationsInput
+  namePlural: StringFieldUpdateOperationsInput
+  projectParts: AttributesOnProjectUpdateManyWithoutAttributeInput
+}
+
+input AttributeUpsertWithoutInventoryHistoryInput {
+  create: AttributeCreateWithoutInventoryHistoryInput!
+  update: AttributeUpdateWithoutInventoryHistoryInput!
+}
+
+input AttributeUpsertWithoutInventoryInput {
+  create: AttributeCreateWithoutInventoryInput!
+  update: AttributeUpdateWithoutInventoryInput!
+}
+
+input AttributeUpsertWithoutProjectPartsInput {
+  create: AttributeCreateWithoutProjectPartsInput!
+  update: AttributeUpdateWithoutProjectPartsInput!
+}
+
+input AttributeUpsertWithoutSubthemesInput {
+  create: AttributeCreateWithoutSubthemesInput!
+  update: AttributeUpdateWithoutSubthemesInput!
 }
 
 input AttributeWhereInput {
@@ -531,6 +795,131 @@ enum AttributesOnProjectScalarFieldEnum {
   projectPartId
   updatedAt
   userId
+}
+
+input AttributesOnProjectScalarWhereInput {
+  AND: [AttributesOnProjectScalarWhereInput!]
+  NOT: [AttributesOnProjectScalarWhereInput!]
+  OR: [AttributesOnProjectScalarWhereInput!]
+  amount: IntFilter
+  attributeId: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  projectPartId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input AttributesOnProjectUpdateManyMutationInput {
+  amount: IntFieldUpdateOperationsInput
+}
+
+input AttributesOnProjectUpdateManyWithWhereWithoutAttributeInput {
+  data: AttributesOnProjectUpdateManyMutationInput!
+  where: AttributesOnProjectScalarWhereInput!
+}
+
+input AttributesOnProjectUpdateManyWithWhereWithoutProjectPartInput {
+  data: AttributesOnProjectUpdateManyMutationInput!
+  where: AttributesOnProjectScalarWhereInput!
+}
+
+input AttributesOnProjectUpdateManyWithWhereWithoutUserInput {
+  data: AttributesOnProjectUpdateManyMutationInput!
+  where: AttributesOnProjectScalarWhereInput!
+}
+
+input AttributesOnProjectUpdateManyWithoutAttributeInput {
+  connect: [AttributesOnProjectWhereUniqueInput!]
+  connectOrCreate: [AttributesOnProjectCreateOrConnectWithoutAttributeInput!]
+  create: [AttributesOnProjectCreateWithoutAttributeInput!]
+  createMany: AttributesOnProjectCreateManyAttributeInputEnvelope
+  delete: [AttributesOnProjectWhereUniqueInput!]
+  deleteMany: [AttributesOnProjectScalarWhereInput!]
+  disconnect: [AttributesOnProjectWhereUniqueInput!]
+  set: [AttributesOnProjectWhereUniqueInput!]
+  update: [AttributesOnProjectUpdateWithWhereUniqueWithoutAttributeInput!]
+  updateMany: [AttributesOnProjectUpdateManyWithWhereWithoutAttributeInput!]
+  upsert: [AttributesOnProjectUpsertWithWhereUniqueWithoutAttributeInput!]
+}
+
+input AttributesOnProjectUpdateManyWithoutProjectPartInput {
+  connect: [AttributesOnProjectWhereUniqueInput!]
+  connectOrCreate: [AttributesOnProjectCreateOrConnectWithoutProjectPartInput!]
+  create: [AttributesOnProjectCreateWithoutProjectPartInput!]
+  createMany: AttributesOnProjectCreateManyProjectPartInputEnvelope
+  delete: [AttributesOnProjectWhereUniqueInput!]
+  deleteMany: [AttributesOnProjectScalarWhereInput!]
+  disconnect: [AttributesOnProjectWhereUniqueInput!]
+  set: [AttributesOnProjectWhereUniqueInput!]
+  update: [AttributesOnProjectUpdateWithWhereUniqueWithoutProjectPartInput!]
+  updateMany: [AttributesOnProjectUpdateManyWithWhereWithoutProjectPartInput!]
+  upsert: [AttributesOnProjectUpsertWithWhereUniqueWithoutProjectPartInput!]
+}
+
+input AttributesOnProjectUpdateManyWithoutUserInput {
+  connect: [AttributesOnProjectWhereUniqueInput!]
+  connectOrCreate: [AttributesOnProjectCreateOrConnectWithoutUserInput!]
+  create: [AttributesOnProjectCreateWithoutUserInput!]
+  createMany: AttributesOnProjectCreateManyUserInputEnvelope
+  delete: [AttributesOnProjectWhereUniqueInput!]
+  deleteMany: [AttributesOnProjectScalarWhereInput!]
+  disconnect: [AttributesOnProjectWhereUniqueInput!]
+  set: [AttributesOnProjectWhereUniqueInput!]
+  update: [AttributesOnProjectUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AttributesOnProjectUpdateManyWithWhereWithoutUserInput!]
+  upsert: [AttributesOnProjectUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AttributesOnProjectUpdateWithWhereUniqueWithoutAttributeInput {
+  data: AttributesOnProjectUpdateWithoutAttributeInput!
+  where: AttributesOnProjectWhereUniqueInput!
+}
+
+input AttributesOnProjectUpdateWithWhereUniqueWithoutProjectPartInput {
+  data: AttributesOnProjectUpdateWithoutProjectPartInput!
+  where: AttributesOnProjectWhereUniqueInput!
+}
+
+input AttributesOnProjectUpdateWithWhereUniqueWithoutUserInput {
+  data: AttributesOnProjectUpdateWithoutUserInput!
+  where: AttributesOnProjectWhereUniqueInput!
+}
+
+input AttributesOnProjectUpdateWithoutAttributeInput {
+  amount: IntFieldUpdateOperationsInput
+  projectPart: ProjectPartUpdateOneRequiredWithoutAttributesInput
+  user: UserUpdateOneRequiredWithoutAttributesOnProjectPartsInput
+}
+
+input AttributesOnProjectUpdateWithoutProjectPartInput {
+  amount: IntFieldUpdateOperationsInput
+  attribute: AttributeUpdateOneRequiredWithoutProjectPartsInput
+  user: UserUpdateOneRequiredWithoutAttributesOnProjectPartsInput
+}
+
+input AttributesOnProjectUpdateWithoutUserInput {
+  amount: IntFieldUpdateOperationsInput
+  attribute: AttributeUpdateOneRequiredWithoutProjectPartsInput
+  projectPart: ProjectPartUpdateOneRequiredWithoutAttributesInput
+}
+
+input AttributesOnProjectUpsertWithWhereUniqueWithoutAttributeInput {
+  create: AttributesOnProjectCreateWithoutAttributeInput!
+  update: AttributesOnProjectUpdateWithoutAttributeInput!
+  where: AttributesOnProjectWhereUniqueInput!
+}
+
+input AttributesOnProjectUpsertWithWhereUniqueWithoutProjectPartInput {
+  create: AttributesOnProjectCreateWithoutProjectPartInput!
+  update: AttributesOnProjectUpdateWithoutProjectPartInput!
+  where: AttributesOnProjectWhereUniqueInput!
+}
+
+input AttributesOnProjectUpsertWithWhereUniqueWithoutUserInput {
+  create: AttributesOnProjectCreateWithoutUserInput!
+  update: AttributesOnProjectUpdateWithoutUserInput!
+  where: AttributesOnProjectWhereUniqueInput!
 }
 
 input AttributesOnProjectWhereInput {
@@ -683,6 +1072,131 @@ enum AttributesOnSubthemeScalarFieldEnum {
   userId
 }
 
+input AttributesOnSubthemeScalarWhereInput {
+  AND: [AttributesOnSubthemeScalarWhereInput!]
+  NOT: [AttributesOnSubthemeScalarWhereInput!]
+  OR: [AttributesOnSubthemeScalarWhereInput!]
+  amount: IntFilter
+  attributeId: StringFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  subthemeId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input AttributesOnSubthemeUpdateManyMutationInput {
+  amount: IntFieldUpdateOperationsInput
+}
+
+input AttributesOnSubthemeUpdateManyWithWhereWithoutAttributeInput {
+  data: AttributesOnSubthemeUpdateManyMutationInput!
+  where: AttributesOnSubthemeScalarWhereInput!
+}
+
+input AttributesOnSubthemeUpdateManyWithWhereWithoutSubthemeInput {
+  data: AttributesOnSubthemeUpdateManyMutationInput!
+  where: AttributesOnSubthemeScalarWhereInput!
+}
+
+input AttributesOnSubthemeUpdateManyWithWhereWithoutUserInput {
+  data: AttributesOnSubthemeUpdateManyMutationInput!
+  where: AttributesOnSubthemeScalarWhereInput!
+}
+
+input AttributesOnSubthemeUpdateManyWithoutAttributeInput {
+  connect: [AttributesOnSubthemeWhereUniqueInput!]
+  connectOrCreate: [AttributesOnSubthemeCreateOrConnectWithoutAttributeInput!]
+  create: [AttributesOnSubthemeCreateWithoutAttributeInput!]
+  createMany: AttributesOnSubthemeCreateManyAttributeInputEnvelope
+  delete: [AttributesOnSubthemeWhereUniqueInput!]
+  deleteMany: [AttributesOnSubthemeScalarWhereInput!]
+  disconnect: [AttributesOnSubthemeWhereUniqueInput!]
+  set: [AttributesOnSubthemeWhereUniqueInput!]
+  update: [AttributesOnSubthemeUpdateWithWhereUniqueWithoutAttributeInput!]
+  updateMany: [AttributesOnSubthemeUpdateManyWithWhereWithoutAttributeInput!]
+  upsert: [AttributesOnSubthemeUpsertWithWhereUniqueWithoutAttributeInput!]
+}
+
+input AttributesOnSubthemeUpdateManyWithoutSubthemeInput {
+  connect: [AttributesOnSubthemeWhereUniqueInput!]
+  connectOrCreate: [AttributesOnSubthemeCreateOrConnectWithoutSubthemeInput!]
+  create: [AttributesOnSubthemeCreateWithoutSubthemeInput!]
+  createMany: AttributesOnSubthemeCreateManySubthemeInputEnvelope
+  delete: [AttributesOnSubthemeWhereUniqueInput!]
+  deleteMany: [AttributesOnSubthemeScalarWhereInput!]
+  disconnect: [AttributesOnSubthemeWhereUniqueInput!]
+  set: [AttributesOnSubthemeWhereUniqueInput!]
+  update: [AttributesOnSubthemeUpdateWithWhereUniqueWithoutSubthemeInput!]
+  updateMany: [AttributesOnSubthemeUpdateManyWithWhereWithoutSubthemeInput!]
+  upsert: [AttributesOnSubthemeUpsertWithWhereUniqueWithoutSubthemeInput!]
+}
+
+input AttributesOnSubthemeUpdateManyWithoutUserInput {
+  connect: [AttributesOnSubthemeWhereUniqueInput!]
+  connectOrCreate: [AttributesOnSubthemeCreateOrConnectWithoutUserInput!]
+  create: [AttributesOnSubthemeCreateWithoutUserInput!]
+  createMany: AttributesOnSubthemeCreateManyUserInputEnvelope
+  delete: [AttributesOnSubthemeWhereUniqueInput!]
+  deleteMany: [AttributesOnSubthemeScalarWhereInput!]
+  disconnect: [AttributesOnSubthemeWhereUniqueInput!]
+  set: [AttributesOnSubthemeWhereUniqueInput!]
+  update: [AttributesOnSubthemeUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AttributesOnSubthemeUpdateManyWithWhereWithoutUserInput!]
+  upsert: [AttributesOnSubthemeUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AttributesOnSubthemeUpdateWithWhereUniqueWithoutAttributeInput {
+  data: AttributesOnSubthemeUpdateWithoutAttributeInput!
+  where: AttributesOnSubthemeWhereUniqueInput!
+}
+
+input AttributesOnSubthemeUpdateWithWhereUniqueWithoutSubthemeInput {
+  data: AttributesOnSubthemeUpdateWithoutSubthemeInput!
+  where: AttributesOnSubthemeWhereUniqueInput!
+}
+
+input AttributesOnSubthemeUpdateWithWhereUniqueWithoutUserInput {
+  data: AttributesOnSubthemeUpdateWithoutUserInput!
+  where: AttributesOnSubthemeWhereUniqueInput!
+}
+
+input AttributesOnSubthemeUpdateWithoutAttributeInput {
+  amount: IntFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutAttributesInput
+  user: UserUpdateOneRequiredWithoutAttributesOnSubthemesInput
+}
+
+input AttributesOnSubthemeUpdateWithoutSubthemeInput {
+  amount: IntFieldUpdateOperationsInput
+  attribute: AttributeUpdateOneRequiredWithoutSubthemesInput
+  user: UserUpdateOneRequiredWithoutAttributesOnSubthemesInput
+}
+
+input AttributesOnSubthemeUpdateWithoutUserInput {
+  amount: IntFieldUpdateOperationsInput
+  attribute: AttributeUpdateOneRequiredWithoutSubthemesInput
+  subtheme: SubthemeUpdateOneRequiredWithoutAttributesInput
+}
+
+input AttributesOnSubthemeUpsertWithWhereUniqueWithoutAttributeInput {
+  create: AttributesOnSubthemeCreateWithoutAttributeInput!
+  update: AttributesOnSubthemeUpdateWithoutAttributeInput!
+  where: AttributesOnSubthemeWhereUniqueInput!
+}
+
+input AttributesOnSubthemeUpsertWithWhereUniqueWithoutSubthemeInput {
+  create: AttributesOnSubthemeCreateWithoutSubthemeInput!
+  update: AttributesOnSubthemeUpdateWithoutSubthemeInput!
+  where: AttributesOnSubthemeWhereUniqueInput!
+}
+
+input AttributesOnSubthemeUpsertWithWhereUniqueWithoutUserInput {
+  create: AttributesOnSubthemeCreateWithoutUserInput!
+  update: AttributesOnSubthemeUpdateWithoutUserInput!
+  where: AttributesOnSubthemeWhereUniqueInput!
+}
+
 input AttributesOnSubthemeWhereInput {
   AND: [AttributesOnSubthemeWhereInput!]
   NOT: [AttributesOnSubthemeWhereInput!]
@@ -703,6 +1217,10 @@ input AttributesOnSubthemeWhereUniqueInput {
   id: String
 }
 
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
 input BoolFilter {
   equals: Boolean
   not: NestedBoolFilter
@@ -712,6 +1230,10 @@ input BoolFilter {
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
 
 input DateTimeFilter {
   equals: DateTime
@@ -735,6 +1257,10 @@ input DateTimeNullableFilter {
   notIn: [DateTime!]
 }
 
+input EnumProjectStatusFieldUpdateOperationsInput {
+  set: ProjectStatus
+}
+
 input EnumProjectStatusFilter {
   equals: ProjectStatus
   in: [ProjectStatus!]
@@ -742,11 +1268,19 @@ input EnumProjectStatusFilter {
   notIn: [ProjectStatus!]
 }
 
+input EnumProjectTypeFieldUpdateOperationsInput {
+  set: ProjectType
+}
+
 input EnumProjectTypeFilter {
   equals: ProjectType
   in: [ProjectType!]
   not: NestedEnumProjectTypeFilter
   notIn: [ProjectType!]
+}
+
+input EnumRoleFieldUpdateOperationsInput {
+  set: Role
 }
 
 input EnumRoleFilter {
@@ -827,6 +1361,26 @@ enum EventScalarFieldEnum {
   updatedAt
 }
 
+input EventUpdateOneRequiredWithoutSubthemesInput {
+  connect: EventWhereUniqueInput
+  connectOrCreate: EventCreateOrConnectWithoutSubthemesInput
+  create: EventCreateWithoutSubthemesInput
+  update: EventUpdateWithoutSubthemesInput
+  upsert: EventUpsertWithoutSubthemesInput
+}
+
+input EventUpdateWithoutSubthemesInput {
+  date: DateTimeFieldUpdateOperationsInput
+  img: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+}
+
+input EventUpsertWithoutSubthemesInput {
+  create: EventCreateWithoutSubthemesInput!
+  update: EventUpdateWithoutSubthemesInput!
+}
+
 input EventWhereInput {
   AND: [EventWhereInput!]
   NOT: [EventWhereInput!]
@@ -844,6 +1398,14 @@ input EventWhereInput {
 input EventWhereUniqueInput {
   id: String
   slug: String
+}
+
+input IntFieldUpdateOperationsInput {
+  decrement: Int
+  divide: Int
+  increment: Int
+  multiply: Int
+  set: Int
 }
 
 input IntFilter {
@@ -929,6 +1491,55 @@ enum MemberScalarFieldEnum {
   userId
 }
 
+input MemberScalarWhereInput {
+  AND: [MemberScalarWhereInput!]
+  NOT: [MemberScalarWhereInput!]
+  OR: [MemberScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  role: EnumRoleFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input MemberUpdateManyMutationInput {
+  role: EnumRoleFieldUpdateOperationsInput
+}
+
+input MemberUpdateManyWithWhereWithoutUserInput {
+  data: MemberUpdateManyMutationInput!
+  where: MemberScalarWhereInput!
+}
+
+input MemberUpdateManyWithoutUserInput {
+  connect: [MemberWhereUniqueInput!]
+  connectOrCreate: [MemberCreateOrConnectWithoutUserInput!]
+  create: [MemberCreateWithoutUserInput!]
+  createMany: MemberCreateManyUserInputEnvelope
+  delete: [MemberWhereUniqueInput!]
+  deleteMany: [MemberScalarWhereInput!]
+  disconnect: [MemberWhereUniqueInput!]
+  set: [MemberWhereUniqueInput!]
+  update: [MemberUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [MemberUpdateManyWithWhereWithoutUserInput!]
+  upsert: [MemberUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input MemberUpdateWithWhereUniqueWithoutUserInput {
+  data: MemberUpdateWithoutUserInput!
+  where: MemberWhereUniqueInput!
+}
+
+input MemberUpdateWithoutUserInput {
+  role: EnumRoleFieldUpdateOperationsInput
+}
+
+input MemberUpsertWithWhereUniqueWithoutUserInput {
+  create: MemberCreateWithoutUserInput!
+  update: MemberUpdateWithoutUserInput!
+  where: MemberWhereUniqueInput!
+}
+
 input MemberUserIdTeamIdCompoundUniqueInput {
   teamId: String!
   userId: String!
@@ -953,16 +1564,18 @@ input MemberWhereUniqueInput {
 
 type Mutation {
   createAttribute(data: AttributeCreateInput!): Attribute!
+  createProject(data: ProjectCreateInput!): Project!
   createUser(data: UserCreateInput!): User!
 
   """Create a new session for a user with an active account"""
-  login(email: String!, isPermanent: Boolean!, password: String!): String!
+  login(email: String!, isPermanent: Boolean!, password: String!): TokenPayload!
 
   """Invalidate the active session"""
   logout: Session!
 
   """Set the `team` field of the active session"""
   setSessionTeam(teamId: String!): Session!
+  updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
 }
 
 input NestedBoolFilter {
@@ -1052,17 +1665,31 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
 type Project {
   _count: ProjectCount
   createdAt: DateTime!
+  createdBy: User
   createdById: String
   description: JSON
+  history(cursor: ProjectHistoryWhereUniqueInput, distinct: [ProjectHistoryScalarFieldEnum!], orderBy: [ProjectHistoryOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectHistoryWhereInput): [ProjectHistory!]!
   id: String!
   name: String!
   number: Int!
+  parts(cursor: ProjectPartWhereUniqueInput, distinct: [ProjectPartScalarFieldEnum!], orderBy: [ProjectPartOrderByWithRelationInput!], skip: Int, take: Int, where: ProjectPartWhereInput): [ProjectPart!]!
   slug: String!
+  stats(cursor: StatsOnProjectWhereUniqueInput, distinct: [StatsOnProjectScalarFieldEnum!], orderBy: [StatsOnProjectOrderByWithRelationInput!], skip: Int, take: Int, where: StatsOnProjectWhereInput): [StatsOnProject!]!
   status: ProjectStatus!
+  subtheme: Subtheme!
   subthemeId: String!
+  supervisor: User
   supervisorId: String
   updatedAt: DateTime!
 }
@@ -1071,6 +1698,20 @@ type ProjectCount {
   history: Int!
   parts: Int!
   stats: Int!
+}
+
+input ProjectCreateInput {
+  createdBy: UserCreateNestedOneWithoutCreatedProjectsInput
+  description: JSON
+  history: ProjectHistoryCreateNestedManyWithoutProjectInput
+  name: String!
+  number: Int!
+  parts: ProjectPartCreateNestedManyWithoutProjectInput
+  slug: String!
+  stats: StatsOnProjectCreateNestedManyWithoutProjectInput
+  status: ProjectStatus!
+  subtheme: SubthemeCreateNestedOneWithoutProjectsInput!
+  supervisor: UserCreateNestedOneWithoutSupervisingProjectsInput
 }
 
 input ProjectCreateManyCreatedByInput {
@@ -1348,6 +1989,100 @@ enum ProjectHistoryScalarFieldEnum {
   userId
 }
 
+input ProjectHistoryScalarWhereInput {
+  AND: [ProjectHistoryScalarWhereInput!]
+  NOT: [ProjectHistoryScalarWhereInput!]
+  OR: [ProjectHistoryScalarWhereInput!]
+  createdAt: DateTimeFilter
+  fieldName: StringFilter
+  id: StringFilter
+  newValue: StringFilter
+  oldValue: StringNullableFilter
+  projectId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input ProjectHistoryUpdateManyMutationInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: NullableStringFieldUpdateOperationsInput
+}
+
+input ProjectHistoryUpdateManyWithWhereWithoutProjectInput {
+  data: ProjectHistoryUpdateManyMutationInput!
+  where: ProjectHistoryScalarWhereInput!
+}
+
+input ProjectHistoryUpdateManyWithWhereWithoutUserInput {
+  data: ProjectHistoryUpdateManyMutationInput!
+  where: ProjectHistoryScalarWhereInput!
+}
+
+input ProjectHistoryUpdateManyWithoutProjectInput {
+  connect: [ProjectHistoryWhereUniqueInput!]
+  connectOrCreate: [ProjectHistoryCreateOrConnectWithoutProjectInput!]
+  create: [ProjectHistoryCreateWithoutProjectInput!]
+  createMany: ProjectHistoryCreateManyProjectInputEnvelope
+  delete: [ProjectHistoryWhereUniqueInput!]
+  deleteMany: [ProjectHistoryScalarWhereInput!]
+  disconnect: [ProjectHistoryWhereUniqueInput!]
+  set: [ProjectHistoryWhereUniqueInput!]
+  update: [ProjectHistoryUpdateWithWhereUniqueWithoutProjectInput!]
+  updateMany: [ProjectHistoryUpdateManyWithWhereWithoutProjectInput!]
+  upsert: [ProjectHistoryUpsertWithWhereUniqueWithoutProjectInput!]
+}
+
+input ProjectHistoryUpdateManyWithoutUserInput {
+  connect: [ProjectHistoryWhereUniqueInput!]
+  connectOrCreate: [ProjectHistoryCreateOrConnectWithoutUserInput!]
+  create: [ProjectHistoryCreateWithoutUserInput!]
+  createMany: ProjectHistoryCreateManyUserInputEnvelope
+  delete: [ProjectHistoryWhereUniqueInput!]
+  deleteMany: [ProjectHistoryScalarWhereInput!]
+  disconnect: [ProjectHistoryWhereUniqueInput!]
+  set: [ProjectHistoryWhereUniqueInput!]
+  update: [ProjectHistoryUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ProjectHistoryUpdateManyWithWhereWithoutUserInput!]
+  upsert: [ProjectHistoryUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ProjectHistoryUpdateWithWhereUniqueWithoutProjectInput {
+  data: ProjectHistoryUpdateWithoutProjectInput!
+  where: ProjectHistoryWhereUniqueInput!
+}
+
+input ProjectHistoryUpdateWithWhereUniqueWithoutUserInput {
+  data: ProjectHistoryUpdateWithoutUserInput!
+  where: ProjectHistoryWhereUniqueInput!
+}
+
+input ProjectHistoryUpdateWithoutProjectInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: NullableStringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutProjectHistoryInput
+}
+
+input ProjectHistoryUpdateWithoutUserInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: NullableStringFieldUpdateOperationsInput
+  project: ProjectUpdateOneRequiredWithoutHistoryInput
+}
+
+input ProjectHistoryUpsertWithWhereUniqueWithoutProjectInput {
+  create: ProjectHistoryCreateWithoutProjectInput!
+  update: ProjectHistoryUpdateWithoutProjectInput!
+  where: ProjectHistoryWhereUniqueInput!
+}
+
+input ProjectHistoryUpsertWithWhereUniqueWithoutUserInput {
+  create: ProjectHistoryCreateWithoutUserInput!
+  update: ProjectHistoryUpdateWithoutUserInput!
+  where: ProjectHistoryWhereUniqueInput!
+}
+
 input ProjectHistoryWhereInput {
   AND: [ProjectHistoryWhereInput!]
   NOT: [ProjectHistoryWhereInput!]
@@ -1396,6 +2131,24 @@ input ProjectOrderByWithRelationInput {
   supervisor: UserOrderByWithRelationInput
   supervisorId: SortOrder
   updatedAt: SortOrder
+}
+
+type ProjectPart {
+  _count: ProjectPartCount
+  createdAt: DateTime!
+  description: String
+  id: String!
+  name: String!
+  number: Int!
+  projectId: String!
+  slug: String!
+  type: ProjectType!
+  updatedAt: DateTime!
+}
+
+type ProjectPartCount {
+  attributes: Int!
+  stones: Int!
 }
 
 input ProjectPartCreateManyProjectInput {
@@ -1505,6 +2258,127 @@ input ProjectPartRelationFilter {
   isNot: ProjectPartWhereInput
 }
 
+enum ProjectPartScalarFieldEnum {
+  createdAt
+  description
+  id
+  name
+  number
+  projectId
+  slug
+  type
+  updatedAt
+}
+
+input ProjectPartScalarWhereInput {
+  AND: [ProjectPartScalarWhereInput!]
+  NOT: [ProjectPartScalarWhereInput!]
+  OR: [ProjectPartScalarWhereInput!]
+  createdAt: DateTimeFilter
+  description: StringNullableFilter
+  id: StringFilter
+  name: StringFilter
+  number: IntFilter
+  projectId: StringFilter
+  slug: StringFilter
+  type: EnumProjectTypeFilter
+  updatedAt: DateTimeFilter
+}
+
+input ProjectPartUpdateManyMutationInput {
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  type: EnumProjectTypeFieldUpdateOperationsInput
+}
+
+input ProjectPartUpdateManyWithWhereWithoutProjectInput {
+  data: ProjectPartUpdateManyMutationInput!
+  where: ProjectPartScalarWhereInput!
+}
+
+input ProjectPartUpdateManyWithoutProjectInput {
+  connect: [ProjectPartWhereUniqueInput!]
+  connectOrCreate: [ProjectPartCreateOrConnectWithoutProjectInput!]
+  create: [ProjectPartCreateWithoutProjectInput!]
+  createMany: ProjectPartCreateManyProjectInputEnvelope
+  delete: [ProjectPartWhereUniqueInput!]
+  deleteMany: [ProjectPartScalarWhereInput!]
+  disconnect: [ProjectPartWhereUniqueInput!]
+  set: [ProjectPartWhereUniqueInput!]
+  update: [ProjectPartUpdateWithWhereUniqueWithoutProjectInput!]
+  updateMany: [ProjectPartUpdateManyWithWhereWithoutProjectInput!]
+  upsert: [ProjectPartUpsertWithWhereUniqueWithoutProjectInput!]
+}
+
+input ProjectPartUpdateOneRequiredWithoutAttributesInput {
+  connect: ProjectPartWhereUniqueInput
+  connectOrCreate: ProjectPartCreateOrConnectWithoutAttributesInput
+  create: ProjectPartCreateWithoutAttributesInput
+  update: ProjectPartUpdateWithoutAttributesInput
+  upsert: ProjectPartUpsertWithoutAttributesInput
+}
+
+input ProjectPartUpdateOneRequiredWithoutStonesInput {
+  connect: ProjectPartWhereUniqueInput
+  connectOrCreate: ProjectPartCreateOrConnectWithoutStonesInput
+  create: ProjectPartCreateWithoutStonesInput
+  update: ProjectPartUpdateWithoutStonesInput
+  upsert: ProjectPartUpsertWithoutStonesInput
+}
+
+input ProjectPartUpdateWithWhereUniqueWithoutProjectInput {
+  data: ProjectPartUpdateWithoutProjectInput!
+  where: ProjectPartWhereUniqueInput!
+}
+
+input ProjectPartUpdateWithoutAttributesInput {
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  project: ProjectUpdateOneRequiredWithoutPartsInput
+  slug: StringFieldUpdateOperationsInput
+  stones: StonesOnProjectUpdateManyWithoutProjectPartInput
+  type: EnumProjectTypeFieldUpdateOperationsInput
+}
+
+input ProjectPartUpdateWithoutProjectInput {
+  attributes: AttributesOnProjectUpdateManyWithoutProjectPartInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  stones: StonesOnProjectUpdateManyWithoutProjectPartInput
+  type: EnumProjectTypeFieldUpdateOperationsInput
+}
+
+input ProjectPartUpdateWithoutStonesInput {
+  attributes: AttributesOnProjectUpdateManyWithoutProjectPartInput
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  project: ProjectUpdateOneRequiredWithoutPartsInput
+  slug: StringFieldUpdateOperationsInput
+  type: EnumProjectTypeFieldUpdateOperationsInput
+}
+
+input ProjectPartUpsertWithWhereUniqueWithoutProjectInput {
+  create: ProjectPartCreateWithoutProjectInput!
+  update: ProjectPartUpdateWithoutProjectInput!
+  where: ProjectPartWhereUniqueInput!
+}
+
+input ProjectPartUpsertWithoutAttributesInput {
+  create: ProjectPartCreateWithoutAttributesInput!
+  update: ProjectPartUpdateWithoutAttributesInput!
+}
+
+input ProjectPartUpsertWithoutStonesInput {
+  create: ProjectPartCreateWithoutStonesInput!
+  update: ProjectPartUpdateWithoutStonesInput!
+}
+
 input ProjectPartWhereInput {
   AND: [ProjectPartWhereInput!]
   NOT: [ProjectPartWhereInput!]
@@ -1547,6 +2421,23 @@ enum ProjectScalarFieldEnum {
   updatedAt
 }
 
+input ProjectScalarWhereInput {
+  AND: [ProjectScalarWhereInput!]
+  NOT: [ProjectScalarWhereInput!]
+  OR: [ProjectScalarWhereInput!]
+  createdAt: DateTimeFilter
+  createdById: StringNullableFilter
+  description: JsonNullableFilter
+  id: StringFilter
+  name: StringFilter
+  number: IntFilter
+  slug: StringFilter
+  status: EnumProjectStatusFilter
+  subthemeId: StringFilter
+  supervisorId: StringNullableFilter
+  updatedAt: DateTimeFilter
+}
+
 enum ProjectStatus {
   BUILDING
   BUILT
@@ -1581,6 +2472,212 @@ enum ProjectType {
   WALL_X
 }
 
+input ProjectUpdateInput {
+  createdBy: UserUpdateOneWithoutCreatedProjectsInput
+  description: JSON
+  history: ProjectHistoryUpdateManyWithoutProjectInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  parts: ProjectPartUpdateManyWithoutProjectInput
+  slug: StringFieldUpdateOperationsInput
+  stats: StatsOnProjectUpdateManyWithoutProjectInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutProjectsInput
+  supervisor: UserUpdateOneWithoutSupervisingProjectsInput
+}
+
+input ProjectUpdateManyMutationInput {
+  description: JSON
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+}
+
+input ProjectUpdateManyWithWhereWithoutCreatedByInput {
+  data: ProjectUpdateManyMutationInput!
+  where: ProjectScalarWhereInput!
+}
+
+input ProjectUpdateManyWithWhereWithoutSubthemeInput {
+  data: ProjectUpdateManyMutationInput!
+  where: ProjectScalarWhereInput!
+}
+
+input ProjectUpdateManyWithWhereWithoutSupervisorInput {
+  data: ProjectUpdateManyMutationInput!
+  where: ProjectScalarWhereInput!
+}
+
+input ProjectUpdateManyWithoutCreatedByInput {
+  connect: [ProjectWhereUniqueInput!]
+  connectOrCreate: [ProjectCreateOrConnectWithoutCreatedByInput!]
+  create: [ProjectCreateWithoutCreatedByInput!]
+  createMany: ProjectCreateManyCreatedByInputEnvelope
+  delete: [ProjectWhereUniqueInput!]
+  deleteMany: [ProjectScalarWhereInput!]
+  disconnect: [ProjectWhereUniqueInput!]
+  set: [ProjectWhereUniqueInput!]
+  update: [ProjectUpdateWithWhereUniqueWithoutCreatedByInput!]
+  updateMany: [ProjectUpdateManyWithWhereWithoutCreatedByInput!]
+  upsert: [ProjectUpsertWithWhereUniqueWithoutCreatedByInput!]
+}
+
+input ProjectUpdateManyWithoutSubthemeInput {
+  connect: [ProjectWhereUniqueInput!]
+  connectOrCreate: [ProjectCreateOrConnectWithoutSubthemeInput!]
+  create: [ProjectCreateWithoutSubthemeInput!]
+  createMany: ProjectCreateManySubthemeInputEnvelope
+  delete: [ProjectWhereUniqueInput!]
+  deleteMany: [ProjectScalarWhereInput!]
+  disconnect: [ProjectWhereUniqueInput!]
+  set: [ProjectWhereUniqueInput!]
+  update: [ProjectUpdateWithWhereUniqueWithoutSubthemeInput!]
+  updateMany: [ProjectUpdateManyWithWhereWithoutSubthemeInput!]
+  upsert: [ProjectUpsertWithWhereUniqueWithoutSubthemeInput!]
+}
+
+input ProjectUpdateManyWithoutSupervisorInput {
+  connect: [ProjectWhereUniqueInput!]
+  connectOrCreate: [ProjectCreateOrConnectWithoutSupervisorInput!]
+  create: [ProjectCreateWithoutSupervisorInput!]
+  createMany: ProjectCreateManySupervisorInputEnvelope
+  delete: [ProjectWhereUniqueInput!]
+  deleteMany: [ProjectScalarWhereInput!]
+  disconnect: [ProjectWhereUniqueInput!]
+  set: [ProjectWhereUniqueInput!]
+  update: [ProjectUpdateWithWhereUniqueWithoutSupervisorInput!]
+  updateMany: [ProjectUpdateManyWithWhereWithoutSupervisorInput!]
+  upsert: [ProjectUpsertWithWhereUniqueWithoutSupervisorInput!]
+}
+
+input ProjectUpdateOneRequiredWithoutHistoryInput {
+  connect: ProjectWhereUniqueInput
+  connectOrCreate: ProjectCreateOrConnectWithoutHistoryInput
+  create: ProjectCreateWithoutHistoryInput
+  update: ProjectUpdateWithoutHistoryInput
+  upsert: ProjectUpsertWithoutHistoryInput
+}
+
+input ProjectUpdateOneRequiredWithoutPartsInput {
+  connect: ProjectWhereUniqueInput
+  connectOrCreate: ProjectCreateOrConnectWithoutPartsInput
+  create: ProjectCreateWithoutPartsInput
+  update: ProjectUpdateWithoutPartsInput
+  upsert: ProjectUpsertWithoutPartsInput
+}
+
+input ProjectUpdateWithWhereUniqueWithoutCreatedByInput {
+  data: ProjectUpdateWithoutCreatedByInput!
+  where: ProjectWhereUniqueInput!
+}
+
+input ProjectUpdateWithWhereUniqueWithoutSubthemeInput {
+  data: ProjectUpdateWithoutSubthemeInput!
+  where: ProjectWhereUniqueInput!
+}
+
+input ProjectUpdateWithWhereUniqueWithoutSupervisorInput {
+  data: ProjectUpdateWithoutSupervisorInput!
+  where: ProjectWhereUniqueInput!
+}
+
+input ProjectUpdateWithoutCreatedByInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  description: JSON
+  history: ProjectHistoryUpdateManyWithoutProjectInput
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  parts: ProjectPartUpdateManyWithoutProjectInput
+  slug: StringFieldUpdateOperationsInput
+  stats: StatsOnProjectUpdateManyWithoutProjectInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutProjectsInput
+  supervisor: UserUpdateOneWithoutSupervisingProjectsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input ProjectUpdateWithoutHistoryInput {
+  createdBy: UserUpdateOneWithoutCreatedProjectsInput
+  description: JSON
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  parts: ProjectPartUpdateManyWithoutProjectInput
+  slug: StringFieldUpdateOperationsInput
+  stats: StatsOnProjectUpdateManyWithoutProjectInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutProjectsInput
+  supervisor: UserUpdateOneWithoutSupervisingProjectsInput
+}
+
+input ProjectUpdateWithoutPartsInput {
+  createdBy: UserUpdateOneWithoutCreatedProjectsInput
+  description: JSON
+  history: ProjectHistoryUpdateManyWithoutProjectInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  stats: StatsOnProjectUpdateManyWithoutProjectInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutProjectsInput
+  supervisor: UserUpdateOneWithoutSupervisingProjectsInput
+}
+
+input ProjectUpdateWithoutSubthemeInput {
+  createdBy: UserUpdateOneWithoutCreatedProjectsInput
+  description: JSON
+  history: ProjectHistoryUpdateManyWithoutProjectInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  parts: ProjectPartUpdateManyWithoutProjectInput
+  slug: StringFieldUpdateOperationsInput
+  stats: StatsOnProjectUpdateManyWithoutProjectInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+  supervisor: UserUpdateOneWithoutSupervisingProjectsInput
+}
+
+input ProjectUpdateWithoutSupervisorInput {
+  createdBy: UserUpdateOneWithoutCreatedProjectsInput
+  description: JSON
+  history: ProjectHistoryUpdateManyWithoutProjectInput
+  name: StringFieldUpdateOperationsInput
+  number: IntFieldUpdateOperationsInput
+  parts: ProjectPartUpdateManyWithoutProjectInput
+  slug: StringFieldUpdateOperationsInput
+  stats: StatsOnProjectUpdateManyWithoutProjectInput
+  status: EnumProjectStatusFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutProjectsInput
+}
+
+input ProjectUpsertWithWhereUniqueWithoutCreatedByInput {
+  create: ProjectCreateWithoutCreatedByInput!
+  update: ProjectUpdateWithoutCreatedByInput!
+  where: ProjectWhereUniqueInput!
+}
+
+input ProjectUpsertWithWhereUniqueWithoutSubthemeInput {
+  create: ProjectCreateWithoutSubthemeInput!
+  update: ProjectUpdateWithoutSubthemeInput!
+  where: ProjectWhereUniqueInput!
+}
+
+input ProjectUpsertWithWhereUniqueWithoutSupervisorInput {
+  create: ProjectCreateWithoutSupervisorInput!
+  update: ProjectUpdateWithoutSupervisorInput!
+  where: ProjectWhereUniqueInput!
+}
+
+input ProjectUpsertWithoutHistoryInput {
+  create: ProjectCreateWithoutHistoryInput!
+  update: ProjectUpdateWithoutHistoryInput!
+}
+
+input ProjectUpsertWithoutPartsInput {
+  create: ProjectCreateWithoutPartsInput!
+  update: ProjectUpdateWithoutPartsInput!
+}
+
 input ProjectWhereInput {
   AND: [ProjectWhereInput!]
   NOT: [ProjectWhereInput!]
@@ -1611,6 +2708,7 @@ input ProjectWhereUniqueInput {
 
 type Query {
   attributes(cursor: AttributeWhereUniqueInput, distinct: [AttributeScalarFieldEnum!], orderBy: [AttributeOrderByWithRelationInput!], skip: Int, take: Int, where: AttributeWhereInput): [Attribute!]!
+  project(where: ProjectWhereUniqueInput!): Project
   session(where: SessionWhereUniqueInput!): Session
   teams(cursor: TeamWhereUniqueInput, distinct: [TeamScalarFieldEnum!], orderBy: [TeamOrderByWithRelationInput!], skip: Int, take: Int, where: TeamWhereInput): [Team!]!
   users(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
@@ -1697,6 +2795,58 @@ enum SessionScalarFieldEnum {
   userId
 }
 
+input SessionScalarWhereInput {
+  AND: [SessionScalarWhereInput!]
+  NOT: [SessionScalarWhereInput!]
+  OR: [SessionScalarWhereInput!]
+  createdAt: DateTimeFilter
+  expiresAt: DateTimeNullableFilter
+  id: StringFilter
+  token: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input SessionUpdateManyMutationInput {
+  expiresAt: NullableDateTimeFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+}
+
+input SessionUpdateManyWithWhereWithoutUserInput {
+  data: SessionUpdateManyMutationInput!
+  where: SessionScalarWhereInput!
+}
+
+input SessionUpdateManyWithoutUserInput {
+  connect: [SessionWhereUniqueInput!]
+  connectOrCreate: [SessionCreateOrConnectWithoutUserInput!]
+  create: [SessionCreateWithoutUserInput!]
+  createMany: SessionCreateManyUserInputEnvelope
+  delete: [SessionWhereUniqueInput!]
+  deleteMany: [SessionScalarWhereInput!]
+  disconnect: [SessionWhereUniqueInput!]
+  set: [SessionWhereUniqueInput!]
+  update: [SessionUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [SessionUpdateManyWithWhereWithoutUserInput!]
+  upsert: [SessionUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input SessionUpdateWithWhereUniqueWithoutUserInput {
+  data: SessionUpdateWithoutUserInput!
+  where: SessionWhereUniqueInput!
+}
+
+input SessionUpdateWithoutUserInput {
+  expiresAt: NullableDateTimeFieldUpdateOperationsInput
+  token: StringFieldUpdateOperationsInput
+}
+
+input SessionUpsertWithWhereUniqueWithoutUserInput {
+  create: SessionCreateWithoutUserInput!
+  update: SessionUpdateWithoutUserInput!
+  where: SessionWhereUniqueInput!
+}
+
 input SessionWhereInput {
   AND: [SessionWhereInput!]
   NOT: [SessionWhereInput!]
@@ -1779,6 +2929,23 @@ enum StatScalarFieldEnum {
   updatedAt
 }
 
+input StatUpdateOneRequiredWithoutProjectsInput {
+  connect: StatWhereUniqueInput
+  connectOrCreate: StatCreateOrConnectWithoutProjectsInput
+  create: StatCreateWithoutProjectsInput
+  update: StatUpdateWithoutProjectsInput
+  upsert: StatUpsertWithoutProjectsInput
+}
+
+input StatUpdateWithoutProjectsInput {
+  name: StringFieldUpdateOperationsInput
+}
+
+input StatUpsertWithoutProjectsInput {
+  create: StatCreateWithoutProjectsInput!
+  update: StatUpdateWithoutProjectsInput!
+}
+
 input StatWhereInput {
   AND: [StatWhereInput!]
   NOT: [StatWhereInput!]
@@ -1792,6 +2959,15 @@ input StatWhereInput {
 
 input StatWhereUniqueInput {
   id: String
+}
+
+type StatsOnProject {
+  createdAt: DateTime!
+  id: String!
+  projectId: String!
+  statId: String!
+  updatedAt: DateTime!
+  value: String!
 }
 
 input StatsOnProjectCreateManyProjectInput {
@@ -1829,6 +3005,77 @@ input StatsOnProjectListRelationFilter {
 
 input StatsOnProjectOrderByRelationAggregateInput {
   _count: SortOrder
+}
+
+input StatsOnProjectOrderByWithRelationInput {
+  createdAt: SortOrder
+  id: SortOrder
+  project: ProjectOrderByWithRelationInput
+  projectId: SortOrder
+  stat: StatOrderByWithRelationInput
+  statId: SortOrder
+  updatedAt: SortOrder
+  value: SortOrder
+}
+
+enum StatsOnProjectScalarFieldEnum {
+  createdAt
+  id
+  projectId
+  statId
+  updatedAt
+  value
+}
+
+input StatsOnProjectScalarWhereInput {
+  AND: [StatsOnProjectScalarWhereInput!]
+  NOT: [StatsOnProjectScalarWhereInput!]
+  OR: [StatsOnProjectScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  projectId: StringFilter
+  statId: StringFilter
+  updatedAt: DateTimeFilter
+  value: StringFilter
+}
+
+input StatsOnProjectUpdateManyMutationInput {
+  value: StringFieldUpdateOperationsInput
+}
+
+input StatsOnProjectUpdateManyWithWhereWithoutProjectInput {
+  data: StatsOnProjectUpdateManyMutationInput!
+  where: StatsOnProjectScalarWhereInput!
+}
+
+input StatsOnProjectUpdateManyWithoutProjectInput {
+  connect: [StatsOnProjectWhereUniqueInput!]
+  connectOrCreate: [StatsOnProjectCreateOrConnectWithoutProjectInput!]
+  create: [StatsOnProjectCreateWithoutProjectInput!]
+  createMany: StatsOnProjectCreateManyProjectInputEnvelope
+  delete: [StatsOnProjectWhereUniqueInput!]
+  deleteMany: [StatsOnProjectScalarWhereInput!]
+  disconnect: [StatsOnProjectWhereUniqueInput!]
+  set: [StatsOnProjectWhereUniqueInput!]
+  update: [StatsOnProjectUpdateWithWhereUniqueWithoutProjectInput!]
+  updateMany: [StatsOnProjectUpdateManyWithWhereWithoutProjectInput!]
+  upsert: [StatsOnProjectUpsertWithWhereUniqueWithoutProjectInput!]
+}
+
+input StatsOnProjectUpdateWithWhereUniqueWithoutProjectInput {
+  data: StatsOnProjectUpdateWithoutProjectInput!
+  where: StatsOnProjectWhereUniqueInput!
+}
+
+input StatsOnProjectUpdateWithoutProjectInput {
+  stat: StatUpdateOneRequiredWithoutProjectsInput
+  value: StringFieldUpdateOperationsInput
+}
+
+input StatsOnProjectUpsertWithWhereUniqueWithoutProjectInput {
+  create: StatsOnProjectCreateWithoutProjectInput!
+  update: StatsOnProjectUpdateWithoutProjectInput!
+  where: StatsOnProjectWhereUniqueInput!
 }
 
 input StatsOnProjectWhereInput {
@@ -2119,6 +3366,100 @@ enum StoneInventoryHistoryScalarFieldEnum {
   userId
 }
 
+input StoneInventoryHistoryScalarWhereInput {
+  AND: [StoneInventoryHistoryScalarWhereInput!]
+  NOT: [StoneInventoryHistoryScalarWhereInput!]
+  OR: [StoneInventoryHistoryScalarWhereInput!]
+  createdAt: DateTimeFilter
+  fieldName: StringFilter
+  id: StringFilter
+  newValue: StringFilter
+  oldValue: StringFilter
+  stoneId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input StoneInventoryHistoryUpdateManyMutationInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: StringFieldUpdateOperationsInput
+}
+
+input StoneInventoryHistoryUpdateManyWithWhereWithoutStoneInput {
+  data: StoneInventoryHistoryUpdateManyMutationInput!
+  where: StoneInventoryHistoryScalarWhereInput!
+}
+
+input StoneInventoryHistoryUpdateManyWithWhereWithoutUserInput {
+  data: StoneInventoryHistoryUpdateManyMutationInput!
+  where: StoneInventoryHistoryScalarWhereInput!
+}
+
+input StoneInventoryHistoryUpdateManyWithoutStoneInput {
+  connect: [StoneInventoryHistoryWhereUniqueInput!]
+  connectOrCreate: [StoneInventoryHistoryCreateOrConnectWithoutStoneInput!]
+  create: [StoneInventoryHistoryCreateWithoutStoneInput!]
+  createMany: StoneInventoryHistoryCreateManyStoneInputEnvelope
+  delete: [StoneInventoryHistoryWhereUniqueInput!]
+  deleteMany: [StoneInventoryHistoryScalarWhereInput!]
+  disconnect: [StoneInventoryHistoryWhereUniqueInput!]
+  set: [StoneInventoryHistoryWhereUniqueInput!]
+  update: [StoneInventoryHistoryUpdateWithWhereUniqueWithoutStoneInput!]
+  updateMany: [StoneInventoryHistoryUpdateManyWithWhereWithoutStoneInput!]
+  upsert: [StoneInventoryHistoryUpsertWithWhereUniqueWithoutStoneInput!]
+}
+
+input StoneInventoryHistoryUpdateManyWithoutUserInput {
+  connect: [StoneInventoryHistoryWhereUniqueInput!]
+  connectOrCreate: [StoneInventoryHistoryCreateOrConnectWithoutUserInput!]
+  create: [StoneInventoryHistoryCreateWithoutUserInput!]
+  createMany: StoneInventoryHistoryCreateManyUserInputEnvelope
+  delete: [StoneInventoryHistoryWhereUniqueInput!]
+  deleteMany: [StoneInventoryHistoryScalarWhereInput!]
+  disconnect: [StoneInventoryHistoryWhereUniqueInput!]
+  set: [StoneInventoryHistoryWhereUniqueInput!]
+  update: [StoneInventoryHistoryUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StoneInventoryHistoryUpdateManyWithWhereWithoutUserInput!]
+  upsert: [StoneInventoryHistoryUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StoneInventoryHistoryUpdateWithWhereUniqueWithoutStoneInput {
+  data: StoneInventoryHistoryUpdateWithoutStoneInput!
+  where: StoneInventoryHistoryWhereUniqueInput!
+}
+
+input StoneInventoryHistoryUpdateWithWhereUniqueWithoutUserInput {
+  data: StoneInventoryHistoryUpdateWithoutUserInput!
+  where: StoneInventoryHistoryWhereUniqueInput!
+}
+
+input StoneInventoryHistoryUpdateWithoutStoneInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: StringFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutStoneInventoryHistoryInput
+}
+
+input StoneInventoryHistoryUpdateWithoutUserInput {
+  fieldName: StringFieldUpdateOperationsInput
+  newValue: StringFieldUpdateOperationsInput
+  oldValue: StringFieldUpdateOperationsInput
+  stone: StoneUpdateOneRequiredWithoutHistoryInput
+}
+
+input StoneInventoryHistoryUpsertWithWhereUniqueWithoutStoneInput {
+  create: StoneInventoryHistoryCreateWithoutStoneInput!
+  update: StoneInventoryHistoryUpdateWithoutStoneInput!
+  where: StoneInventoryHistoryWhereUniqueInput!
+}
+
+input StoneInventoryHistoryUpsertWithWhereUniqueWithoutUserInput {
+  create: StoneInventoryHistoryCreateWithoutUserInput!
+  update: StoneInventoryHistoryUpdateWithoutUserInput!
+  where: StoneInventoryHistoryWhereUniqueInput!
+}
+
 input StoneInventoryHistoryWhereInput {
   AND: [StoneInventoryHistoryWhereInput!]
   NOT: [StoneInventoryHistoryWhereInput!]
@@ -2167,6 +3508,92 @@ enum StoneInventoryScalarFieldEnum {
   stoneId
   updatedAt
   userId
+}
+
+input StoneInventoryScalarWhereInput {
+  AND: [StoneInventoryScalarWhereInput!]
+  NOT: [StoneInventoryScalarWhereInput!]
+  OR: [StoneInventoryScalarWhereInput!]
+  amount: IntFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  stoneId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input StoneInventoryUpdateManyMutationInput {
+  amount: IntFieldUpdateOperationsInput
+}
+
+input StoneInventoryUpdateManyWithWhereWithoutStoneInput {
+  data: StoneInventoryUpdateManyMutationInput!
+  where: StoneInventoryScalarWhereInput!
+}
+
+input StoneInventoryUpdateManyWithWhereWithoutUserInput {
+  data: StoneInventoryUpdateManyMutationInput!
+  where: StoneInventoryScalarWhereInput!
+}
+
+input StoneInventoryUpdateManyWithoutStoneInput {
+  connect: [StoneInventoryWhereUniqueInput!]
+  connectOrCreate: [StoneInventoryCreateOrConnectWithoutStoneInput!]
+  create: [StoneInventoryCreateWithoutStoneInput!]
+  createMany: StoneInventoryCreateManyStoneInputEnvelope
+  delete: [StoneInventoryWhereUniqueInput!]
+  deleteMany: [StoneInventoryScalarWhereInput!]
+  disconnect: [StoneInventoryWhereUniqueInput!]
+  set: [StoneInventoryWhereUniqueInput!]
+  update: [StoneInventoryUpdateWithWhereUniqueWithoutStoneInput!]
+  updateMany: [StoneInventoryUpdateManyWithWhereWithoutStoneInput!]
+  upsert: [StoneInventoryUpsertWithWhereUniqueWithoutStoneInput!]
+}
+
+input StoneInventoryUpdateManyWithoutUserInput {
+  connect: [StoneInventoryWhereUniqueInput!]
+  connectOrCreate: [StoneInventoryCreateOrConnectWithoutUserInput!]
+  create: [StoneInventoryCreateWithoutUserInput!]
+  createMany: StoneInventoryCreateManyUserInputEnvelope
+  delete: [StoneInventoryWhereUniqueInput!]
+  deleteMany: [StoneInventoryScalarWhereInput!]
+  disconnect: [StoneInventoryWhereUniqueInput!]
+  set: [StoneInventoryWhereUniqueInput!]
+  update: [StoneInventoryUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StoneInventoryUpdateManyWithWhereWithoutUserInput!]
+  upsert: [StoneInventoryUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StoneInventoryUpdateWithWhereUniqueWithoutStoneInput {
+  data: StoneInventoryUpdateWithoutStoneInput!
+  where: StoneInventoryWhereUniqueInput!
+}
+
+input StoneInventoryUpdateWithWhereUniqueWithoutUserInput {
+  data: StoneInventoryUpdateWithoutUserInput!
+  where: StoneInventoryWhereUniqueInput!
+}
+
+input StoneInventoryUpdateWithoutStoneInput {
+  amount: IntFieldUpdateOperationsInput
+  user: UserUpdateOneRequiredWithoutStoneInventoryInput
+}
+
+input StoneInventoryUpdateWithoutUserInput {
+  amount: IntFieldUpdateOperationsInput
+  stone: StoneUpdateOneRequiredWithoutInventoryInput
+}
+
+input StoneInventoryUpsertWithWhereUniqueWithoutStoneInput {
+  create: StoneInventoryCreateWithoutStoneInput!
+  update: StoneInventoryUpdateWithoutStoneInput!
+  where: StoneInventoryWhereUniqueInput!
+}
+
+input StoneInventoryUpsertWithWhereUniqueWithoutUserInput {
+  create: StoneInventoryCreateWithoutUserInput!
+  update: StoneInventoryUpdateWithoutUserInput!
+  where: StoneInventoryWhereUniqueInput!
 }
 
 input StoneInventoryWhereInput {
@@ -2288,6 +3715,25 @@ enum StoneTypeScalarFieldEnum {
   updatedAt
 }
 
+input StoneTypeUpdateOneRequiredWithoutStonesInput {
+  connect: StoneTypeWhereUniqueInput
+  connectOrCreate: StoneTypeCreateOrConnectWithoutStonesInput
+  create: StoneTypeCreateWithoutStonesInput
+  update: StoneTypeUpdateWithoutStonesInput
+  upsert: StoneTypeUpsertWithoutStonesInput
+}
+
+input StoneTypeUpdateWithoutStonesInput {
+  description: NullableStringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+}
+
+input StoneTypeUpsertWithoutStonesInput {
+  create: StoneTypeCreateWithoutStonesInput!
+  update: StoneTypeUpdateWithoutStonesInput!
+}
+
 input StoneTypeWhereInput {
   AND: [StoneTypeWhereInput!]
   NOT: [StoneTypeWhereInput!]
@@ -2303,6 +3749,114 @@ input StoneTypeWhereInput {
 
 input StoneTypeWhereUniqueInput {
   id: String
+}
+
+input StoneUpdateOneRequiredWithoutHistoryInput {
+  connect: StoneWhereUniqueInput
+  connectOrCreate: StoneCreateOrConnectWithoutHistoryInput
+  create: StoneCreateWithoutHistoryInput
+  update: StoneUpdateWithoutHistoryInput
+  upsert: StoneUpsertWithoutHistoryInput
+}
+
+input StoneUpdateOneRequiredWithoutInventoryInput {
+  connect: StoneWhereUniqueInput
+  connectOrCreate: StoneCreateOrConnectWithoutInventoryInput
+  create: StoneCreateWithoutInventoryInput
+  update: StoneUpdateWithoutInventoryInput
+  upsert: StoneUpsertWithoutInventoryInput
+}
+
+input StoneUpdateOneRequiredWithoutProjectPartsInput {
+  connect: StoneWhereUniqueInput
+  connectOrCreate: StoneCreateOrConnectWithoutProjectPartsInput
+  create: StoneCreateWithoutProjectPartsInput
+  update: StoneUpdateWithoutProjectPartsInput
+  upsert: StoneUpsertWithoutProjectPartsInput
+}
+
+input StoneUpdateOneRequiredWithoutSubthemesInput {
+  connect: StoneWhereUniqueInput
+  connectOrCreate: StoneCreateOrConnectWithoutSubthemesInput
+  create: StoneCreateWithoutSubthemesInput
+  update: StoneUpdateWithoutSubthemesInput
+  upsert: StoneUpsertWithoutSubthemesInput
+}
+
+input StoneUpdateWithoutHistoryInput {
+  alias: StringFieldUpdateOperationsInput
+  alias2: NullableStringFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  hex: StringFieldUpdateOperationsInput
+  hex2: NullableStringFieldUpdateOperationsInput
+  inventory: StoneInventoryUpdateManyWithoutStoneInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  projectParts: StonesOnProjectUpdateManyWithoutStoneInput
+  stoneType: StoneTypeUpdateOneRequiredWithoutStonesInput
+  subthemes: StonesOnSubthemeUpdateManyWithoutStoneInput
+}
+
+input StoneUpdateWithoutInventoryInput {
+  alias: StringFieldUpdateOperationsInput
+  alias2: NullableStringFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  hex: StringFieldUpdateOperationsInput
+  hex2: NullableStringFieldUpdateOperationsInput
+  history: StoneInventoryHistoryUpdateManyWithoutStoneInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  projectParts: StonesOnProjectUpdateManyWithoutStoneInput
+  stoneType: StoneTypeUpdateOneRequiredWithoutStonesInput
+  subthemes: StonesOnSubthemeUpdateManyWithoutStoneInput
+}
+
+input StoneUpdateWithoutProjectPartsInput {
+  alias: StringFieldUpdateOperationsInput
+  alias2: NullableStringFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  hex: StringFieldUpdateOperationsInput
+  hex2: NullableStringFieldUpdateOperationsInput
+  history: StoneInventoryHistoryUpdateManyWithoutStoneInput
+  inventory: StoneInventoryUpdateManyWithoutStoneInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  stoneType: StoneTypeUpdateOneRequiredWithoutStonesInput
+  subthemes: StonesOnSubthemeUpdateManyWithoutStoneInput
+}
+
+input StoneUpdateWithoutSubthemesInput {
+  alias: StringFieldUpdateOperationsInput
+  alias2: NullableStringFieldUpdateOperationsInput
+  description: NullableStringFieldUpdateOperationsInput
+  hex: StringFieldUpdateOperationsInput
+  hex2: NullableStringFieldUpdateOperationsInput
+  history: StoneInventoryHistoryUpdateManyWithoutStoneInput
+  inventory: StoneInventoryUpdateManyWithoutStoneInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  projectParts: StonesOnProjectUpdateManyWithoutStoneInput
+  stoneType: StoneTypeUpdateOneRequiredWithoutStonesInput
+}
+
+input StoneUpsertWithoutHistoryInput {
+  create: StoneCreateWithoutHistoryInput!
+  update: StoneUpdateWithoutHistoryInput!
+}
+
+input StoneUpsertWithoutInventoryInput {
+  create: StoneCreateWithoutInventoryInput!
+  update: StoneUpdateWithoutInventoryInput!
+}
+
+input StoneUpsertWithoutProjectPartsInput {
+  create: StoneCreateWithoutProjectPartsInput!
+  update: StoneUpdateWithoutProjectPartsInput!
+}
+
+input StoneUpsertWithoutSubthemesInput {
+  create: StoneCreateWithoutSubthemesInput!
+  update: StoneUpdateWithoutSubthemesInput!
 }
 
 input StoneWhereInput {
@@ -2461,6 +4015,131 @@ enum StonesOnProjectScalarFieldEnum {
   userId
 }
 
+input StonesOnProjectScalarWhereInput {
+  AND: [StonesOnProjectScalarWhereInput!]
+  NOT: [StonesOnProjectScalarWhereInput!]
+  OR: [StonesOnProjectScalarWhereInput!]
+  amount: IntFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  projectPartId: StringFilter
+  stoneId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input StonesOnProjectUpdateManyMutationInput {
+  amount: IntFieldUpdateOperationsInput
+}
+
+input StonesOnProjectUpdateManyWithWhereWithoutProjectPartInput {
+  data: StonesOnProjectUpdateManyMutationInput!
+  where: StonesOnProjectScalarWhereInput!
+}
+
+input StonesOnProjectUpdateManyWithWhereWithoutStoneInput {
+  data: StonesOnProjectUpdateManyMutationInput!
+  where: StonesOnProjectScalarWhereInput!
+}
+
+input StonesOnProjectUpdateManyWithWhereWithoutUserInput {
+  data: StonesOnProjectUpdateManyMutationInput!
+  where: StonesOnProjectScalarWhereInput!
+}
+
+input StonesOnProjectUpdateManyWithoutProjectPartInput {
+  connect: [StonesOnProjectWhereUniqueInput!]
+  connectOrCreate: [StonesOnProjectCreateOrConnectWithoutProjectPartInput!]
+  create: [StonesOnProjectCreateWithoutProjectPartInput!]
+  createMany: StonesOnProjectCreateManyProjectPartInputEnvelope
+  delete: [StonesOnProjectWhereUniqueInput!]
+  deleteMany: [StonesOnProjectScalarWhereInput!]
+  disconnect: [StonesOnProjectWhereUniqueInput!]
+  set: [StonesOnProjectWhereUniqueInput!]
+  update: [StonesOnProjectUpdateWithWhereUniqueWithoutProjectPartInput!]
+  updateMany: [StonesOnProjectUpdateManyWithWhereWithoutProjectPartInput!]
+  upsert: [StonesOnProjectUpsertWithWhereUniqueWithoutProjectPartInput!]
+}
+
+input StonesOnProjectUpdateManyWithoutStoneInput {
+  connect: [StonesOnProjectWhereUniqueInput!]
+  connectOrCreate: [StonesOnProjectCreateOrConnectWithoutStoneInput!]
+  create: [StonesOnProjectCreateWithoutStoneInput!]
+  createMany: StonesOnProjectCreateManyStoneInputEnvelope
+  delete: [StonesOnProjectWhereUniqueInput!]
+  deleteMany: [StonesOnProjectScalarWhereInput!]
+  disconnect: [StonesOnProjectWhereUniqueInput!]
+  set: [StonesOnProjectWhereUniqueInput!]
+  update: [StonesOnProjectUpdateWithWhereUniqueWithoutStoneInput!]
+  updateMany: [StonesOnProjectUpdateManyWithWhereWithoutStoneInput!]
+  upsert: [StonesOnProjectUpsertWithWhereUniqueWithoutStoneInput!]
+}
+
+input StonesOnProjectUpdateManyWithoutUserInput {
+  connect: [StonesOnProjectWhereUniqueInput!]
+  connectOrCreate: [StonesOnProjectCreateOrConnectWithoutUserInput!]
+  create: [StonesOnProjectCreateWithoutUserInput!]
+  createMany: StonesOnProjectCreateManyUserInputEnvelope
+  delete: [StonesOnProjectWhereUniqueInput!]
+  deleteMany: [StonesOnProjectScalarWhereInput!]
+  disconnect: [StonesOnProjectWhereUniqueInput!]
+  set: [StonesOnProjectWhereUniqueInput!]
+  update: [StonesOnProjectUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StonesOnProjectUpdateManyWithWhereWithoutUserInput!]
+  upsert: [StonesOnProjectUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StonesOnProjectUpdateWithWhereUniqueWithoutProjectPartInput {
+  data: StonesOnProjectUpdateWithoutProjectPartInput!
+  where: StonesOnProjectWhereUniqueInput!
+}
+
+input StonesOnProjectUpdateWithWhereUniqueWithoutStoneInput {
+  data: StonesOnProjectUpdateWithoutStoneInput!
+  where: StonesOnProjectWhereUniqueInput!
+}
+
+input StonesOnProjectUpdateWithWhereUniqueWithoutUserInput {
+  data: StonesOnProjectUpdateWithoutUserInput!
+  where: StonesOnProjectWhereUniqueInput!
+}
+
+input StonesOnProjectUpdateWithoutProjectPartInput {
+  amount: IntFieldUpdateOperationsInput
+  stone: StoneUpdateOneRequiredWithoutProjectPartsInput
+  user: UserUpdateOneRequiredWithoutStonesOnProjectPartsInput
+}
+
+input StonesOnProjectUpdateWithoutStoneInput {
+  amount: IntFieldUpdateOperationsInput
+  projectPart: ProjectPartUpdateOneRequiredWithoutStonesInput
+  user: UserUpdateOneRequiredWithoutStonesOnProjectPartsInput
+}
+
+input StonesOnProjectUpdateWithoutUserInput {
+  amount: IntFieldUpdateOperationsInput
+  projectPart: ProjectPartUpdateOneRequiredWithoutStonesInput
+  stone: StoneUpdateOneRequiredWithoutProjectPartsInput
+}
+
+input StonesOnProjectUpsertWithWhereUniqueWithoutProjectPartInput {
+  create: StonesOnProjectCreateWithoutProjectPartInput!
+  update: StonesOnProjectUpdateWithoutProjectPartInput!
+  where: StonesOnProjectWhereUniqueInput!
+}
+
+input StonesOnProjectUpsertWithWhereUniqueWithoutStoneInput {
+  create: StonesOnProjectCreateWithoutStoneInput!
+  update: StonesOnProjectUpdateWithoutStoneInput!
+  where: StonesOnProjectWhereUniqueInput!
+}
+
+input StonesOnProjectUpsertWithWhereUniqueWithoutUserInput {
+  create: StonesOnProjectCreateWithoutUserInput!
+  update: StonesOnProjectUpdateWithoutUserInput!
+  where: StonesOnProjectWhereUniqueInput!
+}
+
 input StonesOnProjectWhereInput {
   AND: [StonesOnProjectWhereInput!]
   NOT: [StonesOnProjectWhereInput!]
@@ -2611,6 +4290,131 @@ enum StonesOnSubthemeScalarFieldEnum {
   userId
 }
 
+input StonesOnSubthemeScalarWhereInput {
+  AND: [StonesOnSubthemeScalarWhereInput!]
+  NOT: [StonesOnSubthemeScalarWhereInput!]
+  OR: [StonesOnSubthemeScalarWhereInput!]
+  amount: IntFilter
+  createdAt: DateTimeFilter
+  id: StringFilter
+  stoneId: StringFilter
+  subthemeId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input StonesOnSubthemeUpdateManyMutationInput {
+  amount: IntFieldUpdateOperationsInput
+}
+
+input StonesOnSubthemeUpdateManyWithWhereWithoutStoneInput {
+  data: StonesOnSubthemeUpdateManyMutationInput!
+  where: StonesOnSubthemeScalarWhereInput!
+}
+
+input StonesOnSubthemeUpdateManyWithWhereWithoutSubthemeInput {
+  data: StonesOnSubthemeUpdateManyMutationInput!
+  where: StonesOnSubthemeScalarWhereInput!
+}
+
+input StonesOnSubthemeUpdateManyWithWhereWithoutUserInput {
+  data: StonesOnSubthemeUpdateManyMutationInput!
+  where: StonesOnSubthemeScalarWhereInput!
+}
+
+input StonesOnSubthemeUpdateManyWithoutStoneInput {
+  connect: [StonesOnSubthemeWhereUniqueInput!]
+  connectOrCreate: [StonesOnSubthemeCreateOrConnectWithoutStoneInput!]
+  create: [StonesOnSubthemeCreateWithoutStoneInput!]
+  createMany: StonesOnSubthemeCreateManyStoneInputEnvelope
+  delete: [StonesOnSubthemeWhereUniqueInput!]
+  deleteMany: [StonesOnSubthemeScalarWhereInput!]
+  disconnect: [StonesOnSubthemeWhereUniqueInput!]
+  set: [StonesOnSubthemeWhereUniqueInput!]
+  update: [StonesOnSubthemeUpdateWithWhereUniqueWithoutStoneInput!]
+  updateMany: [StonesOnSubthemeUpdateManyWithWhereWithoutStoneInput!]
+  upsert: [StonesOnSubthemeUpsertWithWhereUniqueWithoutStoneInput!]
+}
+
+input StonesOnSubthemeUpdateManyWithoutSubthemeInput {
+  connect: [StonesOnSubthemeWhereUniqueInput!]
+  connectOrCreate: [StonesOnSubthemeCreateOrConnectWithoutSubthemeInput!]
+  create: [StonesOnSubthemeCreateWithoutSubthemeInput!]
+  createMany: StonesOnSubthemeCreateManySubthemeInputEnvelope
+  delete: [StonesOnSubthemeWhereUniqueInput!]
+  deleteMany: [StonesOnSubthemeScalarWhereInput!]
+  disconnect: [StonesOnSubthemeWhereUniqueInput!]
+  set: [StonesOnSubthemeWhereUniqueInput!]
+  update: [StonesOnSubthemeUpdateWithWhereUniqueWithoutSubthemeInput!]
+  updateMany: [StonesOnSubthemeUpdateManyWithWhereWithoutSubthemeInput!]
+  upsert: [StonesOnSubthemeUpsertWithWhereUniqueWithoutSubthemeInput!]
+}
+
+input StonesOnSubthemeUpdateManyWithoutUserInput {
+  connect: [StonesOnSubthemeWhereUniqueInput!]
+  connectOrCreate: [StonesOnSubthemeCreateOrConnectWithoutUserInput!]
+  create: [StonesOnSubthemeCreateWithoutUserInput!]
+  createMany: StonesOnSubthemeCreateManyUserInputEnvelope
+  delete: [StonesOnSubthemeWhereUniqueInput!]
+  deleteMany: [StonesOnSubthemeScalarWhereInput!]
+  disconnect: [StonesOnSubthemeWhereUniqueInput!]
+  set: [StonesOnSubthemeWhereUniqueInput!]
+  update: [StonesOnSubthemeUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StonesOnSubthemeUpdateManyWithWhereWithoutUserInput!]
+  upsert: [StonesOnSubthemeUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StonesOnSubthemeUpdateWithWhereUniqueWithoutStoneInput {
+  data: StonesOnSubthemeUpdateWithoutStoneInput!
+  where: StonesOnSubthemeWhereUniqueInput!
+}
+
+input StonesOnSubthemeUpdateWithWhereUniqueWithoutSubthemeInput {
+  data: StonesOnSubthemeUpdateWithoutSubthemeInput!
+  where: StonesOnSubthemeWhereUniqueInput!
+}
+
+input StonesOnSubthemeUpdateWithWhereUniqueWithoutUserInput {
+  data: StonesOnSubthemeUpdateWithoutUserInput!
+  where: StonesOnSubthemeWhereUniqueInput!
+}
+
+input StonesOnSubthemeUpdateWithoutStoneInput {
+  amount: IntFieldUpdateOperationsInput
+  subtheme: SubthemeUpdateOneRequiredWithoutStonesInput
+  user: UserUpdateOneRequiredWithoutStonesOnSubthemesInput
+}
+
+input StonesOnSubthemeUpdateWithoutSubthemeInput {
+  amount: IntFieldUpdateOperationsInput
+  stone: StoneUpdateOneRequiredWithoutSubthemesInput
+  user: UserUpdateOneRequiredWithoutStonesOnSubthemesInput
+}
+
+input StonesOnSubthemeUpdateWithoutUserInput {
+  amount: IntFieldUpdateOperationsInput
+  stone: StoneUpdateOneRequiredWithoutSubthemesInput
+  subtheme: SubthemeUpdateOneRequiredWithoutStonesInput
+}
+
+input StonesOnSubthemeUpsertWithWhereUniqueWithoutStoneInput {
+  create: StonesOnSubthemeCreateWithoutStoneInput!
+  update: StonesOnSubthemeUpdateWithoutStoneInput!
+  where: StonesOnSubthemeWhereUniqueInput!
+}
+
+input StonesOnSubthemeUpsertWithWhereUniqueWithoutSubthemeInput {
+  create: StonesOnSubthemeCreateWithoutSubthemeInput!
+  update: StonesOnSubthemeUpdateWithoutSubthemeInput!
+  where: StonesOnSubthemeWhereUniqueInput!
+}
+
+input StonesOnSubthemeUpsertWithWhereUniqueWithoutUserInput {
+  create: StonesOnSubthemeCreateWithoutUserInput!
+  update: StonesOnSubthemeUpdateWithoutUserInput!
+  where: StonesOnSubthemeWhereUniqueInput!
+}
+
 input StonesOnSubthemeWhereInput {
   AND: [StonesOnSubthemeWhereInput!]
   NOT: [StonesOnSubthemeWhereInput!]
@@ -2629,6 +4433,10 @@ input StonesOnSubthemeWhereInput {
 
 input StonesOnSubthemeWhereUniqueInput {
   id: String
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
 }
 
 input StringFilter {
@@ -2659,6 +4467,24 @@ input StringNullableFilter {
   not: NestedStringNullableFilter
   notIn: [String!]
   startsWith: String
+}
+
+type Subtheme {
+  _count: SubthemeCount
+  color: String!
+  createdAt: DateTime!
+  eventId: String!
+  id: String!
+  name: String!
+  order: Int!
+  slug: String!
+  updatedAt: DateTime!
+}
+
+type SubthemeCount {
+  attributes: Int!
+  projects: Int!
+  stones: Int!
 }
 
 input SubthemeCreateNestedOneWithoutAttributesInput {
@@ -2754,6 +4580,75 @@ input SubthemeRelationFilter {
   isNot: SubthemeWhereInput
 }
 
+input SubthemeUpdateOneRequiredWithoutAttributesInput {
+  connect: SubthemeWhereUniqueInput
+  connectOrCreate: SubthemeCreateOrConnectWithoutAttributesInput
+  create: SubthemeCreateWithoutAttributesInput
+  update: SubthemeUpdateWithoutAttributesInput
+  upsert: SubthemeUpsertWithoutAttributesInput
+}
+
+input SubthemeUpdateOneRequiredWithoutProjectsInput {
+  connect: SubthemeWhereUniqueInput
+  connectOrCreate: SubthemeCreateOrConnectWithoutProjectsInput
+  create: SubthemeCreateWithoutProjectsInput
+  update: SubthemeUpdateWithoutProjectsInput
+  upsert: SubthemeUpsertWithoutProjectsInput
+}
+
+input SubthemeUpdateOneRequiredWithoutStonesInput {
+  connect: SubthemeWhereUniqueInput
+  connectOrCreate: SubthemeCreateOrConnectWithoutStonesInput
+  create: SubthemeCreateWithoutStonesInput
+  update: SubthemeUpdateWithoutStonesInput
+  upsert: SubthemeUpsertWithoutStonesInput
+}
+
+input SubthemeUpdateWithoutAttributesInput {
+  color: StringFieldUpdateOperationsInput
+  event: EventUpdateOneRequiredWithoutSubthemesInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  projects: ProjectUpdateManyWithoutSubthemeInput
+  slug: StringFieldUpdateOperationsInput
+  stones: StonesOnSubthemeUpdateManyWithoutSubthemeInput
+}
+
+input SubthemeUpdateWithoutProjectsInput {
+  attributes: AttributesOnSubthemeUpdateManyWithoutSubthemeInput
+  color: StringFieldUpdateOperationsInput
+  event: EventUpdateOneRequiredWithoutSubthemesInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  slug: StringFieldUpdateOperationsInput
+  stones: StonesOnSubthemeUpdateManyWithoutSubthemeInput
+}
+
+input SubthemeUpdateWithoutStonesInput {
+  attributes: AttributesOnSubthemeUpdateManyWithoutSubthemeInput
+  color: StringFieldUpdateOperationsInput
+  event: EventUpdateOneRequiredWithoutSubthemesInput
+  name: StringFieldUpdateOperationsInput
+  order: IntFieldUpdateOperationsInput
+  projects: ProjectUpdateManyWithoutSubthemeInput
+  slug: StringFieldUpdateOperationsInput
+}
+
+input SubthemeUpsertWithoutAttributesInput {
+  create: SubthemeCreateWithoutAttributesInput!
+  update: SubthemeUpdateWithoutAttributesInput!
+}
+
+input SubthemeUpsertWithoutProjectsInput {
+  create: SubthemeCreateWithoutProjectsInput!
+  update: SubthemeUpdateWithoutProjectsInput!
+}
+
+input SubthemeUpsertWithoutStonesInput {
+  create: SubthemeCreateWithoutStonesInput!
+  update: SubthemeUpdateWithoutStonesInput!
+}
+
 input SubthemeWhereInput {
   AND: [SubthemeWhereInput!]
   NOT: [SubthemeWhereInput!]
@@ -2838,6 +4733,11 @@ input TeamWhereInput {
 
 input TeamWhereUniqueInput {
   id: String
+}
+
+type TokenPayload {
+  access: String!
+  accessExpiresAt: DateTime
 }
 
 type User {
@@ -3327,6 +5227,409 @@ enum UserScalarFieldEnum {
   password
   slug
   updatedAt
+}
+
+input UserUpdateOneRequiredWithoutAttributeInventoryHistoryInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAttributeInventoryHistoryInput
+  create: UserCreateWithoutAttributeInventoryHistoryInput
+  update: UserUpdateWithoutAttributeInventoryHistoryInput
+  upsert: UserUpsertWithoutAttributeInventoryHistoryInput
+}
+
+input UserUpdateOneRequiredWithoutAttributeInventoryInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAttributeInventoryInput
+  create: UserCreateWithoutAttributeInventoryInput
+  update: UserUpdateWithoutAttributeInventoryInput
+  upsert: UserUpsertWithoutAttributeInventoryInput
+}
+
+input UserUpdateOneRequiredWithoutAttributesOnProjectPartsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAttributesOnProjectPartsInput
+  create: UserCreateWithoutAttributesOnProjectPartsInput
+  update: UserUpdateWithoutAttributesOnProjectPartsInput
+  upsert: UserUpsertWithoutAttributesOnProjectPartsInput
+}
+
+input UserUpdateOneRequiredWithoutAttributesOnSubthemesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutAttributesOnSubthemesInput
+  create: UserCreateWithoutAttributesOnSubthemesInput
+  update: UserUpdateWithoutAttributesOnSubthemesInput
+  upsert: UserUpsertWithoutAttributesOnSubthemesInput
+}
+
+input UserUpdateOneRequiredWithoutProjectHistoryInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutProjectHistoryInput
+  create: UserCreateWithoutProjectHistoryInput
+  update: UserUpdateWithoutProjectHistoryInput
+  upsert: UserUpsertWithoutProjectHistoryInput
+}
+
+input UserUpdateOneRequiredWithoutStoneInventoryHistoryInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutStoneInventoryHistoryInput
+  create: UserCreateWithoutStoneInventoryHistoryInput
+  update: UserUpdateWithoutStoneInventoryHistoryInput
+  upsert: UserUpsertWithoutStoneInventoryHistoryInput
+}
+
+input UserUpdateOneRequiredWithoutStoneInventoryInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutStoneInventoryInput
+  create: UserCreateWithoutStoneInventoryInput
+  update: UserUpdateWithoutStoneInventoryInput
+  upsert: UserUpsertWithoutStoneInventoryInput
+}
+
+input UserUpdateOneRequiredWithoutStonesOnProjectPartsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutStonesOnProjectPartsInput
+  create: UserCreateWithoutStonesOnProjectPartsInput
+  update: UserUpdateWithoutStonesOnProjectPartsInput
+  upsert: UserUpsertWithoutStonesOnProjectPartsInput
+}
+
+input UserUpdateOneRequiredWithoutStonesOnSubthemesInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutStonesOnSubthemesInput
+  create: UserCreateWithoutStonesOnSubthemesInput
+  update: UserUpdateWithoutStonesOnSubthemesInput
+  upsert: UserUpsertWithoutStonesOnSubthemesInput
+}
+
+input UserUpdateOneWithoutCreatedProjectsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutCreatedProjectsInput
+  create: UserCreateWithoutCreatedProjectsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutCreatedProjectsInput
+  upsert: UserUpsertWithoutCreatedProjectsInput
+}
+
+input UserUpdateOneWithoutSupervisingProjectsInput {
+  connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutSupervisingProjectsInput
+  create: UserCreateWithoutSupervisingProjectsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutSupervisingProjectsInput
+  upsert: UserUpsertWithoutSupervisingProjectsInput
+}
+
+input UserUpdateWithoutAttributeInventoryHistoryInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutAttributeInventoryInput {
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutAttributesOnProjectPartsInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutAttributesOnSubthemesInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutCreatedProjectsInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  id: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input UserUpdateWithoutProjectHistoryInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutStoneInventoryHistoryInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutStoneInventoryInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutStonesOnProjectPartsInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutStonesOnSubthemesInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  supervisingProjects: ProjectUpdateManyWithoutSupervisorInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutSupervisingProjectsInput {
+  attributeInventory: AttributeInventoryUpdateManyWithoutUserInput
+  attributeInventoryHistory: AttributeInventoryHistoryUpdateManyWithoutUserInput
+  attributesOnProjectParts: AttributesOnProjectUpdateManyWithoutUserInput
+  attributesOnSubthemes: AttributesOnSubthemeUpdateManyWithoutUserInput
+  avatar: NullableStringFieldUpdateOperationsInput
+  createdProjects: ProjectUpdateManyWithoutCreatedByInput
+  displayName: StringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  projectHistory: ProjectHistoryUpdateManyWithoutUserInput
+  sessions: SessionUpdateManyWithoutUserInput
+  slug: StringFieldUpdateOperationsInput
+  stoneInventory: StoneInventoryUpdateManyWithoutUserInput
+  stoneInventoryHistory: StoneInventoryHistoryUpdateManyWithoutUserInput
+  stonesOnProjectParts: StonesOnProjectUpdateManyWithoutUserInput
+  stonesOnSubthemes: StonesOnSubthemeUpdateManyWithoutUserInput
+  teams: MemberUpdateManyWithoutUserInput
+}
+
+input UserUpsertWithoutAttributeInventoryHistoryInput {
+  create: UserCreateWithoutAttributeInventoryHistoryInput!
+  update: UserUpdateWithoutAttributeInventoryHistoryInput!
+}
+
+input UserUpsertWithoutAttributeInventoryInput {
+  create: UserCreateWithoutAttributeInventoryInput!
+  update: UserUpdateWithoutAttributeInventoryInput!
+}
+
+input UserUpsertWithoutAttributesOnProjectPartsInput {
+  create: UserCreateWithoutAttributesOnProjectPartsInput!
+  update: UserUpdateWithoutAttributesOnProjectPartsInput!
+}
+
+input UserUpsertWithoutAttributesOnSubthemesInput {
+  create: UserCreateWithoutAttributesOnSubthemesInput!
+  update: UserUpdateWithoutAttributesOnSubthemesInput!
+}
+
+input UserUpsertWithoutCreatedProjectsInput {
+  create: UserCreateWithoutCreatedProjectsInput!
+  update: UserUpdateWithoutCreatedProjectsInput!
+}
+
+input UserUpsertWithoutProjectHistoryInput {
+  create: UserCreateWithoutProjectHistoryInput!
+  update: UserUpdateWithoutProjectHistoryInput!
+}
+
+input UserUpsertWithoutStoneInventoryHistoryInput {
+  create: UserCreateWithoutStoneInventoryHistoryInput!
+  update: UserUpdateWithoutStoneInventoryHistoryInput!
+}
+
+input UserUpsertWithoutStoneInventoryInput {
+  create: UserCreateWithoutStoneInventoryInput!
+  update: UserUpdateWithoutStoneInventoryInput!
+}
+
+input UserUpsertWithoutStonesOnProjectPartsInput {
+  create: UserCreateWithoutStonesOnProjectPartsInput!
+  update: UserUpdateWithoutStonesOnProjectPartsInput!
+}
+
+input UserUpsertWithoutStonesOnSubthemesInput {
+  create: UserCreateWithoutStonesOnSubthemesInput!
+  update: UserUpdateWithoutStonesOnSubthemesInput!
+}
+
+input UserUpsertWithoutSupervisingProjectsInput {
+  create: UserCreateWithoutSupervisingProjectsInput!
+  update: UserUpdateWithoutSupervisingProjectsInput!
 }
 
 input UserWhereInput {

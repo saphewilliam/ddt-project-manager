@@ -71,7 +71,7 @@ export async function loginUser(
   password: string,
   isPermanent: boolean,
   prisma: PrismaClient,
-): Promise<string> {
+): Promise<{ access: string; accessExpiresAt: Date | null }> {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw new GraphQLError('Invalid username or password');
   if (!user.password)
@@ -95,7 +95,7 @@ export async function loginUser(
     },
   });
 
-  return session.token;
+  return { access: session.token, accessExpiresAt: expiresAt };
 }
 
 export async function setSessionTeam(

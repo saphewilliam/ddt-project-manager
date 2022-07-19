@@ -23,6 +23,11 @@ export const complexityPlugin = (schema: GraphQLSchema) =>
       new GraphQLError(`Operation is too complex: ${actual}. Maximum allowed complexity: ${max}`),
   });
 
+export const complexity = {
+  MUTATION: 10,
+  OBJECT: 1,
+};
+
 /** Logging middleware */
 // export class LoggerMiddleware implements MiddlewareInterface<Context> {
 //   constructor(private readonly logger: Logger) {}

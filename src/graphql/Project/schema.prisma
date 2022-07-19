@@ -1,0 +1,20 @@
+model Project {
+  __uuid__
+
+  name        String
+  slug        String @unique
+  description Json?
+  number      Int
+
+  status  ProjectStatus
+  parts   ProjectPart[]
+  stats   StatsOnProject[]
+  history ProjectHistory[]
+
+  subthemeId   String
+  subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+  supervisorId String?
+  supervisor   User?    @relation(name: "supervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
+  createdById  String?
+  createdBy    User?    @relation(name: "createdProject", fields: [createdById], references: [id], onDelete: SetNull)
+}

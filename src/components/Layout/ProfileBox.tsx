@@ -4,8 +4,8 @@ import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { ReactElement, useContext, useMemo } from 'react';
+import { NavigationContext } from '@hooks/useNavigation';
 import useSession from '@hooks/useSession';
-import { NavigationContext } from '@providers/NavigationProvider';
 
 export default function ProfileBox(): ReactElement {
   const navState = useContext(NavigationContext);

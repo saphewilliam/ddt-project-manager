@@ -40,7 +40,6 @@
       "@components/*": ["src/components/*"],
       "@icons/*": ["src/components/icons/*"],
       "@templates/*": ["src/components/templates/*"],
-      "@providers/*": ["src/components/providers/*"],
       "@graphql/*": ["src/graphql/*"],
       "@hooks/*": ["src/hooks/*"],
       "@lib/*": ["src/lib/*"],

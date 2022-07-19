@@ -8,8 +8,17 @@ import {
   SessionRelationsResolver,
   Member,
 } from '@graphql/__generated__/type-graphql-transpiled';
-import { Context } from '@graphql/context';
 import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
+import type { Context } from '@graphql/context';
+
+@TypeGraphQL.ObjectType('TokenPayload')
+class TokenPayload {
+  @TypeGraphQL.Field((_type) => String)
+  access!: string;
+
+  @TypeGraphQL.Field((_type) => Date, { nullable: true })
+  accessExpiresAt?: Date | null;
+}
 
 @TypeGraphQL.Resolver((_of) => Session)
 class SessionResolver {
@@ -23,7 +32,7 @@ class SessionResolver {
     });
   }
 
-  @TypeGraphQL.Mutation((_returns) => String, {
+  @TypeGraphQL.Mutation((_returns) => TokenPayload, {
     // TODO
     complexity: 10,
     description: 'Create a new session for a user with an active account',
@@ -33,7 +42,7 @@ class SessionResolver {
     @TypeGraphQL.Arg('email') email: string,
     @TypeGraphQL.Arg('password') password: string,
     @TypeGraphQL.Arg('isPermanent') isPermanent: boolean,
-  ): Promise<string> {
+  ): Promise<TokenPayload> {
     return await loginUser(email, password, isPermanent, ctx.prisma);
   }
 

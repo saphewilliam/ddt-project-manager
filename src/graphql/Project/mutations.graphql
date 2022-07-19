@@ -1,0 +1,21 @@
+mutation UpdateProject($where: ProjectWhereUniqueInput!, $data: ProjectUpdateInput!) {
+  updateProject(where: $where, data: $data) {
+    id
+    name
+    slug
+    subtheme {
+      id
+      # event {
+      #   id
+      #   slug
+      # }
+    }
+  }
+}
+
+mutation CreateProject($data: ProjectCreateInput!) {
+  createProject(data: $data) {
+    id
+    name
+  }
+}

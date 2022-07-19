@@ -1,0 +1,81 @@
+query Project($where: ProjectWhereUniqueInput!) {
+  project(where: $where) {
+    id
+    createdAt
+    name
+    description
+    status
+    number
+    parts {
+      id
+      name
+      number
+      type
+      description
+      # stones {
+      #   id
+      #   amount
+      #   user {
+      #     id
+      #     displayName
+      #   }
+      #   stone {
+      #     id
+      #     name
+      #     hex
+      #     hex2
+      #     alias
+      #     alias2
+      #     order
+      #   }
+      # }
+      # attributes {
+      #   id
+      #   amount
+      #   attribute {
+      #     id
+      #     namePlural
+      #   }
+      #   user {
+      #     id
+      #     displayName
+      #   }
+      # }
+    }
+    supervisor {
+      id
+      displayName
+    }
+    stats {
+      id
+      value
+      # stat {
+      #   id
+      #   name
+      # }
+    }
+    subtheme {
+      id
+      name
+      # event {
+      #   id
+      #   name
+      # }
+    }
+    createdBy {
+      id
+      displayName
+    }
+    history {
+      id
+      createdAt
+      fieldName
+      oldValue
+      newValue
+      # user {
+      #   id
+      #   displayName
+      # }
+    }
+  }
+}
