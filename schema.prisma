@@ -73,6 +73,34 @@ model Member {
   @@unique([userId, teamId])
 }
 
+model Project {
+  // Meta information
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  id        String   @id @default(uuid())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  createdAt DateTime @default(now())
+  /// @TypeGraphQL.omit(input: ["create", "update"])
+  updatedAt DateTime @updatedAt
+
+
+  name        String
+  slug        String @unique
+  description Json?
+  number      Int
+
+  status  ProjectStatus
+  parts   ProjectPart[]
+  stats   StatsOnProject[]
+  history ProjectHistory[]
+
+  subthemeId   String
+  subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
+  supervisorId String?
+  supervisor   User?    @relation(name: "supervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
+  createdById  String?
+  createdBy    User?    @relation(name: "createdProject", fields: [createdById], references: [id], onDelete: SetNull)
+}
+
 model Session {
   // Meta information
   /// @TypeGraphQL.omit(input: ["create", "update"])
@@ -244,34 +272,6 @@ enum ProjectType {
   FREE_HAND
   DECOR
   OTHER
-}
-
-model Project {
-  // Meta information
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  id        String   @id @default(uuid())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  createdAt DateTime @default(now())
-  /// @TypeGraphQL.omit(input: ["create", "update"])
-  updatedAt DateTime @updatedAt
-
-
-  name        String
-  slug        String @unique
-  description Json?
-  number      Int
-
-  status  ProjectStatus
-  parts   ProjectPart[]
-  stats   StatsOnProject[]
-  history ProjectHistory[]
-
-  subthemeId   String
-  subtheme     Subtheme @relation(fields: [subthemeId], references: [id], onDelete: Cascade)
-  supervisorId String?
-  supervisor   User?    @relation(name: "supervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
-  createdById  String?
-  createdBy    User?    @relation(name: "createdProject", fields: [createdById], references: [id], onDelete: SetNull)
 }
 
 model ProjectPart {

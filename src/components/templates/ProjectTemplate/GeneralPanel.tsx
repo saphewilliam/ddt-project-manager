@@ -1,16 +1,16 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import cx from 'clsx';
+import { useRouter } from 'next/router';
 import React, { ReactElement, ReactNode } from 'react';
-import { ProjectQuery, Role } from '@graphql/__generated__/codegen';
+import Loading from '@components/Loading';
+import { Role } from '@graphql/__generated__/codegen';
+import { ProjectQuery, useProjectQuery } from '@graphql/Project/__generated__/queries';
 import useSession from '@hooks/useSession';
+import useURLParams from '@hooks/useURLParams';
+import { extractURLParam } from '@lib/util';
 import DescriptionSection from './DescriptionSection';
 import InfoSection from './InfoSection';
 import ProjectPartsSection from './ProjectPartsSection';
-
-export interface Props {
-  project: NonNullable<ProjectQuery['project']>;
-  swrKey: string;
-}
 
 export function GeneralPanelSection(props: {
   title: string;
@@ -42,18 +42,29 @@ export function GeneralPanelSection(props: {
   );
 }
 
-export default function GeneralPanel({ project, swrKey }: Props): ReactElement {
+export default function GeneralPanel(): ReactElement {
+  const iets = useURLParams({ array: false, name: 'hello', type: 'string' });
+
+  const router = useRouter();
+  const projectId = extractURLParam('projectId', router.query);
+  const [projectQuery, refetchProject] = useProjectQuery({
+    variables: { where: { id: projectId } },
+  });
+
+  const project = projectQuery.data?.project;
+  if (!project) return <Loading />;
+
   return (
     <>
-      <InfoSection {...{ project, swrKey }} />
+      <InfoSection {...{ project }} />
 
       <hr className={cx('my-4')} />
 
-      <DescriptionSection {...{ project, swrKey }} />
+      <DescriptionSection {...{ project }} />
 
       <hr className={cx('my-4')} />
 
-      <ProjectPartsSection {...{ project, swrKey }} />
+      <ProjectPartsSection {...{ project }} />
     </>
   );
 }

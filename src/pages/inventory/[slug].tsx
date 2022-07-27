@@ -1,6 +1,6 @@
+import useSafeQuery from '@hooks/useSafeQuery';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useMemo, useEffect } from 'react';
-import useSafeQuery from '@hooks/useSafeQuery';
 import { makeInventoryTableData } from '@lib/inventoryHelpers';
 import { extractURLParam } from '@lib/util';
 import InventoryTemplate from '@templates/InventoryTemplate';

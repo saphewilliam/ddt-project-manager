@@ -1,6 +1,6 @@
+import useSdk from '@hooks/useSdk';
 import useForm, { Field, State } from '@saphe/react-form';
 import { toast } from 'react-hot-toast';
-import useSdk from '@hooks/useSdk';
 import { promiseWithCatch } from '@lib/util';
 
 export default function useUserForm(): State {

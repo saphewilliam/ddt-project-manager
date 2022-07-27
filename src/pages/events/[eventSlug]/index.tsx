@@ -1,4 +1,5 @@
 import { PlusSmIcon } from '@heroicons/react/outline';
+import useSafeQuery from '@hooks/useSafeQuery';
 import cx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ReactElement } from 'react';
@@ -8,7 +9,6 @@ import Card from '@components/Card';
 import Layout from '@components/Layout';
 import Loading from '@components/Loading';
 import SubthemeTable from '@components/SubthemeTable';
-import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
 import ProjectAttributeTable from '@templates/InventoryTemplate/ProjectAttributeTable';
 import ProjectStoneTable from '@templates/InventoryTemplate/ProjectStoneTable';

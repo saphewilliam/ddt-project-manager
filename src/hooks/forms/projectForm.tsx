@@ -1,9 +1,9 @@
 import useSafeQuery from '@hooks/useSafeQuery';
+import useSdk from '@hooks/useSdk';
 import useForm, { Field, State } from '@saphe/react-form';
 import { useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { ProjectType } from '@graphql/__generated__/codegen';
-import useSdk from '@hooks/useSdk';
 import { projectTypeToString } from '@lib/projectTypeHelpers';
 import { promiseWithCatch } from '@lib/util';
 

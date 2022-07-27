@@ -1,4 +1,3 @@
-import useSdk from '@hooks/useSdk';
 import { useAsyncReducer } from '@saphe/react-use';
 import cx from 'clsx';
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
@@ -9,12 +8,12 @@ import React, { ReactElement } from 'react';
 import { EditorProps } from 'react-draft-wysiwyg';
 import { toast } from 'react-hot-toast';
 import Button, { ButtonType } from '@components/Button';
-import { ProjectQuery, useProjectQuery } from '@graphql/Project/__generated__/queries';
+import { useUpdateProjectMutation } from '@graphql/Project/__generated__/mutations';
+import { useProjectQuery } from '@graphql/Project/__generated__/queries';
 import { extractURLParam, promiseWithCatch } from '@lib/util';
 import styles from './editor.module.scss';
 import { GeneralPanelSection } from './GeneralPanel';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { useUpdateProjectMutation } from '@graphql/Project/__generated__/mutations';
 
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
@@ -26,13 +25,13 @@ export default function DescriptionSection(): ReactElement {
   const [projectQuery, refetchProject] = useProjectQuery({
     variables: { where: { slug: projectSlug } },
   });
-  const [updateProject] = useUpdateProjectMutation();
+  const [, updateProject] = useUpdateProjectMutation();
 
   const initialState = {
     isEditing: false,
     isSubmitting: false,
-    value: props.project.description
-      ? EditorState.createWithContent(convertFromRaw(props.project.description))
+    value: projectQuery.data?.project?.description
+      ? EditorState.createWithContent(convertFromRaw(projectQuery.data.project.description))
       : EditorState.createEmpty(),
   };
 
@@ -45,9 +44,11 @@ export default function DescriptionSection(): ReactElement {
       const isEmpty = content.blocks.reduce((prev, curr) => prev && curr.text.trim() === '', true);
       const project = projectQuery.data?.project;
 
+      if (!project) return prevState;
+
       const updatedProject = await promiseWithCatch(
         updateProject({
-          id: project.id,
+          where: { id: project.id },
           data: {
             name: { set: project.name },
             status: { set: project.status },
