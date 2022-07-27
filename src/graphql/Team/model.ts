@@ -1,19 +1,15 @@
-import { extendType } from 'nexus';
-import { Team } from 'nexus-prisma';
-import { isValidSession } from '@lib/authHelpers';
-import { nexusModel } from '@lib/nexusHelpers';
+import {
+  ModelConfig,
+  ResolverActionsConfig,
+  RelationResolverActionsConfig,
+  TeamRelationsResolver,
+  FindManyTeamResolver,
+} from '@graphql/__generated__/type-graphql-transpiled';
 
-export const teamModel = nexusModel(Team);
+export const resolvers = [TeamRelationsResolver, FindManyTeamResolver] as const;
 
-export const teamQuery = extendType({
-  type: 'Query',
-  definition(t) {
-    t.list.field('teams', {
-      type: 'Team',
-      description: 'Fetch the teams that the user is a member of',
-      authorize: (_, __, ctx) => isValidSession(ctx.session, true),
-      resolve: (_, __, ctx) =>
-        ctx.prisma.team.findMany({ where: { members: { some: { userId: ctx.session?.userId } } } }),
-    });
-  },
-});
+export const modelConfig: ModelConfig<'Team'> = {};
+
+export const actionsConfig: ResolverActionsConfig<'Team'> = {};
+
+export const relationsConfig: RelationResolverActionsConfig<'Team'> = {};

@@ -1,0 +1,12 @@
+model Attribute {
+  __uuid__
+  __team__
+
+  name       String
+  namePlural String
+
+  inventory        AttributeInventory[]
+  inventoryHistory AttributeInventoryHistory[]
+  projectParts     AttributesOnProject[]
+  subthemes        AttributesOnSubtheme[]
+}

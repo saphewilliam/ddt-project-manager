@@ -1,0 +1,18 @@
+mutation Login($email: String!, $password: String!, $isPermanent: Boolean!) {
+  login(email: $email, password: $password, isPermanent: $isPermanent) {
+    access
+    accessExpiresAt
+  }
+}
+
+mutation SetSessionTeam($teamId: String!) {
+  setSessionTeam(teamId: $teamId) {
+    id
+  }
+}
+
+mutation Logout {
+  logout {
+    id
+  }
+}

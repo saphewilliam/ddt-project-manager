@@ -1,9 +1,9 @@
+import useSdk from '@hooks/useSdk';
 import { useAsyncReducer } from '@saphe/react-use';
 import { nanoid } from 'nanoid';
 import toast from 'react-hot-toast';
 import { useSWRConfig } from 'swr';
-import { ProjectQuery, ProjectType } from '@graphql/__generated__/codegen-self';
-import useSdk from '@hooks/useSdk';
+import { ProjectQuery, ProjectType } from '@graphql/__generated__/codegen';
 import { promiseWithCatch } from '@lib/util';
 
 export default function useProjectPartsSectionState(

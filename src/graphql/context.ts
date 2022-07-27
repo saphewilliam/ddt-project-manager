@@ -14,7 +14,7 @@ export interface Context {
   member: Member | null;
 }
 
-export async function createContext({
+export async function context({
   req,
   res,
 }: {

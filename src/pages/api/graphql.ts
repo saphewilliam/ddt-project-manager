@@ -1,15 +1,9 @@
 import { ApolloServer } from 'apollo-server-micro';
 import Cors from 'micro-cors';
 import { PageConfig } from 'next';
-import { createContext } from '@graphql/context';
-import { schema } from '@graphql/schema';
-
-const apolloServer = new ApolloServer({
-  schema,
-  context: createContext,
-});
-
-const startServer = apolloServer.start();
+import { context } from '@graphql/context';
+import { makeSchema } from '@graphql/schema';
+import { complexityPlugin } from '@lib/graphqlHelpers';
 
 const cors = Cors();
 
@@ -19,11 +13,18 @@ export default cors(async function handler(req, res): Promise<void | boolean> {
     return false;
   }
 
-  await startServer;
+  const schema = await makeSchema();
 
-  await apolloServer.createHandler({
-    path: '/api/graphql',
-  })(req, res);
+  const apolloServer = new ApolloServer({
+    schema,
+    context,
+    cache: 'bounded',
+    plugins: [complexityPlugin(schema)],
+  });
+
+  await apolloServer.start();
+
+  return await apolloServer.createHandler({ path: '/api/graphql' })(req, res);
 });
 
 export const config: PageConfig = { api: { bodyParser: false } };

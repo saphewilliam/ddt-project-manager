@@ -1,0 +1,22 @@
+query Session($where: SessionWhereUniqueInput!) {
+  session(where: $where) {
+    id
+    expiresAt
+    team {
+      id
+      name
+    }
+    user {
+      id
+      displayName
+      firstName
+      lastName
+      avatar
+      isAdmin
+    }
+    member {
+      id
+      role
+    }
+  }
+}

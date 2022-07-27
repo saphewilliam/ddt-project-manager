@@ -12,7 +12,7 @@ import React, {
   useCallback,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { NavigationContext } from '@providers/NavigationProvider';
+import { NavigationContext } from '@hooks/useNavigation';
 import DesktopNavTooltip from './DesktopNavTooltip';
 import { NavItemProps } from './Navigation';
 

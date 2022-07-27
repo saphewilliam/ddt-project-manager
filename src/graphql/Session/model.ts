@@ -1,71 +1,81 @@
-import { booleanArg, extendType, stringArg } from 'nexus';
-import { Session } from 'nexus-prisma';
+import * as TypeGraphQL from 'type-graphql';
 import {
-  authorizeSession,
-  isValidSession,
-  loginUser,
-  logoutUser,
-  setSessionTeam,
-} from '@lib/authHelpers';
-import { nexusModel } from '@lib/nexusHelpers';
+  FindUniqueSessionResolver,
+  Session,
+  ModelConfig,
+  ResolverActionsConfig,
+  RelationResolverActionsConfig,
+  SessionRelationsResolver,
+  Member,
+} from '@graphql/__generated__/type-graphql-transpiled';
+import { loginUser, logoutUser, setSessionTeam } from '@lib/authHelpers';
+import type { Context } from '@graphql/context';
 
-export const sessionModel = nexusModel(Session, {
-  hide: ['token'],
-  extend(t) {
-    t.nullable.field('member', {
-      type: 'Member',
-      resolve(root, __, ctx) {
-        if (root.teamId === null) return null;
-        else
-          return ctx.prisma.member.findFirst({
-            where: { teamId: root.teamId, userId: root.userId },
-          });
-      },
-    });
-  },
-});
+@TypeGraphQL.ObjectType('TokenPayload')
+class TokenPayload {
+  @TypeGraphQL.Field((_type) => String)
+  access!: string;
 
-export const sessionQuery = extendType({
-  type: 'Query',
-  definition(t) {
-    t.nullable.field('session', {
-      type: 'Session',
-      description: 'Get session by its token',
-      args: {
-        token: stringArg(),
-      },
-      resolve: (_, args, ctx) => ctx.prisma.session.findUnique({ where: { token: args.token } }),
-    });
-  },
-});
+  @TypeGraphQL.Field((_type) => Date, { nullable: true })
+  accessExpiresAt?: Date | null;
+}
 
-export const sessionMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('login', {
-      type: 'String',
-      description: 'Generate a new session for a user with an active account',
-      args: {
-        email: stringArg(),
-        password: stringArg(),
-        isPermanent: booleanArg(),
-      },
-      resolve: (_, args, ctx) => loginUser(args.email, args.password, args.isPermanent, ctx.prisma),
+@TypeGraphQL.Resolver((_of) => Session)
+class SessionResolver {
+  @TypeGraphQL.FieldResolver((_type) => Member, { nullable: true })
+  async member(
+    @TypeGraphQL.Root() session: Session,
+    @TypeGraphQL.Ctx() ctx: Context,
+  ): Promise<Member | null> {
+    return await ctx.prisma.member.findUnique({
+      where: { userId_teamId: { teamId: session.teamId ?? '', userId: session.userId } },
     });
-    t.field('setSessionTeam', {
-      type: 'Session',
-      description: 'Set the `team` field of an active session',
-      authorize: (_, __, ctx) => isValidSession(ctx.session, true),
-      args: {
-        teamId: stringArg(),
-      },
-      resolve: (_, args, ctx) => setSessionTeam(ctx.session?.token ?? '', args.teamId, ctx.prisma),
-    });
-    t.field('logout', {
-      type: 'Session',
-      description: 'Invalidate an active session',
-      authorize: authorizeSession,
-      resolve: (_, __, ctx) => logoutUser(ctx.session?.token ?? '', ctx.prisma),
-    });
-  },
-});
+  }
+
+  @TypeGraphQL.Mutation((_returns) => TokenPayload, {
+    // TODO
+    complexity: 10,
+    description: 'Create a new session for a user with an active account',
+  })
+  async login(
+    @TypeGraphQL.Ctx() ctx: Context,
+    @TypeGraphQL.Arg('email') email: string,
+    @TypeGraphQL.Arg('password') password: string,
+    @TypeGraphQL.Arg('isPermanent') isPermanent: boolean,
+  ): Promise<TokenPayload> {
+    return await loginUser(email, password, isPermanent, ctx.prisma);
+  }
+
+  @TypeGraphQL.Mutation((_retunrs) => Session, {
+    // TODO
+    complexity: 10,
+    description: 'Set the `team` field of the active session',
+  })
+  async setSessionTeam(
+    @TypeGraphQL.Ctx() ctx: Context,
+    @TypeGraphQL.Arg('teamId') teamId: string,
+  ): Promise<Session> {
+    return await setSessionTeam(ctx.session?.token ?? '', teamId, ctx.prisma);
+  }
+
+  @TypeGraphQL.Mutation((_returns) => Session, {
+    // TODO
+    complexity: 10,
+    description: 'Invalidate the active session',
+  })
+  async logout(@TypeGraphQL.Ctx() ctx: Context): Promise<Session> {
+    return await logoutUser(ctx.session?.token ?? '', ctx.prisma);
+  }
+}
+
+export const resolvers = [
+  SessionRelationsResolver,
+  SessionResolver,
+  FindUniqueSessionResolver,
+] as const;
+
+export const modelConfig: ModelConfig<'Session'> = {};
+
+export const relationsConfig: RelationResolverActionsConfig<'Session'> = {};
+
+export const actionsConfig: ResolverActionsConfig<'Session'> = {};

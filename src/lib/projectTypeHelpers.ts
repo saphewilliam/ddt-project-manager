@@ -1,4 +1,4 @@
-import { ProjectType } from '@graphql/__generated__/codegen-self';
+import { ProjectType } from '@graphql/__generated__/codegen';
 
 export function projectTypeToString(projectType: ProjectType): string {
   switch (projectType) {

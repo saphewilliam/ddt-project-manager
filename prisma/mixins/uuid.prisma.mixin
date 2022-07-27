@@ -1,0 +1,7 @@
+// Meta information
+/// @TypeGraphQL.omit(input: ["create", "update"])
+id        String   @id @default(uuid())
+/// @TypeGraphQL.omit(input: ["create", "update"])
+createdAt DateTime @default(now())
+/// @TypeGraphQL.omit(input: ["create", "update"])
+updatedAt DateTime @updatedAt

@@ -1,11 +1,11 @@
 import { CalendarIcon, ChartBarIcon } from '@heroicons/react/outline';
+import useSafeQuery from '@hooks/useSafeQuery';
 import cx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
 import Card from '@components/Card';
 import Layout from '@components/Layout';
-import useSafeQuery from '@hooks/useSafeQuery';
 import { formatNumber, formatDate } from '@lib/util';
 
 export default function EventsPage(): ReactElement {

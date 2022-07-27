@@ -1,7 +1,7 @@
+import useSafeQuery from '@hooks/useSafeQuery';
 import { useRouter } from 'next/router';
 import { ReactElement, useEffect } from 'react';
 import ProjectTemplate from '@components/templates/ProjectTemplate';
-import useSafeQuery from '@hooks/useSafeQuery';
 import { extractURLParam } from '@lib/util';
 
 export default function ProjectPage(): ReactElement {

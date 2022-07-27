@@ -1,56 +1,58 @@
-import { extendType, arg, inputObjectType } from 'nexus';
-import { Attribute } from 'nexus-prisma';
-import { authorizeSession } from '@lib/authHelpers';
-import { nexusModel } from '@lib/nexusHelpers';
+import * as TypeGraphQL from 'type-graphql';
+import {
+  ResolverActionsConfig,
+  AttributeRelationsResolver,
+  ModelConfig,
+  RelationResolverActionsConfig,
+  Attribute,
+  FindManyAttributeArgs,
+  CreateAttributeArgs,
+} from '@graphql/__generated__/type-graphql-transpiled';
+import { Auth } from '@lib/authHelpers';
+import { count } from '@lib/graphqlHelpers';
+import type { Context } from '@graphql/context';
+import type { GraphQLResolveInfo } from 'graphql';
 
-export const attributeModel = nexusModel(Attribute);
-
-export const attributeQuery = extendType({
-  type: 'Query',
-  definition(t) {
-    t.list.field('attributes', {
-      type: 'Attribute',
-      authorize: authorizeSession,
-      description: 'Get all attributes of a team',
-      resolve: (_, __, ctx) => {
-        return ctx.prisma.attribute.findMany({
-          where: { teamId: ctx.session?.teamId ?? '' },
-          orderBy: { name: 'asc' },
-        });
-      },
+@TypeGraphQL.Resolver((_of) => Attribute)
+class AttributeResolver {
+  @TypeGraphQL.Query((_returns) => [Attribute])
+  @Auth()
+  async attributes(
+    @TypeGraphQL.Ctx() ctx: Context,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: FindManyAttributeArgs,
+  ): Promise<Attribute[]> {
+    return ctx.prisma.attribute.findMany({
+      ...args,
+      ...count(info),
+      where: { ...args.where, teamId: ctx.session?.teamId ?? '' },
     });
-  },
-});
+  }
 
-export const attributeCreateInput = inputObjectType({
-  name: 'AttributeCreateInput',
-  definition(t) {
-    t.string('name');
-    t.string('namePlural');
-  },
-});
-
-export const attributeMutation = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('createAttritbute', {
-      type: 'Attribute',
-      authorize: authorizeSession,
-      description: 'Creates an attribute',
-      args: {
-        data: arg({ type: 'AttributeCreateInput' }),
-      },
-      resolve: (_, args, ctx) => {
-        return ctx.prisma.attribute.create({
-          data: {
-            name: args.data.name,
-            namePlural: args.data.namePlural,
-            team: {
-              connect: { id: ctx.session?.teamId ?? '' },
-            },
-          },
-        });
-      },
+  @TypeGraphQL.Mutation((_returns) => Attribute)
+  @Auth('CAPTAIN')
+  async createAttribute(
+    @TypeGraphQL.Ctx() ctx: Context,
+    @TypeGraphQL.Info() info: GraphQLResolveInfo,
+    @TypeGraphQL.Args() args: CreateAttributeArgs,
+  ): Promise<Attribute> {
+    return ctx.prisma.attribute.create({
+      ...args,
+      ...count(info),
+      data: { ...args.data, teamId: ctx.session?.teamId ?? '' },
     });
-  },
-});
+  }
+}
+
+export const resolvers = [AttributeRelationsResolver, AttributeResolver] as const;
+
+export const modelConfig: ModelConfig<'Attribute'> = {};
+
+export const relationsConfig: RelationResolverActionsConfig<'Attribute'> = {};
+
+export const actionsConfig: ResolverActionsConfig<'Attribute'> = {};
+
+// createAttribute: [
+//   Authorized(Role.Admin),
+//   Extensions({ logMessage: 'Danger zone', logLevel: LogLevel.WARN }),
+// ],

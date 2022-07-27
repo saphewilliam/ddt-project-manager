@@ -4,7 +4,7 @@ import {
   UserInventoryQuery,
   Role,
   SessionQuery,
-} from '@graphql/__generated__/codegen-self';
+} from '@graphql/__generated__/codegen';
 import { ColorCell, EditCell } from '@templates/InventoryTemplate/InventoryCells';
 
 export interface InventoryTableData {

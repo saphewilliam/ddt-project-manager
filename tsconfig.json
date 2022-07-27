@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2018",
     "lib": [
+      "es2018",
+      "esnext.asynciterable",
       "dom",
       "dom.iterable",
       "esnext"
@@ -32,11 +34,12 @@
     "noResolve": false,
     "baseUrl": ".",
     "rootDir": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@components/*": ["src/components/*"],
       "@icons/*": ["src/components/icons/*"],
       "@templates/*": ["src/components/templates/*"],
-      "@providers/*": ["src/components/providers/*"],
       "@graphql/*": ["src/graphql/*"],
       "@hooks/*": ["src/hooks/*"],
       "@lib/*": ["src/lib/*"],

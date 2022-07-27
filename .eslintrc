@@ -1,4 +1,5 @@
 {
+  "root": true,
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -27,11 +28,19 @@
   },
   "rules": {
     "react-hooks/exhaustive-deps": "off",
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    // "no-console": ["warn", { "allow": ["warn", "error"] }], TODO reenable
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-empty-interface": "warn",
     "@next/next/no-document-import-in-page": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     "import/order": ["warn", {
       "groups": [["builtin", "external"], "internal", "parent", "sibling", "index", "object", "type"],
       "newlines-between": "never",

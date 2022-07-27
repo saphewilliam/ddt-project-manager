@@ -1,0 +1,31 @@
+model User {
+  __uuid__
+
+  firstName   String
+  lastName    String
+  displayName String
+  slug        String  @unique
+
+  // TODO
+  /// @TypeGraphQL.omit(output: true)
+  password    String?
+  avatar      String?
+  email       String  @unique
+  isAdmin     Boolean @default(false)
+
+  sessions                  Session[]
+  stoneInventory            StoneInventory[]
+  stonesOnProjectParts      StonesOnProject[]
+  stonesOnSubthemes         StonesOnSubtheme[]
+  stoneInventoryHistory     StoneInventoryHistory[]
+  attributeInventory        AttributeInventory[]
+  attributesOnProjectParts  AttributesOnProject[]
+  attributesOnSubthemes     AttributesOnSubtheme[]
+  attributeInventoryHistory AttributeInventoryHistory[]
+  projectHistory            ProjectHistory[]
+  supervisingProjects       Project[]                   @relation("supervisor")
+  createdProjects           Project[]                   @relation("createdProject")
+
+  /// The teams this user is a member of
+  teams Member[]
+}

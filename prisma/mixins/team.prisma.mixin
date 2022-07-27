@@ -1,0 +1,4 @@
+/// @TypeGraphQL.omit(input: true)
+teamId String
+/// @TypeGraphQL.omit(input: true)
+team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)

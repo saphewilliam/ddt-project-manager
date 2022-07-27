@@ -1,8 +1,0 @@
-query Stones {
-  stones {
-    id
-    name
-    alias
-    alias2
-  }
-}

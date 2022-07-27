@@ -1,5 +1,5 @@
-import React, { ReactElement, useMemo } from 'react';
 import useSafeQuery from '@hooks/useSafeQuery';
+import React, { ReactElement, useMemo } from 'react';
 import { makeAllInventoryTableData } from '@lib/inventoryHelpers';
 import InventoryTemplate from '@templates/InventoryTemplate';
 

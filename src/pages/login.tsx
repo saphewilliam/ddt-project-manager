@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback, useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import FormFields from '@components/FormFields';
-import { getSdk, TeamsQuery } from '@graphql/__generated__/codegen-self';
+import { getSdk, TeamsQuery } from '@graphql/__generated__/codegen';
 import { displayError } from '@hooks/useDisplayError';
 import useSession from '@hooks/useSession';
 import { environment } from '@lib/environment';

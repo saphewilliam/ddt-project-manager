@@ -1,0 +1,21 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphqlTranspiled {
+  provider           = "typegraphql-prisma"
+  output             = "./src/graphql/__generated__/type-graphql-transpiled"
+  emitTranspiledCode = true
+  // useUncheckedScalarInputs = true
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "./src/graphql/__generated__/type-graphql"
+  // useUncheckedScalarInputs = true
+}

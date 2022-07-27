@@ -1,0 +1,14 @@
+model Session {
+  __uuid__
+
+  expiresAt DateTime?
+  // @TypeGraphQL.omit(output: true)
+  token     String    @unique
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// @TypeGraphQL.omit(input: true)
+  teamId String?
+  /// @TypeGraphQL.omit(input: true)
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+}

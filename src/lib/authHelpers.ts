@@ -1,35 +1,56 @@
-import { PrismaClient, Session } from '@prisma/client';
+import { PrismaClient, Session, Role } from '@prisma/client';
 import { hash, compare } from 'bcrypt';
+import { GraphQLError } from 'graphql';
 import { nanoid } from 'nanoid';
-import { Context } from '../graphql/context';
+import { Authorized, AuthChecker } from 'type-graphql';
+import { Context } from '@graphql/context';
+
+/** Configure which group of users can perform which actions.
+ * An admin has access to everything, only an admin can access something with AuthCheck === 'ADMIN'
+ * Only a team captain can access something with AuthCheck === 'CAPTAIN'
+ * If AuthCheck === undefined, the user has to be logged in with a team selected
+ * If AuthCheck === 'NO_TEAM', then the user does not need a team selected
+ */
+export type AuthCheck = 'ADMIN' | 'CAPTAIN' | undefined | 'NO_TEAM';
+
+/** Wrapper for the type-graphql Authorized decorator to ensure type-safety */
+export const Auth = (auth?: AuthCheck) => Authorized(auth);
+
+export const authChecker: AuthChecker<Context, AuthCheck> = ({ context }, authCheck) => {
+  const prefix = '[AUTH] Access denied! ';
+  if (authCheck.length > 1)
+    throw new GraphQLError(
+      'Something went wrong during auth checking, please use @Auth instead of @Authorized',
+    );
+
+  // Validate session
+  const session = context.session;
+  if (session === null)
+    throw new GraphQLError(`${prefix}You need to be logged in to perform this action.`);
+
+  if (session.expiresAt && session.expiresAt < new Date())
+    throw new GraphQLError(`${prefix}Your session has expired.`);
+
+  // Check if the user has the required permissions
+  const auth = authCheck[0];
+  if (session.user.isAdmin) return true;
+
+  if (session.teamId === null && auth !== 'NO_TEAM')
+    throw new GraphQLError(`${prefix}Please select a team.`);
+
+  if (auth === 'ADMIN' && !session.user.isAdmin)
+    throw new GraphQLError(`${prefix}You need to be an admin to perform this action.`);
+
+  if (auth === 'CAPTAIN' && context.member?.role !== Role.CAPTAIN)
+    throw new GraphQLError(
+      `${prefix}You need to be logged in as a team captain to perform this action.`,
+    );
+
+  return true;
+};
 
 export async function hashPw(plaintext: string): Promise<string> {
   return await hash(plaintext, 10);
-}
-
-/** Wrapper for `isValidSession` to use as nexus authorize parameter */
-export async function authorizeSession(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _: Record<string, any>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  __: Record<string, any>,
-  ctx: Context,
-): Promise<boolean | Error> {
-  return await isValidSession(ctx.session);
-}
-
-export async function isValidSession(
-  session: Session | null,
-  teamMayBeNull = false,
-): Promise<true | Error> {
-  if (session === null)
-    return Error('Please supply a valid session token in the Authorization header');
-
-  if (session.teamId === null && !teamMayBeNull) return Error('Please select a team');
-
-  if (session.expiresAt && session.expiresAt < new Date()) return Error('Session expired');
-
-  return true;
 }
 
 export async function generateUniqueRandomId(prisma: PrismaClient): Promise<string> {
@@ -50,16 +71,16 @@ export async function loginUser(
   password: string,
   isPermanent: boolean,
   prisma: PrismaClient,
-): Promise<string> {
+): Promise<{ access: string; accessExpiresAt: Date | null }> {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) throw Error('Invalid username or password');
+  if (!user) throw new GraphQLError('Invalid username or password');
   if (!user.password)
-    throw Error(
+    throw new GraphQLError(
       `'${user.displayName}' does not have an active account. Please contact an admin to activate your account`,
     );
 
   const match = await compare(password, user.password);
-  if (!match) throw Error('Invalid username or password');
+  if (!match) throw new GraphQLError('Invalid username or password');
 
   const numDays = 2;
   const d = new Date();
@@ -74,7 +95,7 @@ export async function loginUser(
     },
   });
 
-  return session.token;
+  return { access: session.token, accessExpiresAt: expiresAt };
 }
 
 export async function setSessionTeam(
@@ -83,13 +104,13 @@ export async function setSessionTeam(
   prisma: PrismaClient,
 ): Promise<Session> {
   const session = await prisma.session.findUnique({ where: { token }, include: { user: true } });
-  if (!session) throw Error('Invalid token');
+  if (!session) throw new GraphQLError('Invalid token');
 
   const team = await prisma.team.findUnique({ where: { id: teamId }, include: { members: true } });
-  if (!team) throw Error('Invalid team ID');
+  if (!team) throw new GraphQLError('Invalid team ID');
 
   const member = team.members.find((member) => member.userId === session.user.id);
-  if (!member) throw Error(`'${session.user.displayName}' is not a member of this team`);
+  if (!member) throw new GraphQLError(`'${session.user.displayName}' is not a member of this team`);
 
   return await prisma.session.update({
     where: { id: session.id },
@@ -99,10 +120,11 @@ export async function setSessionTeam(
 
 export async function logoutUser(token: string, prisma: PrismaClient): Promise<Session> {
   const session = await prisma.session.findUnique({ where: { token } });
-  if (!session) throw Error('Invalid token');
+  if (!session) throw new GraphQLError('Invalid token');
 
   const d = new Date();
-  if (session.expiresAt && session.expiresAt < d) throw Error('User is already signed out');
+  if (session.expiresAt && session.expiresAt < d)
+    throw new GraphQLError('User is already signed out');
 
   return await prisma.session.update({
     where: { id: session.id },
